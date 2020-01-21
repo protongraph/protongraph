@@ -1,2 +1,3 @@
-# concept_node
-Godot addon to proceduraly generate (almost) anything
+# Concept Graph
+
+Experimental Godot addon for procedural content generation
