@@ -4,5 +4,5 @@
 
 [node name="Spatial" type="Spatial"]
 
-[node name="ConceptNode" type="Spatial" parent="."]
+[node name="ConceptGraph" type="Spatial" parent="."]
 script = ExtResource( 1 )

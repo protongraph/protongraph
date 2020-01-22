@@ -1,10 +1,13 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/concept_graph/gui/editor_view.gd" type="Script" id=1]
 
 [node name="GraphEditView" type="GraphEdit"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 150 )
 right_disconnects = true
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
