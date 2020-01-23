@@ -12,3 +12,11 @@ A ConceptNodeNetwork always ends with an Output node which return a tree of gene
 
 
 var _output: ConceptNodeOutput
+
+
+func get_name() -> String:
+	return "Network"
+
+
+func get_description() -> String:
+	return "A collection of ConceptNodes and their connections"

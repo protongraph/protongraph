@@ -7,13 +7,11 @@ class_name ConceptGraphEditorView
 The GraphEdit shown in the bottom of the editor. It handles the graph visualization and edition.
 """
 
-
 var _node_panel: ConceptGraphNodePanel
 var _current_graph: ConceptGraph
 
 
 func _ready() -> void:
-	print("ConceptGraphEditorView created")
 	_node_panel = preload("add_node_panel.tscn").instance()
 	_node_panel.connect("create_node", self, "_create_node")
 	_node_panel.connect("hide_panel", self, "_hide_node_panel")

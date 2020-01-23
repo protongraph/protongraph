@@ -10,10 +10,16 @@ This script parses the node folder to retrieve a list of all the available Conce
 var _nodes: Array
 
 
-func refresh() -> void:
-	_nodes = []
-	_find_all_nodes("./nodes")
-	print(_nodes)
+func get_list() -> Array:
+	if not _nodes:
+		refresh_list()
+	return _nodes
+
+
+func refresh_list() -> void:
+	_nodes = [] # Do we manually free() the stored nodes or is it done automatically ?
+	_find_all_nodes("res://addons/concept_graph/src/nodes") # TODO: Find why relative paths doesn't work
+	_nodes.sort()
 
 
 func _find_all_nodes(path) -> void:
@@ -36,8 +42,8 @@ func _find_all_nodes(path) -> void:
 		if not file.ends_with(".gd"):
 			continue
 		var full_path = path_root + file
-		var object = load(full_path)
-		if object is ConceptNode:
-			_nodes.append(full_path)
+		var node = load(full_path).new()
+		if node is ConceptNode:
+			_nodes.append(node)
 
 	dir.list_dir_end()
