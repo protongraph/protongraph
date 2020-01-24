@@ -2,24 +2,22 @@
 
 [ext_resource path="res://addons/concept_graph/gui/add_node_panel.gd" type="Script" id=1]
 
-[node name="AddNodePanel" type="Panel"]
-margin_left = 1.0
-margin_top = -1.0
-margin_right = 401.0
-margin_bottom = 199.0
-rect_min_size = Vector2( 400, 250 )
+[node name="AddNodeDialog" type="WindowDialog"]
+margin_right = 417.0
+margin_bottom = 277.0
+window_title = "Create a graph node"
+resizable = true
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-item_list = NodePath("MarginContainer/VBoxContainer/HBoxContainer/NodeList")
+node_tree = NodePath("MarginContainer/VBoxContainer/HBoxContainer/NodeTree")
 create_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionContainer/CreateButton")
 description_text = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/DescriptionText")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -3.99997
 rect_min_size = Vector2( 400, 250 )
 custom_constants/margin_right = 14
 custom_constants/margin_top = 14
@@ -32,38 +30,17 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_left = 14.0
 margin_top = 14.0
-margin_right = 386.0
-margin_bottom = 236.0
+margin_right = 403.0
+margin_bottom = 263.0
 size_flags_horizontal = 3
-
-[node name="TitleContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_right = 372.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 0, 24 )
-size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/TitleContainer"]
-margin_top = 5.0
-margin_right = 127.0
-margin_bottom = 19.0
-size_flags_horizontal = 2
-text = "Create a graph node"
-
-[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/TitleContainer"]
-margin_left = 348.0
-margin_right = 372.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 24, 24 )
-text = "X"
-flat = true
-
 [node name="SearchContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 28.0
-margin_right = 372.0
-margin_bottom = 52.0
+margin_right = 389.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_horizontal = 3
 __meta__ = {
@@ -71,15 +48,15 @@ __meta__ = {
 }
 
 [node name="Search" type="LineEdit" parent="MarginContainer/VBoxContainer/SearchContainer"]
-margin_right = 344.0
+margin_right = 361.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 placeholder_text = "Search"
 caret_blink = true
 
 [node name="RefreshButton" type="Button" parent="MarginContainer/VBoxContainer/SearchContainer"]
-margin_left = 348.0
-margin_right = 372.0
+margin_left = 365.0
+margin_right = 389.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 24, 24 )
 text = "R"
@@ -89,32 +66,25 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 56.0
-margin_right = 372.0
-margin_bottom = 222.0
+margin_top = 28.0
+margin_right = 389.0
+margin_bottom = 249.0
 size_flags_vertical = 3
 
-[node name="NodeList" type="ItemList" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 221.0
-margin_bottom = 166.0
+[node name="NodeTree" type="Tree" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 238.0
+margin_bottom = 221.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Network", null, false, "ConceptNode", null, false, "Output", null, false ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 225.0
-margin_right = 372.0
-margin_bottom = 166.0
-
-[node name="DescriptionTitle" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-visible = false
-margin_right = 147.0
-margin_bottom = 14.0
-text = "Description"
+margin_left = 242.0
+margin_right = 389.0
+margin_bottom = 221.0
 
 [node name="DescriptionText" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_right = 147.0
-margin_bottom = 138.0
+margin_bottom = 193.0
 rect_min_size = Vector2( 0, 60 )
 size_flags_vertical = 3
 text = "Select a node from 
@@ -124,9 +94,9 @@ valign = 1
 autowrap = true
 
 [node name="ActionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 142.0
+margin_top = 197.0
 margin_right = 147.0
-margin_bottom = 166.0
+margin_bottom = 221.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_horizontal = 3
 __meta__ = {
@@ -147,9 +117,7 @@ margin_bottom = 24.0
 rect_min_size = Vector2( 24, 24 )
 disabled = true
 text = "Create node"
-[connection signal="button_up" from="MarginContainer/VBoxContainer/TitleContainer/CloseButton" to="." method="_hide_panel"]
-[connection signal="item_activated" from="MarginContainer/VBoxContainer/HBoxContainer/NodeList" to="." method="_on_item_activated"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/NodeList" to="." method="_on_item_selected"]
-[connection signal="nothing_selected" from="MarginContainer/VBoxContainer/HBoxContainer/NodeList" to="." method="_on_nothing_selected"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/HBoxContainer/NodeTree" to="." method="_on_item_activated"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/NodeTree" to="." method="_on_item_selected"]
+[connection signal="nothing_selected" from="MarginContainer/VBoxContainer/HBoxContainer/NodeTree" to="." method="_on_nothing_selected"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionContainer/CancelButton" to="." method="_hide_panel"]
-[connection signal="button_up" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionContainer/CreateButton" to="." method="_on_create_button_pressed"]

@@ -1,3 +1,4 @@
+tool
 extends ConceptNode
 
 class_name ConceptNodeNetwork
@@ -16,6 +17,10 @@ var _output: ConceptNodeOutput
 
 func get_name() -> String:
 	return "Network"
+
+
+func get_category() -> String:
+	return "Base"
 
 
 func get_description() -> String:
