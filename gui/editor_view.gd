@@ -4,38 +4,40 @@ extends Control
 class_name ConceptGraphEditorView
 
 """
-The GraphEdit shown in the bottom of the editor. It handles the graph visualization and edition
-locally and stores the actual data in the edited ConceptGraph.
+The graph editor shown in the bottom panel.
 """
 
 
-var _graph_edit: GraphEdit
+var _graph_edit: ConceptGraphTemplate
 var _node_panel: ConceptGraphNodePanel
+var _load_panel: PanelContainer
 var _current_graph: ConceptGraph
 
 
 func _ready() -> void:
+	_load_panel = get_node("LoadOrCreateTemplate")
 	_graph_edit = get_node("GraphEdit")
 	_node_panel = get_node("AddNodePanel")
-	_node_panel.visible = false
+	_hide_all()
+	_load_panel.connect("load_template", self, "_on_load_template")
 
 
-func generate_graph_for(node: ConceptGraph) -> void:
+func display_graph_for(node: ConceptGraph) -> void:
 	_current_graph = node
-	_clear_editor_view()
+	_current_graph.connect("template_changed", self, "_display_template")
+	_display_template(_current_graph.template)
+
+
+func stop_node_editing() -> void:
+	_hide_all()
+	_current_graph.disconnect("template_changed", self, "_display_template")
+	_current_graph = null
 
 
 func _clear_editor_view() -> void:
 	for c in _graph_edit.get_children():
 		if c is ConceptNode:
 			_delete_node(c)
-
-
-func _create_node(node) -> void:
-	var new_node: ConceptNode = node.duplicate()
-	new_node.set_global_position(_node_panel.get_global_transform().origin)
-	new_node.connect("delete_node", self, "_delete_node")
-	_graph_edit.add_child(new_node)
 
 
 func _delete_node(node) -> void:
@@ -51,3 +53,26 @@ func _show_node_panel(position: Vector2) -> void:
 func _hide_node_panel() -> void:
 	_node_panel.visible = false
 
+
+func _hide_all() -> void:
+	_load_panel.visible = false
+	_graph_edit.visible = false
+	_node_panel.visible = false
+
+
+func _on_load_template(path: String) -> void:
+	_current_graph.template = path
+
+
+func _display_template(path: String) -> void:
+	_hide_all()
+	var template = File.new()
+	if not template.file_exists(path):
+		_load_panel.visible = true
+		return
+	# Todo : Parse the file somehow
+	_graph_edit.visible = true
+
+
+func _on_create_node_request(node) -> void:
+	var new_node = _graph_edit.create_node(node)

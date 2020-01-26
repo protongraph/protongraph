@@ -6,6 +6,8 @@ class_name ConceptNode
 
 signal delete_node
 
+var _cached_output
+
 
 func _ready() -> void:
 	if not has_custom_gui():
@@ -29,6 +31,34 @@ func get_category() -> String:
 
 func get_description() -> String:
 	return "A brief description of the node functionality"
+
+func get_output():
+	"""
+	Returns what the node generates.
+	This method ensure the output is not calculated more than one time per run. It's useful if the
+	output node is connected to more than one node. It ensure the results are the same and save
+	some performance
+	"""
+	if _cached_output:
+		return _cached_output
+	_cached_output = _generate_output()
+	return _cached_output
+
+
+func reset() -> void:
+	"""
+	Invalidate the cache to force the node to recalculate its output. This method is called
+	when something changed earlier in& the graph.
+	"""
+	_cached_output = null
+	# TODO : for each node connected on the right -> reset
+
+
+func _generate_output():
+	"""
+	Overide this function in the derived classes to return something usable
+	"""
+	return null
 
 
 func _connect_signals() -> void:

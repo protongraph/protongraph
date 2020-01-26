@@ -1,13 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/concept_graph/gui/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/concept_graph/gui/add_node_panel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/concept_graph/gui/create_template.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/concept_graph/src/template.gd" type="Script" id=4]
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = 40.0
-margin_bottom = 40.0
+rect_min_size = Vector2( 0, 200 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
@@ -16,22 +17,34 @@ __meta__ = {
 }
 
 [node name="GraphEdit" type="GraphEdit" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 0, 200 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 right_disconnects = true
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Autosave" type="CheckBox" parent="GraphEdit"]
+margin_left = 220.0
+margin_top = 10.0
+pressed = true
+text = "Autosave"
+flat = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AddNodePanel" parent="." instance=ExtResource( 2 )]
-visible = false
 margin_left = 139.675
 margin_top = 167.822
 margin_right = 539.675
 margin_bottom = 417.822
+
+[node name="LoadOrCreateTemplate" parent="." instance=ExtResource( 3 )]
 [connection signal="popup_request" from="GraphEdit" to="." method="_show_node_panel"]
-[connection signal="create_node" from="AddNodePanel" to="." method="_create_node"]
+[connection signal="create_node" from="AddNodePanel" to="." method="_on_create_node_request"]
 [connection signal="hide_panel" from="AddNodePanel" to="." method="_hide_node_panel"]

@@ -59,6 +59,8 @@ func _on_selection_changed():
 	"""
 	_edited_node = null
 	_panel_button.visible = false
+	_panel_button.pressed = false
+	_graph_editor_view.stop_node_editing()
 
 	_editor_selection = get_editor_interface().get_selection()
 	var selected_nodes = _editor_selection.get_selected_nodes()
@@ -67,5 +69,6 @@ func _on_selection_changed():
 		if node is ConceptGraph:
 			_edited_node = node
 			_panel_button.visible = true
-			_graph_editor_view.generate_graph_for(_edited_node)
+			_panel_button.pressed = true
+			_graph_editor_view.display_graph_for(_edited_node)
 			return

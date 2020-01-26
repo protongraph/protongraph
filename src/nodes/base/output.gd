@@ -7,20 +7,19 @@ class_name ConceptNodeOutput
 This node marks the end of every ConceptNodeNetwork. Only one per network.
 """
 
-export var inspector_test = false
-export var string_test = "New"
 
-
-var _slot_label: Label
+var _in_label: Label
 
 
 func _ready() -> void:
-	set_slot(0, true, 0, ConceptGraphColor.SPATIAL, true, 0, Color(0))
+	set_slot(0,
+		true, ConceptGraphDataType.SPATIAL_SINGLE, ConceptGraphColor.SPATIAL_SINGLE,
+		true, 0, Color(0))
 	resizable = false
 
-	_slot_label = Label.new()
-	_slot_label.text = "Node"
-	add_child(_slot_label)
+	_in_label = Label.new()
+	_in_label.text = "Node"
+	add_child(_in_label)
 
 
 func get_name() -> String:

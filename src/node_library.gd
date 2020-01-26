@@ -43,10 +43,15 @@ func _find_all_nodes(path) -> void:
 
 		var full_path = path_root + file
 		var node = load(full_path).new()
+		var name = node.get_name()
 
 		# ConceptNode is abstract, don't add it to the list
-		var name = node.get_name()
-		if node is ConceptNode and name != "ConceptNode":
-			_nodes[name] = node
+		if not (node is ConceptNode) or name == "ConceptNode":
+			continue
 
+		# If the interface is defined in a separate file, load it instead
+		if node.has_custom_gui():
+			node = load(path_root + file.replace(".gd", ".tscn")).instance()
+
+		_nodes[name] = node
 	dir.list_dir_end()

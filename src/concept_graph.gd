@@ -4,15 +4,51 @@ extends Spatial
 class_name ConceptGraph
 
 """
-The main class of this plugin.
-When adding a ConceptGraph to a scene, you can access and edit its internal network for the editor.
-This node then travel through the ConceptGraphNetwork to generate content on the fly.
+The main class of this plugin. Attach a template to this node and edit the graph from the bottom
+panel editor. This node then travel through the ConceptGraphTemplate object to generate content on
+the fly.
 """
 
-var network: ConceptNodeNetwork
+
+signal template_changed
+
+export(String, FILE, "*.cgraph") var template := "" setget set_template
+export var show_result_in_editor_tree := false setget set_show_result
+
+var _template: ConceptGraphTemplate
+var _result: Spatial
+
+
+func _ready() -> void:
+	_template = ConceptGraphTemplate.new()
 
 
 func generate() -> void:
-	pass
+	if _result:
+		remove_child(_result)
+		_result.queue_free()
+
+	_result = _template.get_output()
+	if not _result:
+		return
+
+	add_child(_result)
+
+	if show_result_in_editor_tree:
+		_result.set_owner(get_tree().get_edited_scene_root())
 
 
+func set_template(val) -> void:
+	template = val
+	emit_signal("template_changed", val)
+
+
+func set_show_result(val) -> void:
+	show_result_in_editor_tree = val
+	if not _result:
+		return
+
+	if val:
+		_result.set_owner(get_tree().get_edited_scene_root())
+	else:
+		_result.set_owner(self)
