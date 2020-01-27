@@ -22,7 +22,7 @@ func _ready() -> void:
 	add_child(_node_label)
 
 
-func get_name() -> String:
+func get_node_name() -> String:
 	return "Spawn Node"
 
 

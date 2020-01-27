@@ -17,7 +17,6 @@ func _ready() -> void:
 
 
 func _on_load_template_request() -> void:
-	print("in load request")
 	_save_mode = false
 	_file_dialog.window_title = _load_title
 	_file_dialog.mode = FileDialog.MODE_OPEN_FILE
@@ -26,7 +25,6 @@ func _on_load_template_request() -> void:
 
 
 func _on_create_template_request() -> void:
-	print("in create request")
 	_save_mode = true
 	_file_dialog.window_title = _save_title
 	_file_dialog.mode = FileDialog.MODE_SAVE_FILE
@@ -35,7 +33,6 @@ func _on_create_template_request() -> void:
 
 
 func _on_file_selected(path: String) -> void:
-	print("path : ", path)
 	if _save_mode:
 		var template_file = File.new()
 		template_file.open(path, File.WRITE)

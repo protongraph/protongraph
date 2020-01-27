@@ -22,8 +22,8 @@ func _ready() -> void:
 	add_child(_node_label)
 
 
-func get_name() -> String:
-	return "Spawn Node"
+func get_node_name() -> String:
+	return "Parent to node"
 
 
 func get_category() -> String:
@@ -31,4 +31,4 @@ func get_category() -> String:
 
 
 func get_description() -> String:
-	return "Spawns a node in the graph"
+	return "Parent the given node(s) to another one"

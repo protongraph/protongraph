@@ -52,3 +52,4 @@ func set_show_result(val) -> void:
 		_result.set_owner(get_tree().get_edited_scene_root())
 	else:
 		_result.set_owner(self)
+

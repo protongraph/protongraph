@@ -7,6 +7,3 @@
 [node name="ConceptGraph" type="Spatial" parent="."]
 script = ExtResource( 1 )
 template = "res://addons/concept_graph/tmp/new_template.cgraph"
-
-[node name="ConceptGraph2" type="Spatial" parent="."]
-script = ExtResource( 1 )

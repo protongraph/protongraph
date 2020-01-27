@@ -51,7 +51,7 @@ func _refresh_concept_nodes_list() -> void:
 			categories[category].set_selectable(0, false)
 
 		var item = _node_tree.create_item(categories[category])
-		item.set_text(0, node.get_name())
+		item.set_text(0, node.get_node_name())
 		item.set_tooltip(0, node.get_description())
 
 

@@ -22,7 +22,7 @@ func _exit_tree() -> void:
 
 func _register_custom_types() -> void:
 	var icon = preload("icons/network.svg")
-	var script = preload("src/concept_graph.gd")
+	var script = load("src/concept_graph.gd")
 	add_custom_type("ConceptGraph", "Spatial", script, icon)
 
 

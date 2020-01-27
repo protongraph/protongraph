@@ -33,7 +33,7 @@ func _ready() -> void:
 	_z = _create_spin_box()
 
 
-func get_name() -> String:
+func get_node_name() -> String:
 	return "Gridpoint"
 
 
@@ -45,7 +45,7 @@ func get_description() -> String:
 	return "Generates a list of points aligned to a grid in a 3D volume"
 
 
-func _generate_output() -> Array:
+func _generate_output(idx: int) -> Array:
 	return []
 
 

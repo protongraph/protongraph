@@ -45,10 +45,11 @@ margin_bottom = 20.0
 text = "Create"
 
 [node name="FileDialog" type="FileDialog" parent="."]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 713.0
-margin_bottom = 713.0
+visible = true
+margin_left = 100.0
+margin_top = 100.0
+margin_right = 806.0
+margin_bottom = 806.0
 window_title = "Create a new graph template"
 resizable = true
 dialog_hide_on_ok = true

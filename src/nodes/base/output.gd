@@ -22,7 +22,7 @@ func _ready() -> void:
 	add_child(_in_label)
 
 
-func get_name() -> String:
+func get_node_name() -> String:
 	return "Output"
 
 
@@ -32,3 +32,7 @@ func get_category() -> String:
 
 func get_description() -> String:
 	return "The final node of any Network"
+
+
+func get_output(_index: int) -> Spatial:
+	return null

@@ -45,6 +45,7 @@ margin_right = 539.675
 margin_bottom = 417.822
 
 [node name="LoadOrCreateTemplate" parent="." instance=ExtResource( 3 )]
+visible = false
 [connection signal="popup_request" from="GraphEdit" to="." method="_show_node_panel"]
 [connection signal="create_node" from="AddNodePanel" to="." method="_on_create_node_request"]
 [connection signal="hide_panel" from="AddNodePanel" to="." method="_hide_node_panel"]

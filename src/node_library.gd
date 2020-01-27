@@ -43,7 +43,7 @@ func _find_all_nodes(path) -> void:
 
 		var full_path = path_root + file
 		var node = load(full_path).new()
-		var name = node.get_name()
+		var name = node.get_node_name()
 
 		# ConceptNode is abstract, don't add it to the list
 		if not (node is ConceptNode) or name == "ConceptNode":
