@@ -27,7 +27,7 @@ func get_node_name() -> String:
 
 
 func get_category() -> String:
-	return "Base"
+	return "Input"
 
 
 func get_description() -> String:

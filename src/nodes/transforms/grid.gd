@@ -1,10 +1,10 @@
 tool
 extends ConceptNode
 
-class_name ConceptNodeGridPoint
+class_name ConceptNodeTransformGrid
 
 """
-Generates a list of points aligned to a grid in a 3D volume
+Generates a list of transforms aligned to a grid in a 3D volume
 """
 
 
@@ -17,7 +17,7 @@ func _ready() -> void:
 	# x, output
 	set_slot(0,
 		true, ConceptGraphDataType.NUMBER_SINGLE, ConceptGraphColor.NUMBER_SINGLE,
-		true, ConceptGraphDataType.POINT_ARRAY, ConceptGraphColor.POINT_ARRAY)
+		true, ConceptGraphDataType.TRANSFORM_ARRAY, ConceptGraphColor.TRANSFORM_ARRAY)
 	_x = _create_spin_box()
 
 	# y
@@ -34,15 +34,15 @@ func _ready() -> void:
 
 
 func get_node_name() -> String:
-	return "Gridpoint"
+	return "Transform Grid"
 
 
 func get_category() -> String:
-	return "Points"
+	return "Transforms"
 
 
 func get_description() -> String:
-	return "Generates a list of points aligned to a grid in a 3D volume"
+	return "Generates a list of transforms aligned to a grid in a 3D volume"
 
 
 func _generate_output(idx: int) -> Array:

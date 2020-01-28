@@ -102,8 +102,12 @@ func restore_custom_data(data: Dictionary) -> void:
 	pass
 
 
-func get_node_connected_to_left(idx: int) -> ConceptNode:
-	return null
+func get_input(idx: int):
+	var input = get_parent().get_left_node(self, idx)
+	if not input.has("node"):
+		return null	# No input source
+		
+	return input["node"].get_output(input["slot"])
 
 
 func _generate_output(idx: int):

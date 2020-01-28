@@ -12,8 +12,9 @@ var _in_label: Label
 
 
 func _ready() -> void:
+	# in, no output slot
 	set_slot(0,
-		true, ConceptGraphDataType.SPATIAL_SINGLE, ConceptGraphColor.SPATIAL_SINGLE,
+		true, ConceptGraphDataType.NODE, ConceptGraphColor.NODE,
 		true, 0, Color(0))
 	resizable = false
 
@@ -35,4 +36,5 @@ func get_description() -> String:
 
 
 func get_output(_index: int) -> Spatial:
-	return null
+	return get_input(0)
+	
