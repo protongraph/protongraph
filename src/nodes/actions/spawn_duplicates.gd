@@ -11,16 +11,16 @@ Spawns many copies of a node at the specified positions and returns an array of 
 func _ready() -> void:
 	# node_source, output
 	set_slot(0,
-		true, ConceptGraphDataType.SPATIAL_SINGLE, ConceptGraphColor.SPATIAL_SINGLE,
-		true, ConceptGraphDataType.SPATIAL_ARRAY, ConceptGraphColor.SPATIAL_ARRAY)
+		true, ConceptGraphDataType.NODE_SINGLE, ConceptGraphColor.NODE_SINGLE,
+		true, ConceptGraphDataType.NODE_ARRAY, ConceptGraphColor.NODE_ARRAY)
 
 	# positions
 	set_slot(1,
-		true, ConceptGraphDataType.POINT_ARRAY, ConceptGraphColor.POINT_ARRAY,
+		true, ConceptGraphDataType.TRANSFORM_ARRAY, ConceptGraphColor.TRANSFORM_ARRAY,
 		false, 0, Color(0))
 
 
-func get_name() -> String:
+func get_node_name() -> String:
 	return "Spawn Duplicates"
 
 

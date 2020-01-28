@@ -11,11 +11,11 @@ Takes a node or a node array and parent it to the selected node. Returns the par
 func _ready() -> void:
 	# parent, output
 	set_slot(0,
-		true, ConceptGraphDataType.NODE_SINGLE, ConceptGraph.NODE_SINGLE,
+		true, ConceptGraphDataType.NODE_SINGLE, ConceptGraphColor.NODE_SINGLE,
 		true, ConceptGraphDataType.NODE_SINGLE, ConceptGraphColor.NODE_SINGLE)
 	# child
 	set_slot(1,
-		true, ConceptGraphDataType.NODE, ConceptGraph.NODE,
+		true, ConceptGraphDataType.NODE, ConceptGraphColor.NODE,
 		false, 0, Color(0))
 
 
@@ -29,6 +29,10 @@ func get_category() -> String:
 
 func get_description() -> String:
 	return "Parent the given node(s) to another one and return the parent"
+
+
+func has_custom_gui() -> bool:
+	return true
 
 
 func _get_output(idx: int) -> Spatial:

@@ -4,9 +4,10 @@ extends Spatial
 class_name ConceptGraph
 
 """
-The main class of this plugin. Attach a template to this node and edit the graph from the bottom
-panel editor. This node then travel through the ConceptGraphTemplate object to generate content on
-the fly.
+The main class of this plugin. Add a ConceptGraph node to your scene and attach a template to this
+node to start editing the graph from the bottom panel editor. 
+This node then travel through the ConceptGraphTemplate object to generate content on the fly every
+time the associated graph is updated.
 """
 
 

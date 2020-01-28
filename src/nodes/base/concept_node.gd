@@ -59,7 +59,8 @@ func reset() -> void:
 	when something changed earlier in the graph.
 	"""
 	_cache = {}
-	# TODO : for each node connected on the right -> reset
+	for node in get_parent().get_all_right_nodes(self):
+		node.reset()
 
 
 func export_editor_data() -> Dictionary:

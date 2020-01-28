@@ -46,7 +46,16 @@ func get_description() -> String:
 
 
 func _generate_output(idx: int) -> Array:
-	return []
+	var transforms = []
+	var size = _get_dimensions()
+	
+	for i in range(0, size.x):
+		for j in range(0, size.y):
+			for k in range(0, size.z):
+				var t = Transform()
+				t.origin = Vector3(i, j, k)
+				transforms.append(t)
+	return transforms
 
 
 func _create_spin_box() -> SpinBox:
@@ -54,3 +63,11 @@ func _create_spin_box() -> SpinBox:
 	box.allow_greater = true
 	add_child(box)
 	return box
+
+
+func _get_dimensions() -> Vector3:
+	var size := Vector3.ZERO
+	size.x = int(_x.get_line_edit().text)
+	size.y = int(_y.get_line_edit().text)
+	size.z = int(_z.get_line_edit().text)
+	return size

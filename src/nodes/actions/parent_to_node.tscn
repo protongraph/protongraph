@@ -1,0 +1,59 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/concept_graph/src/nodes/actions/parent_to_node.gd" type="Script" id=1]
+
+[node name="ParentToNode" type="GraphNode"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -874.0
+margin_bottom = -514.0
+rect_min_size = Vector2( 150, 0 )
+title = "Parent to node"
+show_close = true
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color( 0.5, 0, 0, 1 )
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color( 0.5, 0, 0, 1 )
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color( 1, 1, 1, 1 )
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color( 1, 1, 1, 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 134.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 0, 24 )
+
+[node name="Parent" type="Label" parent="HBoxContainer"]
+margin_top = 5.0
+margin_right = 41.0
+margin_bottom = 19.0
+size_flags_horizontal = 2
+text = "Parent"
+
+[node name="Out" type="Label" parent="HBoxContainer"]
+margin_left = 77.0
+margin_top = 5.0
+margin_right = 118.0
+margin_bottom = 19.0
+size_flags_horizontal = 0
+text = "Parent"
+
+[node name="Child" type="Label" parent="."]
+margin_left = 16.0
+margin_top = 49.0
+margin_right = 134.0
+margin_bottom = 73.0
+rect_min_size = Vector2( 0, 24 )
+text = "Children"
+valign = 1

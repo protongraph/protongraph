@@ -28,11 +28,11 @@ func get_node_name() -> String:
 
 
 func get_category() -> String:
-	return "Base"
+	return "I/O"
 
 
 func get_description() -> String:
-	return "The final node of any Network"
+	return "The final node of any template"
 
 
 func get_output(_index: int) -> Spatial:

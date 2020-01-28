@@ -32,3 +32,7 @@ func get_category() -> String:
 
 func get_description() -> String:
 	return "Spawns a node in the graph"
+
+
+func get_output(idx: int) -> Spatial:
+	return Spatial.new()
