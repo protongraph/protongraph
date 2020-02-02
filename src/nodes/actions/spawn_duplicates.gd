@@ -34,3 +34,27 @@ func get_description() -> String:
 
 func has_custom_gui() -> bool:
 	return true
+
+
+func get_output(idx: int) -> Array:
+	print("In spawn duplicates get_output")
+	var source = get_input(0)
+	print("Source node : ", source)
+	var transforms = get_input(1)
+	print("Transforms : ", transforms)
+	if not source or not transforms:
+		return [] #No valid source node or positions array provided
+	
+	print(transforms.size(), " tranforms found from input 1")
+	var nodes = []
+	for t in transforms:
+		var n = source.duplicate() as Spatial
+		n.global_transform = t
+		nodes.append(n)
+	print(nodes.size(), " nodes generated")
+	return nodes
+
+
+func _clear_cache() -> void:
+	for n in _cache[0]:
+		n.queue_free()

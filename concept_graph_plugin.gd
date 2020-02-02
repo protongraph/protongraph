@@ -79,6 +79,5 @@ func _on_selection_changed():
 		if node is ConceptGraph:
 			_edited_node = node
 			_panel_button.visible = true
-			_panel_button.pressed = true
 			_graph_editor_view.display_graph_for(_edited_node)
 			return

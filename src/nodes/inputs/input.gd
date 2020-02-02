@@ -35,4 +35,15 @@ func get_description() -> String:
 
 
 func get_output(idx: int) -> Spatial:
-	return get_parent().get_node(_input_name.text) as Spatial
+	print("In input get_output")
+	return get_editor_input(_input_name.text) as Spatial
+
+
+func export_custom_data() -> Dictionary:
+	var data := {}
+	data["name"] = _input_name.text
+	return data
+
+
+func restore_custom_data(data: Dictionary) -> void:
+	_input_name.text = String(data["name"])

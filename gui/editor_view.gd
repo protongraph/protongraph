@@ -18,9 +18,12 @@ func _ready() -> void:
 	_load_panel = get_node("LoadOrCreateTemplate")
 	_graph_edit = get_node("GraphEdit")
 	_node_panel = get_node("AddNodePanel")
-	_hide_all()
+
 	_load_panel.connect("load_template", self, "_on_load_template")
 	_graph_edit.connect("graph_changed", self, "_on_graph_changed")
+	_graph_edit.connect("simulation_outdated", self, "_on_simulation_outdated")
+	
+	_hide_all()
 
 
 func display_graph_for(node: ConceptGraph) -> void:
@@ -73,3 +76,6 @@ func _on_create_node_request(node) -> void:
 
 func _on_graph_changed() -> void:
 	_graph_edit.save_to_file(_current_graph.template)
+
+func _on_simulation_outdated() -> void:
+	_current_graph.generate()

@@ -1,9 +1,66 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/concept_graph/src/concept_graph.gd" type="Script" id=1]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 0.4
+height = 0.8
 
 [node name="Spatial" type="Spatial"]
 
 [node name="ConceptGraph" type="Spatial" parent="."]
 script = ExtResource( 1 )
 template = "res://template.cgraph"
+show_result_in_editor_tree = true
+
+[node name="Input" type="Spatial" parent="ConceptGraph"]
+
+[node name="Sphere" type="MeshInstance" parent="ConceptGraph/Input"]
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Output" type="Spatial" parent="ConceptGraph"]
+
+[node name="Sphere" type="MeshInstance" parent="ConceptGraph/Output"]
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Sphere2" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Sphere3" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Sphere4" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Sphere5" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Sphere6" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Sphere7" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Sphere8" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Sphere9" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2 )
+mesh = SubResource( 1 )
+material/0 = null

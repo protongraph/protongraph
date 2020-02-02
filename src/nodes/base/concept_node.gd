@@ -40,6 +40,14 @@ func get_description() -> String:
 	return "A brief description of the node functionality"
 
 
+func get_editor_input(name: String) -> Node: # Avoid cyclic references
+	"""
+	Query the parent ConceptGraph node in the editor and returns the corresponding input node if it
+	exists
+	"""
+	return get_parent().get_parent().get_input(name)  # TODO : Bad, replace this with something less error prone
+
+
 func get_output(idx: int):
 	"""
 	Returns what the node generates for a give slot
@@ -58,6 +66,7 @@ func reset() -> void:
 	Invalidate the cache to force the node to recalculate its output. This method is called
 	when something changed earlier in the graph.
 	"""
+	_clear_cache()
 	_cache = {}
 	for node in get_parent().get_all_right_nodes(self):
 		node.reset()
@@ -116,6 +125,14 @@ func _generate_output(idx: int):
 	Overide this function in the derived classes to return something usable
 	"""
 	return null
+
+
+func _clear_cache():
+	"""
+	Overide this function to customize how the output cache should be cleared. If you have memory
+	to free or anything else, that's where you should define it.
+	"""
+	pass
 
 
 func _connect_signals() -> void:

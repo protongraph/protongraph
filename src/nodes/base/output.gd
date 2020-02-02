@@ -15,7 +15,7 @@ func _ready() -> void:
 	# in, no output slot
 	set_slot(0,
 		true, ConceptGraphDataType.NODE, ConceptGraphColor.NODE,
-		true, 0, Color(0))
+		false, 0, Color(0))
 	resizable = false
 
 	_in_label = Label.new()
@@ -36,5 +36,6 @@ func get_description() -> String:
 
 
 func get_output(_index: int) -> Spatial:
+	print("In output get_ouput")
 	return get_input(0)
 	
