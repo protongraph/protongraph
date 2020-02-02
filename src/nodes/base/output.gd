@@ -38,4 +38,4 @@ func get_description() -> String:
 func get_output(_index: int) -> Spatial:
 	print("In output get_ouput")
 	return get_input(0)
-	
+

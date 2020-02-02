@@ -10,17 +10,17 @@ margin_bottom = 60.0
 title = "Spawn Duplicates"
 show_close = true
 slot/0/left_enabled = true
-slot/0/left_type = 5
-slot/0/left_color = Color( 1, 0, 0, 1 )
+slot/0/left_type = 1
+slot/0/left_color = Color( 0.5, 0, 0, 1 )
 slot/0/right_enabled = true
-slot/0/right_type = 6
-slot/0/right_color = Color( 0.5, 0, 0, 1 )
+slot/0/right_type = 2
+slot/0/right_color = Color( 1, 0.4, 0.4, 1 )
 slot/1/left_enabled = true
-slot/1/left_type = 0
+slot/1/left_type = 5
 slot/1/left_color = Color( 1, 1, 1, 1 )
 slot/1/right_enabled = false
 slot/1/right_type = 0
-slot/1/right_color = Color( 1, 1, 1, 1 )
+slot/1/right_color = Color( 0, 0, 0, 0 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -44,9 +44,9 @@ margin_right = 125.0
 margin_bottom = 14.0
 text = "Output"
 
-[node name="Positions" type="Label" parent="."]
+[node name="Transforms" type="Label" parent="."]
 margin_left = 16.0
 margin_top = 39.0
 margin_right = 141.0
 margin_bottom = 53.0
-text = "Positions"
+text = "Transforms"

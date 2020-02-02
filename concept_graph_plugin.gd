@@ -6,9 +6,9 @@ The Concept Graph addon is a node based content creation tool.
 This addon provides a base framework and a lot of different base nodes to get you started. If you
 need a special feature not provided by the default set of nodes, it's easy to write your own.
 
-This is an open source plugin under the MIT licence. You are free to use it and extend it as you 
+This is an open source plugin under the MIT licence. You are free to use it and extend it as you
 wish, but if you create new nodes that could be helpful to the community, please consider creating a
-pull request at http://github.com/hungryproton/concept_graph 
+pull request at http://github.com/hungryproton/concept_graph
 """
 
 

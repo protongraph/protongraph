@@ -5,8 +5,8 @@
 [node name="ParentToNode" type="GraphNode"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -874.0
-margin_bottom = -514.0
+margin_right = -570.0
+margin_bottom = -641.0
 rect_min_size = Vector2( 150, 0 )
 title = "Parent to node"
 show_close = true
@@ -16,12 +16,12 @@ slot/0/left_color = Color( 0.5, 0, 0, 1 )
 slot/0/right_enabled = true
 slot/0/right_type = 1
 slot/0/right_color = Color( 0.5, 0, 0, 1 )
-slot/1/left_enabled = false
+slot/1/left_enabled = true
 slot/1/left_type = 0
-slot/1/left_color = Color( 1, 1, 1, 1 )
+slot/1/left_color = Color( 1, 0, 0, 1 )
 slot/1/right_enabled = false
 slot/1/right_type = 0
-slot/1/right_color = Color( 1, 1, 1, 1 )
+slot/1/right_color = Color( 0, 0, 0, 0 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false

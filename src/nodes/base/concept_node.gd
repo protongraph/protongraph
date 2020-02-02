@@ -116,7 +116,7 @@ func get_input(idx: int):
 	var input = get_parent().get_left_node(self, idx)
 	if not input.has("node"):
 		return null	# No input source
-		
+
 	return input["node"].get_output(input["slot"])
 
 
@@ -147,7 +147,7 @@ func _on_resize_request(new_size) -> void:
 
 
 func _on_resize_timeout() -> void:
-	emit_signal("node_changed")
+	emit_signal("node_changed", self, false)
 
 
 func _on_close_request() -> void:

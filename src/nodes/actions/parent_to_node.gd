@@ -38,7 +38,7 @@ func has_custom_gui() -> bool:
 func _get_output(idx: int) -> Spatial:
 	if idx != 0:
 		return null	# Wrong index
-	
+
 	var parent = get_input(0)
 	if not parent or not parent is Spatial:
 		return null	# Source didn't provide a valid parent
@@ -46,15 +46,15 @@ func _get_output(idx: int) -> Spatial:
 	var children = get_input(1)
 	if not children:
 		return parent	# Source didn't provide any nodes
-	
+
 	if not children is Array:
 		children = [children]
-	
+
 	for c in children:
 		var old_parent = c.get_parent()
 		if old_parent:
 			old_parent.remove_child(c)
 		parent.add_child(c)
 		c.owner = parent
-	
+
 	return parent

@@ -11,7 +11,7 @@ Load and edit graph templates. The internal graph is then stored back in the tem
 signal graph_changed
 signal simulation_outdated
 
-var _output_node: ConceptNodeOutput
+var _output_node: ConceptNode
 var _selected_node: GraphNode
 
 
@@ -29,11 +29,11 @@ func load_from_file(path: String) -> void:
 	_reset_editor_view()
 	var file = File.new()
 	file.open(path, File.READ)
-	
+
 	var json = JSON.parse(file.get_line())
 	if not json:
 		return	# Template file is either empty or not a valid Json. Ignore
-	
+
 	var graph: Dictionary = json.result
 	if not graph.has("nodes"):
 		return
@@ -47,7 +47,7 @@ func load_from_file(path: String) -> void:
 		_connect_node_signals(node_instance)
 		if node_instance.get_node_name() == "Output":
 			_output_node = node_instance
-			
+
 	for c in graph["connections"]:
 		connect_node(c["from"], c["from_port"], c["to"], c["to_port"])
 
@@ -179,13 +179,15 @@ func _disconnect_node_signals(node) -> void:
 func _on_node_selected(node: GraphNode) -> void:
 	_selected_node = node
 
-func _on_node_changed() -> void:
+
+func _on_node_changed(node: ConceptNode, replay_simulation := false) -> void:
 	emit_signal("graph_changed")
-	emit_signal("simulation_outdated")
+	if replay_simulation:
+		print("replay sim request")
+		emit_signal("simulation_outdated")
 
 
 func _on_connection_request(from_node: String, from_slot: int, to_node: String, to_slot: int) -> void:
-	print("Request ", from_slot, " to ", from_slot)
 	connect_node(from_node, from_slot, to_node, to_slot)
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")

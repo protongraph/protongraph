@@ -22,7 +22,7 @@ func _ready() -> void:
 	_load_panel.connect("load_template", self, "_on_load_template")
 	_graph_edit.connect("graph_changed", self, "_on_graph_changed")
 	_graph_edit.connect("simulation_outdated", self, "_on_simulation_outdated")
-	
+
 	_hide_all()
 
 
@@ -77,5 +77,7 @@ func _on_create_node_request(node) -> void:
 func _on_graph_changed() -> void:
 	_graph_edit.save_to_file(_current_graph.template)
 
+
 func _on_simulation_outdated() -> void:
+	print("editor view, sim outdated")
 	_current_graph.generate()
