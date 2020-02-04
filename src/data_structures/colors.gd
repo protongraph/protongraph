@@ -22,3 +22,5 @@ const CURVE_ARRAY = Color(0.4, 1.0, 1.0)
 const NUMBER = Color(0.0, 1.0, 0.0)
 const NUMBER_SINGLE = Color(0.0, 0.5, 0.0)
 const NUMBER_ARRAY = Color(0.5, 1.0, 0.5)
+
+const BOOL = Color(1.0, 1.0, 0.0)

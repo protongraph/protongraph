@@ -6,6 +6,7 @@ class_name ConceptNode
 
 signal delete_node
 signal node_changed
+signal connection_changed
 
 var _cache := {}
 var _resize_timer := Timer.new()
@@ -110,6 +111,10 @@ func restore_custom_data(data: Dictionary) -> void:
 	restore the previous node state.
 	"""
 	pass
+
+
+func is_input_connected(idx: int) -> bool:
+	return get_parent().is_node_connected_to_input(self, idx)
 
 
 func get_input(idx: int):

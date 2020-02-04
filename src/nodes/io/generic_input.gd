@@ -1,10 +1,10 @@
 tool
 extends ConceptNode
 
-class_name ConceptNodeInputNode
+class_name ConceptNodeGenericInput
 
 """
-This node references a child of the ConceptGraph. Exposed as a generic Spatial
+This node references a child of the ConceptGraph. Exposed as a generic Spatial node
 """
 
 
@@ -18,24 +18,23 @@ func _ready() -> void:
 	resizable = true
 
 	_input_name = LineEdit.new()
-	_input_name.placeholder_text = "Name"
+	_input_name.placeholder_text = "Editor node name"
 	add_child(_input_name)
 
 
 func get_node_name() -> String:
-	return "Input"
+	return "Generic input"
 
 
 func get_category() -> String:
-	return "I/O"
+	return "IO"
 
 
 func get_description() -> String:
 	return "References a child node with the same name from the ConceptGraph"
 
 
-func get_output(idx: int) -> Spatial:
-	print("In input get_output")
+func get_output(idx: int):
 	return get_editor_input(_input_name.text) as Spatial
 
 

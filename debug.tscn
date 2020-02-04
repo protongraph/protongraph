@@ -1,10 +1,15 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/concept_graph/src/concept_graph.gd" type="Script" id=1]
 
-[sub_resource type="SphereMesh" id=1]
-radius = 0.4
-height = 0.8
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 0.8, 0.8, 0.8 )
+
+[sub_resource type="Curve3D" id=2]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -0.764952, -0.476332, 4.94483, -1.95307, 0.0532006, 1.69078, 1.95307, -0.0532006, -1.69078, 5.41116, -0.515703, 3.85885, 1.14704, -0.649241, 0.343994, -1.14704, 0.649241, -0.343994, 6.09389, -0.467782, -2.04685, 0, 0, 0, 0, 0, 0, -2.04939, 0.220427, -3.58519, 0, 0, 0, 0, 0, 0, -4.08369, 0.173047, 1.87174 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0 )
+}
 
 [node name="DebugScene" type="Spatial"]
 
@@ -15,328 +20,31 @@ show_result_in_editor_tree = true
 
 [node name="Input" type="Spatial" parent="ConceptGraph"]
 
-[node name="Sphere" type="MeshInstance" parent="ConceptGraph/Input"]
+[node name="Cube" type="MeshInstance" parent="ConceptGraph/Input"]
 mesh = SubResource( 1 )
 material/0 = null
+
+[node name="Path" type="Path" parent="ConceptGraph/Input"]
+curve = SubResource( 2 )
 
 [node name="Output" type="Spatial" parent="ConceptGraph"]
 
-[node name="Sphere" type="MeshInstance" parent="ConceptGraph/Output"]
+[node name="Cube" type="MeshInstance" parent="ConceptGraph/Output"]
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="Sphere2" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere3" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere4" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere5" type="MeshInstance" parent="ConceptGraph/Output"]
+[node name="Cube2" type="MeshInstance" parent="ConceptGraph/Output"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="Sphere6" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere7" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere8" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere9" type="MeshInstance" parent="ConceptGraph/Output"]
+[node name="Cube3" type="MeshInstance" parent="ConceptGraph/Output"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="Sphere10" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere11" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere12" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere13" type="MeshInstance" parent="ConceptGraph/Output"]
+[node name="Cube4" type="MeshInstance" parent="ConceptGraph/Output"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere14" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere15" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere16" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere17" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere18" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere19" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere20" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere21" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere22" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere23" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere24" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere25" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere26" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere27" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere28" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere29" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere30" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere31" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere32" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere33" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere34" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere35" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere36" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere37" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere38" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere39" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere40" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere41" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere42" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere43" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere44" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere45" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere46" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere47" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere48" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere49" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere50" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere51" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere52" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere53" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere54" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere55" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere56" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere57" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere58" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere59" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere60" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere61" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere62" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3, 1 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere63" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3, 2 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Sphere64" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3, 3 )
 mesh = SubResource( 1 )
 material/0 = null
 

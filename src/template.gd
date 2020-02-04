@@ -10,6 +10,7 @@ Load and edit graph templates. The internal graph is then stored back in the tem
 
 signal graph_changed
 signal simulation_outdated
+signal connection_changed
 
 var _output_node: ConceptNode
 var _selected_node: GraphNode
@@ -22,7 +23,6 @@ func _ready() -> void:
 	connect("node_selected", self, "_on_node_selected")
 	connect("_end_node_move", self, "_on_node_changed")
 	ConceptGraphDataType.setup_valid_connections(self)
-	print("is valid :", is_valid_connection_type(2, 0))
 
 
 func load_from_file(path: String) -> void:
@@ -66,7 +66,6 @@ func save_to_file(path: String) -> void:
 			node["data"] = c.export_custom_data()
 			graph["nodes"].append(node)
 
-	print("graph saved")
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_line(to_json(graph))
@@ -140,6 +139,14 @@ func get_all_right_nodes(node) -> Array:
 	return result
 
 
+func is_node_connected_to_input(node: GraphNode, idx: int) -> bool:
+	var name = node.get_name()
+	for c in get_connection_list():
+		if c["to"] == name and c["to_port"] == idx:
+			return true
+	return false
+
+
 func _setup_gui() -> void:
 	right_disconnects = true
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -180,10 +187,9 @@ func _on_node_selected(node: GraphNode) -> void:
 	_selected_node = node
 
 
-func _on_node_changed(node: ConceptNode, replay_simulation := false) -> void:
+func _on_node_changed(node: ConceptNode = null, replay_simulation := false) -> void:
 	emit_signal("graph_changed")
 	if replay_simulation:
-		print("replay sim request")
 		emit_signal("simulation_outdated")
 
 
@@ -191,9 +197,11 @@ func _on_connection_request(from_node: String, from_slot: int, to_node: String, 
 	connect_node(from_node, from_slot, to_node, to_slot)
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
+	get_node(to_node).emit_signal("connection_changed")
 
 
 func _on_disconnection_request(from_node: String, from_slot: int, to_node: String, to_slot: int) -> void:
 	disconnect_node(from_node, from_slot, to_node, to_slot)
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
+	get_node(to_node).emit_signal("connection_changed")

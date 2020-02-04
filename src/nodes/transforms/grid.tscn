@@ -35,6 +35,7 @@ margin_left = 16.0
 margin_top = 24.0
 margin_right = 131.0
 margin_bottom = 48.0
+rect_min_size = Vector2( 0, 24 )
 
 [node name="Label" type="Label" parent="x"]
 margin_top = 5.0
@@ -53,6 +54,7 @@ margin_left = 16.0
 margin_top = 49.0
 margin_right = 131.0
 margin_bottom = 73.0
+rect_min_size = Vector2( 0, 24 )
 
 [node name="Label" type="Label" parent="y"]
 margin_top = 5.0
@@ -71,6 +73,7 @@ margin_left = 16.0
 margin_top = 74.0
 margin_right = 131.0
 margin_bottom = 98.0
+rect_min_size = Vector2( 0, 24 )
 
 [node name="Label" type="Label" parent="z"]
 margin_top = 5.0

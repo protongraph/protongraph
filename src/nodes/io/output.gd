@@ -28,7 +28,7 @@ func get_node_name() -> String:
 
 
 func get_category() -> String:
-	return "I/O"
+	return "IO"
 
 
 func get_description() -> String:

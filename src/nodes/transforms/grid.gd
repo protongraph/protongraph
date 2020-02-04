@@ -8,13 +8,13 @@ Generates a list of transforms aligned to a grid in a 3D volume
 """
 
 
+
 var _x: SpinBox
 var _y: SpinBox
 var _z: SpinBox
 
 
 func _ready() -> void:
-	print("On grid ready")
 	# x, output
 	set_slot(0,
 		true, ConceptGraphDataType.NUMBER_SINGLE, ConceptGraphColor.NUMBER_SINGLE,
@@ -32,6 +32,9 @@ func _ready() -> void:
 		true, ConceptGraphDataType.NUMBER_SINGLE, ConceptGraphColor.NUMBER_SINGLE,
 		false, 0, Color(0))
 	_z = get_node("z/SpinBox")
+
+	connect("connection_changed", self, "_on_connection_changed")
+	_on_connection_changed()
 
 
 func get_node_name() -> String:
@@ -83,12 +86,27 @@ func _generate_output(idx: int) -> Array:
 
 func _get_dimensions() -> Vector3:
 	var size := Vector3.ZERO
-	size.x = int(_x.get_line_edit().text)
-	size.y = int(_y.get_line_edit().text)
-	size.z = int(_z.get_line_edit().text)
+
+	var input_x = get_input(0)
+	var input_y = get_input(1)
+	var input_z = get_input(2)
+
+	size.x = input_x if input_x else int(_x.get_line_edit().text)
+	size.y = input_y if input_y else int(_y.get_line_edit().text)
+	size.z = input_z if input_z else int(_z.get_line_edit().text)
+
 	return size
 
 
 func _on_value_changed(_value: float) -> void:
 	emit_signal("node_changed", self, true)
 
+
+func _on_connection_changed() -> void:
+	"""
+	When the nodes connections changes, this method check for all the input slots and hide the
+	associated spinbox if something is connected.
+	"""
+	_x.visible = !is_input_connected(0)
+	_y.visible = !is_input_connected(1)
+	_z.visible = !is_input_connected(2)

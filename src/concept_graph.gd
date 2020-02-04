@@ -34,7 +34,7 @@ func generate() -> void:
 	Ask the Template object to go through the node graph and process each nodes until the final
 	result is complete.
 	"""
-	print("Generating concept graph output")
+	_output_root = _get_or_create_root("Output")
 	for c in _output_root.get_children():
 		_output_root.remove_child(c)
 		c.queue_free()
@@ -79,9 +79,7 @@ func set_show_result(val) -> void:
 
 func get_input(name: String) -> Node:
 	if not _input_root:
-		print("No input root found")
 		return null
-	print("Input root found, looking for ", name)
 	return _input_root.get_node(name)
 
 
