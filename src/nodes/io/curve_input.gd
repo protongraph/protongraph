@@ -1,17 +1,14 @@
-tool
-extends ConceptNodeGenericInput
-
-class_name ConceptNodeCurveInput
-
 """
 Expose one or multiple curves from the editor to the graph
 """
 
+tool
+class_name ConceptNodeCurveInput
+extends ConceptNodeGenericInput
 
-func _ready() -> void:
-	set_slot(0,
-		false, 0, Color(0),
-		true, ConceptGraphDataType.CURVE, ConceptGraphColor.CURVE)
+
+func _init() -> void:
+	set_output(0, "Curve", ConceptGraphDataType.CURVE)
 
 
 func get_node_name() -> String:

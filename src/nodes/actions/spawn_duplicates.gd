@@ -1,23 +1,16 @@
-tool
-extends ConceptNode
-
-class_name ConceptNodeSpawnDuplicates
-
 """
 Spawns many copies of a node at the specified positions and returns an array of nodes.
 """
 
+tool
+class_name ConceptNodeSpawnDuplicates
+extends ConceptNode
 
-func _ready() -> void:
-	# node_source, output
-	set_slot(0,
-		true, ConceptGraphDataType.NODE_SINGLE, ConceptGraphColor.NODE_SINGLE,
-		true, ConceptGraphDataType.NODE_ARRAY, ConceptGraphColor.NODE_ARRAY)
 
-	# positions
-	set_slot(1,
-		true, ConceptGraphDataType.TRANSFORM_ARRAY, ConceptGraphColor.TRANSFORM_ARRAY,
-		false, 0, Color(0))
+func _init() -> void:
+	set_input(0, "Source", ConceptGraphDataType.NODE)
+	set_input(1, "Transforms", ConceptGraphDataType.TRANSFORM)
+	set_output(0, "Duplicates", ConceptGraphDataType.NODE)
 
 
 func get_node_name() -> String:
@@ -30,10 +23,6 @@ func get_category() -> String:
 
 func get_description() -> String:
 	return "Spawns many copies of a node at the specified positions and returns an array of nodes"
-
-
-func has_custom_gui() -> bool:
-	return true
 
 
 func get_output(idx: int) -> Array:

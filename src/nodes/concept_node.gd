@@ -1,28 +1,34 @@
-tool
-extends GraphNode
+"""
+The base class for every nodes you can add in the Graph editor. It provides a basic UI framework
+for nodes with simple parameters as well as a caching system and other utilities.
+"""
 
+tool
 class_name ConceptNode
+extends GraphNode
 
 
 signal delete_node
 signal node_changed
 signal connection_changed
 
+var _inputs := {}
+var _outputs := {}
 var _cache := {}
+var _hboxes := []
 var _resize_timer := Timer.new()
 
 
 func _ready() -> void:
-	if not has_custom_gui():
-		title = get_node_name()
-		resizable = true
-		show_close = true
+	_setup_slots()
+	_generate_default_gui()
 
 	_resize_timer.one_shot = true
 	_resize_timer.autostart = false
 	add_child(_resize_timer)
 
 	_connect_signals()
+	_on_connection_changed()
 
 
 func has_custom_gui() -> bool:
@@ -82,6 +88,18 @@ func export_editor_data() -> Dictionary:
 		data["rect_x"] = rect_size.x
 		data["rect_y"] = rect_size.y
 
+	data["slots"] = {}
+	var slots = _hboxes.size()
+	for i in range(0, slots):
+		var hbox = _hboxes[i]
+		for c in hbox.get_children():
+			if c is CheckBox:
+				data["slots"][i] = c.pressed
+			if c is SpinBox:
+				data["slots"][i] = c.value
+			if c is ConceptNodeGuiVectorInput:
+				data["slots"][i] = c.get_value()
+
 	return data
 
 
@@ -93,6 +111,23 @@ func restore_editor_data(data: Dictionary) -> void:
 		rect_size.x = data["rect_x"]
 	if data.has("rect_y"):
 		rect_size.x = data["rect_y"]
+
+	if has_custom_gui():
+		return
+
+	var slots = _hboxes.size()
+	for i in range(0, slots):
+		if data["slots"].has(String(i)):
+			var type = _inputs[i]["type"]
+			var value = data["slots"][String(i)]
+			var hbox = _hboxes[i]
+			match type:
+				ConceptGraphDataType.BOOLEAN:
+					hbox.get_node("CheckBox").pressed = value
+				ConceptGraphDataType.SCALAR:
+					hbox.get_node("SpinBox").value = value
+				ConceptGraphDataType.VECTOR:
+					hbox.get_node("VectorInput").set_value(value)
 
 
 func export_custom_data() -> Dictionary:
@@ -119,10 +154,137 @@ func is_input_connected(idx: int) -> bool:
 
 func get_input(idx: int):
 	var input = get_parent().get_left_node(self, idx)
-	if not input.has("node"):
-		return null	# No input source
+	if input.has("node"):
+		return input["node"].get_output(input["slot"])
 
-	return input["node"].get_output(input["slot"])
+	if has_custom_gui():
+		return null # No input source connected
+
+	# If no source is connected, check if it's a base type with a value defined on the node itself
+	match _inputs[idx]["type"]:
+		ConceptGraphDataType.BOOLEAN:
+			return _hboxes[idx].get_node("CheckBox").pressed
+		ConceptGraphDataType.SCALAR:
+			return _hboxes[idx].get_node("SpinBox").value
+		ConceptGraphDataType.VECTOR:
+			return null
+
+	return null # Not a base type and no source connected
+
+
+func set_input(idx: int, name: String, type: int):
+	_inputs[idx] = {
+		"name": name,
+		"type": type,
+		"color": ConceptGraphDataType.COLORS[type]
+	}
+
+
+func set_output(idx: int, name: String, type: int):
+	_outputs[idx] = {
+		"name": name,
+		"type": type,
+		"color": ConceptGraphDataType.COLORS[type]
+	}
+
+
+func _setup_slots() -> void:
+	"""
+	Based on the previous calls to set_input and set_ouput, this method will call the
+	GraphNode.set_slot method accordingly with the proper parameters. This makes it easier syntax
+	wise on the child node side and make it more readable.
+	"""
+	var slots = max(_inputs.size(), _outputs.size())
+	for i in range(0, slots):
+		var has_input = false
+		var input_type = 0
+		var input_color = Color(0)
+		var has_output = false
+		var output_type = 0
+		var output_color = Color(0)
+
+		if _inputs.has(i):
+			has_input = true
+			input_type = _inputs[i]["type"]
+			input_color = _inputs[i]["color"]
+		if _outputs.has(i):
+			has_output = true
+			output_type = _outputs[i]["type"]
+			output_color = _outputs[i]["color"]
+
+		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color)
+
+
+func _generate_default_gui() -> void:
+	"""
+	If the child node does not define a custom UI itself, this function will generate a default UI
+	based on the parameters provided with set_input and set_ouput. Each slots will have a Label
+	and their name attached.
+	The input slots will have additional UI elements based on their type.
+	Scalars input gets a spinbox that's hidden when something is connected to the slot.
+	Vectors input gets three spinboxes.
+	Values stored in the spinboxes are automatically exported and restored.
+	"""
+	if has_custom_gui():
+		return
+
+	title = get_node_name()
+	resizable = false
+	show_close = true
+
+	# TODO : Some refactoring would be nice
+	var slots = max(_inputs.size(), _outputs.size())
+	for i in range(0, slots):
+
+		# Create a Hbox container per slot like this -> [LabelIn, (opt), LabelOut]
+		var hbox = HBoxContainer.new()
+		hbox.rect_min_size.y = 24
+
+		# Hbox have at least two elements (In and Out label), or many more, in case of vectors
+		# for example with additional spinboxes. All of them are stored in ui_elements
+		var ui_elements = []
+
+		# label_left holds the name of the input slot.
+		var label_left = Label.new()
+		ui_elements.append(label_left)
+
+		# If this slot has an input
+		if _inputs.has(i):
+			label_left.text = _inputs[i]["name"]
+
+			# Add the optional UI elements based on the data type.
+			match _inputs[i]["type"]:
+				ConceptGraphDataType.BOOLEAN:
+					var checkbox = CheckBox.new()
+					checkbox.connect("toggled", self, "_on_value_changed")
+					ui_elements.append(checkbox)
+				ConceptGraphDataType.SCALAR:
+					var spinbox = SpinBox.new()
+					spinbox.connect("value_changed", self, "_on_value_changed")
+					ui_elements.append(spinbox)
+				ConceptGraphDataType.VECTOR:
+					print("Creating vector UI")
+					var vector_input = ConceptNodeGuiVectorInput.new()
+					print("vec input : ", vector_input)
+					vector_input.connect("value_changed", self, "_on_value_changed")
+					ui_elements.append(vector_input)
+
+		# Label right holds the output slot name. Set to expand and align_right to push the text on
+		# the right side of the node panel
+		var label_right = Label.new()
+		label_right.size_flags_horizontal = SIZE_EXPAND_FILL
+		label_right.align = Label.ALIGN_RIGHT
+		if _outputs.has(i):
+			label_right.text = _outputs[i]["name"]
+		ui_elements.append(label_right)
+
+		# Push all the ui elements in order in the Hbox container
+		for ui in ui_elements:
+			hbox.add_child(ui)
+
+		# Make sure it appears in the editor and store along the other Hboxes
+		add_child(hbox)
+		_hboxes.append(hbox)
 
 
 func _generate_output(idx: int):
@@ -141,8 +303,9 @@ func _clear_cache():
 
 
 func _connect_signals() -> void:
-	self.connect("close_request", self, "_on_close_request")
-	self.connect("resize_request", self, "_on_resize_request")
+	connect("close_request", self, "_on_close_request")
+	connect("resize_request", self, "_on_resize_request")
+	connect("connection_changed", self, "_on_connection_changed")
 	_resize_timer.connect("timeout", self, "_on_resize_timeout")
 
 
@@ -158,3 +321,19 @@ func _on_resize_timeout() -> void:
 func _on_close_request() -> void:
 	emit_signal("delete_node", self)
 
+
+func _on_connection_changed() -> void:
+	"""
+	When the nodes connections changes, this method check for all the input slots and hide
+	everything that's not a label if something is connected to the associated slot.
+	"""
+	var slots = _hboxes.size()
+	for i in range(0, slots):
+		var visible = !is_input_connected(i)
+		for ui in _hboxes[i].get_children():
+			if not ui is Label:
+				ui.visible = visible
+
+
+func _on_value_changed(_value: float) -> void:
+	emit_signal("node_changed", self, true)

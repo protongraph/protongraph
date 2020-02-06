@@ -1,26 +1,14 @@
+"""
+This node marks the end of every ConceptNodeNetwork. Only one per template.
+"""
+
 tool
+class_name ConceptNodeOutput
 extends ConceptNode
 
-class_name ConceptNodeOutput
 
-"""
-This node marks the end of every ConceptNodeNetwork. Only one per network.
-"""
-
-
-var _in_label: Label
-
-
-func _ready() -> void:
-	# in, no output slot
-	set_slot(0,
-		true, ConceptGraphDataType.NODE, ConceptGraphColor.NODE,
-		false, 0, Color(0))
-	resizable = false
-
-	_in_label = Label.new()
-	_in_label.text = "Node"
-	add_child(_in_label)
+func _init() -> void:
+	set_input(0, "Node", ConceptGraphDataType.NODE)
 
 
 func get_node_name() -> String:
@@ -36,6 +24,5 @@ func get_description() -> String:
 
 
 func get_output(_index: int) -> Spatial:
-	print("In output get_ouput")
 	return get_input(0)
 

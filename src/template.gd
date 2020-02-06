@@ -1,11 +1,10 @@
-tool
-extends GraphEdit
-
-class_name ConceptGraphTemplate
-
 """
 Load and edit graph templates. The internal graph is then stored back in the template file.
 """
+
+tool
+class_name ConceptGraphTemplate
+extends GraphEdit
 
 
 signal graph_changed
@@ -22,7 +21,6 @@ func _ready() -> void:
 	connect("disconnection_request", self, "_on_disconnection_request")
 	connect("node_selected", self, "_on_node_selected")
 	connect("_end_node_move", self, "_on_node_changed")
-	ConceptGraphDataType.setup_valid_connections(self)
 
 
 func load_from_file(path: String) -> void:

@@ -5,6 +5,7 @@
 [node name="AddNodeDialog" type="WindowDialog"]
 margin_right = 417.0
 margin_bottom = 277.0
+rect_min_size = Vector2( 400, 250 )
 window_title = "Create a graph node"
 resizable = true
 script = ExtResource( 1 )
@@ -18,7 +19,6 @@ description_text = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxCon
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 400, 250 )
 custom_constants/margin_right = 14
 custom_constants/margin_top = 14
 custom_constants/margin_left = 14
