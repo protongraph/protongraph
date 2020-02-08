@@ -36,8 +36,16 @@ func get_output(idx: int) -> Vector3:
 	var curve = get_input(0)
 	if not curve:
 		return Vector3.ZERO
+
+	if curve is Array:
+		if curve.size() >= 1:
+			curve = curve[0]
+		else:
+			return Vector3.ZERO # Empty array
+
 	if not _calculated:
 		_calculate_info(curve)
+
 	match idx:
 		0:
 			return _size

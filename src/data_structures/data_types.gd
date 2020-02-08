@@ -21,5 +21,5 @@ const COLORS = {
 	VECTOR: Color("d67ded"),
 	TRANSFORM: Color("f6a868"),
 	NODE: Color.crimson,
-	CURVE: Color.orchid
+	CURVE: Color.yellowgreen
 }

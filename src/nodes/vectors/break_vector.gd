@@ -10,10 +10,6 @@ func _init() -> void:
 	set_output(2, "z", ConceptGraphDataType.SCALAR)
 
 
-func _ready() -> void:
-	pass
-
-
 func get_node_name() -> String:
 	return "Break Vector"
 
@@ -26,7 +22,7 @@ func get_description() -> String:
 	return "Exposes a Vector (x,y,z) components"
 
 
-func _get_output(idx: int) -> float:
+func get_output(idx: int) -> float:
 	var input_vector = get_input(0)
 	if not input_vector:
 		return 0.0

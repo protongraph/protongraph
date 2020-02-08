@@ -40,5 +40,15 @@ func _generate_output(idx: int) -> Array:
 
 
 func _get_dimensions() -> Vector3:
-	return Vector3(get_input(0), get_input(1), get_input(2))
+	var size := Vector3.ZERO
+
+	var x = get_input(0)
+	var y = get_input(1)
+	var z = get_input(2)
+
+	size.x = x if x else size.x
+	size.y = y if y else size.y
+	size.z = z if z else size.z
+
+	return size
 

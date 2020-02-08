@@ -40,5 +40,5 @@ func get_output(idx: int) -> Array:
 
 
 func _clear_cache() -> void:
-	for n in _cache[0]:
+	for n in _cache["0"]:
 		n.queue_free()

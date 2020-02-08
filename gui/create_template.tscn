@@ -45,7 +45,6 @@ margin_bottom = 20.0
 text = "Create"
 
 [node name="FileDialog" type="FileDialog" parent="."]
-visible = true
 margin_left = 100.0
 margin_top = 100.0
 margin_right = 806.0

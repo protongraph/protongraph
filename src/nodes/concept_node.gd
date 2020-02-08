@@ -12,6 +12,8 @@ signal delete_node
 signal node_changed
 signal connection_changed
 
+var edit_mode := false
+
 var _inputs := {}
 var _outputs := {}
 var _cache := {}
@@ -28,7 +30,6 @@ func _ready() -> void:
 	add_child(_resize_timer)
 
 	_connect_signals()
-	_on_connection_changed()
 
 
 func has_custom_gui() -> bool:
@@ -52,6 +53,8 @@ func get_editor_input(name: String) -> Node: # Avoid cyclic references
 	Query the parent ConceptGraph node in the editor and returns the corresponding input node if it
 	exists
 	"""
+	if edit_mode:
+		return null
 	return get_parent().get_parent().get_input(name)  # TODO : Bad, replace this with something less error prone
 
 
@@ -97,8 +100,6 @@ func export_editor_data() -> Dictionary:
 				data["slots"][i] = c.pressed
 			if c is SpinBox:
 				data["slots"][i] = c.value
-			if c is ConceptNodeGuiVectorInput:
-				data["slots"][i] = c.get_value()
 
 	return data
 
@@ -126,8 +127,6 @@ func restore_editor_data(data: Dictionary) -> void:
 					hbox.get_node("CheckBox").pressed = value
 				ConceptGraphDataType.SCALAR:
 					hbox.get_node("SpinBox").value = value
-				ConceptGraphDataType.VECTOR:
-					hbox.get_node("VectorInput").set_value(value)
 
 
 func export_custom_data() -> Dictionary:
@@ -166,8 +165,6 @@ func get_input(idx: int):
 			return _hboxes[idx].get_node("CheckBox").pressed
 		ConceptGraphDataType.SCALAR:
 			return _hboxes[idx].get_node("SpinBox").value
-		ConceptGraphDataType.VECTOR:
-			return null
 
 	return null # Not a base type and no source connected
 
@@ -222,7 +219,6 @@ func _generate_default_gui() -> void:
 	and their name attached.
 	The input slots will have additional UI elements based on their type.
 	Scalars input gets a spinbox that's hidden when something is connected to the slot.
-	Vectors input gets three spinboxes.
 	Values stored in the spinboxes are automatically exported and restored.
 	"""
 	if has_custom_gui():
@@ -231,6 +227,7 @@ func _generate_default_gui() -> void:
 	title = get_node_name()
 	resizable = false
 	show_close = true
+	size_flags_horizontal = SIZE_SHRINK_END
 
 	# TODO : Some refactoring would be nice
 	var slots = max(_inputs.size(), _outputs.size())
@@ -240,7 +237,7 @@ func _generate_default_gui() -> void:
 		var hbox = HBoxContainer.new()
 		hbox.rect_min_size.y = 24
 
-		# Hbox have at least two elements (In and Out label), or many more, in case of vectors
+		# Hbox have at least two elements (In and Out label), or more for some base types
 		# for example with additional spinboxes. All of them are stored in ui_elements
 		var ui_elements = []
 
@@ -262,12 +259,6 @@ func _generate_default_gui() -> void:
 					var spinbox = SpinBox.new()
 					spinbox.connect("value_changed", self, "_on_value_changed")
 					ui_elements.append(spinbox)
-				ConceptGraphDataType.VECTOR:
-					print("Creating vector UI")
-					var vector_input = ConceptNodeGuiVectorInput.new()
-					print("vec input : ", vector_input)
-					vector_input.connect("value_changed", self, "_on_value_changed")
-					ui_elements.append(vector_input)
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel

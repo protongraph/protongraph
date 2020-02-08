@@ -22,6 +22,7 @@ func _ready() -> void:
 	_load_panel.connect("load_template", self, "_on_load_template")
 	_graph_edit.connect("graph_changed", self, "_on_graph_changed")
 	_graph_edit.connect("simulation_outdated", self, "_on_simulation_outdated")
+	_graph_edit.edit_mode = true
 
 	_hide_all()
 
@@ -37,6 +38,12 @@ func stop_node_editing() -> void:
 	if _current_graph:
 		_current_graph.disconnect("template_changed", self, "_display_template")
 		_current_graph = null
+
+
+func get_input(name) -> Node:
+	if _current_graph:
+		return _current_graph.get_input(name)
+	return null
 
 
 func _show_node_panel(position: Vector2) -> void:

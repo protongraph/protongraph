@@ -18,6 +18,7 @@ func _ready() -> void:
 	resizable = true
 	_input_name = LineEdit.new()
 	_input_name.placeholder_text = "Editor node name"
+	_input_name.connect("text_changed", self, "_on_text_changed")
 	add_child(_input_name)
 
 
@@ -45,3 +46,7 @@ func export_custom_data() -> Dictionary:
 
 func restore_custom_data(data: Dictionary) -> void:
 	_input_name.text = String(data["name"])
+
+
+func _on_text_changed(text: String) -> void:
+	reset()
