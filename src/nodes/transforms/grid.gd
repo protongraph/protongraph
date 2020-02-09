@@ -8,10 +8,15 @@ extends ConceptNode
 
 
 func _init() -> void:
-	set_input(0, "x", ConceptGraphDataType.SCALAR)
-	set_input(1, "y", ConceptGraphDataType.SCALAR)
-	set_input(2, "z", ConceptGraphDataType.SCALAR)
+	set_input(0, "size", ConceptGraphDataType.VECTOR)
+	set_input(1, "center", ConceptGraphDataType.VECTOR)
+	set_input(2, "density", ConceptGraphDataType.SCALAR)
 	set_output(0, "Transforms", ConceptGraphDataType.TRANSFORM)
+
+
+func _ready() -> void:
+	var spinbox = _hboxes[2].get_node("SpinBox")
+	spinbox.step = 0.1
 
 
 func get_node_name() -> String:
@@ -28,27 +33,33 @@ func get_description() -> String:
 
 func _generate_output(idx: int) -> Array:
 	var transforms = []
-	var size = _get_dimensions()
+	var size: Vector3 = get_input(0)
+	var center: Vector3 = get_input(1)
+	var density: float = get_input(2)
 
-	for i in range(0, size.x):
-		for j in range(0, size.y):
-			for k in range(0, size.z):
+	# Assign a default value if the inputs are not connected
+	if not size:
+		size = Vector3.ONE
+	if not center:
+		center = Vector3.ZERO
+	if not density:
+		density = 1.0
+
+	# Make sure there's not 0 steps or nothing gets processed
+	var steps := size * density
+	steps.x = clamp(steps.x, 1.0, steps.x)
+	steps.y = clamp(steps.y, 1.0, steps.y)
+	steps.z = clamp(steps.z, 1.0, steps.z)
+
+	for i in range(steps.x):
+		for j in range(steps.y):
+			for k in range(steps.z):
 				var t = Transform()
-				t.origin = Vector3(i, j, k)
+				t.origin.x = (size.x / steps.x) * i
+				t.origin.y = (size.y / steps.y) * j
+				t.origin.z = (size.z / steps.z) * k
+				t.origin += (size / -2.0) + center
 				transforms.append(t)
 	return transforms
 
-
-func _get_dimensions() -> Vector3:
-	var size := Vector3.ZERO
-
-	var x = get_input(0)
-	var y = get_input(1)
-	var z = get_input(2)
-
-	size.x = x if x else size.x
-	size.y = y if y else size.y
-	size.z = z if z else size.z
-
-	return size
 

@@ -1,143 +1,19 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/concept_graph/src/concept_graph.gd" type="Script" id=1]
+[ext_resource path="res://addons/concept_graph/src/editor_nodes/input_manager.gd" type="Script" id=2]
+[ext_resource path="res://addons/concept_graph/src/editor_nodes/curve_input.gd" type="Script" id=3]
 
-[sub_resource type="CubeMesh" id=1]
-size = Vector3( 0.8, 0.8, 0.8 )
-
-[sub_resource type="Curve3D" id=2]
+[sub_resource type="Curve3D" id=1]
 _data = {
-"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -0.782355, 0.11509, 3.62006, -2.22091, 0.0278547, 1.77796, 2.22091, -0.0278547, -1.77796, 5.33423, -0.523411, 2.93507, 1.14704, -0.649241, 0.343994, -1.14704, 0.649241, -0.343994, 6.09389, -0.467782, -2.04685, 0, 0, 0, 0, 0, 0, -2.92557, -0.245053, -4.29673, 0, 0, 0, 0, 0, 0, -3.17835, 0.577645, 3.13582 ),
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -3.81159, 0.000850677, -6.12054, 0, 0, 0, 0, 0, 0, 2.97521, 5.72205e-06, -6.70127, 0, 0, 0, 0, 0, 0, 6.05278, 0.230733, -2.40293, 1.84223, 0.177221, -0.226609, -1.84223, -0.177221, 0.226609, 2.20577, -0.114216, 2.66697, 0, 0, 0, 0, 0, 0, -4.91044, 1.90735e-06, 2.74978 ),
 "tilts": PoolRealArray( 0, 0, 0, 0, 0 )
 }
 
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 0.4, 0.4, 0.4 )
+
 [node name="DebugScene" type="Spatial"]
-
-[node name="ConceptGraph" type="Spatial" parent="."]
-script = ExtResource( 1 )
-template = "res://template.cgraph"
-show_result_in_editor_tree = true
-
-[node name="Input" type="Spatial" parent="ConceptGraph"]
-
-[node name="Cube" type="MeshInstance" parent="ConceptGraph/Input"]
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Path" type="Path" parent="ConceptGraph/Input"]
-curve = SubResource( 2 )
-
-[node name="Output" type="Spatial" parent="ConceptGraph"]
-
-[node name="Cube" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9017, -0.100114, -0.16281 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube2" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9017, -0.100114, 0.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube3" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9017, -0.100114, 1.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube4" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9017, -0.100114, 2.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube5" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9017, -0.100114, 3.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube6" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9017, -0.100114, -0.16281 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube7" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9017, -0.100114, 0.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube8" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9017, -0.100114, 1.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube9" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9017, -0.100114, 2.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube10" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9017, -0.100114, 3.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube11" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9017, -0.100114, -0.16281 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube12" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9017, -0.100114, 0.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube13" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9017, -0.100114, 1.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube14" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9017, -0.100114, 2.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube15" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9017, -0.100114, -0.16281 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube16" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9017, -0.100114, 0.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube17" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9017, -0.100114, 1.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube18" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9017, -0.100114, 2.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube19" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9017, -0.100114, -0.16281 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube20" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9017, -0.100114, 0.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube21" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9017, -0.100114, 1.83719 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="Cube22" type="MeshInstance" parent="ConceptGraph/Output"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9017, -0.100114, -0.16281 )
-mesh = SubResource( 1 )
-material/0 = null
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( -0.5, 0.556671, 0.663413, 0, -0.766044, 0.642788, 0.866025, 0.321394, 0.383022, 8.77735, 8.00486, -9.21783 )
@@ -145,3 +21,1300 @@ light_color = Color( 0.992157, 0.717647, 0.0705882, 1 )
 shadow_enabled = true
 shadow_color = Color( 0.219608, 0, 0.172549, 1 )
 shadow_bias = 0.0
+
+[node name="ConceptGraph" type="Spatial" parent="."]
+script = ExtResource( 1 )
+template = "res://template.cgraph"
+
+[node name="Input" type="Spatial" parent="ConceptGraph"]
+script = ExtResource( 2 )
+
+[node name="Path" type="Path" parent="ConceptGraph/Input"]
+curve = SubResource( 1 )
+script = ExtResource( 3 )
+
+[node name="Cube" type="MeshInstance" parent="ConceptGraph/Input"]
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Output" type="Spatial" parent="ConceptGraph"]
+
+[node name="Cube" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35489, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube2" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35489, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube3" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35489, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube4" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35489, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube5" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35489, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube6" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35489, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube7" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35489, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube8" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35489, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube9" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube10" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube11" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube12" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube13" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube14" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube15" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube16" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube17" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube18" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube19" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube20" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube21" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube22" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube23" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.79933, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube24" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube25" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube26" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube27" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube28" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube29" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube30" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube31" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube32" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube33" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube34" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube35" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube36" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube37" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube38" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube39" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.24377, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube40" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube41" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube42" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube43" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube44" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube45" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube46" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube47" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube48" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube49" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube50" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube51" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube52" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube53" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube54" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube55" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68822, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube56" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube57" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube58" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube59" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube60" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube61" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube62" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube63" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube64" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube65" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube66" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube67" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube68" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube69" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube70" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube71" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.13266, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube72" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube73" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube74" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube75" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube76" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube77" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube78" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube79" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube80" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube81" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube82" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube83" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube84" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube85" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube86" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube87" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57711, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube88" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube89" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube90" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube91" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube92" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube93" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube94" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube95" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube96" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube97" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube98" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube99" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube100" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube101" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube102" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube103" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02155, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube104" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube105" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube106" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube107" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube108" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube109" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube110" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube111" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube112" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube113" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube114" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube115" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube116" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube117" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube118" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube119" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.465997, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube120" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube121" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube122" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube123" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube124" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube125" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube126" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube127" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube128" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube129" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube130" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube131" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube132" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube133" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube134" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube135" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0895586, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube136" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube137" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube138" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube139" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube140" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube141" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube142" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube143" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube144" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube145" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube146" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube147" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube148" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube149" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube150" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube151" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.645114, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube152" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube153" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube154" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube155" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube156" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube157" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube158" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube159" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube160" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube161" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube162" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube163" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube164" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube165" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube166" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube167" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20067, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube168" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube169" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube170" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube171" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube172" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube173" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube174" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube175" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube176" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube177" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube178" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube179" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube180" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube181" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube182" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube183" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75623, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube184" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube185" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube186" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube187" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube188" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube189" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube190" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube191" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube192" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube193" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube194" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube195" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube196" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube197" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube198" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube199" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.31178, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube200" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -6.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube201" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube202" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube203" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube204" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube205" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube206" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube207" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube208" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube209" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube210" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube211" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube212" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube213" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube214" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube215" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86734, -0.171363, 2.19155 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube216" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -5.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube217" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube218" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube219" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube220" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube221" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube222" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube223" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube224" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube225" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube226" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube227" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube228" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube229" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42289, -0.171363, 1.63599 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube230" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, -5.03067 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube231" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube232" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube233" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube234" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube235" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube236" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube237" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube238" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube239" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube240" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, 0.524881 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube241" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97845, -0.171363, 1.08044 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube242" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.534, -0.171363, -4.47512 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube243" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.534, -0.171363, -3.91956 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube244" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.534, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube245" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.534, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube246" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.534, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube247" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.534, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube248" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.534, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube249" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.534, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube250" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.534, -0.171363, -0.0306745 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube251" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.08956, -0.171363, -3.36401 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube252" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.08956, -0.171363, -2.80845 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube253" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.08956, -0.171363, -2.2529 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube254" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.08956, -0.171363, -1.69734 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube255" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.08956, -0.171363, -1.14179 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Cube256" type="MeshInstance" parent="ConceptGraph/Output"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.08956, -0.171363, -0.58623 )
+mesh = SubResource( 2 )
+material/0 = null

@@ -26,3 +26,8 @@ func get_description() -> String:
 func get_output(_index: int) -> Spatial:
 	return get_input(0)
 
+
+func reset() -> void:
+	.reset()
+	print("Requesting replay")
+	emit_signal("node_changed", self, true)

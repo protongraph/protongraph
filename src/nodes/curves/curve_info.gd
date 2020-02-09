@@ -8,7 +8,7 @@ class_name ConceptNodeCurveInfo
 extends ConceptNode
 
 
-var _resolution := 0.2 # TMP
+var _resolution := 0.1 # TMP
 var _size: Vector3
 var _center: Vector3
 var _calculated = false

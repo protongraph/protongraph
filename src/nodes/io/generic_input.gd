@@ -46,6 +46,7 @@ func export_custom_data() -> Dictionary:
 
 func restore_custom_data(data: Dictionary) -> void:
 	_input_name.text = String(data["name"])
+	_on_text_changed(_input_name.text)
 
 
 func _on_text_changed(text: String) -> void:

@@ -11,12 +11,12 @@ func _init() -> void:
 	set_output(0, "Curve", ConceptGraphDataType.CURVE)
 
 
-func _ready() -> void:
-	print(_input_name)
-
-
 func get_node_name() -> String:
 	return "Curve Input"
+
+
+func get_category() -> String:
+	return "IO"
 
 
 func get_description() -> String:
@@ -24,21 +24,17 @@ func get_description() -> String:
 
 
 func get_output(idx: int) -> Array:
-	var result = []
-	var path = get_editor_input(_input_name.text)
-	if not path:
-		return result
+	var curves = []
 
-	if path is Path:
-		result.append(path.curve)
+	var input = get_editor_input(_input_name.text)
 
-	for c in path.get_children():
+	if not input:
+		return curves
+
+	if input is Path:
+		curves.append(input.curve)
+	for c in input.get_children():
 		if c is Path:
-			result.append(c.curve)
+			curves.append(c.curve)
 
-	return result
-
-
-func _on_text_changed(new_text: String) -> void:
-	reset()
-	emit_signal("node_changed", self, true)
+	return curves

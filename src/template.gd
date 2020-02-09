@@ -11,6 +11,8 @@ signal graph_changed
 signal simulation_outdated
 signal connection_changed
 
+var edit_mode := false
+
 var _output_node: ConceptNode
 var _selected_node: GraphNode
 
@@ -24,6 +26,9 @@ func _ready() -> void:
 
 
 func load_from_file(path: String) -> void:
+	if not path or path == "":
+		return
+
 	_reset_editor_view()
 	var file = File.new()
 	file.open(path, File.READ)
@@ -41,13 +46,16 @@ func load_from_file(path: String) -> void:
 		add_child(node_instance) # Add child first to trigger _ready before restore
 		node_instance.name = node["name"]
 		node_instance.restore_editor_data(node["editor"])
-		node_instance.restore_custom_data(node["data"])
+		if node["data"]:
+			node_instance.restore_custom_data(node["data"])
+		node_instance.edit_mode = edit_mode
 		_connect_node_signals(node_instance)
 		if node_instance.get_node_name() == "Output":
 			_output_node = node_instance
 
 	for c in graph["connections"]:
 		connect_node(c["from"], c["from_port"], c["to"], c["to_port"])
+		get_node(c["to"]).emit_signal("connection_changed")
 
 
 func save_to_file(path: String) -> void:
@@ -73,6 +81,7 @@ func save_to_file(path: String) -> void:
 func create_node(node: ConceptNode, emit := true) -> ConceptNode:
 	var new_node: ConceptNode = node.duplicate()
 	new_node.offset = scroll_offset + Vector2(250, 150)
+	new_node.edit_mode = edit_mode
 	_connect_node_signals(new_node)
 	add_child(new_node)
 
@@ -85,11 +94,23 @@ func create_node(node: ConceptNode, emit := true) -> ConceptNode:
 
 func delete_node(node) -> void:
 	_disconnect_node_signals(node)
+	_disconnect_active_connections(node)
 	remove_child(node)
 	node.queue_free()
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
 	update() # Force the GraphEdit to redraw to hide the old connections to the deleted node
+
+
+func clear_simulation_cache() -> void:
+	"""
+	Clears the cache of every single node in the template. Useful when only the inputs changes
+	and node the whole graph structure itself. Next time get_output is called, every nodes will
+	recalculate their output
+	"""
+	for node in get_children():
+		if node is ConceptNode:
+			node.clear_cache()
 
 
 func get_output() -> Spatial:
@@ -154,10 +175,10 @@ func _setup_gui() -> void:
 
 
 func _get_node_from_script(script: String) -> ConceptNode:
-	# TODO : Should we enfore every node to have a custom gui? Or is there a way to store the tscn
-	# path itself in the file instead of the gd file?
 	var node = load(script).new() as ConceptNode
 	if node.has_custom_gui():
+		# TODO : Should we enfore every node to have a custom gui? Or is there a way to store the
+		# tscn path itself in the file instead of the gd file?
 		node.queue_free()
 		return load(script.replace(".gd", ".tscn")).instance()
 	return node
@@ -179,6 +200,13 @@ func _connect_node_signals(node) -> void:
 func _disconnect_node_signals(node) -> void:
 	node.disconnect("node_changed", self, "_on_node_changed")
 	node.disconnect("delete_node", self, "delete_node")
+
+
+func _disconnect_active_connections(node: GraphNode) -> void:
+	var name = node.get_name()
+	for c in get_connection_list():
+		if c["to"] == name or c["from"] == name:
+			disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
 
 
 func _on_node_selected(node: GraphNode) -> void:

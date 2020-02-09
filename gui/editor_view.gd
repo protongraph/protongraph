@@ -29,14 +29,14 @@ func _ready() -> void:
 
 func display_graph_for(node: ConceptGraph) -> void:
 	_current_graph = node
-	_current_graph.connect("template_changed", self, "_display_template")
+	_current_graph.connect("template_path_changed", self, "_display_template")
 	_display_template(_current_graph.template)
 
 
 func stop_node_editing() -> void:
 	_hide_all()
 	if _current_graph:
-		_current_graph.disconnect("template_changed", self, "_display_template")
+		_current_graph.disconnect("template_path_changed", self, "_display_template")
 		_current_graph = null
 
 
@@ -83,8 +83,8 @@ func _on_create_node_request(node) -> void:
 
 func _on_graph_changed() -> void:
 	_graph_edit.save_to_file(_current_graph.template)
+	_current_graph.reload_template()
 
 
 func _on_simulation_outdated() -> void:
-	print("editor view, sim outdated")
 	_current_graph.generate()

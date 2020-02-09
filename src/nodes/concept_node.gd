@@ -12,6 +12,7 @@ signal delete_node
 signal node_changed
 signal connection_changed
 
+var concept_graph
 var edit_mode := false
 
 var _inputs := {}
@@ -19,6 +20,8 @@ var _outputs := {}
 var _cache := {}
 var _hboxes := []
 var _resize_timer := Timer.new()
+
+
 
 
 func _ready() -> void:
@@ -71,13 +74,17 @@ func get_output(idx: int):
 	return _cache[idx]
 
 
-func reset() -> void:
-	"""
-	Invalidate the cache to force the node to recalculate its output. This method is called
-	when something changed earlier in the graph.
-	"""
+func clear_cache() -> void:
+	# Empty the cache to force the node to recalculate its output next time get_output is called
 	_clear_cache()
 	_cache = {}
+
+
+func reset() -> void:
+	"""
+	Clears the cache and the cache of every single nodes right to this one.
+	"""
+	clear_cache()
 	for node in get_parent().get_all_right_nodes(self):
 		node.reset()
 
@@ -257,6 +264,8 @@ func _generate_default_gui() -> void:
 					ui_elements.append(checkbox)
 				ConceptGraphDataType.SCALAR:
 					var spinbox = SpinBox.new()
+					spinbox.allow_greater = true
+					spinbox.rounded = false
 					spinbox.connect("value_changed", self, "_on_value_changed")
 					ui_elements.append(spinbox)
 
