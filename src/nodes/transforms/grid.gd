@@ -10,17 +10,12 @@ extends ConceptNode
 func _init() -> void:
 	set_input(0, "size", ConceptGraphDataType.VECTOR)
 	set_input(1, "center", ConceptGraphDataType.VECTOR)
-	set_input(2, "density", ConceptGraphDataType.SCALAR)
+	set_input(2, "density", ConceptGraphDataType.SCALAR, {"step": 0.001})
 	set_output(0, "Transforms", ConceptGraphDataType.TRANSFORM)
 
 
-func _ready() -> void:
-	var spinbox = _hboxes[2].get_node("SpinBox")
-	spinbox.step = 0.1
-
-
 func get_node_name() -> String:
-	return "Transform Grid"
+	return "Grid"
 
 
 func get_category() -> String:
@@ -45,15 +40,10 @@ func _generate_output(idx: int) -> Array:
 	if not density:
 		density = 1.0
 
-	# Make sure there's not 0 steps or nothing gets processed
 	var steps := size * density
-	steps.x = clamp(steps.x, 1.0, steps.x)
-	steps.y = clamp(steps.y, 1.0, steps.y)
-	steps.z = clamp(steps.z, 1.0, steps.z)
-
-	for i in range(steps.x):
-		for j in range(steps.y):
-			for k in range(steps.z):
+	for i in range(steps.x + 1.0):
+		for j in range(steps.y + 1.0):
+			for k in range(steps.z + 1.0):
 				var t = Transform()
 				t.origin.x = (size.x / steps.x) * i
 				t.origin.y = (size.y / steps.y) * j

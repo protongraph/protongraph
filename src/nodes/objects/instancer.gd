@@ -23,7 +23,7 @@ func get_node_name() -> String:
 
 
 func get_category() -> String:
-	return "Nodes"
+	return "Objects"
 
 
 func get_description() -> String:

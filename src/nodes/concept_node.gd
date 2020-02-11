@@ -176,19 +176,21 @@ func get_input(idx: int):
 	return null # Not a base type and no source connected
 
 
-func set_input(idx: int, name: String, type: int):
+func set_input(idx: int, name: String, type: int, opts: Dictionary = {}):
 	_inputs[idx] = {
 		"name": name,
 		"type": type,
-		"color": ConceptGraphDataType.COLORS[type]
+		"color": ConceptGraphDataType.COLORS[type],
+		"options": opts
 	}
 
 
-func set_output(idx: int, name: String, type: int):
+func set_output(idx: int, name: String, type: int, opts: Dictionary = {}):
 	_outputs[idx] = {
 		"name": name,
 		"type": type,
-		"color": ConceptGraphDataType.COLORS[type]
+		"color": ConceptGraphDataType.COLORS[type],
+		"options": opts
 	}
 
 
@@ -234,7 +236,7 @@ func _generate_default_gui() -> void:
 	title = get_node_name()
 	resizable = false
 	show_close = true
-	size_flags_horizontal = SIZE_SHRINK_END
+	size_flags_horizontal = SIZE_SHRINK_CENTER
 
 	# TODO : Some refactoring would be nice
 	var slots = max(_inputs.size(), _outputs.size())
@@ -263,11 +265,21 @@ func _generate_default_gui() -> void:
 					checkbox.connect("toggled", self, "_on_value_changed")
 					ui_elements.append(checkbox)
 				ConceptGraphDataType.SCALAR:
+					var opts = _inputs[i]["options"]
 					var spinbox = SpinBox.new()
-					spinbox.allow_greater = true
-					spinbox.rounded = false
+					spinbox.max_value = opts["max"] if opts.has("max") else 1000
+					spinbox.min_value = opts["min"] if opts.has("min") else 0
+					spinbox.value = opts["value"] if opts.has("value") else 0
+					spinbox.step = opts["step"] if opts.has("step") else 0.001
+					spinbox.exp_edit = opts["exp"] if opts.has("exp") else true
+					spinbox.allow_greater = opts["allow_greater"] if opts.has("allow_greater") else true
+					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
 					spinbox.connect("value_changed", self, "_on_value_changed")
 					ui_elements.append(spinbox)
+				#ConceptGraphDataType.VECTOR:
+				#	var vector_input = ConceptNodeGuiVectorInput.new()
+				#	vector_input.connect("value_changed", self, "_on_value_changed")
+				#	ui_elements.append(vector_input)
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel

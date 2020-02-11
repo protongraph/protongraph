@@ -10,7 +10,7 @@ func _init() -> void:
 
 
 func get_node_name() -> String:
-	return "Transforms Offset"
+	return "Offset"
 
 
 func get_category() -> String:

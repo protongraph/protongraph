@@ -25,6 +25,11 @@ func get_value() -> Array:
 	return result
 
 
+func get_vector() -> Vector3:
+	var val = get_value()
+	return Vector3(val[0], val[1], val[2])
+
+
 func set_value(val) -> void:
 	if not val:
 		return
@@ -33,14 +38,23 @@ func set_value(val) -> void:
 	_z.value = val[2]
 
 
+func set_from_vector(val: Vector3) -> void:
+	if not val:
+		return
+	_x.value = val.x
+	_y.value = val.y
+	_z.value = val.z
+
+
 func _create_spinbox(name: String) -> SpinBox:
 	var spinbox = SpinBox.new()
 	spinbox.allow_greater = true
 	spinbox.prefix = name
+	spinbox.rounded = false
 	spinbox.connect("value_changed", self, "_on_value_changed")
 	add_child(spinbox)
 	return spinbox
 
 
-func _on_value_changed() -> void:
+func _on_value_changed(val) -> void:
 	emit_signal("value_changed")

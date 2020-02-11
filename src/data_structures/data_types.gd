@@ -13,6 +13,7 @@ const VECTOR = 2
 const TRANSFORM = 3
 const NODE = 4
 const CURVE = 5
+const NOISE = 6
 
 # Common types also used in the VisualShader editor share the same color
 const COLORS = {
@@ -21,5 +22,6 @@ const COLORS = {
 	VECTOR: Color("d67ded"),
 	TRANSFORM: Color("f6a868"),
 	NODE: Color.crimson,
-	CURVE: Color.yellowgreen
+	CURVE: Color.yellowgreen,
+	NOISE: Color.darkcyan
 }
