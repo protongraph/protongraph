@@ -1,0 +1,57 @@
+tool
+class_name ConceptNodeCsgExtrudeCurve
+extends ConceptNode
+
+
+func _init() -> void:
+	set_input(0, "Curve", ConceptGraphDataType.CURVE)
+	set_input(1, "Resolution", ConceptGraphDataType.SCALAR, {"exp_edit": false})
+	set_input(2, "Depth", ConceptGraphDataType.SCALAR)
+	set_input(3, "Material", ConceptGraphDataType.MATERIAL)
+	set_input(4, "Use collision", ConceptGraphDataType.BOOLEAN)
+	set_output(0, "Mesh", ConceptGraphDataType.MESH)
+
+
+func get_node_name() -> String:
+	return "Extrude curve"
+
+
+func get_category() -> String:
+	return "CSG"
+
+
+func get_description() -> String:
+	return "Creates extruded CSG meshes defined by one or multiple curves"
+
+
+func get_output(idx: int) -> Array:
+	var result = []
+
+	var curves = get_input(0)
+	var resolution = get_input(1)
+	var depth = get_input(2)
+	var material = get_input(3)
+	var use_collision = get_input(4)
+
+	if not curves:
+		return result
+	if not curves is Array:
+		curves = [curves]
+	if not depth:
+		depth = 1.0
+	if not resolution:
+		resolution = 1.0
+	if not use_collision:
+		use_collision = false
+
+	var polygons = ConceptGraphCurveUtil.make_polygons_points(curves, resolution)
+
+	for polygon in polygons:
+		var mesh = CSGPolygon.new()
+		mesh.rotation = Vector3(PI/2.0, 0.0, 0.0) # TODO : link it to the curve projection axis
+		mesh.polygon = polygon
+		mesh.depth = depth
+		result.append(mesh)
+
+	return result
+

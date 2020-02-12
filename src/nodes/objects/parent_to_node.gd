@@ -25,13 +25,15 @@ func get_description() -> String:
 	return "Parent the given node(s) to another one and return the parent"
 
 
-func _get_output(idx: int) -> Spatial:
+func get_output(idx: int) -> Spatial:
 	if idx != 0:
 		return null	# Wrong index
 
 	var parent = get_input(0)
-	if not parent or not parent is Spatial:
+	if not parent:
 		return null	# Source didn't provide a valid parent
+	if parent is Array and parent.size() >= 1:
+		parent = parent[0]
 
 	var children = get_input(1)
 	if not children:

@@ -19,6 +19,7 @@ var _selected_node: GraphNode
 
 func _ready() -> void:
 	_setup_gui()
+	ConceptGraphDataType.setup_valid_connection_types(self)
 	connect("connection_request", self, "_on_connection_request")
 	connect("disconnection_request", self, "_on_disconnection_request")
 	connect("node_selected", self, "_on_node_selected")

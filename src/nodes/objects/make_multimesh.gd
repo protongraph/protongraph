@@ -5,7 +5,7 @@ extends ConceptNode
 
 func _init() -> void:
 	set_input(0, "Source", ConceptGraphDataType.NODE)
-	set_input(1, "Transforms", ConceptGraphDataType.TRANSFORM)
+	set_input(1, "Transforms", ConceptGraphDataType.NODE)
 	set_output(0, "Multimesh", ConceptGraphDataType.NODE)
 
 
@@ -39,7 +39,7 @@ func get_output(idx: int) -> MultiMeshInstance:
 
 	var mm = _setup_multi_mesh(mesh, count)
 	for i in range(count):
-		mm.multimesh.set_instance_transform(i, transforms[i])
+		mm.multimesh.set_instance_transform(i, transforms[i].transform)
 
 	return mm
 

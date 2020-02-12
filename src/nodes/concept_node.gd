@@ -22,8 +22,6 @@ var _hboxes := []
 var _resize_timer := Timer.new()
 
 
-
-
 func _ready() -> void:
 	_setup_slots()
 	_generate_default_gui()
@@ -273,6 +271,7 @@ func _generate_default_gui() -> void:
 					spinbox.step = opts["step"] if opts.has("step") else 0.001
 					spinbox.exp_edit = opts["exp"] if opts.has("exp") else true
 					spinbox.allow_greater = opts["allow_greater"] if opts.has("allow_greater") else true
+					spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else false
 					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
 					spinbox.connect("value_changed", self, "_on_value_changed")
 					ui_elements.append(spinbox)

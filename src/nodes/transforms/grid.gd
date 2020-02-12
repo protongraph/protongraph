@@ -11,15 +11,15 @@ func _init() -> void:
 	set_input(0, "size", ConceptGraphDataType.VECTOR)
 	set_input(1, "center", ConceptGraphDataType.VECTOR)
 	set_input(2, "density", ConceptGraphDataType.SCALAR, {"step": 0.001})
-	set_output(0, "Transforms", ConceptGraphDataType.TRANSFORM)
+	set_output(0, "Transforms", ConceptGraphDataType.NODE)
 
 
 func get_node_name() -> String:
-	return "Grid"
+	return "Create grid"
 
 
 func get_category() -> String:
-	return "Transforms"
+	return "Nodes"
 
 
 func get_description() -> String:
@@ -27,7 +27,7 @@ func get_description() -> String:
 
 
 func _generate_output(idx: int) -> Array:
-	var transforms = []
+	var result = []
 	var size: Vector3 = get_input(0)
 	var center: Vector3 = get_input(1)
 	var density: float = get_input(2)
@@ -44,12 +44,12 @@ func _generate_output(idx: int) -> Array:
 	for i in range(steps.x + 1.0):
 		for j in range(steps.y + 1.0):
 			for k in range(steps.z + 1.0):
-				var t = Transform()
-				t.origin.x = (size.x / steps.x) * i
-				t.origin.y = (size.y / steps.y) * j
-				t.origin.z = (size.z / steps.z) * k
-				t.origin += (size / -2.0) + center
-				transforms.append(t)
-	return transforms
+				var p = Position3D.new()
+				p.transform.origin.x = (size.x / steps.x) * i
+				p.transform.origin.y = (size.y / steps.y) * j
+				p.transform.origin.z = (size.z / steps.z) * k
+				p.transform.origin += (size / -2.0) + center
+				result.append(p)
+	return result
 
 

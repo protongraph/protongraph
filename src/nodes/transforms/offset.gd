@@ -4,9 +4,10 @@ extends ConceptNode
 
 
 func _init() -> void:
-	set_input(0, "Transforms", ConceptGraphDataType.TRANSFORM)
+	set_input(0, "Transforms", ConceptGraphDataType.NODE)
 	set_input(1, "Vector", ConceptGraphDataType.VECTOR)
-	set_output(0, "", ConceptGraphDataType.TRANSFORM)
+	set_input(2, "Negative", ConceptGraphDataType.BOOLEAN)
+	set_output(0, "", ConceptGraphDataType.NODE)
 
 
 func get_node_name() -> String:
@@ -14,18 +15,22 @@ func get_node_name() -> String:
 
 
 func get_category() -> String:
-	return "Transforms"
+	return "Nodes"
 
 
 func get_description() -> String:
-	return "Applies an offset to a set of transforms"
+	return "Applies an offset to a set of nodes"
 
 
 func get_output(idx: int) -> Spatial:
-	var transforms = get_input(0)
+	var nodes = get_input(0)
 	var offset = get_input(1)
+	var negative = get_input(2)
 
-	for i in range(transforms.size()):
-		transforms[i].origin += offset
+	if negative:
+		offset *= -1
 
-	return transforms
+	for i in range(nodes.size()):
+		nodes[i].transform.origin += offset
+
+	return nodes

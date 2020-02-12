@@ -9,7 +9,7 @@ extends ConceptNode
 
 func _init() -> void:
 	set_input(0, "Source", ConceptGraphDataType.NODE)
-	set_input(1, "Transforms", ConceptGraphDataType.TRANSFORM)
+	set_input(1, "Transforms", ConceptGraphDataType.NODE)
 	set_output(0, "Duplicates", ConceptGraphDataType.NODE)
 
 
@@ -34,7 +34,7 @@ func get_output(idx: int) -> Array:
 	var nodes = []
 	for t in transforms:
 		var n = source.duplicate() as Spatial
-		n.global_transform = t
+		n.global_transform = t.transform
 		nodes.append(n)
 	return nodes
 
