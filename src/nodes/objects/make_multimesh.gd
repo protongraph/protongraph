@@ -4,21 +4,13 @@ extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Make MultiMesh"
+	category = "Objects"
+	description = "Makes a MultiMeshInstance from a single mesh and a list of transforms"
+
 	set_input(0, "Source", ConceptGraphDataType.NODE)
 	set_input(1, "Transforms", ConceptGraphDataType.NODE)
 	set_output(0, "Multimesh", ConceptGraphDataType.NODE)
-
-
-func get_node_name() -> String:
-	return "Make MultiMesh"
-
-
-func get_category() -> String:
-	return "Objects"
-
-
-func get_description() -> String:
-	return "Makes a MultiMeshInstance from a single mesh and a list of transforms"
 
 
 func get_output(idx: int) -> MultiMeshInstance:

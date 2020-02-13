@@ -51,7 +51,7 @@ func load_from_file(path: String) -> void:
 			node_instance.restore_custom_data(node["data"])
 		node_instance.edit_mode = edit_mode
 		_connect_node_signals(node_instance)
-		if node_instance.get_node_name() == "Output":
+		if node_instance.node_title == "Output":
 			_output_node = node_instance
 
 	for c in graph["connections"]:
@@ -221,6 +221,12 @@ func _on_node_changed(node: ConceptNode = null, replay_simulation := false) -> v
 
 
 func _on_connection_request(from_node: String, from_slot: int, to_node: String, to_slot: int) -> void:
+	# First check if something is already connected in the input slot
+	for c in get_connection_list():
+		if c["to"] == to_node and c["to_port"] == to_slot:
+			# If there is, disconnect it first. Only one connection for each input.
+			disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
+
 	connect_node(from_node, from_slot, to_node, to_slot)
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")

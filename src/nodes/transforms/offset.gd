@@ -4,22 +4,14 @@ extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Offset"
+	category = "Nodes"
+	description = "Applies an offset to a set of nodes"
+
 	set_input(0, "Transforms", ConceptGraphDataType.NODE)
 	set_input(1, "Vector", ConceptGraphDataType.VECTOR)
 	set_input(2, "Negative", ConceptGraphDataType.BOOLEAN)
 	set_output(0, "", ConceptGraphDataType.NODE)
-
-
-func get_node_name() -> String:
-	return "Offset"
-
-
-func get_category() -> String:
-	return "Nodes"
-
-
-func get_description() -> String:
-	return "Applies an offset to a set of nodes"
 
 
 func get_output(idx: int) -> Spatial:

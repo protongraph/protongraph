@@ -14,6 +14,10 @@ signal connection_changed
 
 var concept_graph
 var edit_mode := false
+var node_title := "ConceptNode"
+var category := "No category"
+var description := "A brief description of the node functionality"
+
 
 var _inputs := {}
 var _outputs := {}
@@ -35,18 +39,6 @@ func _ready() -> void:
 
 func has_custom_gui() -> bool:
 	return false
-
-
-func get_node_name() -> String:
-	return "ConceptNode"
-
-
-func get_category() -> String:
-	return "No category"
-
-
-func get_description() -> String:
-	return "A brief description of the node functionality"
 
 
 func get_editor_input(name: String) -> Node: # Avoid cyclic references
@@ -231,7 +223,7 @@ func _generate_default_gui() -> void:
 	if has_custom_gui():
 		return
 
-	title = get_node_name()
+	title = node_title
 	resizable = false
 	show_close = true
 	size_flags_horizontal = SIZE_SHRINK_CENTER

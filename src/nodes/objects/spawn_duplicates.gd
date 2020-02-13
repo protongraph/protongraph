@@ -1,28 +1,17 @@
-"""
-Spawns many copies of a node at the specified positions and returns an array of nodes.
-"""
-
 tool
 class_name ConceptNodeSpawnDuplicates
 extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Spawn Duplicates"
+	category = "Objects"
+	description = "Spawns multiple copies of a node at the given positions"
+
 	set_input(0, "Source", ConceptGraphDataType.NODE)
 	set_input(1, "Transforms", ConceptGraphDataType.NODE)
 	set_output(0, "Duplicates", ConceptGraphDataType.NODE)
 
-
-func get_node_name() -> String:
-	return "Spawn Duplicates"
-
-
-func get_category() -> String:
-	return "Objects"
-
-
-func get_description() -> String:
-	return "Spawns many copies of a node at the specified positions and returns an array of nodes"
 
 
 func get_output(idx: int) -> Array:

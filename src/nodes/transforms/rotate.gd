@@ -4,22 +4,14 @@ extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Rotate"
+	category = "Nodes"
+	description = "Applies a random rotation to a set of nodes"
+
 	set_input(0, "Nodes", ConceptGraphDataType.NODE)
 	set_input(1, "Amount", ConceptGraphDataType.VECTOR)
 	set_input(2, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
 	set_output(0, "", ConceptGraphDataType.NODE)
-
-
-func get_node_name() -> String:
-	return "Rotate"
-
-
-func get_category() -> String:
-	return "Nodes"
-
-
-func get_description() -> String:
-	return "Applies a random rotation to a set of nodes"
 
 
 func get_output(idx: int) -> Spatial:

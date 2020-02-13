@@ -8,22 +8,14 @@ extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Exclude from curves"
+	category = "Nodes"
+	description = "Discard all the objects inside (or outside) the provided curves"
+
 	set_input(0, "Input", ConceptGraphDataType.NODE)
 	set_input(1, "Curves", ConceptGraphDataType.CURVE)
 	set_input(2, "Invert", ConceptGraphDataType.BOOLEAN)
 	set_output(0, "", ConceptGraphDataType.NODE)
-
-
-func get_node_name() -> String:
-	return "Exclude from curves"
-
-
-func get_category() -> String:
-	return "Nodes"
-
-
-func get_description() -> String:
-	return "Discard all the objects inside (or outside) the provided curves"
 
 
 func get_output(idx: int) -> Array:

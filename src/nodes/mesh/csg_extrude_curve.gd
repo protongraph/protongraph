@@ -4,6 +4,10 @@ extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Extrude curve"
+	category = "CSG"
+	description = "Creates extruded CSG meshes defined by one or multiple curves"
+
 	set_input(0, "Curve", ConceptGraphDataType.CURVE)
 	set_input(1, "Resolution", ConceptGraphDataType.SCALAR, {"exp_edit": false})
 	set_input(2, "Depth", ConceptGraphDataType.SCALAR)
@@ -13,16 +17,6 @@ func _init() -> void:
 	set_output(0, "Mesh", ConceptGraphDataType.MESH)
 
 
-func get_node_name() -> String:
-	return "Extrude curve"
-
-
-func get_category() -> String:
-	return "CSG"
-
-
-func get_description() -> String:
-	return "Creates extruded CSG meshes defined by one or multiple curves"
 
 
 func get_output(idx: int) -> Array:

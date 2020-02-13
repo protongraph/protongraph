@@ -4,22 +4,14 @@ extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Jitter"
+	category = "Nodes"
+	description = "Applies a random offset to each transforms"
+
 	set_input(0, "Input", ConceptGraphDataType.NODE)
 	set_input(1, "Amount", ConceptGraphDataType.VECTOR)
 	set_input(2, "Seed", ConceptGraphDataType.SCALAR)
 	set_output(0, " ", ConceptGraphDataType.NODE)
-
-
-func get_node_name() -> String:
-	return "Jitter"
-
-
-func get_category() -> String:
-	return "Nodes"
-
-
-func get_description() -> String:
-	return "Applies a random offset to each transforms"
 
 
 func get_output(idx: int) -> Spatial:

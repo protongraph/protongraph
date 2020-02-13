@@ -8,21 +8,13 @@ extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Parent to node"
+	category = "Objects"
+	description = "Parent the given node(s) to another one and return the parent"
+
 	set_input(0, "Parent", ConceptGraphDataType.NODE)
 	set_input(1, "Child", ConceptGraphDataType.NODE)
 	set_output(0, "Parent", ConceptGraphDataType.NODE)
-
-
-func get_node_name() -> String:
-	return "Parent to node"
-
-
-func get_category() -> String:
-	return "Objects"
-
-
-func get_description() -> String:
-	return "Parent the given node(s) to another one and return the parent"
 
 
 func get_output(idx: int) -> Spatial:

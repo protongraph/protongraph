@@ -6,6 +6,10 @@ extends ConceptNode
 var _spinbox: SpinBox
 
 func _init() -> void:
+	node_title = "Scalar"
+	category = "Input"
+	description = "Returns a number"
+
 	set_output(0, "Value", ConceptGraphDataType.SCALAR)
 
 
@@ -18,18 +22,6 @@ func _ready() -> void:
 	_spinbox.allow_lesser = true
 	_spinbox.connect("value_changed", self, "_on_value_changed")
 	add_child(_spinbox)
-
-
-func get_node_name() -> String:
-	return "Scalar"
-
-
-func get_category() -> String:
-	return "Input"
-
-
-func get_description() -> String:
-	return "Returns a number"
 
 
 func get_output(idx: int) -> float:

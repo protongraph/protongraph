@@ -8,19 +8,11 @@ extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Output"
+	category = "IO"
+	description = "The final node of any template"
+
 	set_input(0, "Node", ConceptGraphDataType.NODE)
-
-
-func get_node_name() -> String:
-	return "Output"
-
-
-func get_category() -> String:
-	return "IO"
-
-
-func get_description() -> String:
-	return "The final node of any template"
 
 
 func get_output(_index: int) -> Spatial:
@@ -29,5 +21,4 @@ func get_output(_index: int) -> Spatial:
 
 func reset() -> void:
 	.reset()
-	print("Requesting replay")
 	emit_signal("node_changed", self, true)

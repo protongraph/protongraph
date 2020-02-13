@@ -8,22 +8,14 @@ extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Create grid"
+	category = "Nodes"
+	description = "Generates a list of transforms aligned to a grid in a 3D volume"
+
 	set_input(0, "size", ConceptGraphDataType.VECTOR)
 	set_input(1, "center", ConceptGraphDataType.VECTOR)
 	set_input(2, "density", ConceptGraphDataType.SCALAR, {"step": 0.001})
 	set_output(0, "Transforms", ConceptGraphDataType.NODE)
-
-
-func get_node_name() -> String:
-	return "Create grid"
-
-
-func get_category() -> String:
-	return "Nodes"
-
-
-func get_description() -> String:
-	return "Generates a list of transforms aligned to a grid in a 3D volume"
 
 
 func _generate_output(idx: int) -> Array:

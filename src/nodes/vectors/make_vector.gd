@@ -4,22 +4,14 @@ extends ConceptNode
 
 
 func _init() -> void:
+	node_title = "Make vector"
+	category = "Vectors"
+	description = "A vector constant"
+
 	set_input(0, "x", ConceptGraphDataType.SCALAR)
 	set_input(1, "y", ConceptGraphDataType.SCALAR)
 	set_input(2, "z", ConceptGraphDataType.SCALAR)
 	set_output(0, "Vector", ConceptGraphDataType.VECTOR)
-
-
-func get_node_name() -> String:
-	return "Make vector"
-
-
-func get_category() -> String:
-	return "Vectors"
-
-
-func get_description() -> String:
-	return "A vector constant"
 
 
 func get_output(idx: int) -> Vector3:

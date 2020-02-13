@@ -44,15 +44,15 @@ func _refresh_concept_nodes_list() -> void:
 
 	var nodes = _node_library.get_list()
 	for node in nodes.values():
-		var category = node.get_category()
+		var category = node.category
 		if not categories.has(category):
 			categories[category] = _node_tree.create_item(root)
 			categories[category].set_text(0, category)
 			categories[category].set_selectable(0, false)
 
 		var item = _node_tree.create_item(categories[category])
-		item.set_text(0, node.get_node_name())
-		item.set_tooltip(0, node.get_description())
+		item.set_text(0, node.node_title)
+		item.set_tooltip(0, node.description)
 
 
 func _hide_panel() -> void:

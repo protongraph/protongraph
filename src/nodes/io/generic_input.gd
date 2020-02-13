@@ -11,6 +11,10 @@ var _input_name: LineEdit
 
 
 func _init() -> void:
+	node_title = "Generic input"
+	category = "IO"
+	description = "References a child node with the same name from the ConceptGraph"
+
 	set_output(0, "Node", ConceptGraphDataType.NODE)
 
 
@@ -20,18 +24,6 @@ func _ready() -> void:
 	_input_name.placeholder_text = "Editor node name"
 	_input_name.connect("text_changed", self, "_on_text_changed")
 	add_child(_input_name)
-
-
-func get_node_name() -> String:
-	return "Generic input"
-
-
-func get_category() -> String:
-	return "IO"
-
-
-func get_description() -> String:
-	return "References a child node with the same name from the ConceptGraph"
 
 
 func get_output(idx: int):

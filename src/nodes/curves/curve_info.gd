@@ -15,21 +15,15 @@ var _calculated = false
 
 
 func _init() -> void:
+	node_title = "Curve Info"
+	category = "Curves"
+	description = "Exposes the BoundingBox and the Center position of a curve"
+
 	set_input(0, "Curve", ConceptGraphDataType.CURVE)
 	set_output(0, "Size", ConceptGraphDataType.VECTOR)
 	set_output(1, "Center", ConceptGraphDataType.VECTOR)
 
 
-func get_node_name() -> String:
-	return "Curve Info"
-
-
-func get_description() -> String:
-	return "Exposes the BoundingBox and the Center position of a curve"
-
-
-func get_category() -> String:
-	return "Curves"
 
 
 func get_output(idx: int) -> Vector3:
