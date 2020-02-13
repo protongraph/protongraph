@@ -156,13 +156,13 @@ func is_input_connected(idx: int) -> bool:
 	return get_parent().is_node_connected_to_input(self, idx)
 
 
-func get_input(idx: int):
+func get_input(idx: int, default = null):
 	var input = get_parent().get_left_node(self, idx)
 	if input.has("node"):
 		return input["node"].get_output(input["slot"])
 
 	if has_custom_gui():
-		return null # No input source connected
+		return default # No input source connected
 
 	# If no source is connected, check if it's a base type with a value defined on the node itself
 	match _inputs[idx]["type"]:
@@ -171,7 +171,7 @@ func get_input(idx: int):
 		ConceptGraphDataType.SCALAR:
 			return _hboxes[idx].get_node("SpinBox").value
 
-	return null # Not a base type and no source connected
+	return default # Not a base type and no source connected
 
 
 func set_input(idx: int, name: String, type: int, opts: Dictionary = {}):
@@ -259,7 +259,9 @@ func _generate_default_gui() -> void:
 			# Add the optional UI elements based on the data type.
 			match _inputs[i]["type"]:
 				ConceptGraphDataType.BOOLEAN:
+					var opts = _inputs[i]["options"]
 					var checkbox = CheckBox.new()
+					checkbox.pressed = opts["value"] if opts.has("value") else false
 					checkbox.connect("toggled", self, "_on_value_changed")
 					ui_elements.append(checkbox)
 				ConceptGraphDataType.SCALAR:

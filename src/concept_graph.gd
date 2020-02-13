@@ -64,6 +64,13 @@ func generate(force_full_simulation := false) -> void:
 	for node in result:
 		_output_root.add_child(node)
 		node.set_owner(get_tree().get_edited_scene_root())
+		_set_children_owner(node)
+
+
+func _set_children_owner(node) -> void:
+	for c in node.get_children():
+		c.set_owner(get_tree().get_edited_scene_root())
+		_set_children_owner(c)
 
 
 func set_template(val) -> void:
