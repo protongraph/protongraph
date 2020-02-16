@@ -4,7 +4,7 @@ extends ConceptNodeGenericInput
 
 
 func _init() -> void:
-	node_title = "Curve Input"
+	node_title = "Curve input"
 	category = "IO"
 	description = "Expose one or multiple curves from the editor to the graph"
 

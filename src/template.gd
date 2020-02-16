@@ -210,6 +210,14 @@ func _disconnect_active_connections(node: GraphNode) -> void:
 			disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
 
 
+func _disconnect_input(node: GraphNode, idx: int) -> void:
+	var name = node.get_name()
+	for c in get_connection_list():
+		if c["to"] == name and c["to_port"] == idx:
+			disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
+			return
+
+
 func _on_node_selected(node: GraphNode) -> void:
 	_selected_node = node
 
@@ -221,10 +229,9 @@ func _on_node_changed(node: ConceptNode = null, replay_simulation := false) -> v
 
 
 func _on_connection_request(from_node: String, from_slot: int, to_node: String, to_slot: int) -> void:
-	# First check if something is already connected in the input slot
+	# Disconnect any existing connection to the input slot first
 	for c in get_connection_list():
 		if c["to"] == to_node and c["to_port"] == to_slot:
-			# If there is, disconnect it first. Only one connection for each input.
 			disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
 
 	connect_node(from_node, from_slot, to_node, to_slot)

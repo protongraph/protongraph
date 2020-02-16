@@ -21,7 +21,6 @@ var _output_root: Node
 
 
 func _ready() -> void:
-	print("In concept graph ready")
 	_input_root = _get_or_create_root("Input")
 	_input_root.connect("input_changed", self, "_on_input_changed")
 	_output_root = _get_or_create_root("Output")
@@ -84,6 +83,7 @@ func set_show_result(val) -> void:
 	visible in the viewport)
 	"""
 	show_result_in_editor_tree = val
+	return
 	if not _output_root:
 		_output_root = _get_or_create_root("Output")
 

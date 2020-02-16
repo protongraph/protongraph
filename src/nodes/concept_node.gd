@@ -27,8 +27,8 @@ var _resize_timer := Timer.new()
 
 
 func _ready() -> void:
-	_setup_slots()
 	_generate_default_gui()
+	_setup_slots()
 
 	_resize_timer.one_shot = true
 	_resize_timer.autostart = false
@@ -166,7 +166,7 @@ func get_input(idx: int, default = null):
 	return default # Not a base type and no source connected
 
 
-func set_input(idx: int, name: String, type: int, opts: Dictionary = {}):
+func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void:
 	_inputs[idx] = {
 		"name": name,
 		"type": type,
@@ -175,7 +175,7 @@ func set_input(idx: int, name: String, type: int, opts: Dictionary = {}):
 	}
 
 
-func set_output(idx: int, name: String, type: int, opts: Dictionary = {}):
+func set_output(idx: int, name: String, type: int, opts: Dictionary = {}) -> void:
 	_outputs[idx] = {
 		"name": name,
 		"type": type,
@@ -184,13 +184,24 @@ func set_output(idx: int, name: String, type: int, opts: Dictionary = {}):
 	}
 
 
+func remove_input(idx: int) -> bool:
+	if not _inputs.has(idx):
+		return false
+
+	if is_input_connected(idx):
+		get_parent()._disconnect_input(self, idx)
+
+	_inputs.erase(idx)
+	return true
+
+
 func _setup_slots() -> void:
 	"""
 	Based on the previous calls to set_input and set_ouput, this method will call the
 	GraphNode.set_slot method accordingly with the proper parameters. This makes it easier syntax
 	wise on the child node side and make it more readable.
 	"""
-	var slots = max(_inputs.size(), _outputs.size())
+	var slots = get_child_count() # max(_inputs.size(), _outputs.size())
 	for i in range(0, slots):
 		var has_input = false
 		var input_type = 0
@@ -223,10 +234,15 @@ func _generate_default_gui() -> void:
 	if has_custom_gui():
 		return
 
+	for box in _hboxes:
+		remove_child(box)
+		box.queue_free()
+	_hboxes = []
 	title = node_title
 	resizable = false
 	show_close = true
-	size_flags_horizontal = SIZE_SHRINK_CENTER
+	rect_min_size = Vector2(0.0, 0.0)
+	rect_size = Vector2(0.0, 0.0)
 
 	# TODO : Some refactoring would be nice
 	var slots = max(_inputs.size(), _outputs.size())
@@ -290,6 +306,8 @@ func _generate_default_gui() -> void:
 		# Make sure it appears in the editor and store along the other Hboxes
 		add_child(hbox)
 		_hboxes.append(hbox)
+	hide()
+	show()
 
 
 func _generate_output(idx: int):
@@ -338,7 +356,10 @@ func _on_connection_changed() -> void:
 		for ui in _hboxes[i].get_children():
 			if not ui is Label:
 				ui.visible = visible
+	hide()
+	show()
 
 
 func _on_value_changed(_value: float) -> void:
 	emit_signal("node_changed", self, true)
+

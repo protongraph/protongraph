@@ -19,6 +19,9 @@ func get_output(idx: int) -> Spatial:
 	var offset = get_input(1)
 	var negative = get_input(2)
 
+	if not nodes is Array:
+		nodes = [nodes]
+
 	if negative:
 		offset *= -1
 
