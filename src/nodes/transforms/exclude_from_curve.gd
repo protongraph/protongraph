@@ -29,11 +29,16 @@ func get_output(idx: int) -> Array:
 
 	var polygons = ConceptGraphCurveUtil.make_polygons_path(curves)
 
+
 	for node in nodes:
 		var point = Vector2(node.transform.origin.x, node.transform.origin.z)
 		var inside = false
-		for polygon in polygons:
-			if polygon.is_point_inside(point):
+
+		for i in range(curves.size()):
+			var polygon = polygons[i]
+			var path = curves[i]
+			var offset = Vector2(path.translation.x, path.translation.z)
+			if polygon.is_point_inside(point - offset):
 				inside = true
 
 		if invert:

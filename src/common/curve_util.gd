@@ -7,9 +7,10 @@ class_name ConceptGraphCurveUtil
 extends Node
 
 
-static func make_polygons_path(curves: Array, resolution: float = 1.0) -> Array:
+static func make_polygons_path(paths: Array, resolution: float = 1.0) -> Array:
 	var result = []
-	for curve in curves:
+	for path in paths:
+		var curve = path.curve
 		var connections = PoolIntArray()
 		var polygon_points = PoolVector2Array()
 		var polygon = PolygonPathFinder.new()
@@ -40,9 +41,10 @@ static func make_polygons_path(curves: Array, resolution: float = 1.0) -> Array:
 
 
 # TODO : fix duplicate code with the above function
-static func make_polygons_points(curves: Array, resolution: float = 1.0) -> Array:
+static func make_polygons_points(paths: Array, resolution: float = 1.0) -> Array:
 	var result = []
-	for curve in curves:
+	for path in paths:
+		var curve = path.curve
 		var polygon_points = PoolVector2Array()
 
 		var length = curve.get_baked_length()
@@ -52,7 +54,7 @@ static func make_polygons_points(curves: Array, resolution: float = 1.0) -> Arra
 			continue
 
 		for i in range(steps):
-			var coords_3d = curve.interpolate_baked((i/(steps-2)) * length)
+			var coords_3d = curve.interpolate_baked((i / (steps-2)) * length)
 			var coords = Vector2(coords_3d.x, coords_3d.z)
 			polygon_points.append(coords)
 

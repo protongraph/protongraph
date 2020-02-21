@@ -20,9 +20,9 @@ func get_output(idx: int) -> Array:
 		return curves
 
 	if input is Path:
-		curves.append(input.curve)
+		curves.append(input)
 	for c in input.get_children():
 		if c is Path:
-			curves.append(c.curve)
+			curves.append(c)
 
 	return curves

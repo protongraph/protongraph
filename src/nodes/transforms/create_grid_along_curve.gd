@@ -14,9 +14,10 @@ func _init() -> void:
 	description = "Create transforms along a curve"
 
 	set_input(0, "Curve", ConceptGraphDataType.CURVE)
-	set_input(1, "Density", ConceptGraphDataType.SCALAR, {"step": 0.001})
-	set_input(2, "Height", ConceptGraphDataType.SCALAR)
-	set_input(3, "Thickness", ConceptGraphDataType.SCALAR)
+	set_input(1, "Height", ConceptGraphDataType.SCALAR)
+	set_input(2, "Density x", ConceptGraphDataType.SCALAR, {"step": 0.001})
+	set_input(3, "Density y", ConceptGraphDataType.SCALAR, {"step": 0.001})
+	set_input(4, "Thickness", ConceptGraphDataType.SCALAR)
 	set_output(0, "Transforms", ConceptGraphDataType.NODE)
 
 
@@ -29,23 +30,26 @@ func _generate_output(idx: int) -> Array:
 	if not curves is Array:
 		curves = [curves]
 
-	var density: float = get_input(1, 1.0)
-	var height: float = get_input(2, 1.0)
-	var thickness: float = get_input(3, 1.0)
+	var height: float = get_input(1, 1.0)
+	var density_x: float = get_input(2, 1.0)
+	var density_y: float = get_input(3, 1.0)
+	var thickness: float = get_input(4, 1.0)
 
-	for curve in curves:
+
+	for path in curves:
+		var curve = path.curve
 		var length: float = curve.get_baked_length()
-		var steps := max(1, int(round(length / density)))
-		var instances_in_column := max(1, int(round(height / density)))
+		var steps := max(1, int(round(length * density_x)))
+		var instances_in_column := max(1, int(round(height * density_y)))
 
 		for i in range(steps):
 			var offset := i * (length / steps)
-			var pos: Vector3 = curve.interpolate_baked(offset)
+			var pos: Vector3 = curve.interpolate_baked(offset) + path.translation
 
 			for j in range(instances_in_column):
 				var node = Position3D.new()
 				node.transform.origin = pos
-				node.transform.origin.y = j * (height / instances_in_column)
+				node.transform.origin.y += j * (height / instances_in_column)
 				result.append(node)
 
 	return result

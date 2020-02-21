@@ -24,7 +24,7 @@ const COLORS = {
 	VECTOR: Color("d67ded"),
 	NODE: Color.crimson,
 	CURVE: Color.yellowgreen,
-	NOISE: Color.darkcyan,
+	NOISE: Color.ivory,
 	MATERIAL: Color.darkmagenta,
 	MESH: Color.chocolate
 }

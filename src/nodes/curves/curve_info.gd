@@ -24,21 +24,19 @@ func _init() -> void:
 	set_output(1, "Center", ConceptGraphDataType.VECTOR)
 
 
-
-
 func get_output(idx: int) -> Vector3:
-	var curve = get_input(0)
-	if not curve:
+	var paths = get_input(0)
+	if not paths:
 		return Vector3.ZERO
 
-	if curve is Array:
-		if curve.size() >= 1:
-			curve = curve[0]
-		else:
-			return Vector3.ZERO # Empty array
+	if not paths is Array:
+		paths = [paths]
+
+	if paths.size() == 0:
+		return Vector3.ZERO # Empty array
 
 	if not _calculated:
-		_calculate_info(curve)
+		_calculate_info(paths)
 
 	match idx:
 		0:
@@ -49,37 +47,40 @@ func get_output(idx: int) -> Vector3:
 	return Vector3.ZERO
 
 
-func _calculate_info(curve: Curve3D) -> void:
+func _calculate_info(paths: Array) -> void:
 	var _min: Vector3
 	var _max: Vector3
 
-	var length = curve.get_baked_length()
-	var steps = round(length / _resolution)
+	for i in range(paths.size()):
+		var path = paths[i]
+		var curve = path.curve
+		var length = curve.get_baked_length()
+		var steps = round(length / _resolution)
 
-	if steps == 0:
-		return
+		if steps == 0:
+			return
 
-	for i in range(steps):
-		# Get a point on the curve
-		var coords = curve.interpolate_baked((i/(steps-2)) * length)
+		for j in range(steps):
+			# Get a point on the curve
+			var coords = curve.interpolate_baked((j / (steps-2)) * length) + path.translation
 
-		# Check for bounds
-		if i == 0:
-			_min = coords
-			_max = coords
-		else:
-			if coords.x > _max.x:
-				_max.x = coords.x
-			if coords.x < _min.x:
-				_min.x = coords.x
-			if coords.y > _max.y:
-				_max.y = coords.y
-			if coords.y < _min.y:
-				_min.y = coords.y
-			if coords.z > _max.z:
-				_max.z = coords.z
-			if coords.z < _min.z:
-				_min.z = coords.z
+			# Check for bounds
+			if i == 0 and j == 0:
+				_min = coords
+				_max = coords
+			else:
+				if coords.x > _max.x:
+					_max.x = coords.x
+				if coords.x < _min.x:
+					_min.x = coords.x
+				if coords.y > _max.y:
+					_max.y = coords.y
+				if coords.y < _min.y:
+					_min.y = coords.y
+				if coords.z > _max.z:
+					_max.z = coords.z
+				if coords.z < _min.z:
+					_min.z = coords.z
 
 	_size = Vector3(_max.x - _min.x, _max.y - _min.y, _max.z - _min.z)
 	_center = Vector3((_min.x + _max.x) / 2, (_min.y + _max.y) / 2, (_min.z + _max.z) / 2)

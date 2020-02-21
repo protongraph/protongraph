@@ -20,26 +20,23 @@ func _init() -> void:
 
 func _generate_output(idx: int) -> Array:
 	var result = []
-	var size: Vector3 = get_input(0)
-	var center: Vector3 = get_input(1)
-	var density: float = get_input(2)
-
-	# Assign a default value if the inputs are not connected
-	if not size:
-		size = Vector3.ONE
-	if not center:
-		center = Vector3.ZERO
-	if not density:
-		density = 1.0
+	var size: Vector3 = get_input(0, Vector3.ONE)
+	var center: Vector3 = get_input(1, Vector3.ZERO)
+	var density: float = get_input(2, 1.0)
 
 	var steps := size * density
-	for i in range(steps.x + 1.0):
-		for j in range(steps.y + 1.0):
-			for k in range(steps.z + 1.0):
+	# Make sure there's no zero value
+	steps.x = max(1.0, steps.x)
+	steps.y = max(1.0, steps.y)
+	steps.z = max(1.0, steps.z)
+
+	for i in range(steps.x):
+		for j in range(steps.y):
+			for k in range(steps.z):
 				var p = Position3D.new()
-				p.transform.origin.x = (size.x / steps.x) * i
-				p.transform.origin.y = (size.y / steps.y) * j
-				p.transform.origin.z = (size.z / steps.z) * k
+				p.transform.origin.x = float(size.x / steps.x) * i
+				p.transform.origin.y = float(size.y / steps.y) * j
+				p.transform.origin.z = float(size.z / steps.z) * k
 				p.transform.origin += (size / -2.0) + center
 				result.append(p)
 	return result

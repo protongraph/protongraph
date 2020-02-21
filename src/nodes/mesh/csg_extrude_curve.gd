@@ -36,9 +36,12 @@ func get_output(idx: int) -> Array:
 
 	var polygons = ConceptGraphCurveUtil.make_polygons_points(curves, resolution)
 
-	for polygon in polygons:
+	for i in range(curves.size()):
+		var polygon = polygons[i]
+		var path = curves[i]
 		var mesh = CSGPolygon.new()
 		mesh.rotation = Vector3(PI/2.0, 0.0, 0.0) # TODO : link it to the curve projection axis
+		mesh.translation = path.translation
 		mesh.polygon = polygon
 		mesh.depth = depth
 		mesh.smooth_faces = smooth
