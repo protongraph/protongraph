@@ -2,6 +2,12 @@
 
 An addon for node based content creation directly from the Godot engine editor.
 
+The graph node can be as simple ![image](https://user-images.githubusercontent.com/52043844/75927366-850e3080-5e6c-11ea-8596-ea8e1450c9e2.png)
+
+... or as complicated as you want ![image](https://user-images.githubusercontent.com/52043844/75927502-c69edb80-5e6c-11ea-9f40-21c1f9684786.png)
+
+[See it in action here!](https://streamable.com/1gke2) (Assets not included)
+
 ## Status
 
 This addon is still a **work in progress**. Until it hits version 1.0, it is not
