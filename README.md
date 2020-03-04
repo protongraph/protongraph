@@ -33,31 +33,31 @@ this addon will be compatible with later versions.
 
 #### Current plans
 
-Right now my focus is on user experience and stability. I'm working on this tool
++ Right now my focus is on user experience and stability. I'm working on this tool
 while also using it for my own game so I can actually see what's missing and
 what part of the workflow could be improved for real world use.
-
-New features will be added as I need them when the overall usability will be
++ New features will be added as I need them when the overall usability will be
 good enough for most people.
-
-At some point, I'd like to add some sort of control flow (conditional and loops)
++ At some point, I'd like to add some sort of control flow (conditional and loops)
 but it likely won't be implemented anytime soon.
++ Comment nodes, groups and other QoL features are planned not are not the top
+priority at the moment
 
 
 ## How does it work?
 
 There's two main components to this addon:
-+ The ConceptGraph node that you add to your editor
-+ The Templates that holds the node graphs
++ The **ConceptGraph** node that you add to your editor
++ The **Templates** that holds the node graphs
 
 Templates are attached to the ConceptGraph nodes. They are saved to disk and can
-be shared accross many different nodes, this way you can define the generation
-rules once and change the parameters on the individual nodes directly.
+be shared accross many different nodes, this way you can define the node graph
+once and change the parameters on the individual nodes directly.
 
 
 ## Quick start
 
-+ Create a **ConceptGrap**h node in the editor tree. It will automatically add
++ Create a **ConceptGraph** node in the editor tree. It will automatically add
 two child nodes, Input and Output
 + Select the ConceptGraph node, a new button "Concept Graph Editor" will appear
 on the bottom dock. Click it to access the editor.
