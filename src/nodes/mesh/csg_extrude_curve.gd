@@ -45,6 +45,7 @@ func get_output(idx: int) -> Array:
 		mesh.polygon = polygon
 		mesh.depth = depth
 		mesh.smooth_faces = smooth
+		mesh.use_collision = use_collision
 		result.append(mesh)
 
 	return result

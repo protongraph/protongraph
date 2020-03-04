@@ -19,5 +19,11 @@ func _ready() -> void:
 			c.connect("input_changed", self, "_on_input_changed")
 
 
+func add_child(node, legible_unique_name = false) -> void:
+	.add_child(node, legible_unique_name)
+	if node.has_user_signal("input_changed"):
+		node.connect("input_changed", self, "_on_input_changed")
+
+
 func _on_input_changed(node) -> void:
 	emit_signal("input_changed", node)

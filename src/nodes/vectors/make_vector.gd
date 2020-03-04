@@ -8,9 +8,9 @@ func _init() -> void:
 	category = "Vectors"
 	description = "A vector constant"
 
-	set_input(0, "x", ConceptGraphDataType.SCALAR)
-	set_input(1, "y", ConceptGraphDataType.SCALAR)
-	set_input(2, "z", ConceptGraphDataType.SCALAR)
+	set_input(0, "x", ConceptGraphDataType.SCALAR, {"allow_lesser": true})
+	set_input(1, "y", ConceptGraphDataType.SCALAR, {"allow_lesser": true})
+	set_input(2, "z", ConceptGraphDataType.SCALAR, {"allow_lesser": true})
 	set_output(0, "Vector", ConceptGraphDataType.VECTOR)
 
 

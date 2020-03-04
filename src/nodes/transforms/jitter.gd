@@ -10,7 +10,7 @@ func _init() -> void:
 
 	set_input(0, "Input", ConceptGraphDataType.NODE)
 	set_input(1, "Amount", ConceptGraphDataType.VECTOR)
-	set_input(2, "Seed", ConceptGraphDataType.SCALAR)
+	set_input(2, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
 	set_output(0, " ", ConceptGraphDataType.NODE)
 
 

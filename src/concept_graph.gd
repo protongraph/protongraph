@@ -14,6 +14,8 @@ signal template_path_changed
 
 export(String, FILE, "*.cgraph") var template := "" setget set_template
 export var show_result_in_editor_tree := false setget set_show_result
+export var paused := false
+
 
 var _template: ConceptGraphTemplate
 var _input_root: Node
@@ -21,11 +23,12 @@ var _output_root: Node
 
 
 func _ready() -> void:
-	_input_root = _get_or_create_root("Input")
-	_input_root.connect("input_changed", self, "_on_input_changed")
-	_output_root = _get_or_create_root("Output")
-	reload_template()
-	generate()
+	if Engine.is_editor_hint():
+		_input_root = _get_or_create_root("Input")
+		_input_root.connect("input_changed", self, "_on_input_changed")
+		_output_root = _get_or_create_root("Output")
+		reload_template()
+		generate()
 
 
 func reload_template() -> void:
@@ -49,6 +52,10 @@ func generate(force_full_simulation := false) -> void:
 	Ask the Template object to go through the node graph and process each nodes until the final
 	result is complete.
 	"""
+
+	if not Engine.is_editor_hint() or paused:
+		return
+
 	clear_output()
 	if force_full_simulation:
 		_template.clear_simulation_cache()
