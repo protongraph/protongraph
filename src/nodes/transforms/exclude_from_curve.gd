@@ -1,10 +1,9 @@
+tool
+extends ConceptNode
+
 """
 Discard all the nodes inside (or outside) the provided curves
 """
-
-tool
-class_name ConceptNodeExcludeFromCurve
-extends ConceptNode
 
 
 func _init() -> void:

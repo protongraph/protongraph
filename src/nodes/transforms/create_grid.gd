@@ -1,10 +1,9 @@
+tool
+extends ConceptNode
+
 """
 Generates a list of transforms aligned to a grid in a 3D volume
 """
-
-tool
-class_name ConceptNodeTransformGrid
-extends ConceptNode
 
 
 func _init() -> void:

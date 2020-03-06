@@ -6,7 +6,7 @@ time the associated graph is updated.
 """
 
 tool
-class_name ConceptGraph
+class_name ConceptGraph, "../../icons/graph.svg"
 extends Spatial
 
 
@@ -47,12 +47,11 @@ func clear_output() -> void:
 		c.queue_free()
 
 
+"""
+Ask the Template object to go through the node graph and process each nodes until the final
+result is complete.
+"""
 func generate(force_full_simulation := false) -> void:
-	"""
-	Ask the Template object to go through the node graph and process each nodes until the final
-	result is complete.
-	"""
-
 	if not Engine.is_editor_hint() or paused:
 		return
 
@@ -84,11 +83,11 @@ func set_template(val) -> void:
 	emit_signal("template_path_changed", val)	# This signal is only useful for the editor view
 
 
+"""
+Decides whether to show the resulting nodes in the editor tree or keep it hidden (but still
+visible in the viewport)
+"""
 func set_show_result(val) -> void:
-	"""
-	Decides whether to show the resulting nodes in the editor tree or keep it hidden (but still
-	visible in the viewport)
-	"""
 	show_result_in_editor_tree = val
 	return
 	if not _output_root:

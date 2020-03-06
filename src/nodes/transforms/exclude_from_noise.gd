@@ -1,10 +1,9 @@
+tool
+extends ConceptNode
+
 """
 Discard all the nodes if their corresponding noise value is above a certain threshold
 """
-
-tool
-class_name ConceptNodeExcludeTransformsFromNoise
-extends ConceptNode
 
 
 var _resolution := 0.2 #tmp

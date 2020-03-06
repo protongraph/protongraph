@@ -1,10 +1,10 @@
+tool
+class_name ConceptGraphCurveUtil
+extends Reference
+
 """
 Utility tools for curves' related operations.
 """
-
-tool
-class_name ConceptGraphCurveUtil
-extends Node
 
 
 static func make_polygons_path(paths: Array, resolution: float = 1.0) -> Array:

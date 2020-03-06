@@ -16,28 +16,19 @@ var _graph_editor_view: ConceptGraphEditorView
 var _panel_button: Button
 var _editor_selection: EditorSelection
 var _edited_node: ConceptGraph
+var _node_library: ConceptNodeLibrary
 
 
 func _enter_tree() -> void:
-	_register_custom_types()
 	_add_custom_editor_view()
 	_connect_editor_signals()
+	_setup_node_library()
 
 
 func _exit_tree() -> void:
-	_deregister_custom_types()
 	_disconnect_editor_signals()
 	_remove_custom_editor_view()
-
-
-func _register_custom_types() -> void:
-	var icon = preload("icons/network.svg")
-	var script = preload("src/concept_graph.gd")
-	add_custom_type("ConceptGraph", "Spatial", script, icon)
-
-
-func _deregister_custom_types() -> void:
-	remove_custom_type("ConceptGraph")
+	_remove_node_library()
 
 
 func _add_custom_editor_view() -> void:
@@ -63,10 +54,23 @@ func _disconnect_editor_signals() -> void:
 		_editor_selection.disconnect("selection_changed", self, "_on_selection_changed")
 
 
+func _setup_node_library() -> void:
+	_node_library = ConceptNodeLibrary.new()
+	_node_library.name = "ConceptNodeLibrary"
+	get_tree().root.call_deferred("add_child", _node_library)
+
+
+func _remove_node_library() -> void:
+	if _node_library:
+		get_tree().root.remove_child(_node_library)
+		_node_library.queue_free()
+		_node_library = null
+
+
+"""
+Only display the ConceptGraphEditor button if the currently selected node is of type ConceptGraph
+"""
 func _on_selection_changed():
-	"""
-	Only display the ConceptGraphEditor button if the currently selected node is of type ConceptGraph
-	"""
 	_edited_node = null
 	_panel_button.visible = false
 	_panel_button.pressed = false

@@ -3,7 +3,6 @@ This node marks the end of every ConceptNodeNetwork. Only one per template.
 """
 
 tool
-class_name ConceptNodeOutput
 extends ConceptNode
 
 

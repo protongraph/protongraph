@@ -1,11 +1,11 @@
 tool
-extends Node
-
 class_name ConceptNodeLibrary
+extends Node
 
 """
 This script parses the node folder to retrieve a list of all the available ConceptNodes
 """
+
 
 var _nodes: Dictionary
 
@@ -16,16 +16,23 @@ func get_list() -> Dictionary:
 	return _nodes
 
 
+func create_node(type: String) -> ConceptNode:
+	if _nodes.has(type):
+		return _nodes[type].duplicate()
+	return null
+
+
 func refresh_list() -> void:
 	_nodes = Dictionary() # Do we manually free() the stored nodes or is it done automatically ?
 	_find_all_nodes("res://addons/concept_graph/src/nodes/") # TODO: Find why relative paths doesn't work
+	#  Check if GLobalize path could solve the issue above
+	print("globalize path : ", ProjectSettings.globalize_path("./"))
 
 
+"""
+Recursively search all the scripts that inherits from ConceptNode and store them in the dictionnary
+"""
 func _find_all_nodes(path) -> void:
-	"""
-	Recursively search for all the scripts that inherits the ConceptNode base class and store
-	them in the _nodes variable
-	"""
 	var dir = Directory.new()
 	dir.open(path)
 	dir.list_dir_begin(true, true)
@@ -54,5 +61,8 @@ func _find_all_nodes(path) -> void:
 		if node.has_custom_gui():
 			node = load(path_root + file.replace(".gd", ".tscn")).instance()
 
-		_nodes[name] = node
+		if _nodes.has(name):
+			print("Warning: Node title ", name, " has duplicates ", full_path)
+		else:
+			_nodes[name] = node
 	dir.list_dir_end()

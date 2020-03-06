@@ -4,7 +4,6 @@ each points
 """
 
 tool
-class_name ConceptNodeCurveInfo
 extends ConceptNode
 
 

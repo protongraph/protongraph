@@ -3,7 +3,8 @@
 [ext_resource path="res://addons/concept_graph/gui/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/concept_graph/gui/add_node_panel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/concept_graph/gui/create_template.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/concept_graph/src/template.gd" type="Script" id=4]
+[ext_resource path="res://addons/concept_graph/src/core/template.gd" type="Script" id=4]
+
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0

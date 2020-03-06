@@ -1,5 +1,4 @@
 tool
-class_name ConceptNodeSmoothCurve
 extends ConceptNode
 
 

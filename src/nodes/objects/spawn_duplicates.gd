@@ -1,5 +1,4 @@
 tool
-class_name ConceptNodeSpawnDuplicates
 extends ConceptNode
 
 
@@ -11,7 +10,6 @@ func _init() -> void:
 	set_input(0, "Source", ConceptGraphDataType.NODE)
 	set_input(1, "Transforms", ConceptGraphDataType.NODE)
 	set_output(0, "Duplicates", ConceptGraphDataType.NODE)
-
 
 
 func get_output(idx: int) -> Array:

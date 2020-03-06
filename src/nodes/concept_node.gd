@@ -1,11 +1,11 @@
+tool
+class_name ConceptNode
+extends GraphNode
+
 """
 The base class for every nodes you can add in the Graph editor. It provides a basic UI framework
 for nodes with simple parameters as well as a caching system and other utilities.
 """
-
-tool
-class_name ConceptNode
-extends GraphNode
 
 
 signal delete_node
@@ -17,7 +17,6 @@ var edit_mode := false
 var node_title := "ConceptNode"
 var category := "No category"
 var description := "A brief description of the node functionality"
-
 
 var _inputs := {}
 var _outputs := {}
@@ -41,23 +40,23 @@ func has_custom_gui() -> bool:
 	return false
 
 
+"""
+Query the parent ConceptGraph node in the editor and returns the corresponding input node if it
+exists
+"""
 func get_editor_input(name: String) -> Node: # Avoid cyclic references
-	"""
-	Query the parent ConceptGraph node in the editor and returns the corresponding input node if it
-	exists
-	"""
 	if edit_mode:
 		return null
 	return get_parent().get_parent().get_input(name)  # TODO : Bad, replace this with something less error prone
 
 
+"""
+Returns what the node generates for a give slot
+This method ensure the output is not calculated more than one time per run. It's useful if the
+output node is connected to more than one node. It ensure the results are the same and save
+some performance
+"""
 func get_output(idx: int):
-	"""
-	Returns what the node generates for a give slot
-	This method ensure the output is not calculated more than one time per run. It's useful if the
-	output node is connected to more than one node. It ensure the results are the same and save
-	some performance
-	"""
 	if _cache.has(idx):
 		return _cache[idx]
 	_cache[idx] = _generate_output(idx)
@@ -70,10 +69,10 @@ func clear_cache() -> void:
 	_cache = {}
 
 
+"""
+Clears the cache and the cache of every single nodes right to this one.
+"""
 func reset() -> void:
-	"""
-	Clears the cache and the cache of every single nodes right to this one.
-	"""
 	clear_cache()
 	for node in get_parent().get_all_right_nodes(self):
 		node.reset()
@@ -126,21 +125,21 @@ func restore_editor_data(data: Dictionary) -> void:
 					hbox.get_node("SpinBox").value = value
 
 
+"""
+Because we're saving the tree to a json file, we need each node to explicitely specify the data
+to save. It's also the node responsability to restore it when we load the file. Most nodes
+won't need this but it could be useful for nodes that allows the user to type in raw values
+directly if nothing is connected to a slot.
+"""
 func export_custom_data() -> Dictionary:
-	"""
-	Because we're saving the tree to a json file, we need each node to explicitely specify the data
-	to save. It's also the node responsability to restore it when we load the file. Most nodes
-	won't need this but it could be useful for nodes that allows the user to type in raw values
-	directly if nothing is connected to a slot.
-	"""
 	return {}
 
 
+"""
+This method get exactly what it exported from the export_custom_data method. Use it to manually
+restore the previous node state.
+"""
 func restore_custom_data(data: Dictionary) -> void:
-	"""
-	This method get exactly what it exported from the export_custom_data method. Use it to manually
-	restore the previous node state.
-	"""
 	pass
 
 
@@ -195,12 +194,12 @@ func remove_input(idx: int) -> bool:
 	return true
 
 
+"""
+Based on the previous calls to set_input and set_ouput, this method will call the
+GraphNode.set_slot method accordingly with the proper parameters. This makes it easier syntax
+wise on the child node side and make it more readable.
+"""
 func _setup_slots() -> void:
-	"""
-	Based on the previous calls to set_input and set_ouput, this method will call the
-	GraphNode.set_slot method accordingly with the proper parameters. This makes it easier syntax
-	wise on the child node side and make it more readable.
-	"""
 	var slots = get_child_count() # max(_inputs.size(), _outputs.size())
 	for i in range(0, slots):
 		var has_input = false
@@ -222,15 +221,15 @@ func _setup_slots() -> void:
 		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color)
 
 
+"""
+If the child node does not define a custom UI itself, this function will generate a default UI
+based on the parameters provided with set_input and set_ouput. Each slots will have a Label
+and their name attached.
+The input slots will have additional UI elements based on their type.
+Scalars input gets a spinbox that's hidden when something is connected to the slot.
+Values stored in the spinboxes are automatically exported and restored.
+"""
 func _generate_default_gui() -> void:
-	"""
-	If the child node does not define a custom UI itself, this function will generate a default UI
-	based on the parameters provided with set_input and set_ouput. Each slots will have a Label
-	and their name attached.
-	The input slots will have additional UI elements based on their type.
-	Scalars input gets a spinbox that's hidden when something is connected to the slot.
-	Values stored in the spinboxes are automatically exported and restored.
-	"""
 	if has_custom_gui():
 		return
 
@@ -310,18 +309,18 @@ func _generate_default_gui() -> void:
 	show()
 
 
+"""
+Overide this function in the derived classes to return something usable
+"""
 func _generate_output(idx: int):
-	"""
-	Overide this function in the derived classes to return something usable
-	"""
 	return null
 
 
+"""
+Overide this function to customize how the output cache should be cleared. If you have memory
+to free or anything else, that's where you should define it.
+"""
 func _clear_cache():
-	"""
-	Overide this function to customize how the output cache should be cleared. If you have memory
-	to free or anything else, that's where you should define it.
-	"""
 	pass
 
 
@@ -345,11 +344,11 @@ func _on_close_request() -> void:
 	emit_signal("delete_node", self)
 
 
+"""
+When the nodes connections changes, this method check for all the input slots and hide
+everything that's not a label if something is connected to the associated slot.
+"""
 func _on_connection_changed() -> void:
-	"""
-	When the nodes connections changes, this method check for all the input slots and hide
-	everything that's not a label if something is connected to the associated slot.
-	"""
 	var slots = _hboxes.size()
 	for i in range(0, slots):
 		var visible = !is_input_connected(i)

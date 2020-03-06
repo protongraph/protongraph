@@ -1,10 +1,9 @@
+tool
+extends ConceptNode
+
 """
 Instanciate a node in the graph
 """
-
-tool
-class_name ConceptNodeInstancer
-extends ConceptNode
 
 
 var _node_label: LineEdit

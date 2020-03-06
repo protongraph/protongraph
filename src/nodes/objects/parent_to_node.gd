@@ -1,11 +1,10 @@
+tool
+extends ConceptNode
+
 """
 Takes a node or a node array and parent it to the selected node. Returns the parent.
 TODO : Move the dynamic slot system to the ConceptNode
 """
-
-tool
-class_name ConceptNodeParentToNode
-extends ConceptNode
 
 
 var _btn_container: HBoxContainer

@@ -1,5 +1,4 @@
 tool
-class_name ConceptNodeCsgExtrudeCurve
 extends ConceptNode
 
 

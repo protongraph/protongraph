@@ -1,11 +1,10 @@
+tool
+extends ConceptNode
+
 """
 TODO: It would be nice to have a WrapAroundCurve instead, so we could use a regular MakeGrid
 (or anything else) and plug the output to a WrapAroundCurve, but I have no idea how to do that
 """
-
-tool
-class_name ConceptNodeCreateGridAlongCurve
-extends ConceptNode
 
 
 func _init() -> void:
