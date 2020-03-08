@@ -11,8 +11,7 @@ wish, but if you create new nodes that could be helpful to the community, please
 pull request at http://github.com/hungryproton/concept_graph
 """
 
-
-var _graph_editor_view: ConceptGraphEditorView
+var _graph_editor_view
 var _panel_button: Button
 var _editor_selection: EditorSelection
 var _edited_node: ConceptGraph
@@ -32,7 +31,7 @@ func _exit_tree() -> void:
 
 
 func _add_custom_editor_view() -> void:
-	_graph_editor_view = preload("gui/editor_view.tscn").instance()
+	_graph_editor_view = preload("src/gui/editor_view.tscn").instance()
 	_panel_button = add_control_to_bottom_panel(_graph_editor_view, "Concept Graph Editor")
 	_panel_button.visible = false
 
@@ -55,12 +54,15 @@ func _disconnect_editor_signals() -> void:
 
 
 func _setup_node_library() -> void:
+	if _node_library:
+		return	# TMP during development
 	_node_library = ConceptNodeLibrary.new()
 	_node_library.name = "ConceptNodeLibrary"
 	get_tree().root.call_deferred("add_child", _node_library)
 
 
 func _remove_node_library() -> void:
+	return # TMP during development
 	if _node_library:
 		get_tree().root.remove_child(_node_library)
 		_node_library.queue_free()
@@ -74,7 +76,7 @@ func _on_selection_changed():
 	_edited_node = null
 	_panel_button.visible = false
 	_panel_button.pressed = false
-	_graph_editor_view.stop_node_editing()
+	_graph_editor_view.disable_template_editor()
 
 	_editor_selection = get_editor_interface().get_selection()
 	var selected_nodes = _editor_selection.get_selected_nodes()
@@ -83,5 +85,5 @@ func _on_selection_changed():
 		if node is ConceptGraph:
 			_edited_node = node
 			_panel_button.visible = true
-			_graph_editor_view.display_graph_for(_edited_node)
+			_graph_editor_view.enable_template_editor(_edited_node)
 			return

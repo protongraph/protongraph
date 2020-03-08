@@ -1,7 +1,6 @@
 tool
+class_name ConceptGraphNodeDialog
 extends WindowDialog
-
-class_name ConceptGraphNodePanel
 
 """
 Select and add nodes to the graph from this panel. This class doesn't actually modify the graph,
@@ -49,10 +48,12 @@ func _refresh_concept_nodes_list() -> void:
 			categories[category] = _node_tree.create_item(root)
 			categories[category].set_text(0, category)
 			categories[category].set_selectable(0, false)
+			categories[category].set_collapsed(true)
 
 		var item = _node_tree.create_item(categories[category])
 		item.set_text(0, node.node_title)
 		item.set_tooltip(0, node.description)
+
 
 
 func _hide_panel() -> void:
@@ -83,4 +84,3 @@ func _on_item_activated() -> void:
 
 func _on_create_button_pressed() -> void:
 	_on_item_activated()
-

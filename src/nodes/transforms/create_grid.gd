@@ -25,9 +25,9 @@ func _generate_output(idx: int) -> Array:
 
 	var steps := size * density
 	# Make sure there's no zero value
-	steps.x = max(1.0, steps.x)
-	steps.y = max(1.0, steps.y)
-	steps.z = max(1.0, steps.z)
+	steps.x = max(1, steps.x)
+	steps.y = max(1, steps.y)
+	steps.z = max(1, steps.z)
 
 	for i in range(steps.x):
 		for j in range(steps.y):

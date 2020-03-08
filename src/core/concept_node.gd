@@ -12,8 +12,6 @@ signal delete_node
 signal node_changed
 signal connection_changed
 
-var concept_graph
-var edit_mode := false
 var node_title := "ConceptNode"
 var category := "No category"
 var description := "A brief description of the node functionality"
@@ -23,9 +21,12 @@ var _outputs := {}
 var _cache := {}
 var _hboxes := []
 var _resize_timer := Timer.new()
+var initialized := false
 
+func _enter_tree() -> void:
+	if initialized:
+		return
 
-func _ready() -> void:
 	_generate_default_gui()
 	_setup_slots()
 
@@ -34,6 +35,7 @@ func _ready() -> void:
 	add_child(_resize_timer)
 
 	_connect_signals()
+	initialized = true
 
 
 func has_custom_gui() -> bool:
@@ -44,10 +46,8 @@ func has_custom_gui() -> bool:
 Query the parent ConceptGraph node in the editor and returns the corresponding input node if it
 exists
 """
-func get_editor_input(name: String) -> Node: # Avoid cyclic references
-	if edit_mode:
-		return null
-	return get_parent().get_parent().get_input(name)  # TODO : Bad, replace this with something less error prone
+func get_editor_input(name: String) -> Node:
+	return get_parent().concept_graph.get_input(name)
 
 
 """
@@ -57,9 +57,19 @@ output node is connected to more than one node. It ensure the results are the sa
 some performance
 """
 func get_output(idx: int):
-	if _cache.has(idx):
-		return _cache[idx]
-	_cache[idx] = _generate_output(idx)
+	if not _cache.has(idx):
+		_cache[idx] = _generate_output(idx)
+
+	if _cache[idx] is Node:
+		return _cache[idx].duplicate(7)
+
+	if _cache[idx] is Array and _cache[idx].size() > 0:
+		if _cache[idx][0] is Node:
+			var result = []
+			for i in range(_cache[idx].size()):
+				result.append(_cache[idx][i].duplicate(7))
+			return result
+
 	return _cache[idx]
 
 
@@ -96,6 +106,8 @@ func export_editor_data() -> Dictionary:
 				data["slots"][i] = c.pressed
 			if c is SpinBox:
 				data["slots"][i] = c.value
+			if c is LineEdit:
+				data["slots"][i] = c.text
 
 	return data
 
@@ -123,6 +135,8 @@ func restore_editor_data(data: Dictionary) -> void:
 					hbox.get_node("CheckBox").pressed = value
 				ConceptGraphDataType.SCALAR:
 					hbox.get_node("SpinBox").value = value
+				ConceptGraphDataType.STRING:
+					hbox.get_node("LineEdit").text = value
 
 
 """
@@ -161,6 +175,8 @@ func get_input(idx: int, default = null):
 			return _hboxes[idx].get_node("CheckBox").pressed
 		ConceptGraphDataType.SCALAR:
 			return _hboxes[idx].get_node("SpinBox").value
+		ConceptGraphDataType.STRING:
+			return _hboxes[idx].get_node("LineEdit").text
 
 	return default # Not a base type and no source connected
 
@@ -268,12 +284,14 @@ func _generate_default_gui() -> void:
 				ConceptGraphDataType.BOOLEAN:
 					var opts = _inputs[i]["options"]
 					var checkbox = CheckBox.new()
+					checkbox.name = "CheckBox"
 					checkbox.pressed = opts["value"] if opts.has("value") else false
 					checkbox.connect("toggled", self, "_on_value_changed")
 					ui_elements.append(checkbox)
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
 					var spinbox = SpinBox.new()
+					spinbox.name = "SpinBox"
 					spinbox.max_value = opts["max"] if opts.has("max") else 1000
 					spinbox.min_value = opts["min"] if opts.has("min") else 0
 					spinbox.value = opts["value"] if opts.has("value") else 0
@@ -284,10 +302,14 @@ func _generate_default_gui() -> void:
 					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
 					spinbox.connect("value_changed", self, "_on_value_changed")
 					ui_elements.append(spinbox)
-				#ConceptGraphDataType.VECTOR:
-				#	var vector_input = ConceptNodeGuiVectorInput.new()
-				#	vector_input.connect("value_changed", self, "_on_value_changed")
-				#	ui_elements.append(vector_input)
+				ConceptGraphDataType.STRING:
+					var opts = _inputs[i]["options"]
+					var line_edit = LineEdit.new()
+					line_edit.name = "LineEdit"
+					line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
+					line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
+					line_edit.connect("text_changed", self, "_on_text_changed")
+					ui_elements.append(line_edit)
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel
@@ -361,4 +383,9 @@ func _on_connection_changed() -> void:
 
 func _on_value_changed(_value: float) -> void:
 	emit_signal("node_changed", self, true)
+	reset()
 
+
+func _on_text_changed(_text: String) -> void:
+	emit_signal("node_changed", self, true)
+	reset()

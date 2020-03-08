@@ -1,9 +1,9 @@
-"""
-This node marks the end of every ConceptNodeNetwork. Only one per template.
-"""
-
 tool
 extends ConceptNode
+
+"""
+This node marks the end of every ConceptNodeTemplate. Only one per template.
+"""
 
 
 func _init() -> void:
@@ -14,7 +14,7 @@ func _init() -> void:
 	set_input(0, "Node", ConceptGraphDataType.NODE)
 
 
-func get_output(_index: int) -> Spatial:
+func get_output(_index: int):
 	return get_input(0)
 
 

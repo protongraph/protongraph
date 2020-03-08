@@ -15,6 +15,7 @@ const CURVE = 4
 const NOISE = 5
 const MATERIAL = 6
 const MESH = 7
+const STRING = 8
 
 
 # Common types also used in the VisualShader editor share the same color
@@ -27,6 +28,7 @@ const COLORS = {
 	NOISE: Color.ivory,
 	MATERIAL: Color.darkmagenta,
 	MESH: Color.chocolate,
+	STRING: Color.gold,
 }
 
 

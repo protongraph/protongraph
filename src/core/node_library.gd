@@ -23,10 +23,17 @@ func create_node(type: String) -> ConceptNode:
 
 
 func refresh_list() -> void:
-	_nodes = Dictionary() # Do we manually free() the stored nodes or is it done automatically ?
-	_find_all_nodes("res://addons/concept_graph/src/nodes/") # TODO: Find why relative paths doesn't work
-	#  Check if GLobalize path could solve the issue above
-	print("globalize path : ", ProjectSettings.globalize_path("./"))
+	for node in _nodes.values():
+		node.queue_free()
+	_nodes = Dictionary()
+
+	# Current folder path points at the root project from here so we can't feed the Directory object
+	# with a relative path. Instead we get the script path and build an absolute path from there.
+	# Writing res://addons/concept_graph/src/nodes isn't an option because the end user can rename
+	# the plugin folder.
+	var script_path = get_script().get_path()
+	var nodes_dir = script_path.replace("node_library.gd", "") + "../nodes/"
+	_find_all_nodes(nodes_dir)
 
 
 """

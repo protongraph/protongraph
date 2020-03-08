@@ -1,5 +1,5 @@
 tool
-extends ConceptNodeGenericInput
+extends ConceptNode
 
 
 func _init() -> void:
@@ -7,13 +7,15 @@ func _init() -> void:
 	category = "IO"
 	description = "Expose one or multiple curves from the editor to the graph"
 
-	set_output(0, "Curve", ConceptGraphDataType.CURVE)
+	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Input curve"})
+	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
 func get_output(idx: int) -> Array:
 	var curves = []
 
-	var input = get_editor_input(_input_name.text)
+	var input_name = get_input(0)
+	var input = get_editor_input(input_name)
 
 	if not input:
 		return curves

@@ -1,13 +1,13 @@
+tool
+class_name ConceptGraph, "../../icons/graph.svg"
+extends Spatial
+
 """
 The main class of this plugin. Add a ConceptGraph node to your scene and attach a template to this
 node to start editing the graph from the bottom panel editor.
 This node then travel through the ConceptGraphTemplate object to generate content on the fly every
 time the associated graph is updated.
 """
-
-tool
-class_name ConceptGraph, "../../icons/graph.svg"
-extends Spatial
 
 
 signal template_path_changed
@@ -16,26 +16,30 @@ export(String, FILE, "*.cgraph") var template := "" setget set_template
 export var show_result_in_editor_tree := false setget set_show_result
 export var paused := false
 
-
 var _template: ConceptGraphTemplate
 var _input_root: Node
 var _output_root: Node
 
 
-func _ready() -> void:
+func _enter_tree():
 	if Engine.is_editor_hint():
 		_input_root = _get_or_create_root("Input")
 		_input_root.connect("input_changed", self, "_on_input_changed")
 		_output_root = _get_or_create_root("Output")
 		reload_template()
-		generate()
 
 
 func reload_template() -> void:
 	if not _template:
 		_template = ConceptGraphTemplate.new()
 		add_child(_template)
+		_template.concept_graph = self
+		_template.root = _output_root
+		_template.node_library = get_tree().root.get_node("ConceptNodeLibrary")
+		_template.connect("simulation_outdated", self, "generate")
+
 	_template.load_from_file(template)
+	generate()
 
 
 func clear_output() -> void:
@@ -79,15 +83,18 @@ func _set_children_owner(node) -> void:
 
 
 func set_template(val) -> void:
-	template = val
-	emit_signal("template_path_changed", val)	# This signal is only useful for the editor view
+	if template != val:
+		template = val
+		if get_tree():
+			reload_template()
+			emit_signal("template_path_changed", val)	# This signal is only useful for the editor view
 
 
 """
 Decides whether to show the resulting nodes in the editor tree or keep it hidden (but still
 visible in the viewport)
 """
-func set_show_result(val) -> void:
+func set_show_result(val) -> void: # TODO : not working
 	show_result_in_editor_tree = val
 	return
 	if not _output_root:

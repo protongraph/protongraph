@@ -14,12 +14,8 @@ func _init() -> void:
 
 
 func get_output(idx: int) -> Vector3:
-	var x = get_input(0)
-	var y = get_input(1)
-	var z = get_input(2)
-
-	x = 0 if x == null else x
-	y = 0 if y == null else y
-	z = 0 if y == null else z
+	var x = get_input(0, 0)
+	var y = get_input(1, 0)
+	var z = get_input(2, 0)
 
 	return Vector3(x, y, z)

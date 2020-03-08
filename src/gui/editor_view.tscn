@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/concept_graph/src/gui/create_template.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/concept_graph/src/gui/add_node_panel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/concept_graph/src/gui/editor_view.gd" type="Script" id=4]
+
+[node name="TemplateEditor" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 200 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MainView" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadOrCreateTemplate" parent="MainView" instance=ExtResource( 2 )]
+visible = false
+
+[node name="TemplateControls" type="HBoxContainer" parent="."]
+visible = false
+margin_left = 220.0
+margin_right = 437.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 0, 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Autosave" type="CheckBox" parent="TemplateControls"]
+margin_right = 87.0
+margin_bottom = 45.0
+pressed = true
+text = "Autosave"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveButton" type="Button" parent="TemplateControls"]
+margin_left = 91.0
+margin_top = 10.0
+margin_right = 132.0
+margin_bottom = 34.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_vertical = 4
+text = "Save"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReplayButton" type="Button" parent="TemplateControls"]
+margin_left = 136.0
+margin_top = 10.0
+margin_right = 262.0
+margin_bottom = 34.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_vertical = 4
+text = "Replay simulation"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AddNodeDialog" parent="." instance=ExtResource( 3 )]
+[connection signal="pressed" from="TemplateControls/SaveButton" to="." method="save_template"]
+[connection signal="pressed" from="TemplateControls/ReplayButton" to="." method="replay_simulation"]
+[connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]
+[connection signal="hide_panel" from="AddNodeDialog" to="." method="_hide_node_dialog"]
