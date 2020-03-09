@@ -4,37 +4,24 @@ extends ConceptNode
 
 var _spinbox: SpinBox
 
+
 func _init() -> void:
 	node_title = "Scalar"
 	category = "Input"
 	description = "Returns a number"
 
-	set_output(0, "Value", ConceptGraphDataType.SCALAR)
+	var opts = {
+		"disable_slot": true,
+		"max_value": 1000,
+		"min_value": -1000,
+		"allow_greater": true,
+		"allow_lesser": true,
+	}
 
-
-func _ready() -> void:
-	_spinbox = SpinBox.new()
-	_spinbox.max_value = 1000
-	_spinbox.min_value = -1000
-	_spinbox.step = 0.001
-	_spinbox.allow_greater = true
-	_spinbox.allow_lesser = true
-	_spinbox.connect("value_changed", self, "_on_value_changed")
-	add_child(_spinbox)
+	set_input(0, "Value", ConceptGraphDataType.SCALAR, opts)
+	set_input(1, "Export", ConceptGraphDataType.BOOLEAN, {"disable_slot": true})
+	set_output(0, "", ConceptGraphDataType.SCALAR)
 
 
 func get_output(idx: int) -> float:
-	return _spinbox.value
-
-
-func export_custom_data() -> Dictionary:
-	return {"value": _spinbox.value}
-
-
-func restore_custom_data(data: Dictionary) -> void:
-	if data.has("value"):
-		_spinbox.value = data["value"]
-
-
-func _on_value_changed(val) -> void:
-	reset()
+	return get_input(0)

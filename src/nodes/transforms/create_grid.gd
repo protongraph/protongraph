@@ -36,7 +36,7 @@ func _generate_output(idx: int) -> Array:
 				p.transform.origin.x = float(size.x / steps.x) * i
 				p.transform.origin.y = float(size.y / steps.y) * j
 				p.transform.origin.z = float(size.z / steps.z) * k
-				p.transform.origin += (size / -2.0) + center
+				p.transform.origin += ((size - Vector3.ONE) / -2.0) + center
 				result.append(p)
 	return result
 

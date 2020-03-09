@@ -250,6 +250,10 @@ func _on_node_changed(node: ConceptNode = null, replay_simulation := false) -> v
 
 
 func _on_connection_request(from_node: String, from_slot: int, to_node: String, to_slot: int) -> void:
+	# Prevent connecting the node to itself
+	if from_node == to_node:
+		return
+
 	# Disconnect any existing connection to the input slot first
 	for c in get_connection_list():
 		if c["to"] == to_node and c["to_port"] == to_slot:
