@@ -82,6 +82,27 @@ func delete_node(node) -> void:
 
 
 """
+Add a new property in the ConceptGraph inspector panel to expose a variable at the instance level.
+This is used to change parameters on an instance without having to modify the template itself
+(And thus modifying all the other ConceptGraph using the same template).
+Returns true if all went well, false if the name is already in used by another node.
+"""
+func expose_to_inspector(name: String, type: int, default_value = null) -> bool:
+	var variant_type = ConceptGraphDataType.to_variant_type(type)
+	if variant_type == TYPE_NIL:
+		return false
+
+	return concept_graph.expose_variable("Template/" + name, variant_type, default_value)
+
+
+"""
+Get previously exposed variable from the inspector
+"""
+func get_value_from_inspector(name: String):
+	return concept_graph.get("Template/" + name)
+
+
+"""
 Clears the cache of every single node in the template. Useful when only the inputs changes
 and node the whole graph structure itself. Next time get_output is called, every nodes will
 recalculate their output

@@ -23,6 +23,7 @@ var _hboxes := []
 var _resize_timer := Timer.new()
 var initialized := false
 
+
 func _enter_tree() -> void:
 	if initialized:
 		return
@@ -38,6 +39,12 @@ func _enter_tree() -> void:
 	initialized = true
 
 
+"""
+Override and make it return true if your node should be instanced from a scene directly.
+Scene should have the same name as the script and use a .tscn extension.
+When using a custom gui, you lose access to the default gui. You have to define slots and undo
+redo yourself but you have complete control over the node appearance and behavior.
+"""
 func has_custom_gui() -> bool:
 	return false
 
@@ -164,7 +171,10 @@ func is_input_connected(idx: int) -> bool:
 func get_input(idx: int, default = null):
 	var input = get_parent().get_left_node(self, idx)
 	if input.has("node"):
-		return input["node"].get_output(input["slot"])
+		var output = input["node"].get_output(input["slot"])
+		if not output:
+			return default
+		return output
 
 	if has_custom_gui():
 		return default # No input source connected
@@ -208,6 +218,32 @@ func remove_input(idx: int) -> bool:
 
 	_inputs.erase(idx)
 	return true
+
+
+"""
+Override the default gui value with a new one. // TODO : might not be useful, could be removed if not used
+"""
+func set_default_gui_input_value(idx: int, value) -> void:
+	if _hboxes.size() <= idx:
+		return
+
+	var hbox = _hboxes[idx]
+	var type = _inputs[idx]["type"]
+	match type:
+		ConceptGraphDataType.BOOLEAN:
+			hbox.get_node("CheckBox").pressed = value
+		ConceptGraphDataType.SCALAR:
+			hbox.get_node("SpinBox").value = value
+		ConceptGraphDataType.STRING:
+			hbox.get_node("LineEdit").text = value
+
+
+"""
+Override this method when exposing a variable to the inspector. It's up to you to decide what to
+do with the user defined value.
+"""
+func set_value_from_inspector(_name: String, _value) -> void:
+	pass
 
 
 """
@@ -286,7 +322,7 @@ func _generate_default_gui() -> void:
 					var checkbox = CheckBox.new()
 					checkbox.name = "CheckBox"
 					checkbox.pressed = opts["value"] if opts.has("value") else false
-					checkbox.connect("toggled", self, "_on_value_changed")
+					checkbox.connect("toggled", self, "_on_default_gui_value_changed")
 					ui_elements.append(checkbox)
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
@@ -300,7 +336,7 @@ func _generate_default_gui() -> void:
 					spinbox.allow_greater = opts["allow_greater"] if opts.has("allow_greater") else true
 					spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else false
 					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
-					spinbox.connect("value_changed", self, "_on_value_changed")
+					spinbox.connect("value_changed", self, "_on_default_gui_value_changed")
 					ui_elements.append(spinbox)
 				ConceptGraphDataType.STRING:
 					var opts = _inputs[i]["options"]
@@ -308,7 +344,7 @@ func _generate_default_gui() -> void:
 					line_edit.name = "LineEdit"
 					line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
 					line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
-					line_edit.connect("text_changed", self, "_on_text_changed")
+					line_edit.connect("text_changed", self, "_on_default_gui_value_changed")
 					ui_elements.append(line_edit)
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
@@ -381,11 +417,6 @@ func _on_connection_changed() -> void:
 	show()
 
 
-func _on_value_changed(_value: float) -> void:
-	emit_signal("node_changed", self, true)
-	reset()
-
-
-func _on_text_changed(_text: String) -> void:
+func _on_default_gui_value_changed(_value) -> void:
 	emit_signal("node_changed", self, true)
 	reset()
