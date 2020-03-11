@@ -94,8 +94,8 @@ func save_template() -> void:
 	var graph = _get_ref(_current_graph)
 
 	if template and graph:
-		print("Saving template ", graph.template)
-		template.save_to_file(graph.template)
+		print("Saving template ", graph.template_path)
+		template.save_to_file(graph.template_path)
 
 
 func replay_simulation() -> void:
@@ -122,7 +122,7 @@ func _hide_all() -> void:
 func _on_load_template(path: String) -> void:
 	var graph = _get_ref(_current_graph)
 	if graph:
-		graph.template = path
+		graph.template_path = path
 		graph.property_list_changed_notify() # Forces the inspector to refresh
 
 

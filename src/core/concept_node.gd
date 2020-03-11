@@ -11,6 +11,7 @@ for nodes with simple parameters as well as a caching system and other utilities
 signal delete_node
 signal node_changed
 signal connection_changed
+signal input_changed
 
 var node_title := "ConceptNode"
 var category := "No category"
@@ -58,7 +59,15 @@ func get_editor_input(name: String) -> Node:
 
 
 """
-Returns what the node generates for a give slot
+Return the variables exposed to the node inspector. Same format as get_property_list
+[ {name: , type: }, ... ]
+"""
+func get_exposed_variables() -> Array:
+	return []
+
+
+"""
+Returns what the node generates for a given slot
 This method ensure the output is not calculated more than one time per run. It's useful if the
 output node is connected to more than one node. It ensure the results are the same and save
 some performance
@@ -322,7 +331,7 @@ func _generate_default_gui() -> void:
 					var checkbox = CheckBox.new()
 					checkbox.name = "CheckBox"
 					checkbox.pressed = opts["value"] if opts.has("value") else false
-					checkbox.connect("toggled", self, "_on_default_gui_value_changed")
+					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
 					ui_elements.append(checkbox)
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
@@ -336,7 +345,7 @@ func _generate_default_gui() -> void:
 					spinbox.allow_greater = opts["allow_greater"] if opts.has("allow_greater") else true
 					spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else false
 					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
-					spinbox.connect("value_changed", self, "_on_default_gui_value_changed")
+					spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [i])
 					ui_elements.append(spinbox)
 				ConceptGraphDataType.STRING:
 					var opts = _inputs[i]["options"]
@@ -344,7 +353,7 @@ func _generate_default_gui() -> void:
 					line_edit.name = "LineEdit"
 					line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
 					line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
-					line_edit.connect("text_changed", self, "_on_default_gui_value_changed")
+					line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
 					ui_elements.append(line_edit)
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
@@ -417,6 +426,7 @@ func _on_connection_changed() -> void:
 	show()
 
 
-func _on_default_gui_value_changed(_value) -> void:
+func _on_default_gui_value_changed(value, slot: int) -> void:
 	emit_signal("node_changed", self, true)
+	emit_signal("input_changed", slot, value)
 	reset()

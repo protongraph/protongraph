@@ -12,14 +12,14 @@ time the associated graph is updated.
 
 signal template_path_changed
 
-export(String, FILE, "*.cgraph") var template := "" setget set_template
+export(String, FILE, "*.cgraph") var template_path := "" setget set_template_path
 export var show_result_in_editor_tree := false setget set_show_result
 export var paused := false
 
 var _template: ConceptGraphTemplate
 var _input_root: Node
 var _output_root: Node
-var _exposed_vars := {}
+var _exposed_variables := {}
 
 
 """
@@ -40,45 +40,61 @@ This requires to override _get and _set as well
 """
 func _get_property_list() -> Array:
 	var res := []
-	for name in _exposed_vars.keys():
+	for name in _exposed_variables.keys():
 		var dict := {
 			"name": name,
-			"type": _exposed_vars[name]["type"],
+			"type": _exposed_variables[name]["type"],
 		}
 		res.append(dict)
 	return res
 
 
 func _get(property):
-	if _exposed_vars.has(property):
-		if _exposed_vars[property].has("value"):
-			return _exposed_vars[property]["value"]
+	if _exposed_variables.has(property):
+		if _exposed_variables[property].has("value"):
+			return _exposed_variables[property]["value"]
 
 
 func _set(property, value): # overridden
 	if property.begins_with("Template/"):
-		if _exposed_vars.has(property):
-			_exposed_vars[property]["value"] = value
+		if _exposed_variables.has(property):
+			_exposed_variables[property]["value"] = value
 			generate(true)
 		else:
 			# This happens when loading the scene, don't regenerate here as it will happen again
 			# in _enter_tree
-			_exposed_vars[property] = {"value": value}
+			_exposed_variables[property] = {"value": value}
+			if value is float:
+				_exposed_variables[property]["type"] = TYPE_REAL
+			elif value is String:
+				_exposed_variables[property]["type"] = TYPE_STRING
+			elif value is Vector3:
+				_exposed_variables[property]["type"] = TYPE_VECTOR3
+			elif value is bool:
+				_exposed_variables[property]["type"] = TYPE_BOOL
+			property_list_changed_notify()
 		return true
 	return false
 
 
-func expose_variable(name: String, type: int, default_value = null) -> bool:
-	_exposed_vars[name] = {
-		"type": type,
-		"value": default_value,
-	}
+func update_exposed_variables(variables: Array) -> void:
+	var old = _exposed_variables
+	_exposed_variables = {}
+
+	for v in variables:
+		if _exposed_variables.has(v.name):
+			continue
+
+		var value = old[v.name]["value"] if old.has(v.name) else v["default_value"]
+		_exposed_variables[v.name] = {
+			"type": v["type"],
+			"value": value,
+		}
 	property_list_changed_notify()
-	return true # TODO return false in case of naming collision
 
 
 """
-Short hand to create the template if it doesn't exists and load the template file defined in
+Short hand to create the _exposed_variablest doesn't exists and load the template file defined in
 template.
 """
 func reload_template() -> void:
@@ -90,7 +106,8 @@ func reload_template() -> void:
 		_template.node_library = get_tree().root.get_node("ConceptNodeLibrary")
 		_template.connect("simulation_outdated", self, "generate")
 
-	_template.load_from_file(template)
+	_template.load_from_file(template_path)
+	_template.update_exposed_variables()
 	generate()
 
 
@@ -137,9 +154,9 @@ func _set_children_owner(node) -> void:
 		_set_children_owner(c)
 
 
-func set_template(val) -> void:
-	if template != val:
-		template = val
+func set_template_path(val) -> void:
+	if template_path != val:
+		template_path = val
 		if get_tree():
 			reload_template()
 			emit_signal("template_path_changed", val)	# This signal is only useful for the editor view

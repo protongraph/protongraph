@@ -25,22 +25,30 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	connect("node_changed", self, "_on_node_changed")
-	_on_node_changed(null, null)
+	connect("input_changed", self, "_on_input_changed")
 
 
 func get_output(idx: int) -> float:
 	var expose = get_input(2, false)
-	if not expose:
+	var name = get_input(0)
+	if not expose or not name:
 		return get_input(1)
 
-	return get_parent().get_value_from_inspector(get_input(0))
+	return get_parent().get_value_from_inspector(name)
 
 
-func _on_node_changed(_node, _value):
-	if not get_input(2):
-		return
-	var name = get_input(0, "Scalar")
-	if not get_parent().expose_to_inspector(name, ConceptGraphDataType.SCALAR, 0):
-		set_default_gui_input_value(2, false) # Turn it off to avoid conflict
-		# TODO : find a better way to signal naming conflicts to the user
+func get_exposed_variables() -> Array:
+	var name = get_input(0)
+	if not name or not get_input(2):
+		return []
+
+	return [{
+		"name": name,
+		"type": ConceptGraphDataType.SCALAR,
+		"default_value": get_input(1),
+		}]
+
+
+func _on_input_changed(slot: int, _value) -> void:
+	if slot == 0 or slot == 2:
+		get_parent().update_exposed_variables()
