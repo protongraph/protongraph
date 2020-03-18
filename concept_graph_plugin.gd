@@ -16,18 +16,21 @@ var _panel_button: Button
 var _editor_selection: EditorSelection
 var _edited_node: ConceptGraph
 var _node_library: ConceptNodeLibrary
+var _editor_gizmos: Array
 
 
 func _enter_tree() -> void:
 	_add_custom_editor_view()
 	_connect_editor_signals()
 	_setup_node_library()
+	_register_editor_gizmos()
 
 
 func _exit_tree() -> void:
 	_disconnect_editor_signals()
 	_remove_custom_editor_view()
 	_remove_node_library()
+	_deregister_editor_gizmos()
 
 
 func _add_custom_editor_view() -> void:
@@ -67,6 +70,24 @@ func _remove_node_library() -> void:
 		get_tree().root.remove_child(_node_library)
 		_node_library.queue_free()
 		_node_library = null
+
+
+func _register_editor_gizmos() -> void:
+	if not _editor_gizmos:
+		_editor_gizmos = []
+	if _editor_gizmos.size() > 0:
+		_deregister_editor_gizmos()
+
+	var box_gizmo = preload("src/editor/gizmos/box_gizmo_plugin.gd").new()
+	_editor_gizmos.append(box_gizmo)
+	add_spatial_gizmo_plugin(box_gizmo)
+
+
+func _deregister_editor_gizmos() -> void:
+	if _editor_gizmos:
+		for gizmo in _editor_gizmos:
+			remove_spatial_gizmo_plugin(gizmo)
+	_editor_gizmos = []
 
 
 """

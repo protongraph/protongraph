@@ -279,6 +279,10 @@ func _setup_slots() -> void:
 			output_type = _outputs[i]["type"]
 			output_color = _outputs[i]["color"]
 
+		# This causes more issues than it solves
+		#if _inputs[i].has("options") and _inputs[i]["options"].has("disable_slot"):
+		#	has_input = not _inputs[i]["options"]["disable_slot"]
+
 		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color)
 
 

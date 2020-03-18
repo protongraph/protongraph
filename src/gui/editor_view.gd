@@ -9,7 +9,7 @@ deleted) when the ConceptGraph is deselected.
 """
 
 
-var _main_view: Control
+var _template_parent: Control
 var _node_dialog: ConceptGraphNodeDialog
 var _template_controls: Control
 var _load_panel: PanelContainer
@@ -21,8 +21,8 @@ var _save_timer: Timer
 
 
 func _ready() -> void:
-	_main_view = get_node("MainView")
-	_load_panel = get_node("MainView/LoadOrCreateTemplate")
+	_template_parent = get_node("TemplateParent")
+	_load_panel = get_node("LoadOrCreateTemplate")
 	_template_controls = get_node("TemplateControls")
 	_node_dialog = get_node("AddNodeDialog")
 	_autosave = get_node("TemplateControls/Autosave")
@@ -45,12 +45,16 @@ func enable_template_editor(node: ConceptGraph) -> void:
 	_current_graph = weakref(node)
 	_current_template = weakref(node._template)
 
+	node.connect("template_path_changed", self, "")
 	node._template.connect("graph_changed", self, "_on_graph_changed")
 	node._template.connect("popup_request", self, "_show_node_dialog")
 
 	node.remove_child(node._template)
-	_main_view.add_child(node._template)
+	_template_parent.add_child(node._template)
 	_template_controls.visible = true
+
+	if node.template_path == "":
+		_load_panel.visible = true
 
 
 """
@@ -66,13 +70,13 @@ func disable_template_editor() -> void:
 	if not graph or not template:
 		_current_template = null
 		_current_graph = null
-		for c in _main_view.get_children():
+		for c in _template_parent.get_children():
 			if c is GraphEdit:
-				_main_view.remove_child(c)
+				_template_parent.remove_child(c)
 				c.queue_free()
 		return
 
-	_main_view.remove_child(template)
+	_template_parent.remove_child(template)
 	graph.add_child(template)
 
 	template.disconnect("graph_changed", self, "_on_graph_changed")
@@ -124,6 +128,7 @@ func _on_load_template(path: String) -> void:
 	if graph:
 		graph.template_path = path
 		graph.property_list_changed_notify() # Forces the inspector to refresh
+		_load_panel.visible = false
 
 
 func _on_create_node_request(node) -> void:

@@ -15,15 +15,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MainView" type="Control" parent="."]
+[node name="TemplateParent" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="LoadOrCreateTemplate" parent="MainView" instance=ExtResource( 2 )]
-visible = false
 
 [node name="TemplateControls" type="HBoxContainer" parent="."]
 visible = false
@@ -70,6 +67,9 @@ __meta__ = {
 }
 
 [node name="AddNodeDialog" parent="." instance=ExtResource( 3 )]
+
+[node name="LoadOrCreateTemplate" parent="." instance=ExtResource( 2 )]
+visible = false
 [connection signal="pressed" from="TemplateControls/SaveButton" to="." method="save_template"]
 [connection signal="pressed" from="TemplateControls/ReplayButton" to="." method="replay_simulation"]
 [connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]

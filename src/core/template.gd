@@ -46,8 +46,12 @@ Creates a node using the provided model and add it as child which makes it visib
 from the Concept Graph Editor
 """
 func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
-	if _output_node and node.node_title == "Output":
-		return null # Only one output node per template
+	if node.node_title == "Output":
+		if _output_node:
+			return null # Only one output node per template
+		else:
+			_output_node = node
+
 
 	var new_node: ConceptNode = node.duplicate()
 	new_node.offset = scroll_offset + Vector2(250, 150)
