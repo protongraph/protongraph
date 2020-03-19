@@ -61,16 +61,14 @@ Returns the position of each handles. One on each corner, one at the center of e
 """
 func _get_box_handles(box: ConceptBoxInput) -> PoolVector3Array:
 	var handles := _get_box_corners(box)
-
-	var c: Vector3 = box.get_global_transform().origin
 	var hs := box.size / 2.0
 
-	handles.append(Vector3(0.0, 0.0, c.z + hs.z))
-	handles.append(Vector3(c.x + hs.x, 0.0, 0.0))
-	handles.append(Vector3(0.0, 0.0, c.z - hs.z))
-	handles.append(Vector3(c.x - hs.x, 0.0, 0.0))
-	handles.append(Vector3(0.0, c.y + hs.y, 0.0))
-	handles.append(Vector3(0.0, c.y - hs.y, 0.0))
+	handles.append(Vector3(0.0, 0.0, hs.z))
+	handles.append(Vector3(hs.x, 0.0, 0.0))
+	handles.append(Vector3(0.0, 0.0, -hs.z))
+	handles.append(Vector3(-hs.x, 0.0, 0.0))
+	handles.append(Vector3(0.0, hs.y, 0.0))
+	handles.append(Vector3(0.0, -hs.y, 0.0))
 
 	return handles
 
@@ -80,16 +78,14 @@ Calculate the position of each corners of the box.
 """
 func _get_box_corners(box: ConceptBoxInput) -> PoolVector3Array:
 	var corners = PoolVector3Array()
-
-	var c: Vector3 = box.get_global_transform().origin
 	var hs := box.size / 2.0
 
-	var left := c.x - hs.x
-	var right := c.x + hs.x
-	var top := c.y + hs.y
-	var bottom := c.y - hs.y
-	var front := c.z + hs.z
-	var back := c.z - hs.z
+	var left := -hs.x
+	var right := hs.x
+	var top := hs.y
+	var bottom := -hs.y
+	var front := hs.z
+	var back := - hs.z
 
 	corners.append(Vector3(left, top, front))
 	corners.append(Vector3(right, top, front))
