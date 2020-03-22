@@ -84,12 +84,12 @@ func commit_handle(gizmo: EditorSpatialGizmo, index: int, restore, cancel: bool 
 
 	var ur = editor_plugin.get_undo_redo()
 	ur.create_action("Resize Box Input")
+	ur.add_do_method(box, "translate", box.center)
 	ur.add_do_property(box, "center", Vector3.ZERO)
 	ur.add_do_property(box, "size", box.size)
-	ur.add_do_method(box, "translate", box.center)
 
-	ur.add_undo_property(box, "size", restore)
 	ur.add_undo_method(box, "translate", -box.center)
+	ur.add_undo_property(box, "size", restore)
 	ur.add_undo_method(box, "property_list_changed_notify")	# TMP hack, find why the inspector does not refresh automatically on undo
 	ur.commit_action()
 

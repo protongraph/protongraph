@@ -32,6 +32,6 @@ func get_output(idx: int) -> Vector3:
 		0:
 			return boxes[0].size
 		1:
-			return boxes[0].translation
+			return boxes[0].translation + boxes[0].center
 
 	return Vector3.ZERO
