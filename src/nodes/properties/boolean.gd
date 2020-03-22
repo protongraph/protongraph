@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Boolean property"
-	category = "Properties"
+	category = "Inspector properties"
 	description = "Expose a Boolean value to the inspector"
 
 	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})

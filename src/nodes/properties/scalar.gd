@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Scalar property"
-	category = "Properties"
+	category = "Inspector properties"
 	description = "Expose a Scalar value to the inspector"
 
 	var opts = {

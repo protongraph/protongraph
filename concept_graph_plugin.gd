@@ -14,9 +14,9 @@ pull request at http://github.com/hungryproton/concept_graph
 var _graph_editor_view
 var _panel_button: Button
 var _editor_selection: EditorSelection
-var _edited_node: ConceptGraph
+var _concept_graph: ConceptGraph
 var _node_library: ConceptNodeLibrary
-var _editor_gizmos: Array
+var _editor_gizmo_plugins: Array
 
 
 func _enter_tree() -> void:
@@ -73,28 +73,29 @@ func _remove_node_library() -> void:
 
 
 func _register_editor_gizmos() -> void:
-	if not _editor_gizmos:
-		_editor_gizmos = []
-	if _editor_gizmos.size() > 0:
+	if not _editor_gizmo_plugins:
+		_editor_gizmo_plugins = []
+	if _editor_gizmo_plugins.size() > 0:
 		_deregister_editor_gizmos()
 
 	var box_gizmo = preload("src/editor/gizmos/box_gizmo_plugin.gd").new()
-	_editor_gizmos.append(box_gizmo)
+	box_gizmo.editor_plugin = self
+	_editor_gizmo_plugins.append(box_gizmo)
 	add_spatial_gizmo_plugin(box_gizmo)
 
 
 func _deregister_editor_gizmos() -> void:
-	if _editor_gizmos:
-		for gizmo in _editor_gizmos:
+	if _editor_gizmo_plugins:
+		for gizmo in _editor_gizmo_plugins:
 			remove_spatial_gizmo_plugin(gizmo)
-	_editor_gizmos = []
+	_editor_gizmo_plugins = []
 
 
 """
 Only display the ConceptGraphEditor button if the currently selected node is of type ConceptGraph
 """
-func _on_selection_changed():
-	_edited_node = null
+func _on_selection_changed() -> void:
+	_concept_graph = null
 	_panel_button.visible = false
 	_panel_button.pressed = false
 	_graph_editor_view.disable_template_editor()
@@ -104,7 +105,8 @@ func _on_selection_changed():
 
 	for node in selected_nodes:
 		if node is ConceptGraph:
-			_edited_node = node
+			_concept_graph = node
 			_panel_button.visible = true
-			_graph_editor_view.enable_template_editor(_edited_node)
+			_graph_editor_view.enable_template_editor(_concept_graph)
 			return
+

@@ -16,6 +16,7 @@ const NOISE = 5
 const MATERIAL = 6
 const MESH = 7
 const STRING = 8
+const BOX = 9
 
 
 # Common types also used in the VisualShader editor share the same color
@@ -29,6 +30,7 @@ const COLORS = {
 	MATERIAL: Color.darkmagenta,
 	MESH: Color.chocolate,
 	STRING: Color.gold,
+	BOX: Color.maroon,
 }
 
 
