@@ -9,7 +9,7 @@ TODO: It would be nice to have a WrapAroundCurve instead, so we could use a regu
 
 func _init() -> void:
 	node_title = "Create grid along curve"
-	category = "Nodes"
+	category = "Nodes/Generators"
 	description = "Create transforms along a curve"
 
 	set_input(0, "Curve", ConceptGraphDataType.CURVE)

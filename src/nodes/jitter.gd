@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Jitter"
-	category = "Nodes"
+	category = "Nodes/Operations"
 	description = "Applies a random offset to each transforms"
 
 	set_input(0, "Input", ConceptGraphDataType.NODE)

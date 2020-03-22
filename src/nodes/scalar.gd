@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Scalar"
-	category = "Input"
+	category = "Inputs"
 	description = "Returns a number"
 
 	var opts = {

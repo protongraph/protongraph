@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Curve input"
-	category = "IO"
+	category = "Curves"
 	description = "Expose one or multiple curves from the editor to the graph"
 
 	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Input curve"})

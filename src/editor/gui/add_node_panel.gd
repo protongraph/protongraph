@@ -20,6 +20,7 @@ var _create_button: Button
 var _description_label: Label
 var _default_description: String
 var _node_library: ConceptNodeLibrary
+var _categories: Dictionary
 
 
 func _ready() -> void:
@@ -36,24 +37,42 @@ func _ready() -> void:
 
 
 func _refresh_concept_nodes_list() -> void:
+	_categories = Dictionary()
 	_node_tree.clear()
 	var root = _node_tree.create_item()
 	_node_tree.set_hide_root(true)
-	var categories = Dictionary()
 
 	var nodes = _node_library.get_list()
 	for node in nodes.values():
-		var category = node.category
-		if not categories.has(category):
-			categories[category] = _node_tree.create_item(root)
-			categories[category].set_text(0, category)
-			categories[category].set_selectable(0, false)
-			categories[category].set_collapsed(true)
-
-		var item = _node_tree.create_item(categories[category])
+		var item_parent = _get_or_create_category(node.category)
+		var item = _node_tree.create_item(item_parent)
 		item.set_text(0, node.node_title)
 		item.set_tooltip(0, node.description)
 
+
+func _get_or_create_category(category: String) -> TreeItem:
+	var levels = category.split('/')
+	var item := _node_tree.get_root()
+
+	for c in levels:
+		var sub_item = _get_tree_item(item, c)
+		if not sub_item:
+			sub_item = _node_tree.create_item(item)
+			sub_item.set_text(0, c)
+			sub_item.set_selectable(0, false)
+			sub_item.set_collapsed(true)
+		item = sub_item
+
+	return item
+
+
+func _get_tree_item(root: TreeItem, name: String) -> TreeItem:
+	var child = root.get_children()
+	while child:
+		if child.get_text(0) == name:
+			return child
+		child = child.get_next()
+	return null
 
 
 func _hide_panel() -> void:

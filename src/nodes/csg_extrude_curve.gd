@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Extrude curve"
-	category = "CSG"
+	category = "Meshes"
 	description = "Creates extruded CSG meshes defined by one or multiple curves"
 
 	set_input(0, "Curve", ConceptGraphDataType.CURVE)

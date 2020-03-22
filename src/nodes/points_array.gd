@@ -8,7 +8,7 @@ Creates an array of transforms
 
 func _init() -> void:
 	node_title = "Points Array"
-	category = "Nodes"
+	category = "Nodes/Generators"
 	description = "Creates an array of points."
 
 	set_input(0, "Count", ConceptGraphDataType.SCALAR, {"steps": 1, "allow_lesser": false})

@@ -8,7 +8,7 @@ Generates a list of transforms aligned to a grid in a 3D volume
 
 func _init() -> void:
 	node_title = "Create point grid"
-	category = "Nodes"
+	category = "Nodes/Generators"
 	description = "Generates a list of transforms aligned to a grid in a 3D volume"
 
 	set_input(0, "Size", ConceptGraphDataType.VECTOR)

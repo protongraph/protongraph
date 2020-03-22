@@ -11,7 +11,7 @@ var _input_name: LineEdit
 
 func _init() -> void:
 	node_title = "Generic input"
-	category = "IO"
+	category = "Inputs"
 	description = "References a child node with the same name from the ConceptGraph"
 
 	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Input node"})

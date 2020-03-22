@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Expand curve"
-	category = "Curve"
+	category = "Curves"
 	description = "Move each point of the curve along its normal"
 
 	set_input(0, "Curve", ConceptGraphDataType.CURVE)

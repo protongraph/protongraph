@@ -8,8 +8,8 @@ Discard all the nodes inside (or outside) the provided curves
 
 func _init() -> void:
 	node_title = "Exclude from curves"
-	category = "Nodes"
-	description = "Discard all the objects inside (or outside) the provided curves"
+	category = "Nodes/Operations"
+	description = "Discard all the nodes inside (or outside) the provided curves"
 
 	set_input(0, "Input", ConceptGraphDataType.NODE)
 	set_input(1, "Curves", ConceptGraphDataType.CURVE)

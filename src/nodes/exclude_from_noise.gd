@@ -11,8 +11,8 @@ var _resolution := 0.2 #tmp
 
 func _init() -> void:
 	node_title = "Exclude from noise"
-	category = "Nodes"
-	description = "Discard all the nodes with a corresponding noise value above a given threshold"
+	category = "Nodes/Operations"
+	description = "Discard all the points with a corresponding noise value above a given threshold"
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE)
 	set_input(1, "Noise", ConceptGraphDataType.NOISE)

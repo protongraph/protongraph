@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Scale from noise"
-	category = "Nodes"
+	category = "Nodes/Operations"
 	description = "Applies a random scaling to a set of nodes from a noise input"
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE)

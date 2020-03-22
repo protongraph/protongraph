@@ -8,7 +8,7 @@ signal property_changed
 
 
 export var size := Vector3.ONE setget set_size
-export var auto_center := true setget set_auto_center
+var auto_center := true setget set_auto_center # TODO: implement standard AABB behavior
 var center := Vector3.ZERO setget set_center
 
 

@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Offset"
-	category = "Nodes"
+	category = "Nodes/Operations"
 	description = "Applies an offset to a set of nodes"
 
 	set_input(0, "Transforms", ConceptGraphDataType.NODE)

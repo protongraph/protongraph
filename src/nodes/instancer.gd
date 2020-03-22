@@ -8,7 +8,7 @@ Instanciate a node in the graph
 
 func _init() -> void:
 	node_title = "Node Instancer"
-	category = "Objects"
+	category = "Nodes/Instancers"
 	description = "Creates a node instance in the graph"
 
 	set_input(0, "Node Type", ConceptGraphDataType.STRING)

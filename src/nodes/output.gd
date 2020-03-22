@@ -8,7 +8,7 @@ This node marks the end of every ConceptNodeTemplate. Only one per template.
 
 func _init() -> void:
 	node_title = "Output"
-	category = "IO"
+	category = "Hidden"
 	description = "The final node of any template"
 
 	set_input(0, "Node", ConceptGraphDataType.NODE)

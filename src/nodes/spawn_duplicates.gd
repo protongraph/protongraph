@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Spawn Duplicates"
-	category = "Objects"
+	category = "Nodes/Instancers"
 	description = "Spawns multiple copies of a node at the given positions"
 
 	set_input(0, "Source", ConceptGraphDataType.NODE)

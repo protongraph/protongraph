@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Rotate"
-	category = "Nodes"
+	category = "Nodes/Operations"
 	description = "Applies a random rotation to a set of nodes"
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE)

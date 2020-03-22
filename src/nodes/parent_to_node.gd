@@ -13,7 +13,7 @@ var _children_count := 1
 
 func _init() -> void:
 	node_title = "Parent to node"
-	category = "Objects"
+	category = "Nodes/Operations"
 	description = "Parent the given node(s) to another one and return the parent"
 
 	set_input(0, "Parent", ConceptGraphDataType.NODE)

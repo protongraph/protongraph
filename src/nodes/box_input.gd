@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	node_title = "Box input"
-	category = "Inputs"
+	category = "Boxes"
 	description = "Expose one or multiple boxes from the editor to the graph"
 
 	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Input box"})
