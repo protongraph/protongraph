@@ -14,12 +14,18 @@ var center := Vector3.ZERO setget set_center
 
 func _ready() -> void:
 	add_user_signal('input_changed')
+	set_notify_local_transform(true)
 
 
 func _get_property_list() -> Array:
 	if not auto_center:
 		return [{"name": "Center", "type": TYPE_VECTOR3}]
 	return []
+
+
+func _notification(type: int):
+	if type == NOTIFICATION_TRANSFORM_CHANGED:
+		_on_box_changed()
 
 
 func set_size(val: Vector3) -> void:

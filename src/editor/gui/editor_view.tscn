@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/concept_graph/src/editor/gui/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/concept_graph/src/editor/gui/create_template.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/concept_graph/src/editor/gui/add_node_panel.tscn" type="PackedScene" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.129412, 0.129412, 0.141176, 1 )
 
 [node name="TemplateEditor" type="Control"]
 anchor_right = 1.0
@@ -69,7 +72,9 @@ __meta__ = {
 [node name="AddNodeDialog" parent="." instance=ExtResource( 3 )]
 
 [node name="LoadOrCreateTemplate" parent="." instance=ExtResource( 2 )]
-visible = false
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
 [connection signal="pressed" from="TemplateControls/SaveButton" to="." method="save_template"]
 [connection signal="pressed" from="TemplateControls/ReplayButton" to="." method="replay_simulation"]
 [connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]

@@ -38,8 +38,8 @@ const COLORS = {
 Allows extra connections between different types
 """
 static func setup_valid_connection_types(graph_edit: GraphEdit) -> void:
-	# TODO : Not sure if the doc is wrong or if it's a bug, but the type order is actually reversed
 	graph_edit.add_valid_connection_type(NODE, MESH)
+	graph_edit.add_valid_connection_type(NODE, CURVE)
 
 
 """
