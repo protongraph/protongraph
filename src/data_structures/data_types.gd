@@ -17,6 +17,7 @@ const MATERIAL = 6
 const MESH = 7
 const STRING = 8
 const BOX = 9
+const POLYGON_CURVE = 10
 
 
 # Common types also used in the VisualShader editor share the same color
@@ -31,6 +32,7 @@ const COLORS = {
 	MESH: Color.chocolate,
 	STRING: Color.gold,
 	BOX: Color.maroon,
+	POLYGON_CURVE: Color.sandybrown,
 }
 
 

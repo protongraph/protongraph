@@ -45,7 +45,7 @@ func enable_template_editor(node: ConceptGraph) -> void:
 	_current_graph = weakref(node)
 	_current_template = weakref(node._template)
 
-	node.connect("template_path_changed", self, "")
+	node.connect("template_path_changed", self, "_on_load_template")
 	node._template.connect("graph_changed", self, "_on_graph_changed")
 	node._template.connect("popup_request", self, "_show_node_dialog")
 
@@ -58,8 +58,8 @@ func enable_template_editor(node: ConceptGraph) -> void:
 
 
 """
-Give the template back to the conceptGraph and remove references to these nodes to go back to a
-clean state.
+Give the template back to the ConceptGraph and remove references to these nodes to go back to a
+clean state. Disconnect the signals to avoid impacting deselected templates.
 """
 func disable_template_editor() -> void:
 	_hide_all()
@@ -81,6 +81,7 @@ func disable_template_editor() -> void:
 
 	template.disconnect("graph_changed", self, "_on_graph_changed")
 	template.disconnect("popup_request", self, "_show_node_dialog")
+	graph.disconnect("template_path_changed", self, "_on_load_template")
 
 	_current_template = null
 	_current_graph = null

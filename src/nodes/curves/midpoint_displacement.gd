@@ -39,8 +39,14 @@ func get_output(idx: int) -> Path:
 	var attenuation: float = 1.0 - (get_input(4, 50.0) / 100.0)
 
 	for i in range(steps):
-		_displace(path, factor)
+		var initial_count = path.curve.get_point_count()
+
+		path = _displace(path, factor)
 		factor *= attenuation
+
+		if path.curve.get_point_count() == initial_count:
+			# Nothing happened, min size was reached on every segments
+			break
 
 	return path
 
