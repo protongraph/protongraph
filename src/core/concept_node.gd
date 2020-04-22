@@ -255,6 +255,10 @@ func set_value_from_inspector(_name: String, _value) -> void:
 	pass
 
 
+func get_concept_graph():
+	return get_parent().concept_graph
+
+
 """
 Based on the previous calls to set_input and set_ouput, this method will call the
 GraphNode.set_slot method accordingly with the proper parameters. This makes it easier syntax

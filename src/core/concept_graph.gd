@@ -45,6 +45,10 @@ func _get_property_list() -> Array:
 			"name": name,
 			"type": _exposed_variables[name]["type"],
 		}
+		if _exposed_variables[name].has("hint"):
+			dict["hint"] = _exposed_variables[name]["hint"]
+		if _exposed_variables[name].has("hint_string"):
+			dict["hint_string"] = _exposed_variables[name]["hint_string"]
 		res.append(dict)
 	return res
 
@@ -64,6 +68,7 @@ func _set(property, value): # overridden
 			# This happens when loading the scene, don't regenerate here as it will happen again
 			# in _enter_tree
 			_exposed_variables[property] = {"value": value}
+
 			if value is float:
 				_exposed_variables[property]["type"] = TYPE_REAL
 			elif value is String:
@@ -72,6 +77,11 @@ func _set(property, value): # overridden
 				_exposed_variables[property]["type"] = TYPE_VECTOR3
 			elif value is bool:
 				_exposed_variables[property]["type"] = TYPE_BOOL
+			elif value is Curve:
+				_exposed_variables[property]["type"] = TYPE_OBJECT
+				_exposed_variables[property]["hint"] = PROPERTY_HINT_RESOURCE_TYPE
+				_exposed_variables[property]["hint_string"] = "Curve"
+
 			property_list_changed_notify()
 		return true
 	return false
@@ -90,6 +100,10 @@ func update_exposed_variables(variables: Array) -> void:
 			"type": v["type"],
 			"value": value,
 		}
+		if v.has("hint"):
+			_exposed_variables[v.name]["hint"] = v["hint"]
+		if v.has("hint_string"):
+			_exposed_variables[v.name]["hint_string"] = v["hint_string"]
 	property_list_changed_notify()
 
 

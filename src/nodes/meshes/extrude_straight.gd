@@ -7,7 +7,7 @@ func _init() -> void:
 	category = "Meshes"
 	description = "Creates extruded CSG meshes defined by one or multiple polygon curve"
 
-	set_input(0, "Polygon curve", ConceptGraphDataType.POLYGON_CURVE)
+	set_input(0, "Polygon curve", ConceptGraphDataType.VECTOR_CURVE)
 	set_input(1, "Depth", ConceptGraphDataType.SCALAR)
 	set_input(2, "Material", ConceptGraphDataType.MATERIAL)
 	set_input(3, "Use collision", ConceptGraphDataType.BOOLEAN)
@@ -17,7 +17,6 @@ func _init() -> void:
 
 func get_output(idx: int) -> Array:
 	var result = []
-
 	var polygon_curves = get_input(0)
 	var depth = get_input(1, 1.0)
 	var material = get_input(2)
@@ -42,6 +41,7 @@ func get_output(idx: int) -> Array:
 		result.append(mesh)
 
 	return result
+
 
 # Assumes Y axis is ignored. TODO : Find a more generic way
 func _to_pool_vector_2(vectors: PoolVector3Array) -> PoolVector2Array:

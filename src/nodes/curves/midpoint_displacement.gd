@@ -25,10 +25,14 @@ func _init() -> void:
 
 
 func get_output(idx: int) -> Path:
-	var path: Path = get_input(0)
+	var path = get_input(0)
+
 	if not path:
-		print("No path found")
 		return null
+	if path is Array:
+		if path.size() > 0:
+			return path
+		path = path[0]
 
 	var random_seed: int = get_input(1, 0)
 	_rng = RandomNumberGenerator.new()

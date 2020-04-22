@@ -17,7 +17,9 @@ const MATERIAL = 6
 const MESH = 7
 const STRING = 8
 const BOX = 9
-const POLYGON_CURVE = 10
+const VECTOR_CURVE = 10
+const ANY = 11
+const MATH_CURVE = 12
 
 
 # Common types also used in the VisualShader editor share the same color
@@ -32,7 +34,9 @@ const COLORS = {
 	MESH: Color.chocolate,
 	STRING: Color.gold,
 	BOX: Color.maroon,
-	POLYGON_CURVE: Color.sandybrown,
+	VECTOR_CURVE: Color.sandybrown,
+	ANY: Color.white,
+	MATH_CURVE: Color.dodgerblue,
 }
 
 
@@ -58,4 +62,6 @@ static func to_variant_type(type: int) -> int:
 			return TYPE_STRING
 		BOOLEAN:
 			return TYPE_BOOL
+		MATH_CURVE:
+			return TYPE_OBJECT
 	return TYPE_NIL

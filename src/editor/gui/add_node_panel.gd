@@ -75,6 +75,10 @@ func _get_tree_item(root: TreeItem, name: String) -> TreeItem:
 	return null
 
 
+func _sort_tree(root: TreeItem) -> void:
+	pass
+
+
 func _hide_panel() -> void:
 	emit_signal("hide_panel")
 

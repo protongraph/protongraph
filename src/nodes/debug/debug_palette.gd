@@ -21,5 +21,5 @@ func _init() -> void:
 	set_input(7, "Mesh", ConceptGraphDataType.MESH)
 	set_input(8, "String", ConceptGraphDataType.STRING)
 	set_input(9, "Box", ConceptGraphDataType.BOX)
-	set_input(10, "PolyCurve", ConceptGraphDataType.POLYGON_CURVE)
+	set_input(10, "PolyCurve", ConceptGraphDataType.VECTOR_CURVE)
 

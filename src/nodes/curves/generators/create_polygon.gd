@@ -24,10 +24,11 @@ func get_output(idx: int) -> Curve:
 
 	var curve = Curve3D.new()
 
-	for i in range(count):
+	for i in range(count + 1):
 		var v = Vector3.ZERO
 		v.x = cos(angle_offset * i)
 		v.z = sin(angle_offset * i)
+		v *= radius
 		curve.add_point(v)
 
 	var path = Path.new()

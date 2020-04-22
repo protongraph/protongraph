@@ -10,13 +10,13 @@ controlled by the curvature. Straight lines will have less points and curved par
 func _init() -> void:
 	node_title = "Tesselate curve (Curvature)"
 	category = "Curves/Conversion"
-	description = "Creates a polygon curve with a curvature controlled point density"
+	description = "Creates a vector curve with a curvature controlled point density"
 
 	set_input(0, "Curve", ConceptGraphDataType.CURVE)
 	set_input(1, "Max stages", ConceptGraphDataType.SCALAR, {"step": 1, "min": 0, "allow_lesser": false})
 	set_input(2, "Tolerance", ConceptGraphDataType.SCALAR,
 		{"min": 0, "max": 360, "allow_lesser": false, "allow_higher": false, "value": 4})
-	set_output(0, "", ConceptGraphDataType.POLYGON_CURVE)
+	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
 
 
 func get_output(idx: int) -> Array:
@@ -34,7 +34,7 @@ func get_output(idx: int) -> Array:
 	var tolerance = get_input(2, 4)
 
 	for c in curves:	# c is a Path object here
-		var p = ConceptNodePolygonCurve.new()
+		var p = ConceptNodeVectorCurve.new()
 		p.transform = c.transform
 		p.points = c.curve.tessellate(stages, tolerance)
 		res.append(p)

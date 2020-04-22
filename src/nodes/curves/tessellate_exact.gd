@@ -13,7 +13,7 @@ func _init() -> void:
 	description = "Creates a polygon curve from the curve control points only"
 
 	set_input(0, "Curve", ConceptGraphDataType.CURVE)
-	set_output(0, "", ConceptGraphDataType.POLYGON_CURVE)
+	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
 
 
 func get_output(idx: int) -> Array:
@@ -28,7 +28,7 @@ func get_output(idx: int) -> Array:
 		return res
 
 	for c in curves:	# c is a Path object here
-		var p = ConceptNodePolygonCurve.new()
+		var p = ConceptNodeVectorCurve.new()
 		var points = PoolVector3Array()
 		var curve: Curve3D = c.curve
 

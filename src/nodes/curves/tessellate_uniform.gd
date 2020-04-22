@@ -17,7 +17,7 @@ func _init() -> void:
 	set_input(1, "Resolution", ConceptGraphDataType.SCALAR,
 		{"min": 0.001, "allow_lesser": false, "value": 1.0})
 	set_input(2, "Preserve sharp", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.POLYGON_CURVE)
+	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
 
 
 func get_output(idx: int) -> Array:
@@ -36,7 +36,7 @@ func get_output(idx: int) -> Array:
 
 	for c in curves:
 		var curve = c.curve
-		var p = ConceptNodePolygonCurve.new()
+		var p = ConceptNodeVectorCurve.new()
 		p.transform = c.transform
 
 		var length = curve.get_baked_length()

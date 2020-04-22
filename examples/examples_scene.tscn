@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://addons/concept_graph/examples/assets/env.tres" type="Environment" id=1]
 [ext_resource path="res://addons/concept_graph/src/core/concept_graph.gd" type="Script" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://addons/concept_graph/examples/assets/m_concrete.tres" type="Material" id=5]
 [ext_resource path="res://addons/concept_graph/examples/assets/stair_step.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/concept_graph/src/editor/nodes/box_input.gd" type="Script" id=7]
+[ext_resource path="res://addons/concept_graph/src/editor/nodes/curve_input.gd" type="Script" id=8]
+[ext_resource path="res://addons/polygon_path/polygon_path.gd" type="Script" id=9]
 
 [sub_resource type="SphereMesh" id=2]
 radius = 0.25
@@ -41,6 +43,24 @@ surfaces/1 = {
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 180
+}
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 1.45, 0.25, 0.525 )
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 1 ), 0.0, -1.77292, 0, 0, Vector2( 1, 0 ), -4.29677, 0.0, 0, 0 ]
+
+[sub_resource type="Curve3D" id=6]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -0.0437167, 0.0013054, 0, -1.96185, -2.68211, -3.83129, 1.96185, 2.68211, 3.83129, -1.17627, 8.33161, 0.60428 ),
+"tilts": PoolRealArray( 0, 0 )
+}
+
+[sub_resource type="Curve3D" id=8]
+_data = {
+"points": PoolVector3Array(  ),
+"tilts": PoolRealArray(  )
 }
 
 [node name="ExampleScene" type="Spatial"]
@@ -82,13 +102,13 @@ size = Vector3( 3.104, 2.89526, 3.07709 )
 multimesh = SubResource( 3 )
 
 [node name="Stairs" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 0 )
+transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 1, -2.18953, 0, 0 )
 visible = false
 script = ExtResource( 2 )
 template_path = "res://addons/concept_graph/examples/templates/stairs_simple.cgraph"
-"Template/Steps count" = 5.0
+"Template/Steps count" = 7.0
 "Template/Step height" = 0.5
-"Template/Step length" = 0.5
+"Template/Step length" = 0.738
 
 [node name="Input" type="Spatial" parent="Stairs"]
 script = ExtResource( 3 )
@@ -107,56 +127,134 @@ mesh = SubResource( 1 )
 material/0 = ExtResource( 5 )
 material/1 = ExtResource( 4 )
 
+[node name="StaticBody" type="StaticBody" parent="Stairs/Output/Step"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Stairs/Output/Step/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.025 )
+shape = SubResource( 4 )
+
 [node name="Step2" type="Spatial" parent="Stairs/Output" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.738 )
 
 [node name="Cube" type="MeshInstance" parent="Stairs/Output/Step2"]
 mesh = SubResource( 1 )
 material/0 = ExtResource( 5 )
 material/1 = ExtResource( 4 )
 
+[node name="StaticBody" type="StaticBody" parent="Stairs/Output/Step2"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Stairs/Output/Step2/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.025 )
+shape = SubResource( 4 )
+
 [node name="Step3" type="Spatial" parent="Stairs/Output" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.476 )
 
 [node name="Cube" type="MeshInstance" parent="Stairs/Output/Step3"]
 mesh = SubResource( 1 )
 material/0 = ExtResource( 5 )
 material/1 = ExtResource( 4 )
 
+[node name="StaticBody" type="StaticBody" parent="Stairs/Output/Step3"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Stairs/Output/Step3/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.025 )
+shape = SubResource( 4 )
+
 [node name="Step4" type="Spatial" parent="Stairs/Output" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 2.214 )
 
 [node name="Cube" type="MeshInstance" parent="Stairs/Output/Step4"]
 mesh = SubResource( 1 )
 material/0 = ExtResource( 5 )
 material/1 = ExtResource( 4 )
 
+[node name="StaticBody" type="StaticBody" parent="Stairs/Output/Step4"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Stairs/Output/Step4/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.025 )
+shape = SubResource( 4 )
+
 [node name="Step5" type="Spatial" parent="Stairs/Output" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2.952 )
 
 [node name="Cube" type="MeshInstance" parent="Stairs/Output/Step5"]
 mesh = SubResource( 1 )
 material/0 = ExtResource( 5 )
 material/1 = ExtResource( 4 )
 
+[node name="StaticBody" type="StaticBody" parent="Stairs/Output/Step5"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Stairs/Output/Step5/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.025 )
+shape = SubResource( 4 )
+
+[node name="Step6" type="Spatial" parent="Stairs/Output" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 3.69 )
+
+[node name="Cube" type="MeshInstance" parent="Stairs/Output/Step6"]
+mesh = SubResource( 1 )
+material/0 = ExtResource( 5 )
+material/1 = ExtResource( 4 )
+
+[node name="StaticBody" type="StaticBody" parent="Stairs/Output/Step6"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Stairs/Output/Step6/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.025 )
+shape = SubResource( 4 )
+
+[node name="Step7" type="Spatial" parent="Stairs/Output" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 4.428 )
+
+[node name="Cube" type="MeshInstance" parent="Stairs/Output/Step7"]
+mesh = SubResource( 1 )
+material/0 = ExtResource( 5 )
+material/1 = ExtResource( 4 )
+
+[node name="StaticBody" type="StaticBody" parent="Stairs/Output/Step7"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Stairs/Output/Step7/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.025 )
+shape = SubResource( 4 )
+
 [node name="PathTmp" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0875721 )
+visible = false
 script = ExtResource( 2 )
 template_path = "res://addons/concept_graph/examples/templates/curves_tmp.cgraph"
-Template/Steps = 8.0
 Template/Factor = 2.0
+Template/Steps = 4.0
 
 [node name="Input" type="Spatial" parent="PathTmp"]
 script = ExtResource( 3 )
 
 [node name="Box" type="Spatial" parent="PathTmp/Input"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.660277, 0.664945, 0.182905 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0128587, 1.31898, 0.240405 )
 script = ExtResource( 7 )
-size = Vector3( 8.49691, 1.3409, 7.41218 )
+size = Vector3( 9.84318, 2.64897, 9.5329 )
 
 [node name="Output" type="Spatial" parent="PathTmp"]
 
 [node name="CSGPolygon" type="CSGPolygon" parent="PathTmp/Output"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.660277, -0.0055027, 0.182905 )
-polygon = PoolVector2Array( -4.24845, -3.70609, -3.98038, -3.8407, -3.70905, -3.9686, -3.41926, -4.05573, -3.16246, -4.21582, -2.85122, -4.2578, -2.56813, -4.12179, -2.29575, -3.98669, -1.99612, -3.93503, -1.72178, -4.04389, -1.48512, -4.22025, -1.1937, -4.24816, -0.904633, -4.2945, -0.632246, -4.40946, -0.36682, -4.53969, -0.230175, -4.80844, 0, -5.00316, 0.279077, -4.90457, 0.557354, -4.80374, 0.840252, -4.7139, 1.13342, -4.66749, 1.4223, -4.74827, 1.7221, -4.73863, 1.99071, -4.87705, 2.29174, -4.9033, 2.50647, -4.70548, 2.73701, -4.52635, 3.00362, -4.40516, 3.28749, -4.33312, 3.43668, -4.06822, 3.69273, -3.90429, 3.98443, -3.84399, 4.24845, -3.70609, 4.12941, -3.46865, 3.89572, -3.34242, 3.86766, -3.08361, 3.72654, -2.86486, 3.68789, -2.61352, 3.67005, -2.35985, 3.53507, -2.14458, 3.3968, -1.9314, 3.51008, -1.70575, 3.64221, -1.49059, 3.69061, -1.24291, 3.75339, -0.998476, 3.69882, -0.750729, 3.68593, -0.497369, 3.7289, -0.24822, 3.77694, 0, 3.8559, 0.252648, 4.03141, 0.450801, 4.09858, 0.713609, 4.00367, 0.967721, 4.30485, 1.3635, 4.57417, 1.78161, 4.39919, 1.9798, 4.37386, 2.24297, 4.3238, 2.49928, 4.41411, 2.74432, 4.25976, 3.21289, 4.24845, 3.70609, 3.95941, 3.62209, 3.66264, 3.67239, 3.38458, 3.76864, 3.09515, 3.82166, 2.90548, 4.05119, 2.73789, 4.2973, 2.49873, 4.48305, 2.20793, 4.56751, 1.9472, 4.45889, 1.66909, 4.40959, 1.39807, 4.33275, 1.11817, 4.301, 0.84845, 4.39724, 0.562295, 4.38592, 0.281472, 4.41891, 0, 4.39201, -0.253262, 4.25306, -0.474629, 4.06747, -0.686621, 3.87062, -0.936963, 3.72564, -1.22509, 3.61545, -1.53047, 3.65913, -1.77227, 3.48364, -2.00213, 3.29278, -2.24234, 3.46928, -2.49671, 3.62469, -2.79591, 3.64087, -3.08432, 3.72212, -3.3614, 3.85721, -3.66869, 3.88167, -3.96955, 3.83012, -4.24845, 3.70609, -4.35778, 3.46499, -4.49737, 3.24006, -4.65002, 3.01609, -4.88508, 2.88114, -5.12325, 2.74801, -5.24749, 2.50508, -5.37805, 2.27715, -5.55457, 2.08263, -5.46735, 1.8165, -5.45681, 1.53663, -5.36224, 1.27512, -5.2305, 1.03022, -5.32768, 0.77257, -5.4168, 0.512025, -5.46695, 0.235766, -5.61942, 0, -5.73484, -0.259108, -5.68418, -0.538199, -5.63316, -0.810608, -5.47536, -1.03845, -5.46693, -1.31938, -5.34835, -1.5742, -5.5023, -1.80862, -5.55728, -2.08363, -5.33656, -2.24399, -5.24392, -2.5006, -5.0391, -2.67394, -4.9362, -2.92175, -4.75865, -3.12853, -4.67769, -3.38877, -4.47455, -3.56296, -4.24845, -3.70609 )
-depth = 1.3409
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.0128587, -0.00550497, 0.240405 )
+polygon = PoolVector2Array( -4.92159, -4.76645, -4.29672, -5.07055, -3.66353, -5.35694, -2.97503, -5.24801, -2.31239, -5.03166, -1.72042, -5.36207, -1.04797, -5.44808, -0.42494, -5.73212, 0, -6.26903, 0.645663, -6.03801, 1.313, -5.88018, 1.99495, -5.96259, 2.65485, -6.15335, 3.17067, -5.71668, 3.80836, -5.49282, 4.27781, -4.99605, 4.92159, -4.76645, 4.46793, -4.29872, 4.25034, -3.68453, 4.1777, -3.03503, 3.82627, -2.484, 4.14189, -1.91707, 4.28489, -1.28415, 4.19812, -0.639673, 4.31517, 0, 4.64244, 0.579781, 4.60678, 1.2446, 4.99412, 1.75362, 5.3405, 2.29135, 5.08288, 2.88471, 5.13464, 3.52951, 4.93613, 4.13213, 4.92159, 4.76645, 4.24295, 4.72741, 3.58556, 4.90033, 3.17169, 5.45133, 2.55776, 5.76435, 1.93354, 5.58141, 1.29534, 5.45562, 0.651387, 5.55399, 0, 5.56104, -0.54983, 5.18508, -1.08542, 4.7891, -1.77296, 4.71205, -2.31935, 4.28766, -2.8923, 4.67215, -3.57301, 4.78502, -4.24997, 4.96985, -4.92159, 4.76645, -5.24173, 4.16709, -5.74036, 3.70547, -6.20647, 3.22182, -6.6014, 2.6785, -6.47568, 1.97628, -6.18462, 1.32497, -6.42421, 0.658522, -6.68481, 0, -6.76809, -0.692185, -6.49953, -1.33556, -6.33618, -2.0246, -6.60488, -2.67979, -6.20187, -3.21605, -5.80611, -3.7577, -5.47363, -4.35834, -4.92159, -4.76645 )
+depth = 2.64897
+
+[node name="Tree" type="Spatial" parent="."]
+script = ExtResource( 2 )
+template_path = "res://addons/concept_graph/examples/templates/tree_v1.cgraph"
+"Template/Trunk profile" = SubResource( 5 )
+
+[node name="Input" type="Spatial" parent="Tree"]
+script = ExtResource( 3 )
+
+[node name="Trunk" type="Path" parent="Tree/Input"]
+curve = SubResource( 6 )
+script = ExtResource( 8 )
+
+[node name="Output" type="Spatial" parent="Tree"]
+
+[node name="PolygonPath" type="Spatial" parent="."]
+script = ExtResource( 9 )
+polygon_resolution = 1.0
+curve = SubResource( 8 )
