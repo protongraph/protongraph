@@ -58,7 +58,8 @@ func _find_all_nodes(path) -> void:
 		var full_path = path_root + file
 
 		var node = load(full_path).new()
-		var name = node.node_title
+		var name = node.display_name
+		var id = node.unique_id
 		print("Loaded ", name, " (", file, ")")
 
 		# ConceptNode is abstract, don't add it to the list
@@ -69,8 +70,8 @@ func _find_all_nodes(path) -> void:
 		if node.has_custom_gui():
 			node = load(path_root + file.replace(".gd", ".tscn")).instance()
 
-		if _nodes.has(name):
-			print("Warning: Node title ", name, " has duplicates ", full_path)
+		if _nodes.has(id):
+			print("Warning: Node ", name, " has duplicate id ", full_path)
 		else:
-			_nodes[name] = node
+			_nodes[id] = node
 	dir.list_dir_end()

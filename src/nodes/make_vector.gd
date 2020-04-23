@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Make vector"
+	unique_id = "value_vector3"
+	display_name = "Make vector"
 	category = "Vectors"
 	description = "A vector constant"
 

@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Rotate"
+	unique_id = "rotate_transforms_random"
+	display_name = "Rotate"
 	category = "Nodes/Operations"
 	description = "Applies a random rotation to a set of nodes"
 

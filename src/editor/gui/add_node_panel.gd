@@ -46,8 +46,9 @@ func _refresh_concept_nodes_list() -> void:
 	for node in nodes.values():
 		var item_parent = _get_or_create_category(node.category)
 		var item = _node_tree.create_item(item_parent)
-		item.set_text(0, node.node_title)
+		item.set_text(0, node.display_name)
 		item.set_tooltip(0, node.description)
+		item.set_metadata(0, node.unique_id)
 
 
 func _get_or_create_category(category: String) -> TreeItem:
@@ -99,8 +100,8 @@ func _on_nothing_selected() -> void:
 
 
 func _on_item_activated() -> void:
-	var node_name = _node_tree.get_selected().get_text(0)
-	var node = _node_library.get_list()[node_name]
+	var node_id = _node_tree.get_selected().get_metadata(0)
+	var node = _node_library.get_list()[node_id]
 	emit_signal("create_node", node)
 	_hide_panel()
 

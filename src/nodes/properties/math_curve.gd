@@ -4,7 +4,8 @@ extends ConceptNode
 var default: Curve
 
 func _init() -> void:
-	node_title = "Curve property"
+	unique_id = "inspector_curve_2d"
+	display_name = "Curve property"
 	category = "Inspector properties"
 	description = "Expose a 2D curve value to the inspector"
 

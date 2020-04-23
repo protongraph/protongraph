@@ -10,7 +10,8 @@ var _resolution := 0.2 #tmp
 
 
 func _init() -> void:
-	node_title = "Exclude from noise"
+	unique_id = "exclude_points_from_noise"
+	display_name = "Exclude from noise"
 	category = "Nodes/Operations"
 	description = "Discard all the points with a corresponding noise value above a given threshold"
 

@@ -7,7 +7,8 @@ Generates a curve object made of a single line
 
 
 func _init() -> void:
-	node_title = "Make line curve"
+	unique_id = "curve_generator_line"
+	display_name = "Make line curve"
 	category = "Curves/Generators"
 	description = "Creates a line curve"
 

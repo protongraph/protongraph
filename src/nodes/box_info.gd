@@ -7,7 +7,8 @@ Returns the size and center of a box
 
 
 func _init() -> void:
-	node_title = "Box info"
+	unique_id = "expose_box_info"
+	display_name = "Box info"
 	category = "Boxes"
 	description = "Exposes the size and center of a box"
 

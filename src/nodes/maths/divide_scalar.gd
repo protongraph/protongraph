@@ -7,7 +7,8 @@ Returns the size and center of a box
 
 
 func _init() -> void:
-	node_title = "Divide scalars"
+	unique_id = "math_scalar_divide"
+	display_name = "Divide scalars"
 	category = "Maths/Scalars"
 	description = "Divide a scalar by another scalar"
 

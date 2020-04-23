@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Mesh properties"
+	unique_id = "edit_mesh_property"
+	display_name = "Mesh properties"
 	category = "Meshes"
 	description = "Expose the internal properties of the CSG mesh"
 

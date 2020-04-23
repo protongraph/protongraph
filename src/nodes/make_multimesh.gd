@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Make MultiMesh"
+	unique_id = "make_multimesh"
+	display_name = "Make MultiMesh"
 	category = "Nodes/Instancers"
 	description = "Makes a MultiMeshInstance from a single mesh and a list of transforms"
 

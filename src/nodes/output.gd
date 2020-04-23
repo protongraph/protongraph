@@ -7,7 +7,8 @@ This node marks the end of every ConceptNodeTemplate. Only one per template.
 
 
 func _init() -> void:
-	node_title = "Output"
+	unique_id = "final_output"
+	display_name = "Output"
 	category = "Hidden"
 	description = "The final node of any template"
 

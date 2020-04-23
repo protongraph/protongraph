@@ -9,7 +9,8 @@ curve.
 
 
 func _init() -> void:
-	node_title = "Tesselate curve (Uniform)"
+	unique_id = "curve_tesselate_regular"
+	display_name = "Tesselate curve (Uniform)"
 	category = "Curves/Conversion"
 	description = "Creates a polygon curve with the same density along the curve"
 

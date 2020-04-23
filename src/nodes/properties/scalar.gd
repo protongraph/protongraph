@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Scalar property"
+	unique_id = "inspector_scalar"
+	display_name = "Scalar property"
 	category = "Inspector properties"
 	description = "Expose a Scalar value to the inspector"
 

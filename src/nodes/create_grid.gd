@@ -7,7 +7,8 @@ Generates a list of transforms aligned to a grid in a 3D volume
 
 
 func _init() -> void:
-	node_title = "Create point grid"
+	unique_id = "create_point_grid"
+	display_name = "Create point grid"
 	category = "Nodes/Generators"
 	description = "Generates a list of transforms aligned to a grid in a 3D volume"
 

@@ -8,7 +8,8 @@ Apply the midpoint displacement algorithm to a curve. Useful to randomize an exi
 var _rng: RandomNumberGenerator
 
 func _init() -> void:
-	node_title = "Midpoint displacement"
+	unique_id = "curve_midpoint_displacement"
+	display_name = "Midpoint displacement"
 	category = "Curves/Operations"
 	description = "Randomize a curve using midpoint displacement. This creates new points in the curve."
 

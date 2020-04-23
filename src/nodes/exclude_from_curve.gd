@@ -7,7 +7,8 @@ Discard all the nodes inside (or outside) the provided curves
 
 
 func _init() -> void:
-	node_title = "Exclude from curves"
+	unique_id = "exclude_points_from_curve"
+	display_name = "Exclude from curves"
 	category = "Nodes/Operations"
 	description = "Discard all the nodes inside (or outside) the provided curves"
 

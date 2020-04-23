@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Simplex Noise"
+	unique_id = "simplex_noise"
+	display_name = "Simplex Noise"
 	category = "Noise"
 	description = "Create an OpenSimplexNoise to be used by other nodes"
 

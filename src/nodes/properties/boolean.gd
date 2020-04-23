@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Boolean property"
+	unique_id = "inspector_bool"
+	display_name = "Boolean property"
 	category = "Inspector properties"
 	description = "Expose a Boolean value to the inspector"
 

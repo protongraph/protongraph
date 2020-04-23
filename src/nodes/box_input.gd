@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Box input"
+	unique_id = "input_box"
+	display_name = "Box input"
 	category = "Boxes"
 	description = "Expose one or multiple boxes from the editor to the graph"
 

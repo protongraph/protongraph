@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Scalar"
+	unique_id = "value_scalar"
+	display_name = "Scalar"
 	category = "Inputs"
 	description = "Returns a number"
 

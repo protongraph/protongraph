@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Break Vector"
+	unique_id = "break_vector"
+	display_name = "Break Vector"
 	category =  "Vectors"
 	description = "Exposes a Vector (x,y,z) components"
 

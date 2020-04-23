@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Smooth curve"
+	unique_id = "curve_smooth"
+	display_name = "Smooth curve"
 	category = "Curves/Operations"
 	description = "Smooth a curve path"
 

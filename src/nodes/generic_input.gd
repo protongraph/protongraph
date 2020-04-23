@@ -10,7 +10,8 @@ var _input_name: LineEdit
 
 
 func _init() -> void:
-	node_title = "Generic input"
+	unique_id = "input_generic"
+	display_name = "Generic input"
 	category = "Inputs"
 	description = "References a child node with the same name from the ConceptGraph"
 

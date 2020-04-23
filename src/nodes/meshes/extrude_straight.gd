@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Extrude polygon curve"
+	unique_id = "extrude_curve_straight"
+	display_name = "Extrude polygon curve"
 	category = "Meshes"
 	description = "Creates extruded CSG meshes defined by one or multiple polygon curve"
 

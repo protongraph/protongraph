@@ -13,7 +13,8 @@ signal node_changed
 signal connection_changed
 signal input_changed
 
-var node_title := "ConceptNode"
+var unique_id := "concept_node"
+var display_name := "ConceptNode"
 var category := "No category"
 var description := "A brief description of the node functionality"
 
@@ -306,7 +307,7 @@ func _generate_default_gui() -> void:
 		remove_child(box)
 		box.queue_free()
 	_hboxes = []
-	title = node_title
+	title = display_name
 	resizable = false
 	show_close = true
 	rect_min_size = Vector2(0.0, 0.0)

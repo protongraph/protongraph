@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Extrude along curve"
+	unique_id = "extrude_bevel_along_path"
+	display_name = "Extrude along curve"
 	category = "Meshes"
 	description = "Extrudes a curve along another curve to create a pipe-like mesh"
 

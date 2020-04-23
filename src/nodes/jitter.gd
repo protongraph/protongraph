@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Jitter"
+	unique_id = "offset_transforms_random"
+	display_name = "Jitter"
 	category = "Nodes/Operations"
 	description = "Applies a random offset to each transforms"
 

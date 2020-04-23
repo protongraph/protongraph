@@ -46,7 +46,7 @@ Creates a node using the provided model and add it as child which makes it visib
 from the Concept Graph Editor
 """
 func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
-	if node.node_title == "Output":
+	if node.unique_id == "final_output":
 		if _output_node:
 			return null # Only one output node per template
 		else:
@@ -74,7 +74,7 @@ func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
 
 
 func delete_node(node) -> void:
-	if node.node_title == "Output":
+	if node.unique_id == "final_output":
 		return
 	_disconnect_node_signals(node)
 	_disconnect_active_connections(node)
@@ -205,7 +205,7 @@ func load_from_file(path: String) -> void:
 		var node_instance = node_list[type]
 		var node = create_node(node_instance, node_data, false)
 
-		if node.node_title == "Output":
+		if node.unique_id == "final_output":
 			_output_node = node
 
 	for c in graph["connections"]:
@@ -224,7 +224,7 @@ func save_to_file(path: String) -> void:
 		if c is ConceptNode:
 			var node = {}
 			node["name"] = c.get_name()
-			node["type"] = c.node_title
+			node["type"] = c.unique_id
 			node["editor"] = c.export_editor_data()
 			node["data"] = c.export_custom_data()
 			graph["nodes"].append(node)

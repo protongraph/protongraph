@@ -111,7 +111,7 @@ func replay_simulation() -> void:
 
 func _show_node_dialog(position: Vector2) -> void:
 	_node_dialog.set_global_position(position)
-	_node_dialog.visible = true
+	_node_dialog.popup()
 
 
 func _hide_node_dialog() -> void:

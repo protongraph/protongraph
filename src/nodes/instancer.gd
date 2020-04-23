@@ -7,7 +7,8 @@ Instanciate a node in the graph
 
 
 func _init() -> void:
-	node_title = "Node Instancer"
+	unique_id = "node_instancer"
+	display_name = "Node Instancer"
 	category = "Nodes/Instancers"
 	description = "Creates a node instance in the graph"
 

@@ -7,7 +7,8 @@ Generates a curve made of 4 points to make a rectangle
 
 
 func _init() -> void:
-	node_title = "Make rectangle curve"
+	unique_id = "curve_generator_square"
+	display_name = "Make rectangle curve"
 	category = "Curves/Generators"
 	description = "Creates a line curve"
 

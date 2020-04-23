@@ -21,7 +21,7 @@ func _on_load_template_request() -> void:
 	_file_dialog.window_title = _load_title
 	_file_dialog.mode = FileDialog.MODE_OPEN_FILE
 	_file_dialog.current_file = ""
-	_file_dialog.visible = true
+	_file_dialog.popup_centered()
 
 
 func _on_create_template_request() -> void:
@@ -29,7 +29,7 @@ func _on_create_template_request() -> void:
 	_file_dialog.window_title = _save_title
 	_file_dialog.mode = FileDialog.MODE_SAVE_FILE
 	_file_dialog.current_file = _default_file_suggestion
-	_file_dialog.visible = true
+	_file_dialog.popup_centered()
 
 
 func _on_file_selected(path: String) -> void:

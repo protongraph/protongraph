@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Vector property"
+	unique_id = "inspector_vector3"
+	display_name = "Vector property"
 	category = "Inspector properties"
 	description = "Expose a Vector3 value to the inspector"
 

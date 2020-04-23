@@ -8,7 +8,8 @@ This does not preserve the in / out positions of each controls.
 
 
 func _init() -> void:
-	node_title = "Tesselate curve (Exact)"
+	unique_id = "curve_tesselate_exact"
+	display_name = "Tesselate curve (Exact)"
 	category = "Curves/Conversion"
 	description = "Creates a polygon curve from the curve control points only"
 

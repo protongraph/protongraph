@@ -7,7 +7,8 @@ DEBUG NODE : Show all input colors at once
 
 
 func _init() -> void:
-	node_title = "Palette"
+	unique_id = "debug_color_palette"
+	display_name = "Palette"
 	category = "Debug"
 	description = "Show all input colors at once"
 

@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "String property"
+	unique_id = "inspector_string"
+	display_name = "String property"
 	category = "Inspector properties"
 	description = "Expose a String value to the inspector"
 

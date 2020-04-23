@@ -14,7 +14,8 @@ var _calculated = false
 
 
 func _init() -> void:
-	node_title = "Curve Info"
+	unique_id = "expose_curve_info"
+	display_name = "Curve Info"
 	category = "Curves"
 	description = "Exposes the BoundingBox and the Center position of a curve"
 

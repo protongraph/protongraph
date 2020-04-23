@@ -3,7 +3,8 @@ extends ConceptNode
 
 
 func _init() -> void:
-	node_title = "Offset"
+	unique_id = "offset_transform_constant"
+	display_name = "Offset"
 	category = "Nodes/Operations"
 	description = "Applies an offset to a set of nodes"
 
