@@ -22,9 +22,14 @@ func get_output(idx: int) -> Array:
 		return curves
 
 	if input is Path:
-		curves.append(input)
+		curves.append(duplicate_path(input))
 	for c in input.get_children():
 		if c is Path:
-			curves.append(c)
+			curves.append(duplicate_path(c))
 
 	return curves
+
+func duplicate_path(path: Path) -> Path:
+	var res = Path.new()
+	res.curve = path.curve.duplicate()
+	return res

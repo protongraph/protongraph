@@ -175,6 +175,9 @@ func is_node_connected_to_input(node: GraphNode, idx: int) -> bool:
 	return false
 
 
+"""
+Opens a cgraph file, reads its contents and recreate a node graph from there
+"""
 func load_from_file(path: String) -> void:
 	if not node_library or not path or path == "":
 		return
@@ -198,10 +201,10 @@ func load_from_file(path: String) -> void:
 
 		var type = node_data["type"]
 		if not node_list.has(type):
-			print("Error: Node type ", type, " could not be found. Aborting template loading.")
-			clear()
-			return
+			print("Error: Node type ", type, " could not be found.")
+			continue
 
+		# Get a graph node from the node_library and use it as a model
 		var node_instance = node_list[type]
 		var node = create_node(node_instance, node_data, false)
 
@@ -209,6 +212,7 @@ func load_from_file(path: String) -> void:
 			_output_node = node
 
 	for c in graph["connections"]:
+		# TODO: convert the to/from ports stored in file to actual port
 		connect_node(c["from"], c["from_port"], c["to"], c["to_port"])
 		get_node(c["to"]).emit_signal("connection_changed")
 
@@ -217,6 +221,7 @@ func load_from_file(path: String) -> void:
 
 func save_to_file(path: String) -> void:
 	var graph := {}
+	# TODO : Convert the connection_list to an ID connection list
 	graph["connections"] = get_connection_list()
 	graph["nodes"] = []
 

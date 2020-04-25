@@ -28,7 +28,7 @@ func get_output(idx: int) -> Curve:
 	for i in range(count + 1):
 		var v = Vector3.ZERO
 		v.x = cos(angle_offset * i)
-		v.z = sin(angle_offset * i)
+		v.y = sin(angle_offset * i)
 		v *= radius
 		curve.add_point(v)
 

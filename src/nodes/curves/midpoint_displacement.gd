@@ -26,34 +26,35 @@ func _init() -> void:
 
 
 func get_output(idx: int) -> Path:
-	var path = get_input(0)
+	var res = []
+	var paths = get_input(0)
 
-	if not path:
+	if not paths:
 		return null
-	if path is Array:
-		if path.size() > 0:
-			return path
-		path = path[0]
+	if not paths is Array:
+		paths = [paths]
 
 	var random_seed: int = get_input(1, 0)
 	_rng = RandomNumberGenerator.new()
 	_rng.seed = random_seed
 
-	var steps: int = get_input(2, 1)
-	var factor: float = get_input(3, 1.0)
-	var attenuation: float = 1.0 - (get_input(4, 50.0) / 100.0)
+	for path in paths:
+		var steps: int = get_input(2, 1)
+		var factor: float = get_input(3, 1.0)
+		var attenuation: float = 1.0 - (get_input(4, 50.0) / 100.0)
 
-	for i in range(steps):
-		var initial_count = path.curve.get_point_count()
+		for i in range(steps):
+			var initial_count = path.curve.get_point_count()
 
-		path = _displace(path, factor)
-		factor *= attenuation
+			path = _displace(path, factor)
+			factor *= attenuation
 
-		if path.curve.get_point_count() == initial_count:
-			# Nothing happened, min size was reached on every segments
-			break
+			if path.curve.get_point_count() == initial_count:
+				# Nothing happened, min size was reached on every segments
+				break
+		res.append(path)
 
-	return path
+	return res
 
 
 func _displace(path: Path, factor: float) -> Path:

@@ -17,10 +17,10 @@ func _init() -> void:
 
 func get_output(idx: int) -> Array:
 	var result = []
-	var bevel = get_input(0)
-	var paths = get_input(1, 1.0)
-	var taper: Curve = get_input(2)
-	var resolution: float = get_input(3, 1.0)
+	var bevel = get_input(0)	# We extrude this
+	var paths = get_input(1, 1.0)	# following this
+	var taper: Curve = get_input(2)	# and vary its scale at each step based on this
+	var resolution: float = get_input(3, 1.0)	# at this interval
 
 	if not bevel or not paths:
 		return result
@@ -32,23 +32,36 @@ func get_output(idx: int) -> Array:
 		return result
 
 	for path in paths:
-		var surface_tool = SurfaceTool.new()
+		var surface_tool := SurfaceTool.new()
 		surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES);
 		surface_tool.add_smooth_group(true)
 
 		var curve: Curve3D = path.curve
-		var length = curve.get_baked_length()
-		var steps = floor(length / resolution)
-		var offset = length / steps
-		var bevel_count = bevel.points.size()
+		var length: float = curve.get_baked_length()
+		var steps: int = floor(length / resolution)
+		var offset: float = length / steps
+		var bevel_count: int = bevel.points.size()
 
 		for i in range(steps + 1):
-			var position_on_curve = curve.interpolate_baked(i * offset)
+			var current_offset: float = i * offset
+			var position_on_curve: Vector3 = curve.interpolate_baked(current_offset)
+
+			var position_2: Vector3
+			if current_offset + 0.1 < length:
+				position_2 = curve.interpolate_baked(current_offset + 0.1)
+			else:
+				position_2 = curve.interpolate_baked(current_offset - 0.1)
+				position_2 += (position_on_curve - position_2) * 2.0
+
 			var taper_size = taper.interpolate_baked(float(i) / float(steps))
+			var node = Spatial.new()
+
 
 			for j in range(bevel_count):
-				var pos = taper_size * bevel.points[j] + position_on_curve # TODO : do a proper transform
-				# TODO: Scale according to taper
+				node.look_at_from_position(position_on_curve, position_2, Vector3(0, 1, 0))
+				var pos = taper_size * bevel.points[j]
+				pos = node.transform.xform(pos)
+
 				surface_tool.add_color(Color(1, 1, 1, 1));
 				surface_tool.add_vertex(pos)
 

@@ -56,7 +56,7 @@ func get_output(idx: int) -> Array:
 		for i in range(steps):
 			var offset = offset_start + (i / (steps - 1)) * effective_length
 			var pos = curve.interpolate_baked(offset)
-			pos = p.global_transform.xform(pos)
+			pos = p.transform.xform(pos)
 
 			var node = Position3D.new()
 			node.translate(pos)
@@ -65,13 +65,11 @@ func get_output(idx: int) -> Array:
 				var pos2
 				if offset + 0.05 < length:
 					pos2 = curve.interpolate_baked(offset + 0.05)
-					pos2 = p.global_transform.xform(pos2)
+					pos2 = p.transform.xform(pos2)
 				else:
 					pos2 = curve.interpolate_baked(offset - 0.05)
-					pos2 = p.global_transform.xform(pos2)
+					pos2 = p.transform.xform(pos2)
 					pos2 += 2.0 * (pos - pos2)
-
-
 
 				node.look_at_from_position(pos, pos2, Vector3(0, 1, 0))
 
