@@ -76,12 +76,12 @@ func disable_template_editor() -> void:
 				c.queue_free()
 		return
 
-	_template_parent.remove_child(template)
-	graph.add_child(template)
-
 	template.disconnect("graph_changed", self, "_on_graph_changed")
 	template.disconnect("popup_request", self, "_show_node_dialog")
 	graph.disconnect("template_path_changed", self, "_on_load_template")
+
+	_template_parent.remove_child(template)
+	graph.add_child(template)
 
 	_current_template = null
 	_current_graph = null

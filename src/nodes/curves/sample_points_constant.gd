@@ -52,6 +52,7 @@ func get_output(idx: int) -> Array:
 		var offset_end = end * length
 		var effective_length = offset_end - offset_start
 		var steps = floor(effective_length / spacing)
+		var up = Vector3(0, 1, 0)
 
 		for i in range(steps):
 			var offset = offset_start + (i / (steps - 1)) * effective_length
@@ -71,7 +72,8 @@ func get_output(idx: int) -> Array:
 					pos2 = p.transform.xform(pos2)
 					pos2 += 2.0 * (pos - pos2)
 
-				node.look_at_from_position(pos, pos2, Vector3(0, 1, 0))
+				node.look_at_from_position(pos, pos2, up)
+				up = node.transform.basis.y
 
 			res.append(node)
 

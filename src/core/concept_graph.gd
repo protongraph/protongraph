@@ -16,6 +16,7 @@ export(String, FILE, "*.cgraph") var template_path := "" setget set_template_pat
 export var show_result_in_editor_tree := false setget set_show_result
 export var paused := false
 
+var _initialized := false
 var _template: ConceptGraphTemplate
 var _input_root: Node
 var _output_root: Node
@@ -27,11 +28,15 @@ Runs the simulation once so the result is available once the scene is loaded, ot
 the user would have to manually rerun every template in the scene.
 """
 func _enter_tree():
+	if _initialized:
+		return
+
 	if Engine.is_editor_hint():
 		_input_root = _get_or_create_root("Input")
 		_input_root.connect("input_changed", self, "_on_input_changed")
 		_output_root = _get_or_create_root("Output")
 		reload_template()
+		_initialized = true
 
 
 """
@@ -107,10 +112,6 @@ func update_exposed_variables(variables: Array) -> void:
 	property_list_changed_notify()
 
 
-"""
-Short hand to create the _exposed_variablest doesn't exists and load the template file defined in
-template.
-"""
 func reload_template() -> void:
 	if not _template:
 		_template = ConceptGraphTemplate.new()
@@ -150,13 +151,12 @@ func generate(force_full_simulation := false) -> void:
 		_template.clear_simulation_cache()
 
 	var result = _template.get_output()	# Actual simulation happens here
-	if not result:
+	if not result or result.size() == 0:
 		return
 
-	if not result is Array:
-		result = [result]
-
 	for node in result:
+		if not node:
+			continue
 		_output_root.add_child(node)
 		node.set_owner(get_tree().get_edited_scene_root())
 		_set_children_owner(node)

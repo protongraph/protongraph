@@ -56,7 +56,10 @@ Query the parent ConceptGraph node in the editor and returns the corresponding i
 exists
 """
 func get_editor_input(name: String) -> Node:
-	return get_parent().concept_graph.get_input(name)
+	var parent = get_parent()
+	if not parent:
+		return null
+	return parent.concept_graph.get_input(name)
 
 
 """
@@ -175,11 +178,19 @@ func restore_custom_data(data: Dictionary) -> void:
 
 
 func is_input_connected(idx: int) -> bool:
-	return get_parent().is_node_connected_to_input(self, idx)
+	var parent = get_parent()
+	if not parent:
+		return false
+
+	return parent.is_node_connected_to_input(self, idx)
 
 
 func get_input(idx: int, default = null):
-	var input = get_parent().get_left_node(self, idx)
+	var parent = get_parent()
+	if not parent:
+		return default
+
+	var input = parent.get_left_node(self, idx)
 	if input.has("node"):
 		var output = input["node"].get_output(input["slot"])
 		if not output:

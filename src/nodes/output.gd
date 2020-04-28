@@ -16,7 +16,10 @@ func _init() -> void:
 
 
 func get_output(_index: int):
-	return get_input(0)
+	var output = get_input(0)
+	if not output is Array:
+		output = [output]
+	return output
 
 
 func reset() -> void:

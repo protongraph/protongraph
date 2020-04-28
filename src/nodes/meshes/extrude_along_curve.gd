@@ -41,6 +41,7 @@ func get_output(idx: int) -> Array:
 		var steps: int = floor(length / resolution)
 		var offset: float = length / steps
 		var bevel_count: int = bevel.points.size()
+		var up = Vector3(0, 1, 0)
 
 		for i in range(steps + 1):
 			var current_offset: float = i * offset
@@ -53,12 +54,16 @@ func get_output(idx: int) -> Array:
 				position_2 = curve.interpolate_baked(current_offset - 0.1)
 				position_2 += (position_on_curve - position_2) * 2.0
 
-			var taper_size = taper.interpolate_baked(float(i) / float(steps))
+			var taper_size = 1.0
+			if taper:
+				taper_size = taper.interpolate_baked(float(i) / float(steps))
 			var node = Spatial.new()
 
+			node.look_at_from_position(position_on_curve, position_2, up)
+			up = node.transform.basis.y
 
 			for j in range(bevel_count):
-				node.look_at_from_position(position_on_curve, position_2, Vector3(0, 1, 0))
+
 				var pos = taper_size * bevel.points[j]
 				pos = node.transform.xform(pos)
 
