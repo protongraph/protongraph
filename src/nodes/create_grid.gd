@@ -41,6 +41,7 @@ func _generate_output(idx: int) -> Array:
 		for j in range(steps.y):
 			for k in range(steps.z):
 				var p = Position3D.new()
+				register_to_garbage_collection(p)
 				p.transform.origin.x = offset.x * i
 				p.transform.origin.y = offset.y * j
 				p.transform.origin.z = offset.z * k

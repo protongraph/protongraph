@@ -18,6 +18,7 @@ var node_library: ConceptNodeLibrary
 var _output_nodes := [] # of ConceptNodes
 var _selected_node: GraphNode
 var _template_loaded := false
+var _registered_resources := []
 
 
 func _init() -> void:
@@ -40,6 +41,7 @@ func clear() -> void:
 			remove_child(c)
 			c.queue_free()
 	_output_nodes = []
+	run_garbage_collection()
 
 
 """
@@ -238,6 +240,29 @@ func save_to_file(path: String) -> void:
 	file.open(path, File.WRITE)
 	file.store_line(to_json(graph))
 	file.close()
+
+
+"""
+Manual garbage collection handling. Before each generation, we clean everything the graphnodes may
+have created in the process. Because graphnodes hand over their result to the next one, they can't
+handle the removal themselves as they don't know if the resource is still in use or not.
+"""
+func register_to_garbage_collection(resource):
+	_registered_resources.append(weakref(resource))
+
+
+"""
+Iterate over all the registered resources and free them if they still exist
+"""
+func run_garbage_collection():
+	for res in _registered_resources:
+		var resource = res.get_ref()
+		if resource:
+			var parent = resource.get_parent()
+			if parent:
+				parent.remove_child(resource)
+			resource.queue_free()
+	_registered_resources = []
 
 
 func _setup_gui() -> void:

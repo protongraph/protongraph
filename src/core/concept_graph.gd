@@ -137,6 +137,8 @@ func clear_output() -> void:
 		_output_root.remove_child(c)
 		c.queue_free()
 
+	_template.run_garbage_collection()
+
 
 """
 Ask the Template object to go through the node graph and process each nodes until the final
@@ -145,8 +147,9 @@ result is complete.
 func generate(force_full_simulation := false) -> void:
 	if not Engine.is_editor_hint() or paused:
 		return
-
+	print("Memory MB : ", OS.get_static_memory_usage() / (1024 * 1024))
 	clear_output()
+
 	if force_full_simulation:
 		_template.clear_simulation_cache()
 

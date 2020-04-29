@@ -9,11 +9,19 @@ This script parses the node folder to retrieve a list of all the available Conce
 
 var _nodes: Dictionary
 
+func _exit_tree() -> void:
+	clear()
+
 
 func get_list() -> Dictionary:
 	if not _nodes:
 		refresh_list()
 	return _nodes
+
+
+func clear() -> void:
+	for node in _nodes.values():
+		node.queue_free()
 
 
 func create_node(type: String) -> ConceptNode:
@@ -23,8 +31,7 @@ func create_node(type: String) -> ConceptNode:
 
 
 func refresh_list() -> void:
-	for node in _nodes.values():
-		node.queue_free()
+	clear()
 	_nodes = Dictionary()
 
 	# Current folder path points at the root project from here so we can't feed the Directory object

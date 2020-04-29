@@ -17,17 +17,18 @@ var unique_id := "concept_node"
 var display_name := "ConceptNode"
 var category := "No category"
 var description := "A brief description of the node functionality"
+var use_caching := false #true
 
 var _inputs := {}
 var _outputs := {}
 var _cache := {}
 var _hboxes := []
 var _resize_timer := Timer.new()
-var initialized := false
+var _initialized := false
 
 
 func _enter_tree() -> void:
-	if initialized:
+	if _initialized:
 		return
 
 	_generate_default_gui()
@@ -38,7 +39,7 @@ func _enter_tree() -> void:
 	add_child(_resize_timer)
 
 	_connect_signals()
-	initialized = true
+	_initialized = true
 
 
 """
@@ -77,6 +78,9 @@ output node is connected to more than one node. It ensure the results are the sa
 some performance
 """
 func get_output(idx: int):
+	if not use_caching:
+		return _generate_output(idx)
+
 	if not _cache.has(idx):
 		_cache[idx] = _generate_output(idx)
 
@@ -95,7 +99,10 @@ func get_output(idx: int):
 
 func clear_cache() -> void:
 	# Empty the cache to force the node to recalculate its output next time get_output is called
-	_clear_cache()
+	if use_caching:
+		_clear_cache()
+		for data in _cache:
+			data.queue_free()
 	_cache = {}
 
 
@@ -269,6 +276,10 @@ func set_value_from_inspector(_name: String, _value) -> void:
 
 func get_concept_graph():
 	return get_parent().concept_graph
+
+
+func register_to_garbage_collection(resource):
+	get_parent().register_to_garbage_collection(resource)
 
 
 """

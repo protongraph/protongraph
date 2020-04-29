@@ -1,6 +1,9 @@
 tool
 extends ConceptNode
 
+"""
+Extrude a curve along another one at constant intervals.
+"""
 
 func _init() -> void:
 	unique_id = "extrude_bevel_along_path"
@@ -12,6 +15,7 @@ func _init() -> void:
 	set_input(1, "Path curve", ConceptGraphDataType.CURVE)
 	set_input(2, "Taper curve", ConceptGraphDataType.MATH_CURVE)
 	set_input(3, "Resolution", ConceptGraphDataType.SCALAR, {"min": 0.01, "value": 1.0})
+	set_input(4, "Merge all", ConceptGraphDataType.BOOLEAN, {"value": true})
 	set_output(0, "Mesh", ConceptGraphDataType.MESH)
 
 
@@ -31,8 +35,10 @@ func get_output(idx: int) -> Array:
 	if paths.size() == 0:
 		return result
 
+	var surface_tool := SurfaceTool.new()
+
 	for path in paths:
-		var surface_tool := SurfaceTool.new()
+		surface_tool.clear()
 		surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES);
 		surface_tool.add_smooth_group(true)
 

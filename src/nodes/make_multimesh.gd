@@ -30,7 +30,7 @@ func get_output(idx: int) -> MultiMeshInstance:
 		return null
 
 	var mm = _setup_multi_mesh(mesh, count)
-	for i in range(count):
+	for i in count:
 		mm.multimesh.set_instance_transform(i, transforms[i].transform)
 
 	return mm
@@ -38,6 +38,8 @@ func get_output(idx: int) -> MultiMeshInstance:
 
 func _setup_multi_mesh(mesh_instance, count) -> MultiMeshInstance:
 	var mm = MultiMeshInstance.new()
+	register_to_garbage_collection(mm)
+
 	mm.multimesh = MultiMesh.new()
 	mm.material_override = mesh_instance.get_surface_material(0)
 	mm.multimesh.instance_count = 0 # Set this to zero or you can't change the other values
