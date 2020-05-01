@@ -46,6 +46,8 @@ Allows extra connections between different types
 static func setup_valid_connection_types(graph_edit: GraphEdit) -> void:
 	graph_edit.add_valid_connection_type(NODE, MESH)
 	graph_edit.add_valid_connection_type(NODE, CURVE)
+	graph_edit.add_valid_connection_type(NODE, BOX)
+
 
 
 """

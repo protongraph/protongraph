@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "rotate_transforms_random"
-	display_name = "Rotate"
+	display_name = "Rotate random"
 	category = "Nodes/Operations"
 	description = "Applies a random rotation to a set of nodes"
 
@@ -15,17 +15,13 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func get_output(idx: int) -> Spatial:
-	var nodes = get_input(0)
-	var amount = get_input(1)
-	var input_seed = get_input(2)
+func _generate_output(idx: int) -> Array:
+	var nodes := get_input(0)
+	var amount: Vector3 = get_input_single(1, Vector3.ONE)
+	var input_seed: int = get_input_single(2, 0)
 
-	if not nodes:
-		return null
-	if not amount:
-		amount = Vector3.ONE
-	if not input_seed:
-		input_seed = 0
+	if not nodes or nodes.size() == 0:
+		return nodes
 
 	var rand = RandomNumberGenerator.new()
 	rand.seed = input_seed

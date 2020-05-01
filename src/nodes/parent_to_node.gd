@@ -36,22 +36,16 @@ func _ready() -> void:
 	add_child(_btn_container)
 
 
-func get_output(idx: int) -> Spatial:
-	if idx != 0:
-		return null	# Wrong index
+func _generate_output(idx: int) -> Spatial:
+	var parent = get_input_single(0)
 
-	var parent = get_input(0)
 	if not parent:
-		return null	# Source didn't provide a valid parent
-	if parent is Array and parent.size() >= 1:
-		parent = parent[0]
+		return null
 
 	for i in range(1, _children_count + 1):
 		var children = get_input(i)
-		if not children:
+		if not children or children.size() == 0:
 			continue
-		if not children is Array:
-			children = [children]
 
 		for c in children:
 			var old_parent = c.get_parent()

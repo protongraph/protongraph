@@ -147,7 +147,7 @@ result is complete.
 func generate(force_full_simulation := false) -> void:
 	if not Engine.is_editor_hint() or paused:
 		return
-	print("Memory MB : ", OS.get_static_memory_usage() / (1024 * 1024))
+	# print("Memory MB : ", OS.get_static_memory_usage() / (1024 * 1024))
 	clear_output()
 
 	if force_full_simulation:

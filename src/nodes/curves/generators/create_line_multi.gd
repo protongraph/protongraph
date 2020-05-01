@@ -19,20 +19,17 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var res = []
-	var length = get_input(0, 1)
-	var centered = get_input(1, false)
-	var axis: Vector3 = get_input(2, Vector3.RIGHT)
+	var length = get_input_single(0, 1)
+	var centered = get_input_single(1, false)
+	var axis: Vector3 = get_input_single(2, Vector3.RIGHT)
 	axis = axis.normalized()
 	var origins = get_input(3)
 	if not origins:
 		return res
-	if not origins is Array:
-		origins = [origins]
 
 	for o in origins:
-
 		var start = Vector3.ZERO
 		var end = axis * length
 		if centered:

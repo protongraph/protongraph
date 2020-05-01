@@ -16,15 +16,19 @@ func _init() -> void:
 	set_input(1, "Center", ConceptGraphDataType.VECTOR)
 	set_input(2, "Density", ConceptGraphDataType.SCALAR, {"step": 0.001, "exp": false})
 	set_input(3, "Fixed density", ConceptGraphDataType.BOOLEAN)
+	set_input(4, "Align with", ConceptGraphDataType.NODE)
+	set_input(5, "Align rotation", ConceptGraphDataType.BOOLEAN)
 	set_output(0, "Transforms", ConceptGraphDataType.NODE)
 
 
 func _generate_output(idx: int) -> Array:
 	var result = []
-	var size: Vector3 = get_input(0, Vector3.ONE)
-	var center: Vector3 = get_input(1, Vector3.ZERO)
-	var density: float = get_input(2, 1.0)
-	var fixed_density: bool = get_input(3, false)
+	var size: Vector3 = get_input_single(0, Vector3.ONE)
+	var center: Vector3 = get_input_single(1, Vector3.ZERO)
+	var density: float = get_input_single(2, 1.0)
+	var fixed_density: bool = get_input_single(3, false)
+	var reference: Spatial = get_input_single(4)
+	var align_rot: bool = get_input_single(5, false)
 
 	var steps := Vector3.ONE
 	steps.x += floor(size.x * density)
@@ -41,11 +45,17 @@ func _generate_output(idx: int) -> Array:
 		for j in range(steps.y):
 			for k in range(steps.z):
 				var p = Position3D.new()
-				register_to_garbage_collection(p)
 				p.transform.origin.x = offset.x * i
 				p.transform.origin.y = offset.y * j
 				p.transform.origin.z = offset.z * k
-				p.transform.origin += ((size) / -2.0) + center
+				p.transform.origin += ((size) / -2.0)
+
+				if reference:
+					p.transform.origin = reference.transform.xform(p.transform.origin)
+					if align_rot:
+						p.transform.basis = reference.transform.basis
+
+				#p.transform.origin += center
 				result.append(p)
 	return result
 

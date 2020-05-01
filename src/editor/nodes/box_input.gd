@@ -8,8 +8,8 @@ signal property_changed
 
 
 export var size := Vector3.ONE setget set_size
-var auto_center := true setget set_auto_center # TODO: implement standard AABB behavior
-var center := Vector3.ZERO setget set_center
+var auto_center := false setget set_auto_center # TODO: implement standard AABB behavior
+export var center := Vector3.ZERO setget set_center
 
 
 func _ready() -> void:
@@ -18,8 +18,8 @@ func _ready() -> void:
 
 
 func _get_property_list() -> Array:
-	if not auto_center:
-		return [{"name": "Center", "type": TYPE_VECTOR3}]
+	#if not auto_center:
+	#	return [{"name": "Center", "type": TYPE_VECTOR3}]
 	return []
 
 
@@ -40,9 +40,10 @@ func set_auto_center(val: bool) -> void:
 
 func set_center(val: Vector3) -> void:
 	center = val
+	property_list_changed_notify()
 	_on_box_changed()
 
 
 func _on_box_changed() -> void:
-	emit_signal("input_changed", self)
+	emit_signal("input_changed", self)	# That tell the ConceptGraph to rerun the simulation
 	emit_signal("property_changed")

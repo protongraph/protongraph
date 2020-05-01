@@ -16,23 +16,18 @@ func _init() -> void:
 	set_output(0, "Noise", ConceptGraphDataType.NOISE)
 
 
-func get_output(idx: int) -> OpenSimplexNoise:
-	var noise := OpenSimplexNoise.new()
-	var input_seed = get_input(0)
-	var octaves = get_input(1)
-	var period = get_input(2)
-	var persistence = get_input(3)
-	var lacunarity = get_input(4)
+func _generate_output(idx: int) -> OpenSimplexNoise:
+	var input_seed: int = get_input_single(0, 0)
+	var octaves: int = get_input_single(1, 3)
+	var period: float = get_input_single(2, 64.0)
+	var persistence: float = get_input_single(3, 0.5)
+	var lacunarity: float = get_input_single(4, 2.0)
 
-	if input_seed:
-		noise.seed = input_seed
-	if octaves:
-		noise.octaves = octaves
-	if period:
-		noise.period = period
-	if persistence:
-		noise.persistence = persistence
-	if lacunarity:
-		noise.lacunarity = lacunarity
+	var noise := OpenSimplexNoise.new()
+	noise.seed = input_seed
+	noise.octaves = octaves
+	noise.period = period
+	noise.persistence = persistence
+	noise.lacunarity = lacunarity
 
 	return noise

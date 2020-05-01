@@ -60,7 +60,13 @@ func get_editor_input(name: String) -> Node:
 	var parent = get_parent()
 	if not parent:
 		return null
-	return parent.concept_graph.get_input(name)
+	var input = parent.concept_graph.get_input(name)
+	if not input:
+		return null
+
+	var input_copy = input.duplicate()
+	register_to_garbage_collection(input_copy)
+	return input_copy
 
 
 """
@@ -77,10 +83,16 @@ This method ensure the output is not calculated more than one time per run. It's
 output node is connected to more than one node. It ensure the results are the same and save
 some performance
 """
-func get_output(idx: int):
+func get_output(idx: int) -> Array:
 	if not use_caching:
-		return _generate_output(idx)
+		var output = _generate_output(idx)
+		if not output is Array:
+			output = [output]
+		for res in output:
+			register_to_garbage_collection(res)
+		return output
 
+	# This doesn't really work for now, ignore that part
 	if not _cache.has(idx):
 		_cache[idx] = _generate_output(idx)
 
@@ -192,7 +204,7 @@ func is_input_connected(idx: int) -> bool:
 	return parent.is_node_connected_to_input(self, idx)
 
 
-func get_input(idx: int, default = null):
+func get_input(idx: int, default = []) -> Array:
 	var parent = get_parent()
 	if not parent:
 		return default
@@ -210,13 +222,24 @@ func get_input(idx: int, default = null):
 	# If no source is connected, check if it's a base type with a value defined on the node itself
 	match _inputs[idx]["type"]:
 		ConceptGraphDataType.BOOLEAN:
-			return _hboxes[idx].get_node("CheckBox").pressed
+			return [_hboxes[idx].get_node("CheckBox").pressed]
 		ConceptGraphDataType.SCALAR:
-			return _hboxes[idx].get_node("SpinBox").value
+			return [_hboxes[idx].get_node("SpinBox").value]
 		ConceptGraphDataType.STRING:
-			return _hboxes[idx].get_node("LineEdit").text
+			return [_hboxes[idx].get_node("LineEdit").text]
 
 	return default # Not a base type and no source connected
+
+
+"""
+By default, every input and output is an array. This is just a short hand with all the necessary
+checks that returns the first value of the input.
+"""
+func get_input_single(idx: int, default = null):
+	var input = get_input(idx)
+	if input == null or input.size() == 0 or not input[0]:
+		return default
+	return input[0]
 
 
 func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void:

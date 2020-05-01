@@ -16,13 +16,13 @@ func _init() -> void:
 	set_output(0, "Mesh", ConceptGraphDataType.MESH)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var result = []
 	var polygon_curves = get_input(0)
-	var depth = get_input(1, 1.0)
-	var material = get_input(2)
-	var use_collision = get_input(3, false)
-	var smooth = get_input(4, true)
+	var depth: float = get_input_single(1, 1.0)
+	var material = get_input_single(2)
+	var use_collision: bool = get_input_single(3, false)
+	var smooth: bool = get_input_single(4, true)
 
 	if not polygon_curves:
 		return result
@@ -48,5 +48,5 @@ func get_output(idx: int) -> Array:
 func _to_pool_vector_2(vectors: PoolVector3Array) -> PoolVector2Array:
 	var res = PoolVector2Array()
 	for v in vectors:
-		res.append(Vector2(v.x, v.z))
+		res.append(Vector2(v.x, v.y))
 	return res

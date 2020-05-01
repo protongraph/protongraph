@@ -17,7 +17,7 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var res = []
 	var curves = get_input(0)
 	if not curves:

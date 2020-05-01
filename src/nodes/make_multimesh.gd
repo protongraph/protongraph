@@ -13,16 +13,12 @@ func _init() -> void:
 	set_output(0, "Multimesh", ConceptGraphDataType.NODE)
 
 
-func get_output(idx: int) -> MultiMeshInstance:
-	var source = get_input(0)
+func _generate_output(idx: int) -> MultiMeshInstance:
+	var source = get_input_single(0)
 	var transforms = get_input(1)
 
-	if not source or not transforms:
+	if not source or not transforms or transforms.size() == 0:
 		return null
-	if source is Array:
-		if source.size() == 0:
-			return null
-		source = source[0]
 
 	var count = transforms.size()
 	var mesh = _get_mesh_from_node(source)
@@ -31,15 +27,15 @@ func get_output(idx: int) -> MultiMeshInstance:
 
 	var mm = _setup_multi_mesh(mesh, count)
 	for i in count:
-		mm.multimesh.set_instance_transform(i, transforms[i].transform)
+		var t = transforms[i]
+		if t:
+			mm.multimesh.set_instance_transform(i, t.transform)
 
 	return mm
 
 
 func _setup_multi_mesh(mesh_instance, count) -> MultiMeshInstance:
 	var mm = MultiMeshInstance.new()
-	register_to_garbage_collection(mm)
-
 	mm.multimesh = MultiMesh.new()
 	mm.material_override = mesh_instance.get_surface_material(0)
 	mm.multimesh.instance_count = 0 # Set this to zero or you can't change the other values

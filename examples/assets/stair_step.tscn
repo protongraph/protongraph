@@ -1,8 +1,9 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/concept_graph/examples/assets/stair_step.glb" type="PackedScene" id=1]
-[ext_resource path="res://addons/concept_graph/examples/assets/m_concrete.tres" type="Material" id=2]
-[ext_resource path="res://addons/concept_graph/examples/assets/m_wood.tres" type="Material" id=3]
+[ext_resource path="res://addons/concept_graph/examples/assets/materials/m_concrete.tres" type="Material" id=2]
+[ext_resource path="res://addons/concept_graph/examples/assets/materials/m_wood.tres" type="Material" id=3]
+
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 1.45, 0.25, 0.525 )

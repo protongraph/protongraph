@@ -18,17 +18,16 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var nodes = get_input(0)
 	var curves = get_input(1)
-	var invert = get_input(2)
+	var invert: bool = get_input_single(2, false)
 	var result = []
 
-	if not curves is Array:
-		curves = [curves]
+	if not curves or curves.size() == 0:
+		return result
 
 	var polygons = ConceptGraphCurveUtil.make_polygons_path(curves)
-
 
 	for node in nodes:
 		var point = Vector2(node.transform.origin.x, node.transform.origin.z)

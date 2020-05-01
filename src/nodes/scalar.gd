@@ -18,5 +18,5 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.SCALAR)
 
 
-func get_output(idx: int) -> float:
-	return get_input(0)
+func _generate_output(idx: int) -> float:
+	return get_input_single(0, 0.0)

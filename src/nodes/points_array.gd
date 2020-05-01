@@ -19,8 +19,8 @@ func _init() -> void:
 
 func _generate_output(idx: int) -> Array:
 	var res = []
-	var count = get_input(0, 0)
-	var offset = get_input(1, Vector3.ONE)
+	var count: int = get_input_single(0, 0)
+	var offset: Vector3 = get_input_single(1, Vector3.ONE)
 
 	for i in range(count):
 		var p = Position3D.new()

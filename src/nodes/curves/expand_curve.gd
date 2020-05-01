@@ -14,13 +14,16 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func get_output(idx: int) -> Path:
-	var path = get_input(0)
-	if not path:
-		return null
-	var curve = path.curve
-	var dist = get_input(1, "1.0")
+func _generate_output(idx: int) -> Array:
+	var res = []
+	var paths: Array = get_input(0)
+	if not paths or paths.size() == 0:
+		return res
 
+	var dist: float = get_input_single(1, 1.0)
 
-	path.curve = curve
-	return path
+	for path in paths:
+		var curve = path.curve
+		# Expand the curve here
+
+	return res

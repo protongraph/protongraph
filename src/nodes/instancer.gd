@@ -16,7 +16,7 @@ func _init() -> void:
 	set_output(0, "Node", ConceptGraphDataType.NODE)
 
 
-func get_output(idx: int) -> Spatial:
-	var type = get_input(0, "Spatial")
+func _generate_output(idx: int) -> Spatial:
+	var type: String = get_input_single(0, "Spatial")
 	# TODO How do I type.new() here? Is it even possible?
 	return Spatial.new()

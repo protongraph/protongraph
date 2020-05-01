@@ -22,16 +22,18 @@ func _ready() -> void:
 	default.add_point(Vector2(1.0, 1.0))
 
 
-func get_output(idx: int):
-	var name = get_input(0)
-	if not name:
-		return get_input(1, default)
+func _generate_output(idx: int):
+	var name: String = get_input_single(0)
+	var value = get_parent().get_value_from_inspector(name)
 
-	return get_parent().get_value_from_inspector(name)
+	if not value:
+		return get_input_single(1, default)
+
+	return value.duplicate()
 
 
 func get_exposed_variables() -> Array:
-	var name = get_input(0)
+	var name: String = get_input_single(0)
 	if not name:
 		return []
 

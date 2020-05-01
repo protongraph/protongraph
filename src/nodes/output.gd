@@ -2,24 +2,21 @@ tool
 extends ConceptNode
 
 """
-This node marks the end of every ConceptNodeTemplate. Only one per template.
+This node marks the end of every ConceptNodeTemplate. A template can have multiple outputs.
 """
 
 
 func _init() -> void:
 	unique_id = "final_output"
 	display_name = "Output"
-	category = "Hidden"
+	category = "Output"
 	description = "The final node of any template"
 
 	set_input(0, "Node", ConceptGraphDataType.NODE)
 
 
-func get_output(_index: int):
-	var output = get_input(0)
-	if not output is Array:
-		output = [output]
-	return output
+func _generate_output(_idx: int):
+	return get_input(0)
 
 
 func reset() -> void:

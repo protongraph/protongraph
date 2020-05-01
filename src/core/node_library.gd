@@ -64,10 +64,11 @@ func _find_all_nodes(path) -> void:
 
 		var full_path = path_root + file
 
+		print("Loading ", name, " (", file, ")")
 		var node = load(full_path).new()
 		var name = node.display_name
 		var id = node.unique_id
-		print("Loaded ", name, " (", file, ")")
+
 
 		# ConceptNode is abstract, don't add it to the list
 		if not (node is ConceptNode) or name == "ConceptNode":

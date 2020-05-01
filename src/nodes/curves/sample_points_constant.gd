@@ -24,21 +24,16 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var res = []
 	var paths = get_input(0)
-	if not paths:
+	if not paths or paths.size() == 0:
 		return res
 
-	if not paths is Array:
-		paths = [paths]
-	elif paths.size() == 0:
-		return res
-
-	var spacing = get_input(1, 1.0) * 0.85 # Magic number to get pixel units from 3D units
-	var start = get_input(2, 0.0)
-	var end = get_input(3, 1.0)
-	var align = get_input(4, false)
+	var spacing: float = get_input_single(1, 1.0) * 0.85 # Magic number to get pixel units from 3D units
+	var start: float = get_input_single(2, 0.0)
+	var end: float = get_input_single(3, 1.0)
+	var align: bool = get_input_single(4, false)
 
 	if start > end:
 		var tmp = start

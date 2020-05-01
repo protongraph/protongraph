@@ -21,7 +21,7 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var res = []
 	var curves = get_input(0)
 	if not curves:
@@ -32,8 +32,8 @@ func get_output(idx: int) -> Array:
 	elif curves.size() == 0:
 		return res
 
-	var resolution = get_input(1, 1.0)
-	var preserve_sharp = get_input(2, false)
+	var resolution = get_input_single(1, 1.0)
+	var preserve_sharp = get_input_single(2, false)
 
 	for c in curves:
 		var curve = c.curve

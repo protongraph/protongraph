@@ -12,10 +12,10 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.BOX)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var boxes = []
 
-	var input_name = get_input(0)
+	var input_name = get_input_single(0)
 	var input = get_editor_input(input_name)
 
 	if not input:

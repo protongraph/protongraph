@@ -25,15 +25,13 @@ func _generate_output(idx: int) -> Array:
 	var result = []
 	var curves = get_input(0)
 
-	if not curves:
+	if not curves or curves.size() == 0:
 		return result
-	if not curves is Array:
-		curves = [curves]
 
-	var height: float = get_input(1, 1.0)
-	var density_x: float = get_input(2, 1.0)
-	var density_y: float = get_input(3, 1.0)
-	var thickness: float = get_input(4, 1.0)
+	var height: float = get_input_single(1, 1.0)
+	var density_x: float = get_input_single(2, 1.0)
+	var density_y: float = get_input_single(3, 1.0)
+	var thickness: float = get_input_single(4, 1.0)
 
 
 	for path in curves:

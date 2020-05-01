@@ -17,16 +17,10 @@ func _init() -> void:
 	set_output(1, "Center", ConceptGraphDataType.VECTOR)
 
 
-func get_output(idx: int) -> Vector3:
+func _generate_output(idx: int) -> Vector3:
 	var boxes = get_input(0)
-	if not boxes:
+	if not boxes or boxes.size() == 0:
 		return Vector3.ZERO
-
-	if not boxes is Array:
-		boxes = [boxes]
-
-	if boxes.size() == 0:
-		return Vector3.ZERO # Empty array
 
 	# Only returns the info about the first box for now
 	match idx:

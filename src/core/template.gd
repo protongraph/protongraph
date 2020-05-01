@@ -248,7 +248,8 @@ have created in the process. Because graphnodes hand over their result to the ne
 handle the removal themselves as they don't know if the resource is still in use or not.
 """
 func register_to_garbage_collection(resource):
-	_registered_resources.append(weakref(resource))
+	if resource is Object:
+		_registered_resources.append(weakref(resource))
 
 
 """
@@ -258,10 +259,13 @@ func run_garbage_collection():
 	for res in _registered_resources:
 		var resource = res.get_ref()
 		if resource:
-			var parent = resource.get_parent()
-			if parent:
-				parent.remove_child(resource)
-			resource.queue_free()
+			if resource is Node:
+				var parent = resource.get_parent()
+				if parent:
+					parent.remove_child(resource)
+				resource.queue_free()
+			else:
+				resource.free()
 	_registered_resources = []
 
 

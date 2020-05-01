@@ -6,7 +6,7 @@ func _init() -> void:
 	unique_id = "offset_transform_constant"
 	display_name = "Offset"
 	category = "Nodes/Operations"
-	description = "Applies an offset to a set of nodes"
+	description = "Applies an constant offset to a set of nodes"
 
 	set_input(0, "Transforms", ConceptGraphDataType.NODE)
 	set_input(1, "Vector", ConceptGraphDataType.VECTOR)
@@ -14,16 +14,13 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func get_output(idx: int) -> Spatial:
+func _generate_output(idx: int) -> Spatial:
 	var nodes = get_input(0)
-	var offset = get_input(1)
-	var negative = get_input(2)
+	var offset: Vector3 = get_input_single(1, Vector3.ZERO)
+	var negative: bool = get_input_single(2, false)
 
-	if not nodes or not offset:
-		return null
-
-	if not nodes is Array:
-		nodes = [nodes]
+	if not nodes or nodes.size() == 0:
+		return nodes
 
 	if negative:
 		offset *= -1

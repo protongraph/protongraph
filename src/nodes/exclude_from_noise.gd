@@ -23,12 +23,12 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var nodes = get_input(0)
-	var noise: OpenSimplexNoise = get_input(1)
-	var threshold = get_input(2)
-	var invert = get_input(3)
-	var local = get_input(4)
+	var noise: OpenSimplexNoise = get_input_single(1)
+	var threshold: float = get_input_single(2, 0.0)
+	var invert: bool = get_input_single(3, false)
+	var local: bool = get_input_single(4, false)
 	var result = []
 
 	for node in nodes:

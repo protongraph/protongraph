@@ -20,24 +20,19 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var res = []
-	var curves = get_input(0)
-	if not curves:
+	var paths = get_input(0)
+	if not paths or paths.size() == 0:
 		return res
 
-	if not curves is Array:
-		curves = [curves]
-	elif curves.size() == 0:
-		return res
+	var stages = get_input_single(1, 1)
+	var tolerance = get_input_single(2, 4)
 
-	var stages = get_input(1, 1)
-	var tolerance = get_input(2, 4)
-
-	for c in curves:	# c is a Path object here
+	for path in paths:
 		var p = ConceptNodeVectorCurve.new()
-		p.transform = c.transform
-		p.points = c.curve.tessellate(stages, tolerance)
+		p.transform = path.transform
+		p.points = path.curve.tessellate(stages, tolerance)
 		res.append(p)
 
 	return res

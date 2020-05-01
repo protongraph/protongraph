@@ -24,16 +24,10 @@ func _init() -> void:
 	set_output(1, "Center", ConceptGraphDataType.VECTOR)
 
 
-func get_output(idx: int) -> Vector3:
+func _generate_output(idx: int) -> Vector3:
 	var paths = get_input(0)
-	if not paths:
+	if not paths or paths.size() == 0:
 		return Vector3.ZERO
-
-	if not paths is Array:
-		paths = [paths]
-
-	if paths.size() == 0:
-		return Vector3.ZERO # Empty array
 
 	if not _calculated:
 		_calculate_info(paths)

@@ -13,22 +13,18 @@ func _init() -> void:
 	set_output(0, "Duplicates", ConceptGraphDataType.NODE)
 
 
-func get_output(idx: int) -> Array:
-	var source = get_input(0)
+func _generate_output(idx: int) -> Array:
+	var source = get_input_single(0)
 	var transforms = get_input(1)
-	if not source or not transforms:
-		return [] #No valid source node or positions array provided
 
 	var nodes = []
+
+	if not source or not transforms or transforms.size() == 0:
+		return nodes
+
 	for t in transforms:
 		var n = source.duplicate() as Spatial
 		n.global_transform = t.transform
 		nodes.append(n)
+
 	return nodes
-
-
-func _clear_cache() -> void:
-	if not _cache.has("0"):
-		return
-	for n in _cache["0"]:
-		n.queue_free()

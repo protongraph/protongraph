@@ -25,24 +25,22 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func get_output(idx: int) -> Path:
+func _generate_output(idx: int) -> Path:
 	var res = []
 	var paths = get_input(0)
 
-	if not paths:
-		return null
-	if not paths is Array:
-		paths = [paths]
+	if not paths or paths.size() == 0:
+		return res
 
-	var random_seed: int = get_input(1, 0)
+	var random_seed: int = get_input_single(1, 0)
+	var steps: int = get_input_single(2, 1)
+	var factor: float = get_input_single(3, 1.0)
+	var attenuation: float = 1.0 - (get_input_single(4, 50.0) / 100.0)
+
 	_rng = RandomNumberGenerator.new()
 	_rng.seed = random_seed
 
 	for path in paths:
-		var steps: int = get_input(2, 1)
-		var factor: float = get_input(3, 1.0)
-		var attenuation: float = 1.0 - (get_input(4, 50.0) / 100.0)
-
 		for i in range(steps):
 			var initial_count = path.curve.get_point_count()
 
@@ -50,8 +48,7 @@ func get_output(idx: int) -> Path:
 			factor *= attenuation
 
 			if path.curve.get_point_count() == initial_count:
-				# Nothing happened, min size was reached on every segments
-				break
+				break	# Nothing happened, min size was reached on every segments
 		res.append(path)
 
 	return res
@@ -61,8 +58,8 @@ func _displace(path: Path, factor: float) -> Path:
 	if path.curve.get_point_count() < 2:
 		return path
 
-	var axis: Vector3 = get_input(5, Vector3.ZERO)
-	var min_size: float = get_input(6, 1.0)
+	var axis: Vector3 = get_input_single(5, Vector3.ZERO)
+	var min_size: float = get_input_single(6, 1.0)
 
 	var i := 1
 	var start: Vector3 = path.curve.get_point_position(0)

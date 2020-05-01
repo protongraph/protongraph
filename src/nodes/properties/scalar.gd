@@ -14,6 +14,7 @@ func _init() -> void:
 		"min_value": -1000,
 		"allow_greater": true,
 		"allow_lesser": true,
+		"value": 1,
 	}
 
 	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})
@@ -25,23 +26,25 @@ func _ready() -> void:
 	connect("input_changed", self, "_on_input_changed")
 
 
-func get_output(idx: int) -> float:
-	var name = get_input(0)
-	if not name:
-		return get_input(1)
+func _generate_output(idx: int) -> float:
+	var name: String = get_input_single(0)
+	var value = get_parent().get_value_from_inspector(name)
 
-	return get_parent().get_value_from_inspector(name)
+	if not value:
+		return get_input_single(1, 1.0)
+
+	return value
 
 
 func get_exposed_variables() -> Array:
-	var name = get_input(0)
+	var name: String = get_input_single(0)
 	if not name:
 		return []
 
 	return [{
 		"name": name,
 		"type": ConceptGraphDataType.SCALAR,
-		"default_value": get_input(1),
+		"default_value": get_input_single(1, 1.0),
 		}]
 
 

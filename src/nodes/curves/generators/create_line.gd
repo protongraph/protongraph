@@ -18,10 +18,10 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func get_output(idx: int) -> Curve:
-	var length = get_input(0, 1)
-	var centered = get_input(1, false)
-	var axis: Vector3 = get_input(2, Vector3.RIGHT)
+func generate_output(idx: int):
+	var length = get_input_single(0, 1)
+	var centered = get_input_single(1, false)
+	var axis: Vector3 = get_input_single(2, Vector3.RIGHT)
 	axis = axis.normalized()
 
 	var start = Vector3.ZERO

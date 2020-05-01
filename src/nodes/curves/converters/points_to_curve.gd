@@ -16,14 +16,11 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var res = []
 	var vcs = get_input(0)
 	if not vcs:
 		return res
-
-	if not vcs is Array:
-		vcs = [vcs]
 
 	for vc in vcs:
 		var path = Path.new()

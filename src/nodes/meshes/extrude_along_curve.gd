@@ -19,20 +19,14 @@ func _init() -> void:
 	set_output(0, "Mesh", ConceptGraphDataType.MESH)
 
 
-func get_output(idx: int) -> Array:
+func _generate_output(idx: int) -> Array:
 	var result = []
-	var bevel = get_input(0)	# We extrude this
-	var paths = get_input(1, 1.0)	# following this
-	var taper: Curve = get_input(2)	# and vary its scale at each step based on this
-	var resolution: float = get_input(3, 1.0)	# at this interval
+	var bevel: ConceptNodeVectorCurve = get_input_single(0)	# We extrude this
+	var paths = get_input(1, 1.0)	# following these
+	var taper: Curve = get_input_single(2)	# and vary its scale at each step based on this
+	var resolution: float = get_input_single(3, 1.0)	# at this interval
 
-	if not bevel or not paths:
-		return result
-	if bevel is Array:
-		bevel = bevel[0]
-	if not paths is Array:
-		paths = [paths]
-	if paths.size() == 0:
+	if not bevel or not paths or paths.size() == 0:
 		return result
 
 	var surface_tool := SurfaceTool.new()

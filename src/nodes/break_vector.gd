@@ -14,8 +14,8 @@ func _init() -> void:
 	set_output(2, "z", ConceptGraphDataType.SCALAR)
 
 
-func get_output(idx: int) -> float:
-	var input_vector = get_input(0)
+func _generate_output(idx: int) -> float:
+	var input_vector = get_input_single(0)
 	if not input_vector:
 		return 0.0
 
@@ -26,4 +26,5 @@ func get_output(idx: int) -> float:
 			return input_vector.y
 		2:
 			return input_vector.z
+
 	return 0.0

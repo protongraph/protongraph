@@ -13,7 +13,7 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func get_output(idx: int) -> Path:
-	var path = get_input(0)
+func _generate_output(idx: int) -> Array:
+	var paths = get_input(0)
 
-	return path
+	return paths

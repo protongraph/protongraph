@@ -16,16 +16,16 @@ func _init() -> void:
 	set_input(0, "Width", ConceptGraphDataType.SCALAR, opts)
 	set_input(1, "Length", ConceptGraphDataType.SCALAR, opts)
 	set_input(2, "Center", ConceptGraphDataType.VECTOR)
-	set_input(3, "Axis", ConceptGraphDataType.VECTOR)
+	set_input(3, "Up axis", ConceptGraphDataType.VECTOR)
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func get_output(idx: int) -> Curve:
-	var width = get_input(0, 1.0)
-	var length = get_input(1, 1.0)
-	var center = get_input(2, Vector3.ZERO)
-	var axis = get_input(3, Vector3.FORWARD)
-	var offset = Vector3(width / 2.0, length / 2.0, 0.0)
+func _generate_output(idx: int) -> Curve:
+	var width: float = get_input_single(0, 1.0)
+	var length: float = get_input_single(1, 1.0)
+	var center: Vector3 = get_input_single(2, Vector3.ZERO)
+	var axis: Vector3 = get_input_single(3, Vector3.FORWARD)
+	var offset := Vector3(width / 2.0, length / 2.0, 0.0)
 
 	var curve = Curve3D.new()
 
@@ -38,6 +38,9 @@ func get_output(idx: int) -> Curve:
 	var path = Path.new()
 	path.curve = curve
 	path.translation = center
+
+	if axis != Vector3.ZERO:
+		path.look_at_from_position(center, center + axis, Vector3(0, 0, 1))
 
 	return path
 

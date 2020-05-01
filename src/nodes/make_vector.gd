@@ -14,9 +14,9 @@ func _init() -> void:
 	set_output(0, "Vector", ConceptGraphDataType.VECTOR)
 
 
-func get_output(idx: int) -> Vector3:
-	var x = get_input(0, 0)
-	var y = get_input(1, 0)
-	var z = get_input(2, 0)
+func _generate_output(idx: int) -> Vector3:
+	var x: float = get_input_single(0, 0)
+	var y: float = get_input_single(1, 0)
+	var z: float = get_input_single(2, 0)
 
 	return Vector3(x, y, z)
