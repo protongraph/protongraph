@@ -39,6 +39,36 @@ const COLORS = {
 	MATH_CURVE: Color.dodgerblue,
 }
 
+"""
+Convert graph node category name to color
+"""
+static func to_category_color(category: String) -> Color:
+	match category:
+		"Boxes":
+			return COLORS[BOX]
+		"Curves", "Curves/Inputs", "Curves/Operations", "Curves/Conversion", "Curves/Generators":
+			return COLORS[CURVE]
+		"Debug":
+			return Color.palegreen
+		"Inputs":
+			return Color("8ca6f4")
+		"Inspector properties":
+			return Color.navyblue
+		"Maths/Scalars":
+			return COLORS[SCALAR]
+		"Meshes":
+			return COLORS[MESH]
+		"Nodes/Generators", "Nodes/Operations", "Nodes/Instancers":
+			return COLORS[NODE]
+		"Noise":
+			return Color.olive#COLORS[NOISE]
+		"Output":
+			return Color.black
+		"Vectors":
+			return COLORS[VECTOR]
+		_:
+			return Color.black
+
 
 """
 Allows extra connections between different types
