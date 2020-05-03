@@ -127,7 +127,7 @@ func reload_template() -> void:
 
 
 """
-Clear the scene tree from every returned by the template generation.
+Clear the scene tree from everything returned by the template generation.
 """
 func clear_output() -> void:
 	if not _output_root:
