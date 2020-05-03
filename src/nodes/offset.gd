@@ -11,6 +11,7 @@ func _init() -> void:
 	set_input(0, "Transforms", ConceptGraphDataType.NODE)
 	set_input(1, "Vector", ConceptGraphDataType.VECTOR)
 	set_input(2, "Negative", ConceptGraphDataType.BOOLEAN)
+	set_input(3, "Local space", ConceptGraphDataType.BOOLEAN)
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
@@ -18,6 +19,7 @@ func _generate_output(idx: int) -> Spatial:
 	var nodes = get_input(0)
 	var offset: Vector3 = get_input_single(1, Vector3.ZERO)
 	var negative: bool = get_input_single(2, false)
+	var local: bool = get_input_single(3, false)
 
 	if not nodes or nodes.size() == 0:
 		return nodes
@@ -25,7 +27,10 @@ func _generate_output(idx: int) -> Spatial:
 	if negative:
 		offset *= -1
 
-	for i in range(nodes.size()):
-		nodes[i].transform.origin += offset
+	for i in nodes.size():
+		if local:
+			nodes[i].translate_object_local(offset)
+		else:
+			nodes[i].transform.origin += offset
 
 	return nodes
