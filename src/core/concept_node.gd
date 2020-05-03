@@ -158,7 +158,8 @@ func restore_editor_data(data: Dictionary) -> void:
 	if data.has("rect_x"):
 		rect_size.x = data["rect_x"]
 	if data.has("rect_y"):
-		rect_size.x = data["rect_y"]
+		rect_size.y = data["rect_y"]
+	emit_signal("resize_request", rect_size)
 
 	if has_custom_gui():
 		return
