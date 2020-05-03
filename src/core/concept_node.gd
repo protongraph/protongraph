@@ -337,6 +337,21 @@ func _setup_slots() -> void:
 
 
 """
+Based on graph node category this method will setup corresponding style and color of graph node
+"""
+func _generate_default_gui_style() -> void:
+	var style = StyleBoxFlat.new()
+	var color = Color(0.121569, 0.145098, 0.192157, 0.9)
+	style.border_color = ConceptGraphDataType.to_category_color(category)
+	style.set_bg_color(color)
+	style.set_border_width_all(1)
+	style.set_border_width(MARGIN_TOP, 24)
+	style.content_margin_left = 24;
+	style.content_margin_right = 24;
+	add_stylebox_override("frame", style)
+	add_constant_override("port_offset", 12)
+
+"""
 If the child node does not define a custom UI itself, this function will generate a default UI
 based on the parameters provided with set_input and set_ouput. Each slots will have a Label
 and their name attached.
@@ -352,6 +367,9 @@ func _generate_default_gui() -> void:
 		remove_child(box)
 		box.queue_free()
 	_hboxes = []
+
+	_generate_default_gui_style()
+
 	title = display_name
 	resizable = false
 	show_close = true
