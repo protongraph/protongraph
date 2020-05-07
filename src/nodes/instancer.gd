@@ -18,5 +18,4 @@ func _init() -> void:
 
 func _generate_output(idx: int) -> Spatial:
 	var type: String = get_input_single(0, "Spatial")
-	# TODO How do I type.new() here? Is it even possible?
-	return Spatial.new()
+	return ClassDB.instance(type)
