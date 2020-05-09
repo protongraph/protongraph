@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/t_wood.jpg-24d566d180e6a43bde8993372706b730.s3tc.stex"
-path.etc2="res://.import/t_wood.jpg-24d566d180e6a43bde8993372706b730.etc2.stex"
+path.s3tc="res://.import/t_noise.png-df2d6cf67a33f71078c9214a4096ce9c.s3tc.stex"
+path.etc2="res://.import/t_noise.png-df2d6cf67a33f71078c9214a4096ce9c.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/concept_graph/examples/assets/t_wood.jpg"
-dest_files=[ "res://.import/t_wood.jpg-24d566d180e6a43bde8993372706b730.s3tc.stex", "res://.import/t_wood.jpg-24d566d180e6a43bde8993372706b730.etc2.stex" ]
+source_file="res://addons/concept_graph/examples/assets/grass/data/t_noise.png"
+dest_files=[ "res://.import/t_noise.png-df2d6cf67a33f71078c9214a4096ce9c.s3tc.stex", "res://.import/t_noise.png-df2d6cf67a33f71078c9214a4096ce9c.etc2.stex" ]
 
 [params]
 

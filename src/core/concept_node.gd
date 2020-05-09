@@ -347,7 +347,6 @@ func _get_connected_inputs() -> Array:
 		var info = get_parent().get_left_node(self, i)
 		if info.has("node"):
 			connected_inputs.append(info["node"])
-
 	return connected_inputs
 
 
@@ -360,7 +359,7 @@ Returns true if all inputs are already ready.
 func _request_inputs_to_get_ready() -> bool:
 	var connected_inputs = _get_connected_inputs()
 
-	# No connected nodes, all input data are available locally
+	# No connected nodes, inputs data are available locally
 	if connected_inputs.size() == 0:
 		return true
 

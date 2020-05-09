@@ -96,4 +96,6 @@ static func to_variant_type(type: int) -> int:
 			return TYPE_BOOL
 		MATH_CURVE:
 			return TYPE_OBJECT
+		MATERIAL:
+			return TYPE_OBJECT
 	return TYPE_NIL
