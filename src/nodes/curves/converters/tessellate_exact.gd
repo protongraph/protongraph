@@ -17,16 +17,10 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
 
 
-func _generate_output(idx: int) -> Array:
-	var res = []
-	var curves = get_input(0)
-	if not curves:
-		return res
-
-	if not curves is Array:
-		curves = [curves]
-	elif curves.size() == 0:
-		return res
+func _generate_outputs() -> void:
+	var curves := get_input(0)
+	if not curves or curves.size() == 0:
+		return
 
 	for c in curves:	# c is a Path object here
 		var p = ConceptNodeVectorCurve.new()
@@ -38,7 +32,4 @@ func _generate_output(idx: int) -> Array:
 
 		p.points = points
 		p.transform = c.transform
-		res.append(p)
-
-	return res
-
+		output[0].append(p)

@@ -5,7 +5,6 @@ extends ConceptNode
 Take a point curve in input and creates a Path node from it
 """
 
-
 func _init() -> void:
 	unique_id = "convert_points_to_curve"
 	display_name = "To curve"
@@ -16,11 +15,10 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func _generate_output(idx: int) -> Array:
-	var res = []
-	var vcs = get_input(0)
-	if not vcs:
-		return res
+func _generate_outputs() -> void:
+	var vcs := get_input(0)
+	if not vcs or vcs.size() == 0:
+		return
 
 	for vc in vcs:
 		var path = Path.new()
@@ -30,10 +28,4 @@ func _generate_output(idx: int) -> Array:
 			path.curve.add_point(p)
 
 		path.transform = vc.transform
-		res.append(path)
-
-	return res
-
-
-
-
+		output[0].append(path)

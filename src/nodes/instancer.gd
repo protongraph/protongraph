@@ -16,6 +16,9 @@ func _init() -> void:
 	set_output(0, "Node", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Spatial:
+func _generate_outputs() -> void:
 	var type: String = get_input_single(0, "Spatial")
-	return ClassDB.instance(type)
+	if ClassDB.can_instance(type):
+		output[0] = ClassDB.instance(type)
+	else:
+		print("Could not find class ", type) # TODO : print this on the node itself

@@ -14,7 +14,7 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Array:
+func _generate_outputs() -> void:
 	var nodes := get_input(0)
 	var amount: Vector3 = get_input_single(1, Vector3.ZERO)
 
@@ -23,9 +23,9 @@ func _generate_output(idx: int) -> Array:
 	amount.z = deg2rad(amount.z)
 
 	if not nodes or nodes.size() == 0:
-		return nodes
+		return
 
 	for i in range(nodes.size()):
 		nodes[i].rotation += amount
 
-	return nodes
+	output[0] = nodes

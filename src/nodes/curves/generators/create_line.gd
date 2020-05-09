@@ -18,9 +18,9 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func generate_output(idx: int):
-	var length = get_input_single(0, 1)
-	var centered = get_input_single(1, false)
+func _generate_outputs() -> void:
+	var length: float = get_input_single(0, 1)
+	var centered: bool = get_input_single(1, false)
 	var axis: Vector3 = get_input_single(2, Vector3.RIGHT)
 	axis = axis.normalized()
 
@@ -32,10 +32,9 @@ func generate_output(idx: int):
 		end -= offset
 
 	var path = Path.new()
-
 	path.curve = Curve3D.new()
 	path.curve.add_point(start)
 	path.curve.add_point(end)
 
-	return path
+	output[0] = path
 

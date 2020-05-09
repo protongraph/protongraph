@@ -19,15 +19,17 @@ func _init() -> void:
 	set_output(0, "Mesh", ConceptGraphDataType.MESH)
 
 
-func _generate_output(idx: int) -> Array:
-	var result = []
+func _generate_outputs() -> void:
 	var bevel: ConceptNodeVectorCurve = get_input_single(0)	# We extrude this
-	var paths = get_input(1, 1.0)	# following these
+	var paths := get_input(1)	# following these
 	var taper: Curve = get_input_single(2)	# and vary its scale at each step based on this
 	var resolution: float = get_input_single(3, 1.0)	# at this interval
 
+	if resolution == 0:
+		resolution = 0.01
+
 	if not bevel or not paths or paths.size() == 0:
-		return result
+		return
 
 	var surface_tool := SurfaceTool.new()
 
@@ -39,6 +41,9 @@ func _generate_output(idx: int) -> Array:
 		var curve: Curve3D = path.curve
 		var length: float = curve.get_baked_length()
 		var steps: int = floor(length / resolution)
+		if steps == 0:
+			continue
+
 		var offset: float = length / steps
 		var bevel_count: int = bevel.points.size()
 		var up = Vector3(0, 1, 0)
@@ -85,6 +90,4 @@ func _generate_output(idx: int) -> Array:
 		var mesh_instance = MeshInstance.new()
 		mesh_instance.transform = path.transform
 		mesh_instance.mesh = surface_tool.commit()
-		result.append(mesh_instance)
-
-	return result
+		output[0].append(mesh_instance)

@@ -20,17 +20,17 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int):
+func _generate_outputs() -> void:
 	var node_name: String = get_input_single(0)
 	var children_only: bool = get_input_single(1, false)
 	if not node_name:
-		return null
+		return
 
 	var node = get_editor_input(node_name)
 	if not node:
-		return null
+		return
 
 	if children_only:
-		return node.get_children()
-
-	return node
+		output[0] = node.get_children()
+	else:
+		output[0] = node

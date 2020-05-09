@@ -12,24 +12,15 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func _generate_output(idx: int) -> Array:
-	var curves = []
-
+func _generate_outputs() -> void:
 	var input_name: String = get_input_single(0)
 	var input = get_editor_input(input_name)
 
 	if not input:
-		return curves
+		return
 
 	if input is Path:
-		curves.append(duplicate_path(input))
+		output[0].append(input)
 	for c in input.get_children():
 		if c is Path:
-			curves.append(duplicate_path(c))
-
-	return curves
-
-func duplicate_path(path: Path) -> Path:
-	var res = Path.new()
-	res.curve = path.curve.duplicate()
-	return res
+			output[0].append(c)

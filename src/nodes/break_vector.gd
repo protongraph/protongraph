@@ -14,17 +14,11 @@ func _init() -> void:
 	set_output(2, "z", ConceptGraphDataType.SCALAR)
 
 
-func _generate_output(idx: int) -> float:
-	var input_vector = get_input_single(0)
+func _generate_outputs() -> void:
+	var input_vector: Vector3 = get_input_single(0)
 	if not input_vector:
-		return 0.0
+		return
 
-	match idx:
-		0:
-			return input_vector.x
-		1:
-			return input_vector.y
-		2:
-			return input_vector.z
-
-	return 0.0
+	output[0] = input_vector.x
+	output[1] = input_vector.y
+	output[2] = input_vector.z

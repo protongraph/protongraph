@@ -18,12 +18,12 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.SCALAR)
 
 
-func _generate_output(idx: int) -> float:
+func _generate_outputs() -> void:
 	var a: float = get_input_single(0, 0.0)
 	var b: float = get_input_single(1, 1.0)
 
 	if b == 0:
-		print("Warning: Division by zero")
-		return 0.0
+		print("Warning: Division by zero")	# TODO : print this on the node itself
+		output[0] = 0.0
 
-	return a / b
+	output[0] = a / b

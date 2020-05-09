@@ -36,11 +36,11 @@ func _ready() -> void:
 	add_child(_btn_container)
 
 
-func _generate_output(idx: int) -> Spatial:
-	var parent = get_input_single(0)
+func _generate_outputs() -> void:
+	var parent: Spatial = get_input_single(0)
 
 	if not parent:
-		return null
+		return
 
 	for i in range(1, _children_count + 1):
 		var children = get_input(i)
@@ -54,7 +54,7 @@ func _generate_output(idx: int) -> Spatial:
 			parent.add_child(c)
 			c.owner = parent
 
-	return parent
+	output[0] = parent
 
 
 func export_custom_data() -> Dictionary:

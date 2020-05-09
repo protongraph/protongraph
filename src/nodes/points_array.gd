@@ -17,14 +17,11 @@ func _init() -> void:
 	set_output(0, "Transforms", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Array:
-	var res = []
+func _generate_outputs() -> void:
 	var count: int = get_input_single(0, 0)
 	var offset: Vector3 = get_input_single(1, Vector3.ONE)
 
 	for i in range(count):
 		var p = Position3D.new()
 		p.transform.origin = offset * i
-		res.append(p)
-
-	return res
+		output[0].append(p)

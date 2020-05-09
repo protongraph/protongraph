@@ -18,14 +18,13 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Array:
-	var nodes = get_input(0)
-	var curves = get_input(1)
+func _generate_outputs() -> void:
+	var nodes := get_input(0)
+	var curves := get_input(1)
 	var invert: bool = get_input_single(2, false)
-	var result = []
 
 	if not curves or curves.size() == 0:
-		return result
+		return
 
 	var polygons = ConceptGraphCurveUtil.make_polygons_path(curves)
 
@@ -44,6 +43,5 @@ func _generate_output(idx: int) -> Array:
 			inside = !inside
 
 		if !inside:
-			result.append(node)
+			output[0].append(node)
 
-	return result

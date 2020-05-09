@@ -15,13 +15,13 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Array:
+func _generate_outputs() -> void:
 	var nodes := get_input(0)
 	var amount: Vector3 = get_input_single(1, Vector3.ONE)
 	var input_seed: int = get_input_single(2, 0)
 
 	if not nodes or nodes.size() == 0:
-		return nodes
+		return
 
 	var rand = RandomNumberGenerator.new()
 	rand.seed = input_seed
@@ -33,4 +33,4 @@ func _generate_output(idx: int) -> Array:
 		rotation.z = deg2rad(rand.randf_range(-1.0, 1.0) * amount.z)
 		nodes[i].rotation = rotation
 
-	return nodes
+	output[0] = nodes

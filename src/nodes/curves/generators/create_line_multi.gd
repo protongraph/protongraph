@@ -19,15 +19,14 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func _generate_output(idx: int) -> Array:
-	var res = []
-	var length = get_input_single(0, 1)
-	var centered = get_input_single(1, false)
+func _generate_outputs() -> void:
+	var length: float = get_input_single(0, 1.0)
+	var centered: bool = get_input_single(1, false)
 	var axis: Vector3 = get_input_single(2, Vector3.RIGHT)
 	axis = axis.normalized()
-	var origins = get_input(3)
+	var origins := get_input(3)
 	if not origins:
-		return res
+		return
 
 	for o in origins:
 		var start = Vector3.ZERO
@@ -42,7 +41,6 @@ func _generate_output(idx: int) -> Array:
 		path.curve.add_point(start)
 		path.curve.add_point(end)
 		path.transform = o.transform
-		res.append(path)
+		output[0].append(path)
 
-	return res
 

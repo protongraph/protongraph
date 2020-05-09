@@ -18,10 +18,10 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func _generate_output(idx: int) -> Curve:
-	var count = get_input_single(0, 3)
-	var radius = get_input_single(1, 1.0)
-	var angle_offset = (2 * PI) / count
+func _generate_outputs() -> void:
+	var count: int = get_input_single(0, 3)
+	var radius: float = get_input_single(1, 1.0)
+	var angle_offset: float = (2 * PI) / count
 
 	var curve = Curve3D.new()
 
@@ -35,5 +35,5 @@ func _generate_output(idx: int) -> Curve:
 	var path = Path.new()
 	path.curve = curve
 
-	return path
+	output[0] = path
 

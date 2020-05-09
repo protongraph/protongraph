@@ -15,14 +15,14 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Spatial:
-	var nodes = get_input(0)
+func _generate_outputs() -> void:
+	var nodes := get_input(0)
 	var noise = get_input_single(1)
 	var amount: Vector3 = get_input_single(2, Vector3.ZERO)
 	var base: Vector3 = get_input_single(3, Vector3.ONE)
 
 	if not nodes or not noise:
-		return nodes
+		return
 
 	for i in range(nodes.size()):
 		var t = nodes[i].transform
@@ -33,4 +33,4 @@ func _generate_output(idx: int) -> Spatial:
 		t.origin = origin
 		nodes[i].transform = t
 
-	return nodes
+	output[0] = nodes

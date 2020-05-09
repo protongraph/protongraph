@@ -12,6 +12,7 @@ time the associated graph is updated.
 
 signal template_path_changed
 
+
 export(String, FILE, "*.cgraph") var template_path := "" setget set_template_path
 export var show_result_in_editor_tree := false setget set_show_result
 export var paused := false
@@ -137,8 +138,6 @@ func clear_output() -> void:
 		_output_root.remove_child(c)
 		c.queue_free()
 
-	_template.run_garbage_collection()
-
 
 """
 Ask the Template object to go through the node graph and process each nodes until the final
@@ -147,13 +146,18 @@ result is complete.
 func generate(force_full_simulation := false) -> void:
 	if not Engine.is_editor_hint() or paused:
 		return
-	# print("Memory MB : ", OS.get_static_memory_usage() / (1024 * 1024))
-	clear_output()
+
+	#print("Memory MB : ", OS.get_static_memory_usage() / (1024 * 1024))
 
 	if force_full_simulation:
 		_template.clear_simulation_cache()
 
-	var result = _template.get_output()	# Actual simulation happens here
+	_template.run_simulation() # Actual simulation happens here
+	yield(_template, "simulation_completed")
+
+	clear_output()
+
+	var result = _template.get_output()
 	if not result or result.size() == 0:
 		return
 
@@ -163,12 +167,6 @@ func generate(force_full_simulation := false) -> void:
 		_output_root.add_child(node)
 		node.set_owner(get_tree().get_edited_scene_root())
 		_set_children_owner(node)
-
-
-func _set_children_owner(node) -> void:
-	for c in node.get_children():
-		c.set_owner(get_tree().get_edited_scene_root())
-		_set_children_owner(c)
 
 
 func set_template_path(val) -> void:
@@ -205,12 +203,17 @@ func _get_or_create_root(name: String) -> Spatial:
 	if has_node(name):
 		return get_node(name) as Spatial
 
-	#var root = Spatial.new()
 	var root = ConceptGraphInputManager.new() if name == "Input" else Spatial.new()
 	root.set_name(name)
 	add_child(root)
 	root.set_owner(get_tree().get_edited_scene_root())
 	return root
+
+
+func _set_children_owner(node) -> void:
+	for c in node.get_children():
+		c.set_owner(get_tree().get_edited_scene_root())
+		_set_children_owner(c)
 
 
 func _on_input_changed(node) -> void:

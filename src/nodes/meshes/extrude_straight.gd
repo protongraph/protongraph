@@ -16,18 +16,15 @@ func _init() -> void:
 	set_output(0, "Mesh", ConceptGraphDataType.MESH)
 
 
-func _generate_output(idx: int) -> Array:
-	var result = []
-	var polygon_curves = get_input(0)
+func _generate_outputs() -> void:
+	var polygon_curves := get_input(0)
 	var depth: float = get_input_single(1, 1.0)
-	var material = get_input_single(2)
+	var material: SpatialMaterial = get_input_single(2)
 	var use_collision: bool = get_input_single(3, false)
 	var smooth: bool = get_input_single(4, true)
 
 	if not polygon_curves:
-		return result
-	if not polygon_curves is Array:
-		polygon_curves = [polygon_curves]
+		return
 
 	for i in range(polygon_curves.size()):
 		var pc = polygon_curves[i]
@@ -39,9 +36,7 @@ func _generate_output(idx: int) -> Array:
 		mesh.depth = depth
 		mesh.smooth_faces = smooth
 		mesh.use_collision = use_collision
-		result.append(mesh)
-
-	return result
+		output[0].append(mesh)
 
 
 # Assumes Y axis is ignored. TODO : Find a more generic way

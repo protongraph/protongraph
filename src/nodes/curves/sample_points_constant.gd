@@ -24,11 +24,10 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Array:
-	var res = []
-	var paths = get_input(0)
+func _generate_outputs() -> void:
+	var paths := get_input(0)
 	if not paths or paths.size() == 0:
-		return res
+		return
 
 	var spacing: float = get_input_single(1, 1.0) * 0.85 # Magic number to get pixel units from 3D units
 	var start: float = get_input_single(2, 0.0)
@@ -70,7 +69,4 @@ func _generate_output(idx: int) -> Array:
 				node.look_at_from_position(pos, pos2, up)
 				up = node.transform.basis.y
 
-			res.append(node)
-
-	return res
-
+			output[0].append(node)

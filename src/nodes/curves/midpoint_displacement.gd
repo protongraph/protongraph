@@ -25,12 +25,10 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func _generate_output(idx: int) -> Path:
-	var res = []
+func _generate_outputs() -> void:
 	var paths = get_input(0)
-
 	if not paths or paths.size() == 0:
-		return res
+		return
 
 	var random_seed: int = get_input_single(1, 0)
 	var steps: int = get_input_single(2, 1)
@@ -49,9 +47,7 @@ func _generate_output(idx: int) -> Path:
 
 			if path.curve.get_point_count() == initial_count:
 				break	# Nothing happened, min size was reached on every segments
-		res.append(path)
-
-	return res
+		output[0].append(path)
 
 
 func _displace(path: Path, factor: float) -> Path:
@@ -96,4 +92,3 @@ func _displace(path: Path, factor: float) -> Path:
 func _rand_vector() -> Vector3:
 	var v = Vector3(_rng.randf_range(-1.0, 1.0), _rng.randf_range(-1.0, 1.0), _rng.randf_range(-1.0, 1.0))
 	return v.normalized()
-

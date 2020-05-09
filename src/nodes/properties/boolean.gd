@@ -17,14 +17,14 @@ func _ready() -> void:
 	connect("input_changed", self, "_on_input_changed")
 
 
-func _generate_output(idx: int) -> bool:
+func _generate_outputs() -> void:
 	var name: String = get_input_single(0)
-	var value = get_parent().get_value_from_inspector(name)
+	var value: bool = get_parent().get_value_from_inspector(name)
 
 	if not value:
-		return get_input_single(1, false)
+		value = get_input_single(1, false)
 
-	return value
+	output[0] = value
 
 
 func get_exposed_variables() -> Array:

@@ -10,20 +10,26 @@ Load and edit graph templates. The internal graph is then stored back in the tem
 signal graph_changed
 signal simulation_outdated
 signal connection_changed
+signal output_ready
+signal simulation_completed
 
 var concept_graph
 var root: Spatial
-var node_library: ConceptNodeLibrary
+var node_library: ConceptNodeLibrary	# Injected from the concept graph
 
 var _output_nodes := [] # of ConceptNodes
 var _selected_node: GraphNode
 var _template_loaded := false
+var _node_pool := ConceptGraphNodePool.new()
+var _thread_pool := ConceptGraphThreadPool.new()
 var _registered_resources := []
+var _locked := false
 
 
 func _init() -> void:
 	_setup_gui()
 	ConceptGraphDataType.setup_valid_connection_types(self)
+	connect("output_ready", self, "_on_output_ready")
 	connect("connection_request", self, "_on_connection_request")
 	connect("disconnection_request", self, "_on_disconnection_request")
 	connect("node_selected", self, "_on_node_selected")
@@ -39,7 +45,7 @@ func clear() -> void:
 	for c in get_children():
 		if c is GraphNode:
 			remove_child(c)
-			c.queue_free()
+			c.free()
 	_output_nodes = []
 	run_garbage_collection()
 
@@ -51,9 +57,11 @@ from the Concept Graph Editor
 func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
 	var new_node: ConceptNode = node.duplicate()
 	new_node.offset = scroll_offset + Vector2(250, 150)
+	new_node.thread_pool = _thread_pool
 
 	if new_node.unique_id == "final_output":
 		_output_nodes.append(new_node)
+		new_node.connect("output_ready", self, "_on_output_ready")
 
 	_connect_node_signals(new_node)
 	add_child(new_node)
@@ -119,6 +127,26 @@ func clear_simulation_cache() -> void:
 	for node in get_children():
 		if node is ConceptNode:
 			node.clear_cache()
+	run_garbage_collection()
+
+
+"""
+Simulation is a background process, this ask all the output nodes to get their output ready. Each
+of them will emit a output_ready signal when they are done.
+"""
+func run_simulation() -> void:
+	if _locked:
+		#("Template locked, aborting")
+		return
+
+	#_locked = true
+	if not _thread_pool.cancel_all():
+		yield(_thread_pool, "all_tasks_completed")
+
+	_locked = false
+
+	for node in _output_nodes:
+		node.prepare_output()
 
 
 """
@@ -131,7 +159,9 @@ func get_output() -> Array:
 			print("Error : No output node found in ", get_parent().get_name())
 	else:
 		for node in _output_nodes:
-			result += node.get_output(0)
+			var output = node.get_output(0)
+			if output:
+				result += output
 	return result
 
 
@@ -264,7 +294,7 @@ func run_garbage_collection():
 				if parent:
 					parent.remove_child(resource)
 				resource.queue_free()
-			else:
+			elif resource is Object:
 				resource.free()
 	_registered_resources = []
 
@@ -338,3 +368,18 @@ func _on_disconnection_request(from_node: String, from_slot: int, to_node: Strin
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
 	get_node(to_node).emit_signal("connection_changed")
+
+
+"""
+After requesting all the output nodes to retrieve their outputs, we wait for the simulation to
+complete. When all the output nodes signaled their output is ready, notify the parent graph it
+can retrieve the results.
+"""
+func _on_output_ready() -> void:
+	var simulation_complete = true
+	for node in _output_nodes:
+		if not node.is_output_ready():
+			simulation_complete = false
+
+	if simulation_complete:
+		emit_signal("simulation_completed")

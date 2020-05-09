@@ -15,8 +15,8 @@ func _init() -> void:
 	set_input(0, "Node", ConceptGraphDataType.NODE)
 
 
-func _generate_output(_idx: int):
-	return get_input(0)
+func _generate_outputs() -> void:
+	output.append(get_input(0))	# Special case, don't specify the index here
 
 
 func reset() -> void:

@@ -20,7 +20,7 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func _generate_output(idx: int) -> Curve:
+func _generate_outputs() -> void:
 	var width: float = get_input_single(0, 1.0)
 	var length: float = get_input_single(1, 1.0)
 	var center: Vector3 = get_input_single(2, Vector3.ZERO)
@@ -42,5 +42,5 @@ func _generate_output(idx: int) -> Curve:
 	if axis != Vector3.ZERO:
 		path.look_at_from_position(center, center + axis, Vector3(0, 0, 1))
 
-	return path
+	output[0] = path
 

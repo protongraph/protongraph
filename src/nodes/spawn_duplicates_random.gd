@@ -14,15 +14,14 @@ func _init() -> void:
 	set_output(0, "Duplicates", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Array:
-	var sources = get_input(0)
-	var transforms = get_input(1)
+func _generate_outputs() -> void:
+	var sources := get_input(0)
+	var transforms := get_input(1)
 	var random_seed: int = get_input_single(2, 0)
-	var nodes = []
 
 	if not sources or sources.size() == 0 or \
 		not transforms or transforms.size() == 0:
-		return nodes
+		return
 
 	var count = sources.size()
 	var rng = RandomNumberGenerator.new()
@@ -32,6 +31,4 @@ func _generate_output(idx: int) -> Array:
 		var i = rng.randi_range(0, count - 1)
 		var n = sources[i].duplicate() as Spatial
 		n.global_transform = t.transform
-		nodes.append(n)
-
-	return nodes
+		output[0].append(n)

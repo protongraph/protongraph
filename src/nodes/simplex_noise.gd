@@ -16,7 +16,8 @@ func _init() -> void:
 	set_output(0, "Noise", ConceptGraphDataType.NOISE)
 
 
-func _generate_output(idx: int) -> OpenSimplexNoise:
+# TODO : Make a super class ConceptGraphNoise with a common api in case we introduce more noise types
+func _generate_outputs() -> void:
 	var input_seed: int = get_input_single(0, 0)
 	var octaves: int = get_input_single(1, 3)
 	var period: float = get_input_single(2, 64.0)
@@ -30,4 +31,4 @@ func _generate_output(idx: int) -> OpenSimplexNoise:
 	noise.persistence = persistence
 	noise.lacunarity = lacunarity
 
-	return noise
+	output[0] = noise

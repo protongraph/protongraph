@@ -15,22 +15,16 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.MESH)
 
 
-func _generate_output(idx: int) -> Array:
-	var result = []
-
-	var meshes = get_input(0)
-	var materials = get_input(1)
+func _generate_outputs() -> void:
+	var meshes := get_input(0)
+	var materials := get_input(1)
 	var use_collision: bool = get_input_single(2, false)
 	var smooth: bool = get_input_single(3, true)
 
 	if not meshes:
-		return result
-	if not meshes is Array:
-		meshes = [meshes]
+		return
 
 	for mesh in meshes:
 		mesh.smooth_faces = smooth
 		mesh.use_collision = use_collision
-		result.append(mesh)
-
-	return result
+		output[0].append(mesh)

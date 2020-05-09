@@ -73,7 +73,7 @@ func disable_template_editor() -> void:
 		for c in _template_parent.get_children():
 			if c is GraphEdit:
 				_template_parent.remove_child(c)
-				c.queue_free()
+				c.free()
 		return
 
 	template.disconnect("graph_changed", self, "_on_graph_changed")

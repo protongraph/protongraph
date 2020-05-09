@@ -21,8 +21,7 @@ func _init() -> void:
 	set_output(0, "Transforms", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Array:
-	var result = []
+func _generate_outputs() -> void:
 	var size: Vector3 = get_input_single(0, Vector3.ONE)
 	var center: Vector3 = get_input_single(1, Vector3.ZERO)
 	var density: float = get_input_single(2, 1.0)
@@ -54,9 +53,6 @@ func _generate_output(idx: int) -> Array:
 					p.transform.origin = reference.transform.xform(p.transform.origin)
 					if align_rot:
 						p.transform.basis = reference.transform.basis
-
-				#p.transform.origin += center
-				result.append(p)
-	return result
-
-
+				else:
+					p.transform.origin += center
+				output[0].append(p)

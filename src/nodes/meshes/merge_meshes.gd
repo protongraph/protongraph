@@ -16,10 +16,10 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.MESH)
 
 
-func _generate_output(idx: int):
-	var mesh_instances = get_input(0)
+func _generate_outputs() -> void:
+	var mesh_instances := get_input(0)
 	if not mesh_instances or mesh_instances.size() <= 1:
-		return mesh_instances
+		return
 
 	var array_mesh = ArrayMesh.new()
 	for instance in mesh_instances:
@@ -40,6 +40,7 @@ func _generate_output(idx: int):
 
 			array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
-	var result = MeshInstance.new()
-	result.mesh = array_mesh
-	return result
+	var instance = MeshInstance.new()
+	instance.mesh = array_mesh
+	output[0] = instance
+

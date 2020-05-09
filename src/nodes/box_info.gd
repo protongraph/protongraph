@@ -17,16 +17,11 @@ func _init() -> void:
 	set_output(1, "Center", ConceptGraphDataType.VECTOR)
 
 
-func _generate_output(idx: int) -> Vector3:
-	var boxes = get_input(0)
+func _generate_outputs() -> void:
+	var boxes := get_input(0)
 	if not boxes or boxes.size() == 0:
-		return Vector3.ZERO
+		return
 
 	# Only returns the info about the first box for now
-	match idx:
-		0:
-			return boxes[0].size
-		1:
-			return boxes[0].translation + boxes[0].center
-
-	return Vector3.ZERO
+	output[0] = boxes[0].size
+	output[1] = boxes[0].translation + boxes[0].center

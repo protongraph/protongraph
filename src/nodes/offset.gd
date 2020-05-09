@@ -15,14 +15,14 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Spatial:
+func _generate_outputs() -> void:
 	var nodes = get_input(0)
 	var offset: Vector3 = get_input_single(1, Vector3.ZERO)
 	var negative: bool = get_input_single(2, false)
 	var local: bool = get_input_single(3, false)
 
 	if not nodes or nodes.size() == 0:
-		return nodes
+		return
 
 	if negative:
 		offset *= -1
@@ -33,4 +33,4 @@ func _generate_output(idx: int) -> Spatial:
 		else:
 			nodes[i].transform.origin += offset
 
-	return nodes
+	output[0] = nodes

@@ -22,14 +22,14 @@ func _ready() -> void:
 	default.add_point(Vector2(1.0, 1.0))
 
 
-func _generate_output(idx: int):
+func _generate_outputs() -> void:
 	var name: String = get_input_single(0)
-	var value = get_parent().get_value_from_inspector(name)
+	var value: Curve = get_parent().get_value_from_inspector(name)
 
 	if not value:
-		return get_input_single(1, default)
+		value = get_input_single(1, default)
 
-	return value.duplicate()
+	output[0] = value.duplicate()
 
 
 func get_exposed_variables() -> Array:

@@ -13,18 +13,14 @@ func _init() -> void:
 	set_output(0, "Duplicates", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Array:
-	var source = get_input_single(0)
-	var transforms = get_input(1)
-
-	var nodes = []
+func _generate_outputs() -> void:
+	var source: Spatial = get_input_single(0)
+	var transforms := get_input(1)
 
 	if not source or not transforms or transforms.size() == 0:
-		return nodes
+		return
 
 	for t in transforms:
 		var n = source.duplicate() as Spatial
 		n.global_transform = t.transform
-		nodes.append(n)
-
-	return nodes
+		output[0].append(n)

@@ -23,20 +23,17 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Array:
-	var nodes = get_input(0)
+func _generate_outputs() -> void:
+	var nodes := get_input(0)
 	var noise: OpenSimplexNoise = get_input_single(1)
 	var threshold: float = get_input_single(2, 0.0)
 	var invert: bool = get_input_single(3, false)
 	var local: bool = get_input_single(4, false)
-	var result = []
 
 	for node in nodes:
 		#var transform = node.transform if local else node.get_global_transform()
 		var n = noise.get_noise_3dv(node.transform.origin)
 		if invert and n < threshold:
-			result.append(node)
-		if not invert and n >= threshold:
-			result.append(node)
-
-	return result
+			output[0].append(node)
+		elif not invert and n >= threshold:
+			output[0].append(node)

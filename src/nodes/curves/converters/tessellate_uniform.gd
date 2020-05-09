@@ -21,19 +21,13 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
 
 
-func _generate_output(idx: int) -> Array:
-	var res = []
-	var curves = get_input(0)
-	if not curves:
-		return res
+func _generate_outputs() -> void:
+	var curves := get_input(0)
+	if not curves or curves.size() == 0:
+		return
 
-	if not curves is Array:
-		curves = [curves]
-	elif curves.size() == 0:
-		return res
-
-	var resolution = get_input_single(1, 1.0)
-	var preserve_sharp = get_input_single(2, false)
+	var resolution: float = get_input_single(1, 1.0)
+	var preserve_sharp: bool = get_input_single(2, false)
 
 	for c in curves:
 		var curve = c.curve
@@ -42,7 +36,6 @@ func _generate_output(idx: int) -> Array:
 
 		var length = curve.get_baked_length()
 		var steps = round(length / resolution)
-
 		if steps == 0:
 			continue
 
@@ -52,10 +45,6 @@ func _generate_output(idx: int) -> Array:
 			points.append(pos)
 
 		p.points = points
-		res.append(p)
+		p.transform = c.transform
 
-	return res
-
-
-
-
+		output[0].append(p)

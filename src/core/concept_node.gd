@@ -12,19 +12,25 @@ signal delete_node
 signal node_changed
 signal connection_changed
 signal input_changed
+signal all_inputs_ready
+signal output_ready
+
 
 var unique_id := "concept_node"
 var display_name := "ConceptNode"
 var category := "No category"
 var description := "A brief description of the node functionality"
-var use_caching := false #true
+var node_pool: ConceptGraphNodePool # Injected from template
+var thread_pool: ConceptGraphThreadPool # Injected from template
+var output := []
 
 var _inputs := {}
 var _outputs := {}
-var _cache := {}
 var _hboxes := []
 var _resize_timer := Timer.new()
-var _initialized := false
+var _initialized := false	# True when all enter_tree initialization is done
+var _generation_requested := false # True after calling prepare_output once
+var _output_ready := false # True when the background generation was completed
 
 
 func _enter_tree() -> void:
@@ -39,6 +45,7 @@ func _enter_tree() -> void:
 	add_child(_resize_timer)
 
 	_connect_signals()
+	_reset_output()
 	_initialized = true
 
 
@@ -50,6 +57,35 @@ redo yourself but you have complete control over the node appearance and behavio
 """
 func has_custom_gui() -> bool:
 	return false
+
+
+func is_output_ready() -> bool:
+	return _output_ready
+
+
+"""
+Call this first to generate everything in the background first. This method then emits a signal
+when the results are ready. Outputs can then be fetched using the get_output method.
+"""
+func prepare_output() -> void:
+	if not _initialized or not get_parent():
+		return
+
+	# If the output was already generated, skip the whole function and notify directly
+	if is_output_ready():
+		call_deferred("emit_signal", "output_ready")
+		return
+
+	if _generation_requested:	# Prepare output was already called
+		return
+
+	_generation_requested = true
+
+	if not _request_inputs_to_get_ready():
+		yield(self, "all_inputs_ready")
+
+	call_deferred("_run_background_generation") # Single thread execution
+	#thread_pool.submit_task(self, "_run_background_generation") # Broken multithread execution
 
 
 """
@@ -64,7 +100,7 @@ func get_editor_input(name: String) -> Node:
 	if not input:
 		return null
 
-	var input_copy = input.duplicate()
+	var input_copy = input.duplicate(7)
 	register_to_garbage_collection(input_copy)
 	return input_copy
 
@@ -84,38 +120,28 @@ output node is connected to more than one node. It ensure the results are the sa
 some performance
 """
 func get_output(idx: int) -> Array:
-	if not use_caching:
-		var output = _generate_output(idx)
-		if not output is Array:
-			output = [output]
-		for res in output:
-			register_to_garbage_collection(res)
-		return output
+	if not is_output_ready():
+		return []
 
-	# This doesn't really work for now, ignore that part
-	if not _cache.has(idx):
-		_cache[idx] = _generate_output(idx)
+	var res = output[idx]
+	if not res is Array:
+		res = [res]
+	if res.size() == 0:
+		return []
 
-	if _cache[idx] is Node:
-		return _cache[idx].duplicate(7)
+	# If the output is a node array, we need to duplicate them first otherwise they get passed as
+	# references which causes issues when the same output is sent to two different nodes.
+	if res[0] is Node:
+		var duplicates = []
+		for i in res.size():
+			var node = res[i].duplicate(7)
+			register_to_garbage_collection(node)
+			duplicates.append(node)
+		return duplicates
 
-	if _cache[idx] is Array and _cache[idx].size() > 0:
-		if _cache[idx][0] is Node:
-			var result = []
-			for i in range(_cache[idx].size()):
-				result.append(_cache[idx][i].duplicate(7))
-			return result
-
-	return _cache[idx]
-
-
-func clear_cache() -> void:
-	# Empty the cache to force the node to recalculate its output next time get_output is called
-	if use_caching:
-		_clear_cache()
-		for data in _cache:
-			data.queue_free()
-	_cache = {}
+	# If it's not a node array, it's made of built in types (scalars, vectors ...) which are passed
+	# as copy by default.
+	return res
 
 
 """
@@ -125,6 +151,12 @@ func reset() -> void:
 	clear_cache()
 	for node in get_parent().get_all_right_nodes(self):
 		node.reset()
+
+
+func clear_cache() -> void:
+	_clear_cache()
+	_reset_output()
+	_output_ready = false
 
 
 func export_editor_data() -> Dictionary:
@@ -307,6 +339,92 @@ func register_to_garbage_collection(resource):
 
 
 """
+Returns a list of every ConceptNode connected to this node
+"""
+func _get_connected_inputs() -> Array:
+	var connected_inputs = []
+	for i in _inputs.size():
+		var info = get_parent().get_left_node(self, i)
+		if info.has("node"):
+			connected_inputs.append(info["node"])
+
+	return connected_inputs
+
+
+"""
+Loops through all connected input nodes and request them to prepare their output. Each output
+then signals this node when they finished their task. When all the inputs are ready, signals this
+node that the generation can begin.
+Returns true if all inputs are already ready.
+"""
+func _request_inputs_to_get_ready() -> bool:
+	var connected_inputs = _get_connected_inputs()
+
+	# No connected nodes, all input data are available locally
+	if connected_inputs.size() == 0:
+		return true
+
+	# Call prepare_output on every connected inputs
+	for input_node in connected_inputs:
+		if not input_node.is_connected("output_ready", self, "_on_input_ready"):
+			input_node.connect("output_ready", self, "_on_input_ready")
+		input_node.call_deferred("prepare_output")
+	return false
+
+
+"""
+This function is ran in the background from prepare_output(). Emits a signal when the outputs
+are ready.
+"""
+func _run_background_generation() -> void:
+	_generate_outputs()
+	_output_ready = true
+	_generation_requested = false
+	call_deferred("emit_signal", "output_ready")
+
+
+"""
+Generate all the outputs for every output slots declared.
+Overide this function in the derived classes to return something usable.
+"""
+func _generate_outputs() -> void:
+	pass
+
+
+"""
+Return the output for the given slot index. Output is only available after _generate_outputs
+was called.
+"""
+func _get_output(index: int) -> Array:
+	return []
+
+
+"""
+Overide this function to customize how the output cache should be cleared. If you have memory
+to free or anything else, that's where you should define it.
+"""
+func _clear_cache():
+	pass
+
+
+"""
+Clear previous outputs and create as many empty arrays as there are output slots in the graph node.
+"""
+func _reset_output():
+	for slot in output:
+		if slot is Array:
+			for res in slot:
+				if res is Node:
+					res.queue_free()
+		elif slot is Node:
+			slot.queue_free()
+
+	output = []
+	for i in _outputs.size():
+		output.append([])
+
+
+"""
 Based on the previous calls to set_input and set_ouput, this method will call the
 GraphNode.set_slot method accordingly with the proper parameters. This makes it easier syntax
 wise on the child node side and make it more readable.
@@ -351,6 +469,7 @@ func _generate_default_gui_style() -> void:
 	style.content_margin_right = 24;
 	add_stylebox_override("frame", style)
 	add_constant_override("port_offset", 12)
+
 
 """
 If the child node does not define a custom UI itself, this function will generate a default UI
@@ -449,26 +568,28 @@ func _generate_default_gui() -> void:
 	show()
 
 
-"""
-Overide this function in the derived classes to return something usable
-"""
-func _generate_output(idx: int):
-	return null
-
-
-"""
-Overide this function to customize how the output cache should be cleared. If you have memory
-to free or anything else, that's where you should define it.
-"""
-func _clear_cache():
-	pass
-
-
 func _connect_signals() -> void:
 	connect("close_request", self, "_on_close_request")
 	connect("resize_request", self, "_on_resize_request")
 	connect("connection_changed", self, "_on_connection_changed")
 	_resize_timer.connect("timeout", self, "_on_resize_timeout")
+
+
+"""
+Called when a connected input node has finished generating its output data. This method checks
+if every other connected node has completed their task. If they are ready, notify this node to
+resume its output generation
+"""
+func _on_input_ready() -> void:
+	#print("Input ready received on ", display_name)
+	var all_inputs_ready := true
+	var connected_inputs := _get_connected_inputs()
+	for input_node in connected_inputs:
+		if not input_node.is_output_ready():
+			all_inputs_ready = false
+
+	if all_inputs_ready:
+		emit_signal("all_inputs_ready")
 
 
 func _on_resize_request(new_size) -> void:

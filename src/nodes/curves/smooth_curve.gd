@@ -13,7 +13,9 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.CURVE)
 
 
-func _generate_output(idx: int) -> Array:
+func _generate_outputs() -> void:
 	var paths = get_input(0)
 
-	return paths
+	# TODO : Smooth the curve here
+
+	output[0] = paths

@@ -13,17 +13,17 @@ func _init() -> void:
 	set_output(0, "Multimesh", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> MultiMeshInstance:
-	var source = get_input_single(0)
-	var transforms = get_input(1)
+func _generate_outputs() -> void:
+	var source: Spatial = get_input_single(0)
+	var transforms := get_input(1)
 
 	if not source or not transforms or transforms.size() == 0:
-		return null
+		return
 
 	var count = transforms.size()
 	var mesh = _get_mesh_from_node(source)
 	if not mesh:
-		return null
+		return
 
 	var mm = _setup_multi_mesh(mesh, count)
 	for i in count:
@@ -31,7 +31,7 @@ func _generate_output(idx: int) -> MultiMeshInstance:
 		if t:
 			mm.multimesh.set_instance_transform(i, t.transform)
 
-	return mm
+	output[0] = mm
 
 
 func _setup_multi_mesh(mesh_instance, count) -> MultiMeshInstance:
@@ -52,4 +52,3 @@ func _get_mesh_from_node(node) -> MeshInstance:
 		if c is MeshInstance:
 			return c
 	return null
-

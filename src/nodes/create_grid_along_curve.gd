@@ -21,18 +21,15 @@ func _init() -> void:
 	set_output(0, "Transforms", ConceptGraphDataType.NODE)
 
 
-func _generate_output(idx: int) -> Array:
-	var result = []
-	var curves = get_input(0)
-
+func _generate_outputs() -> void:
+	var curves := get_input(0)
 	if not curves or curves.size() == 0:
-		return result
+		return
 
 	var height: float = get_input_single(1, 1.0)
 	var density_x: float = get_input_single(2, 1.0)
 	var density_y: float = get_input_single(3, 1.0)
 	var thickness: float = get_input_single(4, 1.0)
-
 
 	for path in curves:
 		var curve = path.curve
@@ -48,9 +45,8 @@ func _generate_output(idx: int) -> Array:
 				var node = Position3D.new()
 				node.transform.origin = pos
 				node.transform.origin.y += j * (height / instances_in_column)
-				result.append(node)
+				output[0].append(node)
 
-	return result
 
 """
 	if offset + 1.0 < path_length:
