@@ -10,13 +10,14 @@ func _init() -> void:
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE)
 	set_input(1, "Offset", ConceptGraphDataType.VECTOR)
-	set_input(3, "Local Space", ConceptGraphDataType.BOOLEAN, {"value": true})
+	set_input(2, "Local Space", ConceptGraphDataType.BOOLEAN, {"value": true})
 	set_output(0, "", ConceptGraphDataType.NODE)
 
 
 func _generate_outputs() -> void:
 	var nodes := get_input(0)
 	var amount: Vector3 = get_input_single(1, Vector3.ZERO)
+	var local: bool = get_input_single(2, true)
 
 	amount.x = deg2rad(amount.x)
 	amount.y = deg2rad(amount.y)
@@ -26,6 +27,13 @@ func _generate_outputs() -> void:
 		return
 
 	for i in range(nodes.size()):
-		nodes[i].rotation += amount
+		if local:
+			nodes[i].rotation += amount
+		else:
+			var t = nodes[i].transform
+			t = t.rotated(Vector3.LEFT, amount.x)
+			t = t.rotated(Vector3.UP, amount.y)
+			t = t.rotated(Vector3.FORWARD, amount.z)
+			nodes[i].transform = t
 
 	output[0] = nodes

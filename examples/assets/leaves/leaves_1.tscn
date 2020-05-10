@@ -5,5 +5,5 @@
 
 [node name="leaves_1" instance=ExtResource( 1 )]
 
-[node name="Plane002" parent="." index="0"]
+[node name="Plane017" parent="." index="0"]
 material/0 = ExtResource( 2 )

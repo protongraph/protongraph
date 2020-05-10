@@ -9,7 +9,7 @@ Assigns a material to the selected node
 func _init() -> void:
 	unique_id = "set_material_to_node"
 	display_name = "Set material"
-	category = "Nodes"
+	category = "Nodes/Operations"
 	description = "Assigns a material to the selected node"
 
 	set_input(0, "Node", ConceptGraphDataType.NODE)

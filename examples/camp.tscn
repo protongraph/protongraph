@@ -223,6 +223,7 @@ curve = SubResource( 5 )
 script = ExtResource( 5 )
 
 [node name="fence_planks" parent="Fence/Input" instance=ExtResource( 6 )]
+visible = false
 
 [node name="Output" type="Spatial" parent="Fence"]
 __meta__ = {
@@ -230,7 +231,7 @@ __meta__ = {
 }
 
 [node name="fence_planks" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.932649, -0.000280363, 0.360785, 0, 1, 0.000777092, -0.360785, -0.000724754, 0.932649, -4.35923, 0, -3.58755 )
+transform = Transform( 0.932649, -0.000280364, 0.360785, 0, 1, 0.000777094, -0.360785, -0.000724756, 0.932649, -4.35923, 0, -3.58755 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -249,7 +250,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks2" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.962661, -0.000162791, 0.27071, 7.36963e-05, 1, 0.000339279, -0.27071, -0.00030666, 0.962661, -3.40278, -0.000591936, -3.9125 )
+transform = Transform( 0.962661, -0.000162791, 0.27071, 7.36965e-05, 1, 0.000339279, -0.27071, -0.00030666, 0.962661, -3.40278, -0.000591938, -3.9125 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks2"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -268,7 +269,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks3" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.98441, -8.4886e-05, 0.175888, 0.000106315, 1, -0.000112411, -0.175888, 0.000129358, 0.98441, -2.42033, -0.000753053, -4.14809 )
+transform = Transform( 0.98441, -8.48863e-05, 0.175888, 0.000106315, 1, -0.00011241, -0.175888, 0.000129357, 0.98441, -2.42033, -0.000753056, -4.14809 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -287,7 +288,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks4" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.999183, -5.99571e-05, 0.0404077, 9.00437e-05, 1, -0.000742757, -0.0404077, 0.000745789, 0.999183, -1.41659, -0.000385394, -4.27184 )
+transform = Transform( 0.999183, -5.99574e-05, 0.0404077, 9.0044e-05, 1, -0.000742758, -0.0404077, 0.000745789, 0.999183, -1.41658, -0.000385398, -4.27184 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks4"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -306,7 +307,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks5" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.983795, -0.00023638, -0.179294, -7.47305e-05, 0.999999, -0.00172844, 0.179295, 0.00171383, 0.983794, -0.408211, 0.000767685, -4.22397 )
+transform = Transform( 0.983795, -0.000236381, -0.179295, -7.47305e-05, 0.999999, -0.00172844, 0.179295, 0.00171383, 0.983794, -0.40821, 0.000767682, -4.22397 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks5"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -325,7 +326,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks6" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.893023, -0.000256423, -0.450011, -0.000560148, 0.999998, -0.0016814, 0.450011, 0.0017536, 0.893022, 0.546032, 0.00292479, -3.90236 )
+transform = Transform( 0.893023, -0.000256424, -0.450011, -0.000560149, 0.999998, -0.0016814, 0.450011, 0.0017536, 0.893021, 0.546032, 0.00292479, -3.90236 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks6"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -344,7 +345,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks7" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.846261, 0.000402927, -0.532768, -0.000717263, 1, -0.000383026, 0.532768, 0.000706275, 0.846261, 1.42401, 0.00391652, -3.4044 )
+transform = Transform( 0.84626, 0.000402933, -0.532769, -0.000717265, 1, -0.000383018, 0.532769, 0.00070627, 0.84626, 1.424, 0.00391652, -3.4044 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks7"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -363,7 +364,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks8" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.811895, 0.00072798, -0.583804, -0.000739461, 1, 0.000218593, 0.583803, 0.000254226, 0.811895, 2.26347, 0.00398637, -2.83969 )
+transform = Transform( 0.811895, 0.000727976, -0.583804, -0.000739463, 1, 0.000218583, 0.583803, 0.000254234, 0.811895, 2.26346, 0.00398637, -2.83969 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks8"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -382,7 +383,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks9" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.778048, 0.000926046, -0.628205, -0.000726109, 1, 0.00057481, 0.628205, 8.91523e-06, 0.778048, 3.06862, 0.00357693, -2.22701 )
+transform = Transform( 0.778049, 0.000926047, -0.628202, -0.000726112, 1, 0.000574808, 0.628203, 8.91607e-06, 0.77805, 3.06862, 0.00357693, -2.22701 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks9"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -401,7 +402,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks10" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.737314, 0.00105132, -0.67555, -0.000688809, 0.999999, 0.000804451, 0.67555, -0.000127808, 0.737314, 3.83689, 0.00287121, -1.56757 )
+transform = Transform( 0.737314, 0.00105132, -0.67555, -0.000688811, 0.999999, 0.000804451, 0.67555, -0.000127807, 0.737314, 3.83689, 0.00287121, -1.56757 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks10"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -420,7 +421,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks11" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.678311, 0.00111222, -0.734774, -0.000619209, 0.999999, 0.000942068, 0.734775, -0.000184036, 0.678311, 4.55394, 0.00198025, -0.8558 )
+transform = Transform( 0.678316, 0.00111222, -0.73477, -0.000619217, 0.999999, 0.000942064, 0.73477, -0.000184036, 0.678316, 4.55394, 0.00198025, -0.8558 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks11"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -439,7 +440,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks12" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.569069, 0.00106685, -0.822289, -0.000481602, 0.999999, 0.000964121, 0.822289, -0.000152635, 0.569069, 5.18894, 0.00100342, -0.0701466 )
+transform = Transform( 0.569063, 0.00106685, -0.822293, -0.000481595, 0.999999, 0.000964129, 0.822294, -0.000152638, 0.569063, 5.18894, 0.00100342, -0.0701466 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks12"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -458,7 +459,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks13" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( 0.261098, 0.000642365, -0.965312, -0.000131212, 1, 0.000629957, 0.965312, -3.78199e-05, 0.261098, 5.62995, 0.000152625, 0.833703 )
+transform = Transform( 0.261098, 0.000642365, -0.965312, -0.000131211, 1, 0.000629957, 0.965312, -3.7821e-05, 0.261098, 5.62995, 0.000152625, 0.833703 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks13"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -477,7 +478,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks14" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( -0.256123, 5.14883e-05, -0.966644, 0.000201083, 1, -1.40926e-08, 0.966644, -0.000194379, -0.256123, 5.54744, -1.14519e-07, 1.82851 )
+transform = Transform( -0.256123, 5.14886e-05, -0.966644, 0.000201084, 1, -1.40817e-08, 0.966644, -0.00019438, -0.256123, 5.54744, -1.14519e-07, 1.82851 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks14"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -496,7 +497,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks15" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( -0.415214, 8.22699e-05, -0.909724, 0.00019821, 1, -3.25655e-08, 0.909724, -0.00018033, -0.415214, 5.1954, -8.95052e-08, 2.77541 )
+transform = Transform( -0.415214, 8.22704e-05, -0.909724, 0.000198211, 1, -3.258e-08, 0.909724, -0.000180331, -0.415214, 5.1954, -8.95052e-08, 2.77541 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks15"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -515,7 +516,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks16" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( -0.5166, 0.000101682, -0.856227, 0.000196904, 1, -4.45939e-08, 0.856227, -0.000168617, -0.5166, 4.72045, -5.00781e-08, 3.66891 )
+transform = Transform( -0.5166, 0.000101683, -0.856227, 0.000196905, 1, -4.45939e-08, 0.856227, -0.000168618, -0.5166, 4.72045, -5.00781e-08, 3.66891 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks16"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -534,7 +535,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="fence_planks17" type="Spatial" parent="Fence/Output" instance=ExtResource( 6 )]
-transform = Transform( -0.595965, 0.000116766, -0.80301, 0.000196001, 1, -5.41909e-08, 0.80301, -0.000157423, -0.595965, 4.15667, 0, 4.50781 )
+transform = Transform( -0.595965, 0.000116767, -0.80301, 0.000196002, 1, -5.41909e-08, 0.80301, -0.000157424, -0.595965, 4.15667, 0, 4.50781 )
 
 [node name="tmpParent2" type="Spatial" parent="Fence/Output/fence_planks17"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.515269 )
@@ -580,7 +581,7 @@ visible = false
 [node name="Output" type="Spatial" parent="Tents"]
 
 [node name="tent_detailedClosed" type="Spatial" parent="Tents/Output" instance=ExtResource( 10 )]
-transform = Transform( 0.996757, 0, 0.0804861, 0, 1, 0, -0.0804861, 0, 0.996757, -2.49064, -0.039648, -2.71251 )
+transform = Transform( 0.996756, 0, 0.0804861, 0, 1, 0, -0.0804861, 0, 0.996756, -2.49063, -0.039648, -2.71251 )
 
 [node name="tmpParent2" type="Spatial" parent="Tents/Output/tent_detailedClosed"]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
@@ -601,7 +602,7 @@ material/1 = null
 material/2 = null
 
 [node name="tent_detailedOpen" type="Spatial" parent="Tents/Output" instance=ExtResource( 9 )]
-transform = Transform( 0.998997, 0, 0.0447915, 0, 1, 0, -0.0447915, 0, 0.998997, -3.28921, -0.039648, -0.31315 )
+transform = Transform( 0.998997, 0, 0.0447915, 0, 1, 0, -0.0447915, 0, 0.998997, -3.28921, -0.039648, -0.313151 )
 
 [node name="tmpParent2" type="Spatial" parent="Tents/Output/tent_detailedOpen"]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
@@ -620,7 +621,7 @@ material/0 = null
 material/1 = null
 
 [node name="tent_detailedClosed2" type="Spatial" parent="Tents/Output" instance=ExtResource( 10 )]
-transform = Transform( 0.994633, 0, 0.103477, 0, 1, 0, -0.103477, 0, 0.994633, -3.61593, -0.039648, 1.88013 )
+transform = Transform( 0.994632, 0, 0.103477, 0, 1, 0, -0.103477, 0, 0.994632, -3.61593, -0.039648, 1.88012 )
 
 [node name="tmpParent2" type="Spatial" parent="Tents/Output/tent_detailedClosed2"]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
@@ -641,7 +642,7 @@ material/1 = null
 material/2 = null
 
 [node name="tent_detailedOpen2" type="Spatial" parent="Tents/Output" instance=ExtResource( 9 )]
-transform = Transform( 0.999549, 0, 0.0300689, 0, 1, 0, -0.0300689, 0, 0.999549, -0.409894, -0.039648, -2.12325 )
+transform = Transform( 0.999548, 0, 0.0300689, 0, 1, 0, -0.0300689, 0, 0.999548, -0.409888, -0.039648, -2.12325 )
 
 [node name="tmpParent2" type="Spatial" parent="Tents/Output/tent_detailedOpen2"]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
@@ -660,7 +661,7 @@ material/0 = null
 material/1 = null
 
 [node name="tent_smallOpen" type="Spatial" parent="Tents/Output" instance=ExtResource( 7 )]
-transform = Transform( 0.945447, 0, 0.325777, 0, 1, 0, -0.325777, 0, 0.945447, -0.877989, -0.039648, 0.142854 )
+transform = Transform( 0.945447, 0, 0.325777, 0, 1, 0, -0.325777, 0, 0.945447, -0.877984, -0.039648, 0.142855 )
 
 [node name="tmpParent2" type="Spatial" parent="Tents/Output/tent_smallOpen"]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
@@ -681,7 +682,7 @@ material/1 = null
 material/2 = null
 
 [node name="tent_smallOpen2" type="Spatial" parent="Tents/Output" instance=ExtResource( 7 )]
-transform = Transform( 0.948689, 0, -0.316214, 0, 1, 0, 0.316214, 0, 0.948689, -1.62334, -0.039648, 2.31387 )
+transform = Transform( 0.948688, 0, -0.316214, 0, 1, 0, 0.316214, 0, 0.948688, -1.62334, -0.039648, 2.31387 )
 
 [node name="tmpParent2" type="Spatial" parent="Tents/Output/tent_smallOpen2"]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )

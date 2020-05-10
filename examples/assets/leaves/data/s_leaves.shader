@@ -20,7 +20,7 @@ varying float height;
 
 void vertex() {
 	height = VERTEX.y;
-	float influence = max(max(VERTEX.x, VERTEX.y), VERTEX.z) / 6.0;
+	float influence = max(max(abs(VERTEX.x), abs(VERTEX.y)), abs(VERTEX.z)) / 6.0;
 	vec4 world_pos = WORLD_MATRIX * vec4(VERTEX, 1.0);
 	vec2 uv = world_pos.xz / (noise_scale + 1e-2);
 	vec2 panning_uv = uv + fract(TIME * wind_direction * wind_speed);
@@ -35,7 +35,6 @@ void vertex() {
 	local_pos.z += influence * sin(TIME * 1.5) / 8.0;
 	
 	VERTEX = local_pos.xyz;
-	NORMAL = vec3(0.0, 1.0, 0.0);
 }
 
 void fragment() {
