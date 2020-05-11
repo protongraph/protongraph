@@ -57,18 +57,12 @@ once and change the parameters on the individual nodes directly.
 
 ## Quick start
 
-+ Create a **ConceptGraph** node in the editor tree. It will automatically add
-two child nodes, Input and Output
-+ Select the ConceptGraph node, a new button "Concept Graph Editor" will appear
-on the bottom dock. Click it to access the editor.
-+ Load or create a new template
-+ You can now right click anywhere in this panel to bring up the Nodes panel.
-Double click on one of them or click the create button to add a new node to the
-graph
-+ Add an **Output** node to get a result.
+[Check out the wiki](https://github.com/HungryProton/concept_graph/wiki) for detailled explainations
 
 Check out the **examples folder** at the root of the addon folder for pre-made
-templates and more explainations.
+templates and example scences.
+
+Check out [this video tutorial](https://www.youtube.com/watch?v=hLFgfyKbPoU) for a step by step guide on how to create your first graph
 
 ## Licence
 
