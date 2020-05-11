@@ -44,17 +44,6 @@ good enough for most people.
 + At some point, I'd like to add some sort of control flow (conditional and loops)
 but it likely won't be implemented anytime soon.
 
-## How does it work?
-
-There's two main components to this addon:
-+ The **ConceptGraph** node that you add to your editor
-+ The **Templates** that holds the node graphs
-
-Templates are attached to the ConceptGraph nodes. They are saved to disk and can
-be shared accross many different nodes, this way you can define the node graph
-once and change the parameters on the individual nodes directly.
-
-
 ## Quick start
 
 [Check out the wiki](https://github.com/HungryProton/concept_graph/wiki) for detailled explainations
