@@ -511,6 +511,7 @@ func _generate_default_gui() -> void:
 
 		# label_left holds the name of the input slot.
 		var label_left = Label.new()
+		label_left.mouse_filter = MOUSE_FILTER_PASS
 		ui_elements.append(label_left)
 
 		# If this slot has an input
@@ -521,6 +522,7 @@ func _generate_default_gui() -> void:
 			match _inputs[i]["type"]:
 				ConceptGraphDataType.BOOLEAN:
 					var opts = _inputs[i]["options"]
+					label_left.hint_tooltip = ConceptGraphDataType.Types.keys()[_inputs[i]["type"]].capitalize()
 					var checkbox = CheckBox.new()
 					checkbox.name = "CheckBox"
 					checkbox.pressed = opts["value"] if opts.has("value") else false
@@ -552,10 +554,12 @@ func _generate_default_gui() -> void:
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel
 		var label_right = Label.new()
+		label_right.mouse_filter = MOUSE_FILTER_PASS
 		label_right.size_flags_horizontal = SIZE_EXPAND_FILL
 		label_right.align = Label.ALIGN_RIGHT
 		if _outputs.has(i):
 			label_right.text = _outputs[i]["name"]
+			label_right.hint_tooltip = ConceptGraphDataType.Types.keys()[_outputs[i]["type"]].capitalize()
 		ui_elements.append(label_right)
 
 		# Push all the ui elements in order in the Hbox container

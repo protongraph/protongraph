@@ -21,6 +21,22 @@ const VECTOR_CURVE = 10
 const ANY = 11
 const MATH_CURVE = 12
 
+# Workaround to get type name by it's ID for hint_tooltip on input and output
+enum Types {
+	BOOLEAN = 0
+	SCALAR = 1
+	VECTOR = 2
+	NODE = 3
+	CURVE = 4
+	NOISE = 5
+	MATERIAL = 6
+	MESH = 7
+	STRING = 8
+	BOX = 9
+	VECTOR_CURVE = 10
+	ANY = 11
+	MATH_CURVE = 12
+}
 
 # Common types also used in the VisualShader editor share the same color
 const COLORS = {
