@@ -40,6 +40,8 @@ func override_material(node, material):
 	if node is MeshInstance:
 		for i in node.get_surface_material_count():
 			node.set_surface_material(i, material)
+	elif node is CSGPrimitive:
+		node.set_material(material)
 
 
 func override_recursive(node, material):
