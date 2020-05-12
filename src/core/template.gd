@@ -219,8 +219,8 @@ func load_from_file(path: String) -> void:
 	# Open the file and read the contents
 	var file = File.new()
 	file.open(path, File.READ)
-	var json = JSON.parse(file.get_line())
-	if not json:
+	var json = JSON.parse(file.get_line())	# TODO: Don't assume the whole json fits in one line
+	if not json or not json.result:
 		return	# Template file is either empty or not a valid Json. Ignore
 
 	# Abort if the file doesn't have node data

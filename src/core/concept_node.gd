@@ -160,9 +160,10 @@ func clear_cache() -> void:
 
 
 func export_editor_data() -> Dictionary:
+	var editor_scale = ConceptGraphEditorUtil.get_dpi_scale()
 	var data = {}
-	data["offset_x"] = offset.x
-	data["offset_y"] = offset.y
+	data["offset_x"] = offset.x / editor_scale
+	data["offset_y"] = offset.y / editor_scale
 
 	if resizable:
 		data["rect_x"] = rect_size.x
@@ -184,8 +185,9 @@ func export_editor_data() -> Dictionary:
 
 
 func restore_editor_data(data: Dictionary) -> void:
-	offset.x = data["offset_x"]
-	offset.y = data["offset_y"]
+	var editor_scale = ConceptGraphEditorUtil.get_dpi_scale()
+	offset.x = data["offset_x"] * editor_scale
+	offset.y = data["offset_y"] * editor_scale
 
 	if data.has("rect_x"):
 		rect_size.x = data["rect_x"]
