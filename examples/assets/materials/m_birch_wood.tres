@@ -1,7 +1,6 @@
 [gd_resource type="SpatialMaterial" load_steps=2 format=2]
 
-[ext_resource path="res://materials/wood/t_tree_bark_1.png" type="Texture" id=1]
-
+[ext_resource path="res://addons/concept_graph/examples/assets/materials/t_birch_tree.png" type="Texture" id=1]
 
 [resource]
 albedo_texture = ExtResource( 1 )
