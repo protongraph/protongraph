@@ -517,12 +517,12 @@ func _generate_default_gui() -> void:
 		# If this slot has an input
 		if _inputs.has(i):
 			label_left.text = _inputs[i]["name"]
+			label_left.hint_tooltip = ConceptGraphDataType.Types.keys()[_inputs[i]["type"]].capitalize()
 
 			# Add the optional UI elements based on the data type.
 			match _inputs[i]["type"]:
 				ConceptGraphDataType.BOOLEAN:
 					var opts = _inputs[i]["options"]
-					label_left.hint_tooltip = ConceptGraphDataType.Types.keys()[_inputs[i]["type"]].capitalize()
 					var checkbox = CheckBox.new()
 					checkbox.name = "CheckBox"
 					checkbox.pressed = opts["value"] if opts.has("value") else false
