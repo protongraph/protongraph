@@ -336,7 +336,7 @@ func _on_node_selected(node: GraphNode) -> void:
 	_selected_node = node
 
 
-func _on_node_changed(node: ConceptNode = null, replay_simulation := false) -> void:
+func _on_node_changed(node: ConceptNode, replay_simulation := false) -> void:
 	# Prevent regeneration hell while loading the template from file
 	if not _template_loaded:
 		return
