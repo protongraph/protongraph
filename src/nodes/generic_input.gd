@@ -21,9 +21,9 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var node_name: String = get_input_single(0)
+	var node_name: String = get_input_single(0, "")
 	var children_only: bool = get_input_single(1, false)
-	if not node_name:
+	if not node_name or node_name == "":
 		return
 
 	var node = get_editor_input(node_name)

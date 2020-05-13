@@ -497,11 +497,8 @@ func _generate_default_gui_style() -> void:
 	selected_style.shadow_size = 4
 	selected_style.border_color = Color(0.121569, 0.145098, 0.192157, 0.9)
 	add_stylebox_override("selectedframe", selected_style)
-
 	add_constant_override("port_offset", 12)
-
-	# TODO : add bold font to title
-	#add_font_override("title_font", get_font("bold", "EditorFonts"))
+	add_font_override("title_font", get_font("bold", "EditorFonts"))
 
 """
 If the child node does not define a custom UI itself, this function will generate a default UI

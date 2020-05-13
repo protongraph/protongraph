@@ -15,9 +15,7 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var input_vector: Vector3 = get_input_single(0)
-	if not input_vector:
-		return
+	var input_vector: Vector3 = get_input_single(0, Vector3.ZERO)
 
 	output[0] = input_vector.x
 	output[1] = input_vector.y

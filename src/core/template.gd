@@ -41,13 +41,17 @@ Remove all children and connections
 """
 func clear() -> void:
 	_template_loaded = false
+	clear_editor()
+	_output_nodes = []
+	run_garbage_collection()
+
+
+func clear_editor() -> void:
 	clear_connections()
 	for c in get_children():
 		if c is GraphNode:
 			remove_child(c)
 			c.free()
-	_output_nodes = []
-	run_garbage_collection()
 
 
 """
@@ -103,6 +107,8 @@ func update_exposed_variables() -> void:
 	for c in get_children():
 		if c is ConceptNode:
 			var variables = c.get_exposed_variables()
+			if not variables:
+				continue
 			for v in variables:
 				v.name = "Template/" + v.name
 				v.type = ConceptGraphDataType.to_variant_type(v.type)
@@ -211,11 +217,16 @@ func is_node_connected_to_input(node: GraphNode, idx: int) -> bool:
 """
 Opens a cgraph file, reads its contents and recreate a node graph from there
 """
-func load_from_file(path: String) -> void:
+func load_from_file(path: String, soft_load := false) -> void:
 	if not node_library or not path or path == "":
 		return
 
-	clear()
+	_template_loaded = false
+	if soft_load:	# Don't clear, simply refresh the graph edit UI without running the sim
+		clear_editor()
+	else:
+		clear()
+
 	# Open the file and read the contents
 	var file = File.new()
 	file.open(path, File.READ)

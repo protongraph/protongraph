@@ -27,8 +27,8 @@ func _ready() -> void:
 
 
 func _generate_outputs() -> void:
-	var name: String = get_input_single(0)
-	var value: float = get_parent().get_value_from_inspector(name)
+	var name: String = get_input_single(0, "")
+	var value = get_parent().get_value_from_inspector(name)
 
 	if not value:
 		value =  get_input_single(1, 1.0)
@@ -37,7 +37,7 @@ func _generate_outputs() -> void:
 
 
 func get_exposed_variables() -> Array:
-	var name: String = get_input_single(0)
+	var name: String = get_input_single(0, "")
 	if not name:
 		return []
 
