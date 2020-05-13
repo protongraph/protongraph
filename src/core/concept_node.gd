@@ -460,17 +460,32 @@ func _setup_slots() -> void:
 Based on graph node category this method will setup corresponding style and color of graph node
 """
 func _generate_default_gui_style() -> void:
+	# Base Style
 	var style = StyleBoxFlat.new()
 	var color = Color(0.121569, 0.145098, 0.192157, 0.9)
 	style.border_color = ConceptGraphDataType.to_category_color(category)
 	style.set_bg_color(color)
-	style.set_border_width_all(1)
-	style.set_border_width(MARGIN_TOP, 24)
+	style.set_border_width_all(2)
+	style.set_border_width(MARGIN_TOP, 32)
 	style.content_margin_left = 24;
 	style.content_margin_right = 24;
+	style.set_corner_radius_all(4)
+	style.set_expand_margin_all(4)
+	style.shadow_size = 8
+	style.shadow_color = Color(0,0,0,0.2)
 	add_stylebox_override("frame", style)
+
+	# Selected Style
+	var selected_style = style.duplicate()
+	selected_style.shadow_color = ConceptGraphDataType.to_category_color(category)
+	selected_style.shadow_size = 4
+	selected_style.border_color = Color(0.121569, 0.145098, 0.192157, 0.9)
+	add_stylebox_override("selectedframe", selected_style)
+	
 	add_constant_override("port_offset", 12)
 
+	# TODO : add bold font to title 
+	#add_font_override("title_font", get_font("bold", "EditorFonts"))
 
 """
 If the child node does not define a custom UI itself, this function will generate a default UI
