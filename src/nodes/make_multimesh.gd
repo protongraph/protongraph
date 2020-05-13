@@ -45,12 +45,13 @@ func _generate_outputs() -> void:
 
 	if source is MultiMeshInstance:
 		transforms = _combine_transforms(source, transforms)
-		mm = source
+		mm = _setup_multi_mesh_from_multimesh(source)
 	else:
 		var mesh = _get_mesh_from_node(source)
 		if not mesh:
 			return
-		mm = _setup_multi_mesh(mesh)
+		mm = _setup_multi_mesh_from_mesh(mesh)
+
 	if not mm:
 		return
 
@@ -67,8 +68,16 @@ func _generate_outputs() -> void:
 func _set_mm_instance_count(multimesh, count) -> void:
 	multimesh.multimesh.instance_count = count
 
+func _setup_multi_mesh_from_multimesh(mm_src) -> MultiMeshInstance:
+	var mm = MultiMeshInstance.new()
+	mm.multimesh = MultiMesh.new()
+	mm.material_override = mm_src.material_override
+	mm.multimesh.instance_count = 0 # Set this to zero or you can't change the other values
+	mm.multimesh.mesh = mm_src.multimesh.mesh
+	mm.multimesh.transform_format = 1
+	return mm
 
-func _setup_multi_mesh(mesh_instance) -> MultiMeshInstance:
+func _setup_multi_mesh_from_mesh(mesh_instance) -> MultiMeshInstance:
 	var mm = MultiMeshInstance.new()
 	mm.multimesh = MultiMesh.new()
 	mm.material_override = mesh_instance.get_surface_material(0)
