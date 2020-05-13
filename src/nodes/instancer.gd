@@ -13,7 +13,7 @@ func _init() -> void:
 	description = "Creates a node instance in the graph"
 
 	set_input(0, "Node Type", ConceptGraphDataType.STRING)
-	set_output(0, "Node", ConceptGraphDataType.NODE)
+	set_output(0, "Node", ConceptGraphDataType.NODE_3D)
 
 
 func _generate_outputs() -> void:

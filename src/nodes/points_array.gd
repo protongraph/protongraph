@@ -13,8 +13,8 @@ func _init() -> void:
 	description = "Creates an array of points."
 
 	set_input(0, "Count", ConceptGraphDataType.SCALAR, {"steps": 1, "allow_lesser": false})
-	set_input(1, "Offset", ConceptGraphDataType.VECTOR)
-	set_output(0, "Transforms", ConceptGraphDataType.NODE)
+	set_input(1, "Offset", ConceptGraphDataType.VECTOR3)
+	set_output(0, "Transforms", ConceptGraphDataType.NODE_3D)
 
 
 func _generate_outputs() -> void:

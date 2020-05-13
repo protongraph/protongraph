@@ -8,11 +8,13 @@ func _init() -> void:
 	category = "Nodes/Operations"
 	description = "Applies a random scaling to a set of nodes from a noise input"
 
-	set_input(0, "Nodes", ConceptGraphDataType.NODE)
+	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Noise", ConceptGraphDataType.NOISE)
-	set_input(2, "Amount", ConceptGraphDataType.VECTOR)
-	set_input(3, "Base scale", ConceptGraphDataType.VECTOR)
-	set_output(0, "", ConceptGraphDataType.NODE)
+	set_input(2, "Amount", ConceptGraphDataType.VECTOR3)
+	set_input(3, "Base scale", ConceptGraphDataType.VECTOR3)
+	set_output(0, "", ConceptGraphDataType.NODE_3D)
+
+	mirror_slots_type(0, 0)
 
 
 func _generate_outputs() -> void:

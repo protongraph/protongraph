@@ -33,7 +33,7 @@ func _init() -> void:
 	connect("connection_request", self, "_on_connection_request")
 	connect("disconnection_request", self, "_on_disconnection_request")
 	connect("node_selected", self, "_on_node_selected")
-	connect("_end_node_move", self, "_on_node_changed")
+	connect("_end_node_move", self, "_on_node_changed_zero")
 
 
 """
@@ -334,6 +334,11 @@ func _disconnect_input(node: GraphNode, idx: int) -> void:
 
 func _on_node_selected(node: GraphNode) -> void:
 	_selected_node = node
+
+
+# Preserving 3.1 compatibility. Otherwise, just add a default "= null" to the node parameter
+func _on_node_changed_zero():
+	_on_node_changed(null, false)
 
 
 func _on_node_changed(node: ConceptNode, replay_simulation := false) -> void:

@@ -8,11 +8,13 @@ func _init() -> void:
 	category = "Nodes/Operations"
 	description = "Applies a random rotation to a set of nodes"
 
-	set_input(0, "Nodes", ConceptGraphDataType.NODE)
-	set_input(1, "Amount", ConceptGraphDataType.VECTOR)
+	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
+	set_input(1, "Amount", ConceptGraphDataType.VECTOR3)
 	set_input(2, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
 	set_input(3, "Local Space", ConceptGraphDataType.BOOLEAN, {"value": true})
-	set_output(0, "", ConceptGraphDataType.NODE)
+	set_output(0, "", ConceptGraphDataType.NODE_3D)
+
+	mirror_slots_type(0, 0)
 
 
 func _generate_outputs() -> void:

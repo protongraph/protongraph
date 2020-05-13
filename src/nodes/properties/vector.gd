@@ -9,8 +9,8 @@ func _init() -> void:
 	description = "Expose a Vector3 value to the inspector"
 
 	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})
-	set_input(1, "Default", ConceptGraphDataType.VECTOR)
-	set_output(0, "", ConceptGraphDataType.VECTOR)
+	set_input(1, "Default", ConceptGraphDataType.VECTOR3)
+	set_output(0, "", ConceptGraphDataType.VECTOR3)
 
 
 func _ready() -> void:
@@ -34,7 +34,7 @@ func get_exposed_variables() -> Array:
 
 	return [{
 		"name": name,
-		"type": ConceptGraphDataType.VECTOR,
+		"type": ConceptGraphDataType.VECTOR3,
 		"default_value": get_input(1),
 		}]
 

@@ -8,9 +8,11 @@ func _init() -> void:
 	category = "Nodes/Instancers"
 	description = "Spawns multiple copies of a node at the given positions"
 
-	set_input(0, "Source", ConceptGraphDataType.NODE)
-	set_input(1, "Transforms", ConceptGraphDataType.NODE)
-	set_output(0, "Duplicates", ConceptGraphDataType.NODE)
+	set_input(0, "Source", ConceptGraphDataType.NODE_3D)
+	set_input(1, "Transforms", ConceptGraphDataType.NODE_3D)
+	set_output(0, "Duplicates", ConceptGraphDataType.NODE_3D)
+
+	mirror_slots_type(0, 0)
 
 
 func _generate_outputs() -> void:

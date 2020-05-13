@@ -8,9 +8,9 @@ func _init() -> void:
 	category = "Curves/Operations"
 	description = "Smooth a curve path"
 
-	set_input(0, "Curve", ConceptGraphDataType.CURVE)
+	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)
 	set_input(1, "Smooth", ConceptGraphDataType.SCALAR)
-	set_output(0, "", ConceptGraphDataType.CURVE)
+	set_output(0, "", ConceptGraphDataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:

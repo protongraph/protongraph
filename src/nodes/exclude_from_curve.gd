@@ -12,10 +12,12 @@ func _init() -> void:
 	category = "Nodes/Operations"
 	description = "Discard all the nodes inside (or outside) the provided curves"
 
-	set_input(0, "Input", ConceptGraphDataType.NODE)
-	set_input(1, "Curves", ConceptGraphDataType.CURVE)
+	set_input(0, "Input", ConceptGraphDataType.NODE_3D)
+	set_input(1, "Curves", ConceptGraphDataType.CURVE_3D)
 	set_input(2, "Invert", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.NODE)
+	set_output(0, "", ConceptGraphDataType.NODE_3D)
+
+	mirror_slots_type(0, 0)
 
 
 func _generate_outputs() -> void:

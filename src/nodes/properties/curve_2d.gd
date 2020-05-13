@@ -10,8 +10,8 @@ func _init() -> void:
 	description = "Expose a 2D curve value to the inspector"
 
 	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})
-	set_input(1, "Default", ConceptGraphDataType.MATH_CURVE)
-	set_output(0, "", ConceptGraphDataType.MATH_CURVE)
+	set_input(1, "Default", ConceptGraphDataType.CURVE_2D)
+	set_output(0, "", ConceptGraphDataType.CURVE_2D)
 
 
 func _ready() -> void:
@@ -39,7 +39,7 @@ func get_exposed_variables() -> Array:
 
 	return [{
 		"name": name,
-		"type": ConceptGraphDataType.MATH_CURVE,
+		"type": ConceptGraphDataType.CURVE_2D,
 		"hint": PROPERTY_HINT_RESOURCE_TYPE,
 		"hint_string": "Curve",
 		"default_value": get_input(1, default),

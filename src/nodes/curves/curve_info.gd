@@ -14,9 +14,9 @@ func _init() -> void:
 	category = "Curves"
 	description = "Exposes the BoundingBox and the Center position of a curve"
 
-	set_input(0, "Curve", ConceptGraphDataType.CURVE)
-	set_output(0, "Size", ConceptGraphDataType.VECTOR)
-	set_output(1, "Center", ConceptGraphDataType.VECTOR)
+	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)
+	set_output(0, "Size", ConceptGraphDataType.VECTOR3)
+	set_output(1, "Center", ConceptGraphDataType.VECTOR3)
 
 
 func _generate_outputs() -> void:

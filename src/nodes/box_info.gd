@@ -13,8 +13,8 @@ func _init() -> void:
 	description = "Exposes the size and center of a box"
 
 	set_input(0, "Box", ConceptGraphDataType.BOX)
-	set_output(0, "Size", ConceptGraphDataType.VECTOR)
-	set_output(1, "Center", ConceptGraphDataType.VECTOR)
+	set_output(0, "Size", ConceptGraphDataType.VECTOR3)
+	set_output(1, "Center", ConceptGraphDataType.VECTOR3)
 
 
 func _generate_outputs() -> void:

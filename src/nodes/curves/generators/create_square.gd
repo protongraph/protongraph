@@ -15,9 +15,9 @@ func _init() -> void:
 	var opts = {"value": 1.0, "min": 0, "allow_lesser": false}
 	set_input(0, "Width", ConceptGraphDataType.SCALAR, opts)
 	set_input(1, "Length", ConceptGraphDataType.SCALAR, opts)
-	set_input(2, "Center", ConceptGraphDataType.VECTOR)
-	set_input(3, "Up axis", ConceptGraphDataType.VECTOR)
-	set_output(0, "", ConceptGraphDataType.CURVE)
+	set_input(2, "Center", ConceptGraphDataType.VECTOR3)
+	set_input(3, "Up axis", ConceptGraphDataType.VECTOR3)
+	set_output(0, "", ConceptGraphDataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:

@@ -12,7 +12,7 @@ func _init() -> void:
 	category = "Output"
 	description = "The final node of any template"
 
-	set_input(0, "Node", ConceptGraphDataType.NODE)
+	set_input(0, "Node", ConceptGraphDataType.NODE_3D)
 
 
 func _generate_outputs() -> void:

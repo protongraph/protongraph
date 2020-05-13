@@ -9,7 +9,7 @@ func _init() -> void:
 	description = "Expose one or multiple curves from the editor to the graph"
 
 	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Input curve"})
-	set_output(0, "", ConceptGraphDataType.CURVE)
+	set_output(0, "", ConceptGraphDataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:

@@ -14,9 +14,9 @@ func _init() -> void:
 
 	set_input(0, "Length", ConceptGraphDataType.SCALAR, {"value": 1.0, "min": 0, "allow_lesser": false})
 	set_input(1, "Centered", ConceptGraphDataType.BOOLEAN, {"value": false})
-	set_input(2, "Axis", ConceptGraphDataType.VECTOR)
-	set_input(3, "Transforms", ConceptGraphDataType.NODE)
-	set_output(0, "", ConceptGraphDataType.CURVE)
+	set_input(2, "Axis", ConceptGraphDataType.VECTOR3)
+	set_input(3, "Transforms", ConceptGraphDataType.NODE_3D)
+	set_output(0, "", ConceptGraphDataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:

@@ -8,9 +8,9 @@ func _init() -> void:
 	category = "Nodes/Instancers"
 	description = "Makes a MultiMeshInstance from a single mesh and a list of transforms"
 
-	set_input(0, "Source", ConceptGraphDataType.NODE)
-	set_input(1, "Transforms", ConceptGraphDataType.NODE)
-	set_output(0, "Multimesh", ConceptGraphDataType.NODE)
+	set_input(0, "Source", ConceptGraphDataType.NODE_3D)
+	set_input(1, "Transforms", ConceptGraphDataType.NODE_3D)
+	set_output(0, "Multimesh", ConceptGraphDataType.NODE_3D)
 
 
 func _generate_outputs() -> void:

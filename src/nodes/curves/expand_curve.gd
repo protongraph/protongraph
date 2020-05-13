@@ -8,10 +8,10 @@ func _init() -> void:
 	category = "Curves/Operations"
 	description = "Move each point of the curve along its normal"
 
-	set_input(0, "Curve", ConceptGraphDataType.CURVE)
+	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)
 	set_input(1, "Distance", ConceptGraphDataType.SCALAR, {"min": -100, "allow_lesser": true})
 	set_input(2, "Invert", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.CURVE)
+	set_output(0, "", ConceptGraphDataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:

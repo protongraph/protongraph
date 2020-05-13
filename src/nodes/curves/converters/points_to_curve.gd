@@ -12,7 +12,7 @@ func _init() -> void:
 	description = "Takes a point curve in input and creates a Path node from it"
 
 	set_input(0, "Vector curve", ConceptGraphDataType.VECTOR_CURVE)
-	set_output(0, "", ConceptGraphDataType.CURVE)
+	set_output(0, "", ConceptGraphDataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:

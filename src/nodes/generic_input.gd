@@ -17,7 +17,7 @@ func _init() -> void:
 
 	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Input node"})
 	set_input(1, "Children only", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.NODE)
+	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
 
 func _generate_outputs() -> void:

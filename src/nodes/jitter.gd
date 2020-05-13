@@ -8,10 +8,12 @@ func _init() -> void:
 	category = "Nodes/Operations"
 	description = "Applies a random offset to each transforms"
 
-	set_input(0, "Input", ConceptGraphDataType.NODE)
-	set_input(1, "Amount", ConceptGraphDataType.VECTOR)
+	set_input(0, "Input", ConceptGraphDataType.ANY)
+	set_input(1, "Amount", ConceptGraphDataType.VECTOR3)
 	set_input(2, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
-	set_output(0, " ", ConceptGraphDataType.NODE)
+	set_output(0, " ", ConceptGraphDataType.ANY)
+
+	mirror_slots_type(0, 0)
 
 
 func _generate_outputs() -> void:
@@ -20,6 +22,8 @@ func _generate_outputs() -> void:
 	var input_seed: int = get_input_single(2, 0)
 
 	if not nodes or nodes.size() == 0:
+		return
+	if not nodes[0] is Spatial:
 		return
 
 	var rand = RandomNumberGenerator.new()

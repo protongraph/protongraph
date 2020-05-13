@@ -89,6 +89,79 @@ func prepare_output() -> void:
 
 
 """
+Returns the associated data to the given slot index. It either comes from a connected input node,
+or from a local control field in the case of a simple type (float, string)
+"""
+func get_input(idx: int, default = []) -> Array:
+	var parent = get_parent()
+	if not parent:
+		return default
+
+	var input: Dictionary = parent.get_left_node(self, idx)
+	if input.has("node"):	# Input source connected, ignore local data
+		return input["node"].get_output(input["slot"], default)
+
+	if has_custom_gui():
+		var output = _get_input(idx)
+		if not output:
+			return default
+		return output
+
+	# If no source is connected, check if it's a base type with a value defined on the node itself
+	match _inputs[idx]["type"]:
+		ConceptGraphDataType.BOOLEAN:
+			return [_hboxes[idx].get_node("CheckBox").pressed]
+		ConceptGraphDataType.SCALAR:
+			return [_hboxes[idx].get_node("SpinBox").value]
+		ConceptGraphDataType.STRING:
+			return [_hboxes[idx].get_node("LineEdit").text]
+
+	return default # Not a base type and no source connected
+
+
+"""
+By default, every input and output is an array. This is just a short hand with all the necessary
+checks that returns the first value of the input.
+"""
+func get_input_single(idx: int, default = null):
+	var input = get_input(idx)
+	if input == null or input.size() == 0 or not input[0]:
+		return default
+	return input[0]
+
+
+"""
+Returns what the node generates for a given slot
+This method ensure the output is not calculated more than one time per run. It's useful if the
+output node is connected to more than one node. It ensure the results are the same and save
+some performance
+"""
+func get_output(idx: int, default := []) -> Array:
+	if not is_output_ready():
+		return default
+
+	var res = output[idx]
+	if not res is Array:
+		res = [res]
+	if res.size() == 0:
+		return default
+
+	# If the output is a node array, we need to duplicate them first otherwise they get passed as
+	# references which causes issues when the same output is sent to two different nodes.
+	if res[0] is Node:
+		var duplicates = []
+		for i in res.size():
+			var node = res[i].duplicate(7)
+			register_to_garbage_collection(node)
+			duplicates.append(node)
+		return duplicates
+
+	# If it's not a node array, it's made of built in types (scalars, vectors ...) which are passed
+	# as copy by default.
+	return res
+
+
+"""
 Query the parent ConceptGraph node in the editor and returns the corresponding input node if it
 exists
 """
@@ -113,35 +186,8 @@ func get_exposed_variables() -> Array:
 	return []
 
 
-"""
-Returns what the node generates for a given slot
-This method ensure the output is not calculated more than one time per run. It's useful if the
-output node is connected to more than one node. It ensure the results are the same and save
-some performance
-"""
-func get_output(idx: int) -> Array:
-	if not is_output_ready():
-		return []
-
-	var res = output[idx]
-	if not res is Array:
-		res = [res]
-	if res.size() == 0:
-		return []
-
-	# If the output is a node array, we need to duplicate them first otherwise they get passed as
-	# references which causes issues when the same output is sent to two different nodes.
-	if res[0] is Node:
-		var duplicates = []
-		for i in res.size():
-			var node = res[i].duplicate(7)
-			register_to_garbage_collection(node)
-			duplicates.append(node)
-		return duplicates
-
-	# If it's not a node array, it's made of built in types (scalars, vectors ...) which are passed
-	# as copy by default.
-	return res
+func get_concept_graph():
+	return get_parent().concept_graph
 
 
 """
@@ -239,50 +285,12 @@ func is_input_connected(idx: int) -> bool:
 	return parent.is_node_connected_to_input(self, idx)
 
 
-func get_input(idx: int, default = []) -> Array:
-	var parent = get_parent()
-	if not parent:
-		return default
-
-	var input = parent.get_left_node(self, idx)
-	if input.has("node"):
-		var output = input["node"].get_output(input["slot"])
-		if not output:
-			return default
-		return output
-
-	if has_custom_gui():
-		return default # No input source connected
-
-	# If no source is connected, check if it's a base type with a value defined on the node itself
-	match _inputs[idx]["type"]:
-		ConceptGraphDataType.BOOLEAN:
-			return [_hboxes[idx].get_node("CheckBox").pressed]
-		ConceptGraphDataType.SCALAR:
-			return [_hboxes[idx].get_node("SpinBox").value]
-		ConceptGraphDataType.STRING:
-			return [_hboxes[idx].get_node("LineEdit").text]
-
-	return default # Not a base type and no source connected
-
-
-"""
-By default, every input and output is an array. This is just a short hand with all the necessary
-checks that returns the first value of the input.
-"""
-func get_input_single(idx: int, default = null):
-	var input = get_input(idx)
-	if input == null or input.size() == 0 or not input[0]:
-		return default
-	return input[0]
-
-
 func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void:
 	_inputs[idx] = {
 		"name": name,
 		"type": type,
-		"color": ConceptGraphDataType.COLORS[type],
-		"options": opts
+		"options": opts,
+		"mirror": []
 	}
 
 
@@ -290,7 +298,6 @@ func set_output(idx: int, name: String, type: int, opts: Dictionary = {}) -> voi
 	_outputs[idx] = {
 		"name": name,
 		"type": type,
-		"color": ConceptGraphDataType.COLORS[type],
 		"options": opts
 	}
 
@@ -304,6 +311,19 @@ func remove_input(idx: int) -> bool:
 
 	_inputs.erase(idx)
 	return true
+
+
+func mirror_slots_type(input_index, output_index) -> void:
+	if input_index >= _inputs.size():
+		print("Error: invalid input index passed to mirror_slots_type ", input_index)
+		return
+
+	if output_index >= _outputs.size():
+		print("Error: invalid output index passed to mirror_slots_type ", output_index)
+		return
+
+	_inputs[input_index]["mirror"].append(output_index)
+	_inputs[input_index]["default_type"] = _inputs[input_index]["type"]
 
 
 """
@@ -330,10 +350,6 @@ do with the user defined value.
 """
 func set_value_from_inspector(_name: String, _value) -> void:
 	pass
-
-
-func get_concept_graph():
-	return get_parent().concept_graph
 
 
 func register_to_garbage_collection(resource):
@@ -385,18 +401,18 @@ func _run_background_generation() -> void:
 
 
 """
-Generate all the outputs for every output slots declared.
 Overide this function in the derived classes to return something usable.
+Generate all the outputs for every output slots declared.
 """
 func _generate_outputs() -> void:
 	pass
 
 
 """
-Return the output for the given slot index. Output is only available after _generate_outputs
-was called.
+Override this if you're using a custom GUI to change input slots default behavior. This returns
+the local input data for the given slot
 """
-func _get_output(index: int) -> Array:
+func _get_input(index: int) -> Array:
 	return []
 
 
@@ -443,11 +459,11 @@ func _setup_slots() -> void:
 		if _inputs.has(i):
 			has_input = true
 			input_type = _inputs[i]["type"]
-			input_color = _inputs[i]["color"]
+			input_color = ConceptGraphDataType.COLORS[input_type]
 		if _outputs.has(i):
 			has_output = true
 			output_type = _outputs[i]["type"]
-			output_color = _outputs[i]["color"]
+			output_color = ConceptGraphDataType.COLORS[output_type]
 
 		# This causes more issues than it solves
 		#if _inputs[i].has("options") and _inputs[i]["options"].has("disable_slot"):
@@ -481,10 +497,10 @@ func _generate_default_gui_style() -> void:
 	selected_style.shadow_size = 4
 	selected_style.border_color = Color(0.121569, 0.145098, 0.192157, 0.9)
 	add_stylebox_override("selectedframe", selected_style)
-	
+
 	add_constant_override("port_offset", 12)
 
-	# TODO : add bold font to title 
+	# TODO : add bold font to title
 	#add_font_override("title_font", get_font("bold", "EditorFonts"))
 
 """
@@ -535,6 +551,8 @@ func _generate_default_gui() -> void:
 			label_left.hint_tooltip = ConceptGraphDataType.Types.keys()[_inputs[i]["type"]].capitalize()
 
 			# Add the optional UI elements based on the data type.
+			# TODO : We could probably just check if the property exists with get_property_list
+			# and to that automatically instead of manually setting everything one by one
 			match _inputs[i]["type"]:
 				ConceptGraphDataType.BOOLEAN:
 					var opts = _inputs[i]["options"]
@@ -630,12 +648,31 @@ When the nodes connections changes, this method check for all the input slots an
 everything that's not a label if something is connected to the associated slot.
 """
 func _on_connection_changed() -> void:
-	var slots = _hboxes.size()
-	for i in range(0, slots):
-		var visible = !is_input_connected(i)
+	var slots_types_updated = false
+	for i in _hboxes.size():
+		var input_connected = is_input_connected(i)
 		for ui in _hboxes[i].get_children():
 			if not ui is Label:
-				ui.visible = visible
+				ui.visible = !input_connected
+
+		# Handle dynamic slot type
+		if i >= _inputs.size():
+			continue
+		for o in _inputs[i]["mirror"]:
+			slots_types_updated = true
+			var type = _inputs[i]["default_type"]
+			# Copy the connected input type if there's one
+			if input_connected:
+				var data = get_parent().get_left_node(self, i)
+				type = data["node"]._outputs[data["slot"]]["type"]
+
+			_inputs[i]["type"] = type
+			_outputs[o]["type"] = type
+
+	if slots_types_updated:
+		_generate_default_gui()
+		_setup_slots()
+
 	hide()
 	show()
 
