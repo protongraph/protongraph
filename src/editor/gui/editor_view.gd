@@ -152,5 +152,5 @@ func _get_ref(ref):
 
 func _clear_graph():
 	var template = _get_ref(_current_template)
-	template.clear()
-	pass
+	if template:
+		template.clear()
