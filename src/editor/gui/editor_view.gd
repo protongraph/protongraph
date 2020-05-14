@@ -53,8 +53,9 @@ func enable_template_editor(node: ConceptGraph) -> void:
 	_template_parent.add_child(node._template)
 	_template_controls.visible = true
 
-	# Force reload the graph to use the proper style fonts
-	node._template.load_from_file(node.template_path, true)
+	# Force graphnodes to use the proper style because they were generated under a spatial node
+	for child in node._template.get_children():
+		child._generate_default_gui_style()
 
 	if node.template_path == "":
 		_load_panel.visible = true

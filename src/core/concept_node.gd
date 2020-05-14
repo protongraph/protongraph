@@ -103,7 +103,7 @@ func get_input(idx: int, default = []) -> Array:
 
 	if has_custom_gui():
 		var output = _get_input(idx)
-		if not output:
+		if output == null:
 			return default
 		return output
 
@@ -125,7 +125,7 @@ checks that returns the first value of the input.
 """
 func get_input_single(idx: int, default = null):
 	var input = get_input(idx)
-	if input == null or input.size() == 0 or not input[0]:
+	if input == null or input.size() == 0 or input[0] == null:
 		return default
 	return input[0]
 

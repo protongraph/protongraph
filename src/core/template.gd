@@ -152,6 +152,9 @@ func run_simulation() -> void:
 	_locked = false
 
 	for node in _output_nodes:
+		if not node:
+			_output_nodes.erase(node)
+			continue
 		node.prepare_output()
 
 
