@@ -51,14 +51,14 @@ const VECTOR3 = Types.VECTOR3
 const VECTOR4 = Types.VECTOR4
 
 
-# Common types also used in the VisualShader editor share the same color
+# Slot connections colors. Share the same color as common types also used in the VisualShader editor.
 const COLORS = {
 	ANY: Color.white,
 	BOOLEAN: Color("8ca6f4"),
 	SCALAR: Color("61d9f5"),
 	STRING: Color.gold,
 	MATERIAL: Color.darkmagenta,
-	NOISE: Color.ivory,
+	NOISE: Color("b48700"),
 
 	NODE_2D: Color.dodgerblue,
 	CURVE_2D: Color.dodgerblue,
@@ -66,7 +66,7 @@ const COLORS = {
 	NODE_3D: Color.crimson,
 	MESH: Color.chocolate,
 	BOX: Color.maroon,
-	CURVE_3D: Color.yellowgreen,
+	CURVE_3D: Color.forestgreen,
 	VECTOR_CURVE: Color.sandybrown,
 
 	VECTOR2: Color("7e3f97"),
@@ -85,23 +85,23 @@ static func to_category_color(category: String) -> Color:
 		"Curves", "Curves/Inputs", "Curves/Operations", "Curves/Conversion", "Curves/Generators":
 			return COLORS[CURVE_3D]
 		"Debug":
-			return Color.palegreen
+			return Color.black
 		"Inputs":
-			return Color("8ca6f4")
+			return Color.steelblue
 		"Inspector properties":
-			return Color.navyblue
+			return Color.teal
 		"Maths/Scalars":
 			return COLORS[SCALAR]
 		"Meshes":
 			return COLORS[MESH]
 		"Nodes/Generators", "Nodes/Operations", "Nodes/Instancers":
-			return COLORS[NODE_3D]
+			return Color.firebrick
 		"Noise":
-			return Color.olive#COLORS[NOISE]
+			return COLORS[NOISE]
 		"Output":
 			return Color.black
 		"Vectors":
-			return COLORS[VECTOR3]
+			return COLORS[VECTOR2]
 		_:
 			return Color.black
 

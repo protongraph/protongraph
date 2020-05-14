@@ -15,7 +15,7 @@ var _template_controls: Control
 var _load_panel: PanelContainer
 var _current_graph: WeakRef
 var _current_template: WeakRef
-var _autosave: CheckBox
+var _autosave: bool
 var _autosave_interval := 3
 var _save_timer: Timer
 
@@ -25,7 +25,6 @@ func _ready() -> void:
 	_load_panel = get_node("LoadOrCreateTemplate")
 	_template_controls = get_node("TemplateControls")
 	_node_dialog = get_node("AddNodeDialog")
-	_autosave = get_node("TemplateControls/Autosave")
 
 	_load_panel.connect("load_template", self, "_on_load_template")
 	_hide_all()
@@ -144,7 +143,7 @@ func _on_create_node_request(node) -> void:
 
 
 func _on_graph_changed() -> void:
-	if _autosave.pressed:
+	if _autosave:
 		_save_timer.stop()
 		_save_timer.start(_autosave_interval)
 
@@ -159,3 +158,7 @@ func _clear_graph():
 	var template = _get_ref(_current_template)
 	if template:
 		template.clear()
+
+
+func _on_autosave_toggled(button_pressed: bool) -> void:
+	_autosave = button_pressed
