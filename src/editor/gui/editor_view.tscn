@@ -69,13 +69,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ClearGraph" type="Button" parent="TemplateControls"]
+margin_left = 136.0
+margin_top = 10.0
+margin_right = 262.0
+margin_bottom = 34.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_vertical = 4
+text = "Clear Graph"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="AddNodeDialog" parent="." instance=ExtResource( 3 )]
 
 [node name="LoadOrCreateTemplate" parent="." instance=ExtResource( 2 )]
+visible = false
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
 [connection signal="pressed" from="TemplateControls/SaveButton" to="." method="save_template"]
 [connection signal="pressed" from="TemplateControls/ReplayButton" to="." method="replay_simulation"]
+[connection signal="pressed" from="TemplateControls/ClearGraph" to="." method="_clear_graph"]
 [connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]
 [connection signal="hide_panel" from="AddNodeDialog" to="." method="_hide_node_dialog"]

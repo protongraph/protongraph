@@ -152,3 +152,9 @@ func _get_ref(ref):
 	if ref:
 		return ref.get_ref()
 	return null
+
+
+func _clear_graph():
+	var template = _get_ref(_current_template)
+	if template:
+		template.clear()
