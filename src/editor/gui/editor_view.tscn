@@ -1,11 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/concept_graph/src/editor/gui/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/concept_graph/src/editor/gui/create_template.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/concept_graph/src/editor/gui/add_node_panel.tscn" type="PackedScene" id=3]
-
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.129412, 0.129412, 0.141176, 1 )
 
 [node name="TemplateEditor" type="Control"]
 anchor_right = 1.0
@@ -18,35 +15,36 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TemplateParent" type="Control" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -2.09503
-margin_top = -2.095
-margin_right = -2.09497
-margin_bottom = -2.09497
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TemplateControls" type="HBoxContainer" parent="."]
-anchor_right = 1.0
-margin_left = 220.0
-margin_bottom = 45.0
-rect_min_size = Vector2( 0, 45 )
-size_flags_horizontal = 3
+[node name="TemplateParent" type="VBoxContainer" parent="PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1913.0
+margin_bottom = 1073.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Left" type="HBoxContainer" parent="TemplateControls"]
-margin_right = 1625.0
-margin_bottom = 45.0
+[node name="TemplateControls" type="HBoxContainer" parent="PanelContainer/TemplateParent"]
+margin_right = 1906.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_vertical = 0
+
+[node name="Left" type="HBoxContainer" parent="PanelContainer/TemplateParent/TemplateControls"]
+margin_right = 1732.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
 
-[node name="Autosave" type="CheckBox" parent="TemplateControls/Left"]
+[node name="Autosave" type="CheckBox" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
 margin_right = 87.0
-margin_bottom = 45.0
+margin_bottom = 24.0
 pressed = true
 text = "Autosave"
 flat = true
@@ -54,11 +52,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SaveButton" type="Button" parent="TemplateControls/Left"]
+[node name="SaveButton" type="Button" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
 margin_left = 91.0
-margin_top = 10.0
 margin_right = 132.0
-margin_bottom = 34.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 4
 text = "Save"
@@ -66,11 +63,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ReplayButton" type="Button" parent="TemplateControls/Left"]
+[node name="ReplayButton" type="Button" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
 margin_left = 136.0
-margin_top = 10.0
 margin_right = 262.0
-margin_bottom = 34.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 4
 text = "Replay simulation"
@@ -78,15 +74,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Right" type="HBoxContainer" parent="TemplateControls"]
-margin_left = 1629.0
-margin_right = 1700.0
-margin_bottom = 45.0
+[node name="Right" type="HBoxContainer" parent="PanelContainer/TemplateParent/TemplateControls"]
+margin_left = 1736.0
+margin_right = 1906.0
+margin_bottom = 24.0
 
-[node name="ClearGraph" type="Button" parent="TemplateControls/Right"]
-margin_top = 10.0
-margin_right = 63.0
-margin_bottom = 34.0
+[node name="GraphName" type="Label" parent="PanelContainer/TemplateParent/TemplateControls/Right"]
+margin_top = 5.0
+margin_right = 95.0
+margin_bottom = 19.0
+size_flags_horizontal = 0
+text = "MyGraphName"
+
+[node name="VSeparator2" type="VSeparator" parent="PanelContainer/TemplateParent/TemplateControls/Right"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 99.0
+margin_right = 103.0
+margin_bottom = 24.0
+
+[node name="ClearGraph" type="Button" parent="PanelContainer/TemplateParent/TemplateControls/Right"]
+margin_left = 107.0
+margin_right = 170.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 4
 text = "Clear all"
@@ -94,11 +103,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VSeparator" type="VSeparator" parent="TemplateControls/Right"]
-modulate = Color( 1, 1, 1, 0 )
-margin_left = 67.0
-margin_right = 71.0
-margin_bottom = 45.0
+[node name="GraphEdit" type="GraphEdit" parent="PanelContainer/TemplateParent"]
+margin_top = 28.0
+margin_right = 1906.0
+margin_bottom = 1066.0
+size_flags_vertical = 3
+scroll_offset = Vector2( -2, -6 )
 
 [node name="AddNodeDialog" parent="." instance=ExtResource( 3 )]
 
@@ -106,7 +116,6 @@ margin_bottom = 45.0
 visible = false
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 1 )
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
 anchor_left = 0.5
@@ -123,10 +132,29 @@ dialog_text = "Delete all the graph nodes from this template ?"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="toggled" from="TemplateControls/Left/Autosave" to="." method="_on_autosave_toggled"]
-[connection signal="pressed" from="TemplateControls/Left/SaveButton" to="." method="save_template"]
-[connection signal="pressed" from="TemplateControls/Left/ReplayButton" to="." method="replay_simulation"]
-[connection signal="pressed" from="TemplateControls/Right/ClearGraph" to="ConfirmationDialog" method="popup_centered"]
+
+[node name="NoGraphSelected" type="PanelContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="NoGraphSelected"]
+margin_left = 7.0
+margin_top = 522.0
+margin_right = 1913.0
+margin_bottom = 558.0
+custom_constants/line_spacing = 8
+text = "Select a ConceptGraph node to 
+start the graph edition"
+align = 1
+valign = 1
+[connection signal="toggled" from="PanelContainer/TemplateParent/TemplateControls/Left/Autosave" to="." method="_on_autosave_toggled"]
+[connection signal="pressed" from="PanelContainer/TemplateParent/TemplateControls/Left/SaveButton" to="." method="save_template"]
+[connection signal="pressed" from="PanelContainer/TemplateParent/TemplateControls/Left/ReplayButton" to="." method="replay_simulation"]
+[connection signal="pressed" from="PanelContainer/TemplateParent/TemplateControls/Right/ClearGraph" to="ConfirmationDialog" method="popup_centered"]
 [connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]
 [connection signal="hide_panel" from="AddNodeDialog" to="." method="_hide_node_dialog"]
 [connection signal="confirmed" from="ConfirmationDialog" to="." method="_clear_graph"]

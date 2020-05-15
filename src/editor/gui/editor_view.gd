@@ -11,8 +11,9 @@ deleted) when the ConceptGraph is deselected.
 
 var _template_parent: Control
 var _node_dialog: ConceptGraphNodeDialog
-var _template_controls: Control
 var _load_panel: PanelContainer
+var _no_graph_panel: PanelContainer
+var _graph_name: Label
 var _current_graph: WeakRef
 var _current_template: WeakRef
 var _autosave: bool
@@ -21,10 +22,11 @@ var _save_timer: Timer
 
 
 func _ready() -> void:
-	_template_parent = get_node("TemplateParent")
+	_template_parent = get_node("PanelContainer/TemplateParent")
 	_load_panel = get_node("LoadOrCreateTemplate")
-	_template_controls = get_node("TemplateControls")
+	_no_graph_panel = get_node("NoGraphSelected")
 	_node_dialog = get_node("AddNodeDialog")
+	_graph_name = get_node("PanelContainer/TemplateParent/TemplateControls/Right/GraphName")
 
 	_load_panel.connect("load_template", self, "_on_load_template")
 	_hide_all()
@@ -40,7 +42,8 @@ func _ready() -> void:
 Takes the Template node from the ConceptGraph and add it as a child of the editor view displayed
 in the bottom dock. This way the template can be edited there.
 """
-func enable_template_editor(node: ConceptGraph) -> void:
+func enable_template_editor_for(node: ConceptGraph) -> void:
+	clear_template_editor()
 	_current_graph = weakref(node)
 	_current_template = weakref(node._template)
 
@@ -50,13 +53,15 @@ func enable_template_editor(node: ConceptGraph) -> void:
 
 	node.remove_child(node._template)
 	_template_parent.add_child(node._template)
-	_template_controls.visible = true
+	_graph_name.text = node.get_name()
 
 	# Force graphnodes to use the proper style because they were generated under a spatial node
 	for child in node._template.get_children():
 		if child is ConceptNode:
 			child._generate_default_gui_style()
 
+	_no_graph_panel.visible = false
+	_template_parent.visible = true
 	if node.template_path == "":
 		_load_panel.visible = true
 
@@ -65,9 +70,9 @@ func enable_template_editor(node: ConceptGraph) -> void:
 Give the template back to the ConceptGraph and remove references to these nodes to go back to a
 clean state. Disconnect the signals to avoid impacting deselected templates.
 """
-func disable_template_editor() -> void:
-	_hide_all()
-
+func clear_template_editor() -> void:
+	_no_graph_panel.visible = true
+	_template_parent.visible = false
 	var graph = _get_ref(_current_graph)
 	var template = _get_ref(_current_template)
 
@@ -124,7 +129,6 @@ func _hide_node_dialog() -> void:
 
 func _hide_all() -> void:
 	_load_panel.visible = false
-	_template_controls.visible = false
 	_node_dialog.visible = false
 
 
