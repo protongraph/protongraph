@@ -90,8 +90,8 @@ static func to_category_color(category: String) -> Color:
 			return Color.steelblue
 		"Inspector properties":
 			return Color.teal
-		"Maths/Scalars":
-			return COLORS[SCALAR]
+		"Maths":
+			return Color.steelblue
 		"Meshes":
 			return COLORS[MESH]
 		"Nodes/Generators", "Nodes/Operations", "Nodes/Instancers":

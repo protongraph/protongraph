@@ -114,7 +114,11 @@ func get_input(idx: int, default = []) -> Array:
 		ConceptGraphDataType.SCALAR:
 			return [_hboxes[idx].get_node("SpinBox").value]
 		ConceptGraphDataType.STRING:
-			return [_hboxes[idx].get_node("LineEdit").text]
+			if _hboxes[idx].has_node("LineEdit"):
+				return [_hboxes[idx].get_node("LineEdit").text]
+			elif _hboxes[idx].has_node("OptionButton"):
+				var btn = _hboxes[idx].get_node("OptionButton")
+				return [btn.get_item_text(btn.selected)]
 
 	return default # Not a base type and no source connected
 
@@ -574,12 +578,20 @@ func _generate_default_gui() -> void:
 					ui_elements.append(spinbox)
 				ConceptGraphDataType.STRING:
 					var opts = _inputs[i]["options"]
-					var line_edit = LineEdit.new()
-					line_edit.name = "LineEdit"
-					line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
-					line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
-					line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
-					ui_elements.append(line_edit)
+					if opts.has("type") and opts["type"] == "dropdown":
+						var dropdown = OptionButton.new()
+						dropdown.name = "OptionButton"
+						for item in opts["items"]:
+							dropdown.add_item(item)
+						dropdown.connect("item_selected", self, "_on_default_gui_value_changed", [i])
+						ui_elements.append(dropdown)
+					else:
+						var line_edit = LineEdit.new()
+						line_edit.name = "LineEdit"
+						line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
+						line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
+						line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
+						ui_elements.append(line_edit)
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel
