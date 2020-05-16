@@ -49,6 +49,33 @@ func _enter_tree() -> void:
 	_initialized = true
 
 
+# Called from the template when the user copy paste nodes
+func init_from_node(node: ConceptNode) -> void:
+	for c in get_children():
+		remove_child(c)
+		c.queue_free()
+
+	unique_id = node.unique_id
+	display_name = node.display_name
+	category = node.category
+	description = node.description
+	node_pool = node.node_pool
+	thread_pool = node.thread_pool
+
+	_inputs = node._inputs
+	_outputs = node._outputs
+	_hboxes = []
+
+	for b in node._hboxes:
+		var d = b.duplicate()
+		add_child(d)
+		_hboxes.append(d)
+
+	_setup_slots()
+	_generate_default_gui_style()
+	_initialized = true
+
+
 """
 Override and make it return true if your node should be instanced from a scene directly.
 Scene should have the same name as the script and use a .tscn extension.
