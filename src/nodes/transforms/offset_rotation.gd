@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "rotate_transforms_offset"
 	display_name = "Rotate"
-	category = "Nodes/Operations"
+	category = "Transforms"
 	description = "Adds a constant offset to the nodes rotation"
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
