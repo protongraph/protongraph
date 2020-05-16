@@ -8,6 +8,7 @@ is added as a child of the main editor view so it's editable by the user and rem
 deleted) when the ConceptGraph is deselected.
 """
 
+var undo_redo: UndoRedo
 
 var _template_parent: Control
 var _node_dialog: ConceptGraphNodeDialog
@@ -27,6 +28,7 @@ func _ready() -> void:
 	_no_graph_panel = get_node("NoGraphSelected")
 	_node_dialog = get_node("AddNodeDialog")
 	_graph_name = get_node("PanelContainer/TemplateParent/TemplateControls/Right/GraphName")
+	_autosave = get_node("PanelContainer/TemplateParent/TemplateControls/Left/Autosave").pressed
 
 	_load_panel.connect("load_template", self, "_on_load_template")
 	_hide_all()
@@ -50,15 +52,16 @@ func enable_template_editor_for(node: ConceptGraph) -> void:
 	node.connect("template_path_changed", self, "_on_load_template")
 	node._template.connect("graph_changed", self, "_on_graph_changed")
 	node._template.connect("popup_request", self, "_show_node_dialog")
+	node._template.undo_redo = undo_redo
 
 	node.remove_child(node._template)
 	_template_parent.add_child(node._template)
 	_graph_name.text = node.get_name()
 
-	# Force graphnodes to use the proper style because they were generated under a spatial node
+	# Force graphnodes to rebuild part of the UI because they were generated under a spatial node
 	for child in node._template.get_children():
 		if child is ConceptNode:
-			child._generate_default_gui_style()
+			child.post_generation_ui_fixes()
 
 	_no_graph_panel.visible = false
 	_template_parent.visible = true

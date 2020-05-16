@@ -35,6 +35,7 @@ func _exit_tree() -> void:
 
 func _add_custom_editor_view() -> void:
 	_graph_editor_view = preload("src/editor/gui/editor_view.tscn").instance()
+	_graph_editor_view.undo_redo = get_undo_redo()
 	_panel_button = add_control_to_bottom_panel(_graph_editor_view, "Concept Graph Editor")
 	_panel_button.visible = true
 

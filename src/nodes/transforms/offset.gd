@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "offset_transform_constant"
 	display_name = "Offset"
-	category = "Nodes/Operations"
+	category = "Transforms"
 	description = "Applies an constant offset to a set of nodes"
 
 	set_input(0, "Transforms", ConceptGraphDataType.ANY)

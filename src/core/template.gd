@@ -13,17 +13,20 @@ signal connection_changed
 signal output_ready
 signal simulation_completed
 
+
 var concept_graph
 var root: Spatial
 var node_library: ConceptNodeLibrary	# Injected from the concept graph
+var undo_redo: UndoRedo
 
 var _output_nodes := [] # of ConceptNodes
-var _selected_node: GraphNode
 var _template_loaded := false
 var _node_pool := ConceptGraphNodePool.new()
 var _thread_pool := ConceptGraphThreadPool.new()
 var _registered_resources := []
 var _locked := false
+var _copy_buffer = []
+var _connections_buffer = []
 
 
 func _init() -> void:
@@ -32,7 +35,10 @@ func _init() -> void:
 	connect("output_ready", self, "_on_output_ready")
 	connect("connection_request", self, "_on_connection_request")
 	connect("disconnection_request", self, "_on_disconnection_request")
-	connect("node_selected", self, "_on_node_selected")
+	connect("copy_nodes_request", self, "_on_copy_nodes_request")
+	connect("paste_nodes_request", self, "_on_paste_nodes_request")
+	connect("delete_nodes_request", self, "_on_delete_nodes_request")
+	connect("duplicate_nodes_request", self, "_on_duplicate_nodes_request")
 	connect("_end_node_move", self, "_on_node_changed_zero")
 
 
@@ -91,10 +97,19 @@ func delete_node(node) -> void:
 	_disconnect_node_signals(node)
 	_disconnect_active_connections(node)
 	remove_child(node)
-	node.queue_free()
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
 	update() # Force the GraphEdit to redraw to hide the old connections to the deleted node
+
+
+func restore_node(node) -> void:
+	if node.unique_id == "final_output":
+		_output_nodes.append(node)
+
+	_connect_node_signals(node)
+	add_child(node)
+	emit_signal("graph_changed")
+	emit_signal("simulation_outdated")
 
 
 """
@@ -255,7 +270,7 @@ func load_from_file(path: String, soft_load := false) -> void:
 
 		# Get a graph node from the node_library and use it as a model to create a new one
 		var node_instance = node_list[type]
-		var node = create_node(node_instance, node_data, false)
+		create_node(node_instance, node_data, false)
 
 	for c in graph["connections"]:
 		# TODO: convert the to/from ports stored in file to actual port
@@ -323,12 +338,14 @@ func _setup_gui() -> void:
 
 func _connect_node_signals(node) -> void:
 	node.connect("node_changed", self, "_on_node_changed")
-	node.connect("delete_node", self, "delete_node")
+	node.connect("close_request", self, "_on_delete_nodes_request", [node])
+	node.connect("dragged", self, "_on_node_dragged", [node])
 
 
 func _disconnect_node_signals(node) -> void:
 	node.disconnect("node_changed", self, "_on_node_changed")
-	node.disconnect("delete_node", self, "delete_node")
+	node.disconnect("close_request", self, "_on_delete_nodes_request")
+	node.disconnect("dragged", self, "_on_node_dragged")
 
 
 func _disconnect_active_connections(node: GraphNode) -> void:
@@ -346,23 +363,34 @@ func _disconnect_input(node: GraphNode, idx: int) -> void:
 			return
 
 
-func _on_node_selected(node: GraphNode) -> void:
-	_selected_node = node
+func _get_selected_nodes() -> Array:
+	var nodes = []
+	for c in get_children():
+		if c is GraphNode and c.selected:
+			nodes.append(c)
+	return nodes
 
 
-# Preserving 3.1 compatibility. Otherwise, just add a default "= null" to the node parameter
-func _on_node_changed_zero():
-	_on_node_changed(null, false)
+func _duplicate_node(node: ConceptNode) -> ConceptNode:
+	var res: ConceptNode = node.duplicate(7)
+	res.init_from_node(node)
+	res._initialized = true
+	return res
 
 
-func _on_node_changed(node: ConceptNode, replay_simulation := false) -> void:
-	# Prevent regeneration hell while loading the template from file
-	if not _template_loaded:
-		return
+"""
+After requesting all the output nodes to retrieve their outputs, we wait for the simulation to
+complete. When all the output nodes signaled their output is ready, notify the parent graph it
+can retrieve the results.
+"""
+func _on_output_ready() -> void:
+	var simulation_complete = true
+	for node in _output_nodes:
+		if not node.is_output_ready():
+			simulation_complete = false
 
-	emit_signal("graph_changed")
-	if replay_simulation:
-		emit_signal("simulation_outdated")
+	if simulation_complete:
+		emit_signal("simulation_completed")
 
 
 func _on_connection_request(from_node: String, from_slot: int, to_node: String, to_slot: int) -> void:
@@ -389,16 +417,95 @@ func _on_disconnection_request(from_node: String, from_slot: int, to_node: Strin
 	get_node(to_node).emit_signal("connection_changed")
 
 
-"""
-After requesting all the output nodes to retrieve their outputs, we wait for the simulation to
-complete. When all the output nodes signaled their output is ready, notify the parent graph it
-can retrieve the results.
-"""
-func _on_output_ready() -> void:
-	var simulation_complete = true
-	for node in _output_nodes:
-		if not node.is_output_ready():
-			simulation_complete = false
+# Preserving 3.1 compatibility. Otherwise, just add a default "= null" to the node parameter
+func _on_node_changed_zero():
+	_on_node_changed(null, false)
 
-	if simulation_complete:
-		emit_signal("simulation_completed")
+
+func _on_node_changed(node: ConceptNode, replay_simulation := false) -> void:
+	# Prevent regeneration hell while loading the template from file
+	if not _template_loaded:
+		return
+
+	emit_signal("graph_changed")
+	if replay_simulation:
+		emit_signal("simulation_outdated")
+
+
+func _on_node_dragged(from: Vector2, to: Vector2, node: ConceptNode) -> void:
+	undo_redo.create_action("Move " + node.display_name)
+	undo_redo.add_do_method(node, "set_offset", to)
+	undo_redo.add_undo_method(node, "set_offset", from)
+	undo_redo.commit_action()
+
+
+func _on_copy_nodes_request() -> void:
+	_copy_buffer = []
+	_connections_buffer = get_connection_list()
+
+	for node in _get_selected_nodes():
+		var new_node = _duplicate_node(node)
+		new_node.name = node.name	# Needed to retrieve active connections later
+		new_node.offset -= scroll_offset
+		_copy_buffer.append(new_node)
+		node.selected = false
+
+
+func _on_paste_nodes_request() -> void:
+	if _copy_buffer.empty():
+		return
+
+	var tmp = []
+
+	undo_redo.create_action("Copy " + String(_copy_buffer.size()) + " GraphNode(s)")
+	for node in _copy_buffer:
+		var new_node = _duplicate_node(node)
+		tmp.append(new_node)
+		new_node.selected = true
+		new_node.offset += scroll_offset + Vector2(80, 80)
+		undo_redo.add_do_method(self, "restore_node", new_node)
+		undo_redo.add_do_method(new_node, "post_generation_ui_fixes")
+		undo_redo.add_undo_method(self, "remove_child", new_node)
+	undo_redo.commit_action()
+
+	# I couldn't find a way to merge these in a single action because the connect_node can't be called
+	# if the child was not added to the tree first.
+	undo_redo.create_action("Create connections")
+	for co in _connections_buffer:
+		var from := -1
+		var to := -1
+
+		for i in _copy_buffer.size():
+			var name = _copy_buffer[i].get_name()
+			if name == co["from"]:
+				from = i
+			elif name == co["to"]:
+				to = i
+
+		if from != -1 and to != -1:
+			undo_redo.add_do_method(self, "connect_node", tmp[from].get_name(), co["from_port"], tmp[to].get_name(), co["to_port"])
+			undo_redo.add_undo_method(self, "disconnect_node", tmp[from].get_name(), co["from_port"], tmp[to].get_name(), co["to_port"])
+
+	undo_redo.commit_action()
+
+
+func _on_delete_nodes_request(selected = null) -> void:
+	if not selected:
+		selected = _get_selected_nodes()
+	elif not selected is Array:
+		selected = [selected]
+	if selected.size() == 0:
+		return
+
+	undo_redo.create_action("Delete " + String(selected.size()) + " GraphNode(s)")
+	for node in selected:
+		undo_redo.add_do_method(self, "delete_node", node)
+		undo_redo.add_undo_method(self, "restore_node", node)
+
+	undo_redo.commit_action()
+	update()
+
+
+func _on_duplicate_nodes_request() -> void:
+	_on_copy_nodes_request()
+	_on_paste_nodes_request()

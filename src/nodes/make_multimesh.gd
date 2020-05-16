@@ -12,6 +12,7 @@ func _init() -> void:
 	set_input(1, "Transforms", ConceptGraphDataType.NODE_3D)
 	set_output(0, "Multimesh", ConceptGraphDataType.NODE_3D)
 
+
 func _retrive_multimesh_transforms(multimesh: MultiMeshInstance) -> Array:
 	var count = multimesh.multimesh.instance_count
 	var tranforms = []
@@ -68,6 +69,7 @@ func _generate_outputs() -> void:
 func _set_mm_instance_count(multimesh, count) -> void:
 	multimesh.multimesh.instance_count = count
 
+
 func _setup_multi_mesh_from_multimesh(mm_src) -> MultiMeshInstance:
 	var mm = MultiMeshInstance.new()
 	mm.multimesh = MultiMesh.new()
@@ -76,6 +78,7 @@ func _setup_multi_mesh_from_multimesh(mm_src) -> MultiMeshInstance:
 	mm.multimesh.mesh = mm_src.multimesh.mesh
 	mm.multimesh.transform_format = 1
 	return mm
+
 
 func _setup_multi_mesh_from_mesh(mesh_instance) -> MultiMeshInstance:
 	var mm = MultiMeshInstance.new()
@@ -90,7 +93,14 @@ func _setup_multi_mesh_from_mesh(mesh_instance) -> MultiMeshInstance:
 func _get_mesh_from_node(node) -> MeshInstance:
 	if node is MeshInstance:
 		return node
+	if node is CSGShape and node.is_root_shape():
+		add_child(node)	# update_shape doesn't work on node not in the tree
+		node._update_shape()
+		var mesh_instance = MeshInstance.new()
+		mesh_instance.mesh = node.get_meshes()[1]
+		remove_child(node)
+		return mesh_instance
+
 	for c in node.get_children():
-		if c is MeshInstance:
-			return c
+		return _get_mesh_from_node(c)
 	return null

@@ -15,8 +15,16 @@ func _init() -> void:
 	var opts = {"allow_lesser": true}
 	set_input(0, "", ConceptGraphDataType.STRING, \
 		{"type": "dropdown",
-		"items": ["Add", "Substract", "Cross product", "Dot product", "Bounce", "Normalize", "Floor", "Ceil"],
-		"connect": {"ref": self, "method": "_on_dropdown"}})
+		"items": {
+			"Add": 0,
+			"Substract": 1,
+			"Cross product": 2,
+			"Dot product": 3,
+			"Bounce": 4,
+			"Normalize": 5,
+			"Floor": 6,
+			"Ceil": 7
+		}})
 	set_input(1, "A", ConceptGraphDataType.VECTOR3, opts)
 	set_input(2, "B", ConceptGraphDataType.VECTOR3, opts)
 

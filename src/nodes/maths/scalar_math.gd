@@ -15,7 +15,20 @@ func _init() -> void:
 	var opts = {"allow_lesser": true}
 	set_input(0, "", ConceptGraphDataType.STRING, \
 		{"type": "dropdown",
-		"items": ["Add", "Substract", "Multiply", "Divide", "Modulo", "Min", "Max", "Power", "Abs", "Round", "Floor", "Ceil"]})
+		"items": {
+			"Add": 0,
+			"Substract": 2,
+			"Multiply": 3,
+			"Divide": 4,
+			"Modulo": 5,
+			"Min": 6,
+			"Max": 7,
+			"Power": 8,
+			"Abs": 9,
+			"Round": 10,
+			"Floor": 11,
+			"Ceil": 12
+			}})
 	set_input(1, "A", ConceptGraphDataType.SCALAR, opts)
 	set_input(2, "B", ConceptGraphDataType.SCALAR, opts)
 	set_output(0, "", ConceptGraphDataType.SCALAR)

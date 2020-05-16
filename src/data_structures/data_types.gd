@@ -65,7 +65,7 @@ const COLORS = {
 
 	NODE_3D: Color.crimson,
 	MESH: Color.chocolate,
-	BOX: Color.maroon,
+	BOX: Color.mediumvioletred,
 	CURVE_3D: Color.forestgreen,
 	VECTOR_CURVE: Color.sandybrown,
 
@@ -102,6 +102,8 @@ static func to_category_color(category: String) -> Color:
 			return Color.black
 		"Vectors":
 			return COLORS[VECTOR2]
+		"Transforms":
+			return Color.maroon
 		_:
 			return Color.black
 
