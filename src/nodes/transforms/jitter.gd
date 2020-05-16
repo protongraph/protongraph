@@ -8,11 +8,11 @@ func _init() -> void:
 	category = "Transforms"
 	description = "Applies a random offset to each transforms"
 
-	set_input(0, "Input", ConceptGraphDataType.ANY)
+	set_input(0, "Input", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Amount", ConceptGraphDataType.VECTOR3)
 	set_input(2, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
 	set_input(3, "Local space", ConceptGraphDataType.BOOLEAN, {"value": true})
-	set_output(0, " ", ConceptGraphDataType.ANY)
+	set_output(0, " ", ConceptGraphDataType.NODE_3D)
 
 	mirror_slots_type(0, 0)
 

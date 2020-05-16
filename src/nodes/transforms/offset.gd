@@ -8,11 +8,11 @@ func _init() -> void:
 	category = "Transforms"
 	description = "Applies an constant offset to a set of nodes"
 
-	set_input(0, "Transforms", ConceptGraphDataType.ANY)
+	set_input(0, "Transforms", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Vector", ConceptGraphDataType.VECTOR3)
 	set_input(2, "Negative", ConceptGraphDataType.BOOLEAN)
 	set_input(3, "Local space", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.ANY)
+	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
 	mirror_slots_type(0, 0)
 
