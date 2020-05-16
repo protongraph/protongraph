@@ -5,6 +5,7 @@ extends ConceptNode
 Perform common math operations on two Vector3
 """
 
+var _opts = {"allow_lesser": true}
 
 func _init() -> void:
 	unique_id = "math_vector3"
@@ -12,7 +13,7 @@ func _init() -> void:
 	category = "Maths"
 	description = "Perform common math operations on two Vector3"
 
-	var opts = {"allow_lesser": true}
+
 	set_input(0, "", ConceptGraphDataType.STRING, \
 		{"type": "dropdown",
 		"items": {
@@ -25,17 +26,16 @@ func _init() -> void:
 			"Floor": 6,
 			"Ceil": 7
 		}})
-	set_input(1, "A", ConceptGraphDataType.VECTOR3, opts)
-	set_input(2, "B", ConceptGraphDataType.VECTOR3, opts)
-
+	set_input(1, "A", ConceptGraphDataType.VECTOR3, _opts)
+	set_input(2, "B", ConceptGraphDataType.VECTOR3, _opts)
 	set_output(0, "", ConceptGraphDataType.VECTOR3)
+	_setup_inputs()
 
 
 func _generate_outputs() -> void:
 	var operation: String = get_input_single(0, "Add")
 	var a: Vector3 = get_input_single(1, Vector3.ZERO)
 	var b: Vector3 = get_input_single(2, Vector3.ZERO)
-
 
 	match operation:
 		"Add":
@@ -54,26 +54,27 @@ func _generate_outputs() -> void:
 			output[0] = a.floor()
 		"Ceil":
 			output[0] = a.ceil()
-			
-func _on_dropdown(i, j):
+
+
+func _on_default_gui_interaction(_value, control, _slot):
+	if not control is OptionButton:
+		return
+	_setup_inputs()
+
+
+func _setup_inputs() -> void:
 	var operation: String = get_input_single(0, "Add")
-	
 	match operation:
-		"Add": 
+		"Add", "Substract", "Cross product", "Bounce":
 			set_output(0, "", ConceptGraphDataType.VECTOR3)
-		"Substract": 
-			set_output(0, "", ConceptGraphDataType.VECTOR3)
-		"Cross product": 
-			set_output(0, "", ConceptGraphDataType.VECTOR3)
-		"Dot product": 
+			set_input(2, "B", ConceptGraphDataType.VECTOR3, _opts)
+
+		"Dot product":
 			set_output(0, "", ConceptGraphDataType.SCALAR)
-		"Bounce": 
+			set_input(2, "B", ConceptGraphDataType.VECTOR3, _opts)
+
+		"Normalize", "Floor", "Ceil":
 			set_output(0, "", ConceptGraphDataType.VECTOR3)
-		"Normalize": 
-			set_output(0, "", ConceptGraphDataType.VECTOR3)
-		"Floor": 
-			set_output(0, "", ConceptGraphDataType.VECTOR3)
-		"Ceil": 
-			set_output(0, "", ConceptGraphDataType.VECTOR3)
-	
-	_setup_slots()
+			remove_input(2)
+
+	._setup_slots()

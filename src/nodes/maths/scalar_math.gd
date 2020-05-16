@@ -5,6 +5,8 @@ extends ConceptNode
 Perform common math operations on two numbers
 """
 
+var _opts = {"allow_lesser": true}
+
 
 func _init() -> void:
 	unique_id = "math_scalar_2"
@@ -12,7 +14,7 @@ func _init() -> void:
 	category = "Maths"
 	description = "Perform common math operations on two numbers"
 
-	var opts = {"allow_lesser": true}
+
 	set_input(0, "", ConceptGraphDataType.STRING, \
 		{"type": "dropdown",
 		"items": {
@@ -29,9 +31,10 @@ func _init() -> void:
 			"Floor": 11,
 			"Ceil": 12
 			}})
-	set_input(1, "A", ConceptGraphDataType.SCALAR, opts)
-	set_input(2, "B", ConceptGraphDataType.SCALAR, opts)
+	set_input(1, "A", ConceptGraphDataType.SCALAR, _opts)
+	set_input(2, "B", ConceptGraphDataType.SCALAR, _opts)
 	set_output(0, "", ConceptGraphDataType.SCALAR)
+	_setup_inputs()
 
 
 func _generate_outputs() -> void:
@@ -68,3 +71,21 @@ func _generate_outputs() -> void:
 			output[0] = floor(a)
 		"Ceil":
 			output[0] = ceil(a)
+
+
+func _on_default_gui_interaction(_value, control, _slot):
+	if not control is OptionButton:
+		return
+	_setup_inputs()
+
+
+func _setup_inputs() -> void:
+	var operation: String = get_input_single(0, "Add")
+	match operation:
+		"Add", "Substract", "Multiply", "Divide", "Modulo", "Min", "Max", "Power":
+			set_input(2, "B", ConceptGraphDataType.SCALAR, _opts)
+
+		"Abs", "Round", "Floor", "Ceil":
+			remove_input(2)
+
+	._setup_slots()

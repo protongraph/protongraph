@@ -403,19 +403,23 @@ func post_generation_ui_fixes():
 	# Regenerate the font style to avoid using the default one
 	_generate_default_gui_style()
 
-	# OptionButtons doesn't work so we recreate them here
+	# OptionButtons doesn't work so we recreate them here, reconnect the signals and fire them once
 	for box in _hboxes:
 		for ui in box.get_children():
 			if ui is OptionButton:
-				var new_btn = ui.duplicate()
+				var new_btn: OptionButton = ui.duplicate()
 				var pos = ui.get_position_in_parent()
 				box.remove_child(ui)
 				if pos - 1 < 0:
 					box.add_child_below_node(box, new_btn)
 				else:
 					box.add_child_below_node(box.get_child(pos - 1), new_btn)
-				ui.queue_free()
 
+				var slot = box.get_position_in_parent()
+				new_btn.connect("item_selected", self, "_on_default_gui_value_changed", [slot])
+				new_btn.connect("item_selected", self, "_on_default_gui_interaction", [new_btn, slot])
+				_on_default_gui_interaction(new_btn.get_item_text(new_btn.get_item_id(new_btn.selected)), new_btn, slot)
+				ui.queue_free()
 
 
 """
@@ -509,8 +513,8 @@ GraphNode.set_slot method accordingly with the proper parameters. This makes it 
 wise on the child node side and make it more readable.
 """
 func _setup_slots() -> void:
-	var slots = get_child_count() # max(_inputs.size(), _outputs.size())
-	for i in range(0, slots):
+	var slots = _hboxes.size()
+	for i in slots:
 		var has_input = false
 		var input_type = 0
 		var input_color = Color(0)
@@ -527,11 +531,21 @@ func _setup_slots() -> void:
 			output_type = _outputs[i]["type"]
 			output_color = ConceptGraphDataType.COLORS[output_type]
 
+		if not has_input and not has_output:
+			_hboxes[i].visible = false
+
 		# This causes more issues than it solves
 		#if _inputs[i].has("options") and _inputs[i]["options"].has("disable_slot"):
 		#	has_input = not _inputs[i]["options"]["disable_slot"]
 
 		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color)
+
+	for b in _hboxes:
+		if not b.visible:
+			_hboxes.erase(b)
+			remove_child(b)
+	if not resizable:
+		emit_signal("resize_request", Vector2.ZERO)
 
 
 """
@@ -602,6 +616,7 @@ func _generate_default_gui() -> void:
 
 		# label_left holds the name of the input slot.
 		var label_left = Label.new()
+		label_left.name = "LabelLeft"
 		label_left.mouse_filter = MOUSE_FILTER_PASS
 		ui_elements.append(label_left)
 
@@ -620,8 +635,7 @@ func _generate_default_gui() -> void:
 					checkbox.name = "CheckBox"
 					checkbox.pressed = opts["value"] if opts.has("value") else false
 					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
-					if opts.has("connect"):
-						checkbox.connect("value_changed", opts["connect"]["ref"], opts["connect"]["method"], [i])
+					checkbox.connect("toggled", self, "_on_default_gui_interaction", [checkbox, i])
 					ui_elements.append(checkbox)
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
@@ -636,8 +650,7 @@ func _generate_default_gui() -> void:
 					spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else false
 					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
 					spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [i])
-					if opts.has("connect"):
-						spinbox.connect("value_changed", opts["connect"]["ref"], opts["connect"]["method"], [i])
+					spinbox.connect("value_changed", self, "_on_default_gui_interaction", [spinbox, i])
 					ui_elements.append(spinbox)
 				ConceptGraphDataType.STRING:
 					var opts = _inputs[i]["options"]
@@ -647,8 +660,7 @@ func _generate_default_gui() -> void:
 						for item in opts["items"].keys():
 							dropdown.add_item(item, opts["items"][item])
 						dropdown.connect("item_selected", self, "_on_default_gui_value_changed", [i])
-						if opts.has("connect"):
-							dropdown.connect("item_selected", opts["connect"]["ref"], opts["connect"]["method"], [i])
+						dropdown.connect("item_selected", self, "_on_default_gui_interaction", [dropdown, i])
 						ui_elements.append(dropdown)
 					else:
 						var line_edit = LineEdit.new()
@@ -656,11 +668,13 @@ func _generate_default_gui() -> void:
 						line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
 						line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
 						line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
+						line_edit.connect("text_changed", self, "_on_default_gui_interaction", [line_edit, i])
 						ui_elements.append(line_edit)
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel
 		var label_right = Label.new()
+		label_right.name = "LabelRight"
 		label_right.mouse_filter = MOUSE_FILTER_PASS
 		label_right.size_flags_horizontal = SIZE_EXPAND_FILL
 		label_right.align = Label.ALIGN_RIGHT
@@ -757,3 +771,7 @@ func _on_default_gui_value_changed(value, slot: int) -> void:
 	emit_signal("node_changed", self, true)
 	emit_signal("input_changed", slot, value)
 	reset()
+
+
+func _on_default_gui_interaction(value, control, slot) -> void:
+	pass
