@@ -620,6 +620,8 @@ func _generate_default_gui() -> void:
 					checkbox.name = "CheckBox"
 					checkbox.pressed = opts["value"] if opts.has("value") else false
 					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
+					if opts.has("connect"):
+						checkbox.connect("value_changed", opts["connect"]["ref"], opts["connect"]["method"], [i])
 					ui_elements.append(checkbox)
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
@@ -634,6 +636,8 @@ func _generate_default_gui() -> void:
 					spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else false
 					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
 					spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [i])
+					if opts.has("connect"):
+						spinbox.connect("value_changed", opts["connect"]["ref"], opts["connect"]["method"], [i])
 					ui_elements.append(spinbox)
 				ConceptGraphDataType.STRING:
 					var opts = _inputs[i]["options"]
@@ -643,6 +647,8 @@ func _generate_default_gui() -> void:
 						for item in opts["items"].keys():
 							dropdown.add_item(item, opts["items"][item])
 						dropdown.connect("item_selected", self, "_on_default_gui_value_changed", [i])
+						if opts.has("connect"):
+							dropdown.connect("item_selected", opts["connect"]["ref"], opts["connect"]["method"], [i])
 						ui_elements.append(dropdown)
 					else:
 						var line_edit = LineEdit.new()
@@ -714,7 +720,7 @@ func _on_close_request() -> void:
 
 
 """
-When the nodes connections changes, this method check for all the input slots and hide
+When the nodes connections changes, this method checks for all the input slots and hides
 everything that's not a label if something is connected to the associated slot.
 """
 func _on_connection_changed() -> void:

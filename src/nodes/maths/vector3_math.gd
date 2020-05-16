@@ -28,7 +28,7 @@ func _init() -> void:
 	set_input(1, "A", ConceptGraphDataType.VECTOR3, opts)
 	set_input(2, "B", ConceptGraphDataType.VECTOR3, opts)
 
-	set_output(0, "", ConceptGraphDataType.SCALAR)
+	set_output(0, "", ConceptGraphDataType.VECTOR3)
 
 
 func _generate_outputs() -> void:
@@ -54,3 +54,26 @@ func _generate_outputs() -> void:
 			output[0] = a.floor()
 		"Ceil":
 			output[0] = a.ceil()
+			
+func _on_dropdown(i, j):
+	var operation: String = get_input_single(0, "Add")
+	
+	match operation:
+		"Add": 
+			set_output(0, "", ConceptGraphDataType.VECTOR3)
+		"Substract": 
+			set_output(0, "", ConceptGraphDataType.VECTOR3)
+		"Cross product": 
+			set_output(0, "", ConceptGraphDataType.VECTOR3)
+		"Dot product": 
+			set_output(0, "", ConceptGraphDataType.SCALAR)
+		"Bounce": 
+			set_output(0, "", ConceptGraphDataType.VECTOR3)
+		"Normalize": 
+			set_output(0, "", ConceptGraphDataType.VECTOR3)
+		"Floor": 
+			set_output(0, "", ConceptGraphDataType.VECTOR3)
+		"Ceil": 
+			set_output(0, "", ConceptGraphDataType.VECTOR3)
+	
+	_setup_slots()
