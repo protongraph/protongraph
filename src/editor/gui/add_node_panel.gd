@@ -36,22 +36,24 @@ func _ready() -> void:
 	_default_description = _description_label.text
 
 
-func _refresh_concept_nodes_list() -> void:
+func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 	_categories = Dictionary()
 	_node_tree.clear()
 	var root = _node_tree.create_item()
 	_node_tree.set_hide_root(true)
 
-	var nodes = _node_library.get_list()
-	for node in nodes.values():
-		var item_parent = _get_or_create_category(node.category)
+	if nodes.empty():
+		nodes = _node_library.get_list().values()
+		
+	for node in nodes:
+		var item_parent = _get_or_create_category(node.category, folder_collapsed)
 		var item = _node_tree.create_item(item_parent)
 		item.set_text(0, node.display_name)
 		item.set_tooltip(0, node.description)
 		item.set_metadata(0, node.unique_id)
 
 
-func _get_or_create_category(category: String) -> TreeItem:
+func _get_or_create_category(category: String, collapsed := true) -> TreeItem:
 	var levels = category.split('/')
 	var item := _node_tree.get_root()
 
@@ -61,7 +63,7 @@ func _get_or_create_category(category: String) -> TreeItem:
 			sub_item = _node_tree.create_item(item)
 			sub_item.set_text(0, c)
 			sub_item.set_selectable(0, false)
-			sub_item.set_collapsed(true)
+			sub_item.set_collapsed(collapsed)
 		item = sub_item
 
 	return item
@@ -89,7 +91,6 @@ func _on_item_selected() -> void:
 	if not item:
 		_on_nothing_selected()
 		return
-
 	_create_button.disabled = false
 	_description_label.text = item.get_tooltip(0)
 
@@ -108,3 +109,14 @@ func _on_item_activated() -> void:
 
 func _on_create_button_pressed() -> void:
 	_on_item_activated()
+
+
+func _on_search_text(new_text):
+	var index_list = _node_library.get_index_list()
+	var nodes = _node_library.get_list()
+	var found = []
+	for node_name in index_list.keys():
+		if node_name.findn(new_text) != -1:
+			found.append(nodes[index_list[node_name]])
+	_refresh_concept_nodes_list(found, found.empty())
+

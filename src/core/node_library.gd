@@ -8,6 +8,7 @@ This script parses the node folder to retrieve a list of all the available Conce
 
 
 var _nodes: Dictionary
+var _node_search_index: Dictionary
 
 func _exit_tree() -> void:
 	clear()
@@ -17,6 +18,12 @@ func get_list() -> Dictionary:
 	if not _nodes:
 		refresh_list()
 	return _nodes
+
+
+func get_index_list() -> Dictionary:
+	if not _node_search_index:
+		refresh_list()
+	return _node_search_index
 
 
 func clear() -> void:
@@ -31,6 +38,7 @@ func create_node(type: String) -> ConceptNode:
 
 
 func refresh_list() -> void:
+	_node_search_index = Dictionary()
 	clear()
 	_nodes = Dictionary()
 
@@ -82,4 +90,5 @@ func _find_all_nodes(path) -> void:
 			print("Warning: Node ", name, " has duplicate id ", full_path)
 		else:
 			_nodes[id] = node
+			_node_search_index[node.display_name] = id
 	dir.list_dir_end()
