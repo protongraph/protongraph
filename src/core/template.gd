@@ -13,9 +13,11 @@ signal connection_changed
 signal output_ready
 signal simulation_completed
 
+
 var concept_graph
 var root: Spatial
 var node_library: ConceptNodeLibrary	# Injected from the concept graph
+var undo_redo: UndoRedo
 
 var _output_nodes := [] # of ConceptNodes
 var _selected_node: GraphNode
@@ -324,6 +326,7 @@ func _setup_gui() -> void:
 func _connect_node_signals(node) -> void:
 	node.connect("node_changed", self, "_on_node_changed")
 	node.connect("delete_node", self, "delete_node")
+	node.connect("dragged", self, "_on_node_dragged", [node])
 
 
 func _disconnect_node_signals(node) -> void:
@@ -346,23 +349,23 @@ func _disconnect_input(node: GraphNode, idx: int) -> void:
 			return
 
 
+"""
+After requesting all the output nodes to retrieve their outputs, we wait for the simulation to
+complete. When all the output nodes signaled their output is ready, notify the parent graph it
+can retrieve the results.
+"""
+func _on_output_ready() -> void:
+	var simulation_complete = true
+	for node in _output_nodes:
+		if not node.is_output_ready():
+			simulation_complete = false
+
+	if simulation_complete:
+		emit_signal("simulation_completed")
+
+
 func _on_node_selected(node: GraphNode) -> void:
 	_selected_node = node
-
-
-# Preserving 3.1 compatibility. Otherwise, just add a default "= null" to the node parameter
-func _on_node_changed_zero():
-	_on_node_changed(null, false)
-
-
-func _on_node_changed(node: ConceptNode, replay_simulation := false) -> void:
-	# Prevent regeneration hell while loading the template from file
-	if not _template_loaded:
-		return
-
-	emit_signal("graph_changed")
-	if replay_simulation:
-		emit_signal("simulation_outdated")
 
 
 func _on_connection_request(from_node: String, from_slot: int, to_node: String, to_slot: int) -> void:
@@ -389,16 +392,23 @@ func _on_disconnection_request(from_node: String, from_slot: int, to_node: Strin
 	get_node(to_node).emit_signal("connection_changed")
 
 
-"""
-After requesting all the output nodes to retrieve their outputs, we wait for the simulation to
-complete. When all the output nodes signaled their output is ready, notify the parent graph it
-can retrieve the results.
-"""
-func _on_output_ready() -> void:
-	var simulation_complete = true
-	for node in _output_nodes:
-		if not node.is_output_ready():
-			simulation_complete = false
+# Preserving 3.1 compatibility. Otherwise, just add a default "= null" to the node parameter
+func _on_node_changed_zero():
+	_on_node_changed(null, false)
 
-	if simulation_complete:
-		emit_signal("simulation_completed")
+
+func _on_node_changed(node: ConceptNode, replay_simulation := false) -> void:
+	# Prevent regeneration hell while loading the template from file
+	if not _template_loaded:
+		return
+
+	emit_signal("graph_changed")
+	if replay_simulation:
+		emit_signal("simulation_outdated")
+
+
+func _on_node_dragged(from: Vector2, to: Vector2, node: ConceptNode) -> void:
+	undo_redo.create_action("Move " + node.display_name)
+	undo_redo.add_do_method(node, "set_offset", to)
+	undo_redo.add_undo_method(node, "set_offset", from)
+	undo_redo.commit_action()

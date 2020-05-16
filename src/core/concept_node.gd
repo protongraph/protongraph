@@ -230,6 +230,8 @@ func export_editor_data() -> Dictionary:
 				data["slots"][i] = c.value
 			if c is LineEdit:
 				data["slots"][i] = c.text
+			if c is OptionButton:
+				data["slots"][i] = c.get_item_id(c.selected)
 
 	return data
 
@@ -260,7 +262,11 @@ func restore_editor_data(data: Dictionary) -> void:
 				ConceptGraphDataType.SCALAR:
 					hbox.get_node("SpinBox").value = value
 				ConceptGraphDataType.STRING:
-					hbox.get_node("LineEdit").text = value
+					if hbox.has_node("LineEdit"):
+						hbox.get_node("LineEdit").text = value
+					elif hbox.has_node("OptionButton"):
+						var btn: OptionButton = hbox.get_node("OptionButton")
+						btn.selected = btn.get_item_index(value)
 
 
 """
@@ -358,6 +364,33 @@ func set_value_from_inspector(_name: String, _value) -> void:
 
 func register_to_garbage_collection(resource):
 	get_parent().register_to_garbage_collection(resource)
+
+
+"""
+Some UI elements are broken the first time the graph is generated. Not sure if it's because it's
+a child of a spatial node or something else. This is called when the template is disconnected
+from the ConceptGraph and parented to the graph editor. Regenerating problematic parts of the UI
+works at that moment.
+"""
+func post_generation_ui_fixes():
+	# Regenerate the font style to avoid using the default one
+	_generate_default_gui_style()
+
+	# OptionButtons doesn't work so we recreate them here
+	for box in _hboxes:
+		for ui in box.get_children():
+			if ui is OptionButton:
+				print(ui)
+				print("selected ", ui.selected)
+				var new_btn = ui.duplicate()
+				var pos = ui.get_position_in_parent()
+				box.remove_child(ui)
+				if pos - 1 < 0:
+					box.add_child_below_node(box, new_btn)
+				else:
+					box.add_child_below_node(box.get_child(pos - 1), new_btn)
+				ui.queue_free()
+
 
 
 """
@@ -504,6 +537,7 @@ func _generate_default_gui_style() -> void:
 	add_constant_override("port_offset", 12)
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
 
+
 """
 If the child node does not define a custom UI itself, this function will generate a default UI
 based on the parameters provided with set_input and set_ouput. Each slots will have a Label
@@ -581,8 +615,8 @@ func _generate_default_gui() -> void:
 					if opts.has("type") and opts["type"] == "dropdown":
 						var dropdown = OptionButton.new()
 						dropdown.name = "OptionButton"
-						for item in opts["items"]:
-							dropdown.add_item(item)
+						for item in opts["items"].keys():
+							dropdown.add_item(item, opts["items"][item])
 						dropdown.connect("item_selected", self, "_on_default_gui_value_changed", [i])
 						ui_elements.append(dropdown)
 					else:
@@ -599,18 +633,20 @@ func _generate_default_gui() -> void:
 		label_right.mouse_filter = MOUSE_FILTER_PASS
 		label_right.size_flags_horizontal = SIZE_EXPAND_FILL
 		label_right.align = Label.ALIGN_RIGHT
+
 		if _outputs.has(i):
 			label_right.text = _outputs[i]["name"]
 			label_right.hint_tooltip = ConceptGraphDataType.Types.keys()[_outputs[i]["type"]].capitalize()
 		ui_elements.append(label_right)
 
+		# Make sure it appears in the editor and store along the other Hboxes
+		_hboxes.append(hbox)
+		add_child(hbox)
+
 		# Push all the ui elements in order in the Hbox container
 		for ui in ui_elements:
 			hbox.add_child(ui)
 
-		# Make sure it appears in the editor and store along the other Hboxes
-		add_child(hbox)
-		_hboxes.append(hbox)
 	hide()
 	show()
 
