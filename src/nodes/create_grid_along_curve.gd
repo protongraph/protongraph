@@ -13,12 +13,12 @@ func _init() -> void:
 	category = "Nodes/Generators"
 	description = "Create transforms along a curve"
 
-	set_input(0, "Curve", ConceptGraphDataType.CURVE)
+	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)
 	set_input(1, "Height", ConceptGraphDataType.SCALAR)
 	set_input(2, "Density x", ConceptGraphDataType.SCALAR, {"step": 0.001})
 	set_input(3, "Density y", ConceptGraphDataType.SCALAR, {"step": 0.001})
 	set_input(4, "Thickness", ConceptGraphDataType.SCALAR)
-	set_output(0, "Transforms", ConceptGraphDataType.NODE)
+	set_output(0, "Transforms", ConceptGraphDataType.NODE_3D)
 
 
 func _generate_outputs() -> void:

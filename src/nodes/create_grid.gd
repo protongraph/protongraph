@@ -12,13 +12,13 @@ func _init() -> void:
 	category = "Nodes/Generators"
 	description = "Generates a list of transforms aligned to a grid in a 3D volume"
 
-	set_input(0, "Size", ConceptGraphDataType.VECTOR)
-	set_input(1, "Center", ConceptGraphDataType.VECTOR)
+	set_input(0, "Size", ConceptGraphDataType.VECTOR3)
+	set_input(1, "Center", ConceptGraphDataType.VECTOR3)
 	set_input(2, "Density", ConceptGraphDataType.SCALAR, {"step": 0.001, "exp": false})
 	set_input(3, "Fixed density", ConceptGraphDataType.BOOLEAN)
-	set_input(4, "Align with", ConceptGraphDataType.NODE)
+	set_input(4, "Align with", ConceptGraphDataType.NODE_3D)
 	set_input(5, "Align rotation", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "Transforms", ConceptGraphDataType.NODE)
+	set_output(0, "Transforms", ConceptGraphDataType.NODE_3D)
 
 
 func _generate_outputs() -> void:

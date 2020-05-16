@@ -8,24 +8,27 @@ is added as a child of the main editor view so it's editable by the user and rem
 deleted) when the ConceptGraph is deselected.
 """
 
+var undo_redo: UndoRedo
 
 var _template_parent: Control
 var _node_dialog: ConceptGraphNodeDialog
-var _template_controls: Control
 var _load_panel: PanelContainer
+var _no_graph_panel: PanelContainer
+var _graph_name: Label
 var _current_graph: WeakRef
 var _current_template: WeakRef
-var _autosave: CheckBox
+var _autosave: bool
 var _autosave_interval := 3
 var _save_timer: Timer
 
 
 func _ready() -> void:
-	_template_parent = get_node("TemplateParent")
+	_template_parent = get_node("PanelContainer/TemplateParent")
 	_load_panel = get_node("LoadOrCreateTemplate")
-	_template_controls = get_node("TemplateControls")
+	_no_graph_panel = get_node("NoGraphSelected")
 	_node_dialog = get_node("AddNodeDialog")
-	_autosave = get_node("TemplateControls/Autosave")
+	_graph_name = get_node("PanelContainer/TemplateParent/TemplateControls/Right/GraphName")
+	_autosave = get_node("PanelContainer/TemplateParent/TemplateControls/Left/Autosave").pressed
 
 	_load_panel.connect("load_template", self, "_on_load_template")
 	_hide_all()
@@ -41,18 +44,27 @@ func _ready() -> void:
 Takes the Template node from the ConceptGraph and add it as a child of the editor view displayed
 in the bottom dock. This way the template can be edited there.
 """
-func enable_template_editor(node: ConceptGraph) -> void:
+func enable_template_editor_for(node: ConceptGraph) -> void:
+	clear_template_editor()
 	_current_graph = weakref(node)
 	_current_template = weakref(node._template)
 
 	node.connect("template_path_changed", self, "_on_load_template")
 	node._template.connect("graph_changed", self, "_on_graph_changed")
 	node._template.connect("popup_request", self, "_show_node_dialog")
+	node._template.undo_redo = undo_redo
 
 	node.remove_child(node._template)
 	_template_parent.add_child(node._template)
-	_template_controls.visible = true
+	_graph_name.text = node.get_name()
 
+	# Force graphnodes to rebuild part of the UI because they were generated under a spatial node
+	for child in node._template.get_children():
+		if child is ConceptNode:
+			child.post_generation_ui_fixes()
+
+	_no_graph_panel.visible = false
+	_template_parent.visible = true
 	if node.template_path == "":
 		_load_panel.visible = true
 
@@ -61,9 +73,9 @@ func enable_template_editor(node: ConceptGraph) -> void:
 Give the template back to the ConceptGraph and remove references to these nodes to go back to a
 clean state. Disconnect the signals to avoid impacting deselected templates.
 """
-func disable_template_editor() -> void:
-	_hide_all()
-
+func clear_template_editor() -> void:
+	_no_graph_panel.visible = true
+	_template_parent.visible = false
 	var graph = _get_ref(_current_graph)
 	var template = _get_ref(_current_template)
 
@@ -120,7 +132,6 @@ func _hide_node_dialog() -> void:
 
 func _hide_all() -> void:
 	_load_panel.visible = false
-	_template_controls.visible = false
 	_node_dialog.visible = false
 
 
@@ -139,7 +150,7 @@ func _on_create_node_request(node) -> void:
 
 
 func _on_graph_changed() -> void:
-	if _autosave.pressed:
+	if _autosave:
 		_save_timer.stop()
 		_save_timer.start(_autosave_interval)
 
@@ -148,3 +159,13 @@ func _get_ref(ref):
 	if ref:
 		return ref.get_ref()
 	return null
+
+
+func _clear_graph():
+	var template = _get_ref(_current_template)
+	if template:
+		template.clear()
+
+
+func _on_autosave_toggled(button_pressed: bool) -> void:
+	_autosave = button_pressed

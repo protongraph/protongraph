@@ -13,16 +13,16 @@ func _init() -> void:
 	category = "Curves/Operations"
 	description = "Randomize a curve using midpoint displacement. This creates new points in the curve."
 
-	set_input(0, "Curve", ConceptGraphDataType.CURVE)
+	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)
 	set_input(1, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
 	set_input(2, "Steps", ConceptGraphDataType.SCALAR,
 		{"step": 1, "min": 0, "allow_lesser": false, "value": 1})
 	set_input(3, "Factor", ConceptGraphDataType.SCALAR, {"value": 1})
 	set_input(4, "Attenuation %", ConceptGraphDataType.SCALAR, {"value": 50})
-	set_input(5, "Axis", ConceptGraphDataType.VECTOR)
+	set_input(5, "Axis", ConceptGraphDataType.VECTOR3)
 	set_input(6, "Min segment size", ConceptGraphDataType.SCALAR,
 		{"min": 0.01, "allow_lesser": false, "value": 1})
-	set_output(0, "", ConceptGraphDataType.CURVE)
+	set_output(0, "", ConceptGraphDataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:

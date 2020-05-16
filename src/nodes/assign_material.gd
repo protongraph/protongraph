@@ -12,10 +12,12 @@ func _init() -> void:
 	category = "Nodes/Operations"
 	description = "Assigns a material to the selected node"
 
-	set_input(0, "Node", ConceptGraphDataType.NODE)
+	set_input(0, "Node", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Material", ConceptGraphDataType.MATERIAL)
 	set_input(2, "Override children", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.NODE)
+	set_output(0, "", ConceptGraphDataType.NODE_3D)
+
+	mirror_slots_type(0, 0)
 
 
 func _generate_outputs() -> void:

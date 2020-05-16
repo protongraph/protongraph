@@ -17,9 +17,11 @@ func _init() -> void:
 	category = "Nodes/Operations"
 	description = "Parent the given node(s) to another one and return the parent"
 
-	set_input(0, "Parent", ConceptGraphDataType.NODE)
-	set_input(1, "Child", ConceptGraphDataType.NODE)
-	set_output(0, "Parent", ConceptGraphDataType.NODE)
+	set_input(0, "Parent", ConceptGraphDataType.NODE_3D)
+	set_input(1, "Child", ConceptGraphDataType.NODE_3D)
+	set_output(0, "Parent", ConceptGraphDataType.NODE_3D)
+
+	mirror_slots_type(0, 0)
 
 
 func _ready() -> void:
@@ -68,7 +70,7 @@ func restore_custom_data(data: Dictionary) -> void:
 	_children_count = data["children_count"]
 	if _children_count > 1:
 		for i in range(2, _children_count + 1):
-			set_input(i, "Child", ConceptGraphDataType.NODE)
+			set_input(i, "Child", ConceptGraphDataType.NODE_3D)
 
 		remove_child(_btn_container)
 		._generate_default_gui()
@@ -78,7 +80,7 @@ func restore_custom_data(data: Dictionary) -> void:
 
 func add_child_slot() -> void:
 	_children_count += 1
-	set_input(_children_count, "Child", ConceptGraphDataType.NODE)
+	set_input(_children_count, "Child", ConceptGraphDataType.NODE_3D)
 	_update_gui()
 	emit_signal("node_changed", self, true)
 

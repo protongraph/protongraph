@@ -1,11 +1,13 @@
 tool
 extends ConceptNode
 
+
 var _noise := OpenSimplexNoise.new()
 var _texture_rect = TextureRect.new()
 var _image_texture = ImageTexture.new()
 var _is_preview_show = false
 var _buffer_rect_size : Vector2
+
 
 func _init() -> void:
 	unique_id = "simplex_noise"
@@ -20,6 +22,7 @@ func _init() -> void:
 	set_input(4, "Lacunarity", ConceptGraphDataType.SCALAR, {"value": 2})
 	set_output(0, "Noise", ConceptGraphDataType.NOISE)
 
+
 # TODO : Set noise size with the avaiable space on X axis
 func _ready() -> void:
 	var button_preview := Button.new()
@@ -29,7 +32,9 @@ func _ready() -> void:
 	_texture_rect.texture = _image_texture
 	_texture_rect.rect_size = Vector2(175,175)
 
+
 func _on_button_preview_pressed() -> void:
+	emit_signal("raise_request")
 	if _is_preview_show:
 		remove_child(_texture_rect)
 		rect_size = _buffer_rect_size
@@ -39,8 +44,10 @@ func _on_button_preview_pressed() -> void:
 
 	_is_preview_show = !_is_preview_show
 
+
 func _update_noise() -> void:
 	_image_texture.create_from_image(_noise.get_image(175,175))
+
 
 # TODO : Make a super class ConceptGraphNoise with a common api in case we introduce more noise types
 func _generate_outputs() -> void:

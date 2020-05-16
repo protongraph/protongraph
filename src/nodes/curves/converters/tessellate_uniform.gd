@@ -14,7 +14,7 @@ func _init() -> void:
 	category = "Curves/Conversion"
 	description = "Creates a polygon curve with the same density along the curve"
 
-	set_input(0, "Curve", ConceptGraphDataType.CURVE)
+	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)
 	set_input(1, "Resolution", ConceptGraphDataType.SCALAR,
 		{"min": 0.001, "allow_lesser": false, "value": 1.0})
 	set_input(2, "Preserve sharp", ConceptGraphDataType.BOOLEAN)

@@ -17,13 +17,13 @@ func _init() -> void:
 
 	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Input node"})
 	set_input(1, "Children only", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.NODE)
+	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
 
 func _generate_outputs() -> void:
-	var node_name: String = get_input_single(0)
+	var node_name: String = get_input_single(0, "")
 	var children_only: bool = get_input_single(1, false)
-	if not node_name:
+	if not node_name or node_name == "":
 		return
 
 	var node = get_editor_input(node_name)

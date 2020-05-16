@@ -15,12 +15,14 @@ func _init() -> void:
 	category = "Nodes/Operations"
 	description = "Discard all the points with a corresponding noise value above a given threshold"
 
-	set_input(0, "Nodes", ConceptGraphDataType.NODE)
+	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Noise", ConceptGraphDataType.NOISE)
 	set_input(2, "Threshold", ConceptGraphDataType.SCALAR, {"min": -1.0, "max": 1.0})
 	set_input(3, "Invert", ConceptGraphDataType.BOOLEAN)
 	set_input(4, "Local space", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.NODE)
+	set_output(0, "", ConceptGraphDataType.NODE_3D)
+
+	mirror_slots_type(0, 0)
 
 
 func _generate_outputs() -> void:

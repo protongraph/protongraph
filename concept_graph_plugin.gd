@@ -35,8 +35,9 @@ func _exit_tree() -> void:
 
 func _add_custom_editor_view() -> void:
 	_graph_editor_view = preload("src/editor/gui/editor_view.tscn").instance()
+	_graph_editor_view.undo_redo = get_undo_redo()
 	_panel_button = add_control_to_bottom_panel(_graph_editor_view, "Concept Graph Editor")
-	_panel_button.visible = false
+	_panel_button.visible = true
 
 
 func _remove_custom_editor_view() -> void:
@@ -48,10 +49,14 @@ func _remove_custom_editor_view() -> void:
 func _connect_editor_signals() -> void:
 	_editor_selection = get_editor_interface().get_selection()
 	_editor_selection.connect("selection_changed", self, "_on_selection_changed")
+	connect("scene_changed", self, "_on_scene_changed")
+	connect("scene_closed", self, "_on_scene_changed")
 	_on_selection_changed()
 
 
 func _disconnect_editor_signals() -> void:
+	disconnect("scene_changed", self, "_on_scene_changed")
+	disconnect("scene_closed", self, "_on_scene_changed")
 	if _editor_selection:
 		_editor_selection.disconnect("selection_changed", self, "_on_selection_changed")
 
@@ -92,21 +97,19 @@ func _deregister_editor_gizmos() -> void:
 
 
 """
-Only display the ConceptGraphEditor button if the currently selected node is of type ConceptGraph
+Notify the editor_view if a new ConceptGraph is selected. If it's another type of node, do nothing
+and keep the editor open.
 """
 func _on_selection_changed() -> void:
-	_concept_graph = null
-	_panel_button.visible = false
-	_panel_button.pressed = false
-	_graph_editor_view.disable_template_editor()
-
 	_editor_selection = get_editor_interface().get_selection()
 	var selected_nodes = _editor_selection.get_selected_nodes()
 
 	for node in selected_nodes:
 		if node is ConceptGraph:
 			_concept_graph = node
-			_panel_button.visible = true
-			_graph_editor_view.enable_template_editor(_concept_graph)
-			return
+			_graph_editor_view.enable_template_editor_for(_concept_graph)
 
+
+func _on_scene_changed(_param) -> void:
+	_graph_editor_view.clear_template_editor()
+	_on_selection_changed()

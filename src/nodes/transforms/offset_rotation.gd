@@ -5,13 +5,15 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "rotate_transforms_offset"
 	display_name = "Rotate"
-	category = "Nodes/Operations"
+	category = "Transforms"
 	description = "Adds a constant offset to the nodes rotation"
 
-	set_input(0, "Nodes", ConceptGraphDataType.NODE)
-	set_input(1, "Offset", ConceptGraphDataType.VECTOR)
+	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
+	set_input(1, "Offset", ConceptGraphDataType.VECTOR3)
 	set_input(2, "Local Space", ConceptGraphDataType.BOOLEAN, {"value": true})
-	set_output(0, "", ConceptGraphDataType.NODE)
+	set_output(0, "", ConceptGraphDataType.NODE_3D)
+
+	mirror_slots_type(0, 0)
 
 
 func _generate_outputs() -> void:

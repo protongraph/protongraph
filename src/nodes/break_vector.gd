@@ -8,16 +8,14 @@ func _init() -> void:
 	category =  "Vectors"
 	description = "Exposes a Vector (x,y,z) components"
 
-	set_input(0, "Vector", ConceptGraphDataType.VECTOR)
+	set_input(0, "Vector", ConceptGraphDataType.VECTOR3)
 	set_output(0, "x", ConceptGraphDataType.SCALAR)
 	set_output(1, "y", ConceptGraphDataType.SCALAR)
 	set_output(2, "z", ConceptGraphDataType.SCALAR)
 
 
 func _generate_outputs() -> void:
-	var input_vector: Vector3 = get_input_single(0)
-	if not input_vector:
-		return
+	var input_vector: Vector3 = get_input_single(0, Vector3.ZERO)
 
 	output[0] = input_vector.x
 	output[1] = input_vector.y

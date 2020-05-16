@@ -49,6 +49,33 @@ func _enter_tree() -> void:
 	_initialized = true
 
 
+# Called from the template when the user copy paste nodes
+func init_from_node(node: ConceptNode) -> void:
+	for c in get_children():
+		remove_child(c)
+		c.queue_free()
+
+	unique_id = node.unique_id
+	display_name = node.display_name
+	category = node.category
+	description = node.description
+	node_pool = node.node_pool
+	thread_pool = node.thread_pool
+
+	_inputs = node._inputs
+	_outputs = node._outputs
+	_hboxes = []
+
+	for b in node._hboxes:
+		var d = b.duplicate()
+		add_child(d)
+		_hboxes.append(d)
+
+	_setup_slots()
+	_generate_default_gui_style()
+	_initialized = true
+
+
 """
 Override and make it return true if your node should be instanced from a scene directly.
 Scene should have the same name as the script and use a .tscn extension.
@@ -89,6 +116,83 @@ func prepare_output() -> void:
 
 
 """
+Returns the associated data to the given slot index. It either comes from a connected input node,
+or from a local control field in the case of a simple type (float, string)
+"""
+func get_input(idx: int, default = []) -> Array:
+	var parent = get_parent()
+	if not parent:
+		return default
+
+	var input: Dictionary = parent.get_left_node(self, idx)
+	if input.has("node"):	# Input source connected, ignore local data
+		return input["node"].get_output(input["slot"], default)
+
+	if has_custom_gui():
+		var output = _get_input(idx)
+		if output == null:
+			return default
+		return output
+
+	# If no source is connected, check if it's a base type with a value defined on the node itself
+	match _inputs[idx]["type"]:
+		ConceptGraphDataType.BOOLEAN:
+			return [_hboxes[idx].get_node("CheckBox").pressed]
+		ConceptGraphDataType.SCALAR:
+			return [_hboxes[idx].get_node("SpinBox").value]
+		ConceptGraphDataType.STRING:
+			if _hboxes[idx].has_node("LineEdit"):
+				return [_hboxes[idx].get_node("LineEdit").text]
+			elif _hboxes[idx].has_node("OptionButton"):
+				var btn = _hboxes[idx].get_node("OptionButton")
+				return [btn.get_item_text(btn.selected)]
+
+	return default # Not a base type and no source connected
+
+
+"""
+By default, every input and output is an array. This is just a short hand with all the necessary
+checks that returns the first value of the input.
+"""
+func get_input_single(idx: int, default = null):
+	var input = get_input(idx)
+	if input == null or input.size() == 0 or input[0] == null:
+		return default
+	return input[0]
+
+
+"""
+Returns what the node generates for a given slot
+This method ensure the output is not calculated more than one time per run. It's useful if the
+output node is connected to more than one node. It ensure the results are the same and save
+some performance
+"""
+func get_output(idx: int, default := []) -> Array:
+	if not is_output_ready():
+		return default
+
+	var res = output[idx]
+	if not res is Array:
+		res = [res]
+	if res.size() == 0:
+		return default
+
+	# If the output is a node array, we need to duplicate them first otherwise they get passed as
+	# references which causes issues when the same output is sent to two different nodes.
+	if res[0] is Node:
+		var duplicates = []
+		for i in res.size():
+			var node = res[i].duplicate(7)
+			register_to_garbage_collection(node)
+			duplicates.append(node)
+		return duplicates
+
+	# If it's not a node array, it's made of built in types (scalars, vectors ...) which are passed
+	# as copy by default.
+	return res
+
+
+"""
 Query the parent ConceptGraph node in the editor and returns the corresponding input node if it
 exists
 """
@@ -113,35 +217,8 @@ func get_exposed_variables() -> Array:
 	return []
 
 
-"""
-Returns what the node generates for a given slot
-This method ensure the output is not calculated more than one time per run. It's useful if the
-output node is connected to more than one node. It ensure the results are the same and save
-some performance
-"""
-func get_output(idx: int) -> Array:
-	if not is_output_ready():
-		return []
-
-	var res = output[idx]
-	if not res is Array:
-		res = [res]
-	if res.size() == 0:
-		return []
-
-	# If the output is a node array, we need to duplicate them first otherwise they get passed as
-	# references which causes issues when the same output is sent to two different nodes.
-	if res[0] is Node:
-		var duplicates = []
-		for i in res.size():
-			var node = res[i].duplicate(7)
-			register_to_garbage_collection(node)
-			duplicates.append(node)
-		return duplicates
-
-	# If it's not a node array, it's made of built in types (scalars, vectors ...) which are passed
-	# as copy by default.
-	return res
+func get_concept_graph():
+	return get_parent().concept_graph
 
 
 """
@@ -180,6 +257,8 @@ func export_editor_data() -> Dictionary:
 				data["slots"][i] = c.value
 			if c is LineEdit:
 				data["slots"][i] = c.text
+			if c is OptionButton:
+				data["slots"][i] = c.get_item_id(c.selected)
 
 	return data
 
@@ -210,7 +289,11 @@ func restore_editor_data(data: Dictionary) -> void:
 				ConceptGraphDataType.SCALAR:
 					hbox.get_node("SpinBox").value = value
 				ConceptGraphDataType.STRING:
-					hbox.get_node("LineEdit").text = value
+					if hbox.has_node("LineEdit"):
+						hbox.get_node("LineEdit").text = value
+					elif hbox.has_node("OptionButton"):
+						var btn: OptionButton = hbox.get_node("OptionButton")
+						btn.selected = btn.get_item_index(value)
 
 
 """
@@ -239,50 +322,12 @@ func is_input_connected(idx: int) -> bool:
 	return parent.is_node_connected_to_input(self, idx)
 
 
-func get_input(idx: int, default = []) -> Array:
-	var parent = get_parent()
-	if not parent:
-		return default
-
-	var input = parent.get_left_node(self, idx)
-	if input.has("node"):
-		var output = input["node"].get_output(input["slot"])
-		if not output:
-			return default
-		return output
-
-	if has_custom_gui():
-		return default # No input source connected
-
-	# If no source is connected, check if it's a base type with a value defined on the node itself
-	match _inputs[idx]["type"]:
-		ConceptGraphDataType.BOOLEAN:
-			return [_hboxes[idx].get_node("CheckBox").pressed]
-		ConceptGraphDataType.SCALAR:
-			return [_hboxes[idx].get_node("SpinBox").value]
-		ConceptGraphDataType.STRING:
-			return [_hboxes[idx].get_node("LineEdit").text]
-
-	return default # Not a base type and no source connected
-
-
-"""
-By default, every input and output is an array. This is just a short hand with all the necessary
-checks that returns the first value of the input.
-"""
-func get_input_single(idx: int, default = null):
-	var input = get_input(idx)
-	if input == null or input.size() == 0 or not input[0]:
-		return default
-	return input[0]
-
-
 func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void:
 	_inputs[idx] = {
 		"name": name,
 		"type": type,
-		"color": ConceptGraphDataType.COLORS[type],
-		"options": opts
+		"options": opts,
+		"mirror": []
 	}
 
 
@@ -290,7 +335,6 @@ func set_output(idx: int, name: String, type: int, opts: Dictionary = {}) -> voi
 	_outputs[idx] = {
 		"name": name,
 		"type": type,
-		"color": ConceptGraphDataType.COLORS[type],
 		"options": opts
 	}
 
@@ -304,6 +348,19 @@ func remove_input(idx: int) -> bool:
 
 	_inputs.erase(idx)
 	return true
+
+
+func mirror_slots_type(input_index, output_index) -> void:
+	if input_index >= _inputs.size():
+		print("Error: invalid input index passed to mirror_slots_type ", input_index)
+		return
+
+	if output_index >= _outputs.size():
+		print("Error: invalid output index passed to mirror_slots_type ", output_index)
+		return
+
+	_inputs[input_index]["mirror"].append(output_index)
+	_inputs[input_index]["default_type"] = _inputs[input_index]["type"]
 
 
 """
@@ -332,12 +389,37 @@ func set_value_from_inspector(_name: String, _value) -> void:
 	pass
 
 
-func get_concept_graph():
-	return get_parent().concept_graph
-
-
 func register_to_garbage_collection(resource):
 	get_parent().register_to_garbage_collection(resource)
+
+
+"""
+Some UI elements are broken the first time the graph is generated. Not sure if it's because it's
+a child of a spatial node or something else. This is called when the template is disconnected
+from the ConceptGraph and parented to the graph editor. Regenerating problematic parts of the UI
+works at that moment.
+"""
+func post_generation_ui_fixes():
+	# Regenerate the font style to avoid using the default one
+	_generate_default_gui_style()
+
+	# OptionButtons doesn't work so we recreate them here, reconnect the signals and fire them once
+	for box in _hboxes:
+		for ui in box.get_children():
+			if ui is OptionButton:
+				var new_btn: OptionButton = ui.duplicate()
+				var pos = ui.get_position_in_parent()
+				box.remove_child(ui)
+				if pos - 1 < 0:
+					box.add_child_below_node(box, new_btn)
+				else:
+					box.add_child_below_node(box.get_child(pos - 1), new_btn)
+
+				var slot = box.get_position_in_parent()
+				new_btn.connect("item_selected", self, "_on_default_gui_value_changed", [slot])
+				new_btn.connect("item_selected", self, "_on_default_gui_interaction", [new_btn, slot])
+				_on_default_gui_interaction(new_btn.get_item_text(new_btn.get_item_id(new_btn.selected)), new_btn, slot)
+				ui.queue_free()
 
 
 """
@@ -385,18 +467,18 @@ func _run_background_generation() -> void:
 
 
 """
-Generate all the outputs for every output slots declared.
 Overide this function in the derived classes to return something usable.
+Generate all the outputs for every output slots declared.
 """
 func _generate_outputs() -> void:
 	pass
 
 
 """
-Return the output for the given slot index. Output is only available after _generate_outputs
-was called.
+Override this if you're using a custom GUI to change input slots default behavior. This returns
+the local input data for the given slot
 """
-func _get_output(index: int) -> Array:
+func _get_input(index: int) -> Array:
 	return []
 
 
@@ -431,8 +513,8 @@ GraphNode.set_slot method accordingly with the proper parameters. This makes it 
 wise on the child node side and make it more readable.
 """
 func _setup_slots() -> void:
-	var slots = get_child_count() # max(_inputs.size(), _outputs.size())
-	for i in range(0, slots):
+	var slots = _hboxes.size()
+	for i in slots:
 		var has_input = false
 		var input_type = 0
 		var input_color = Color(0)
@@ -443,11 +525,14 @@ func _setup_slots() -> void:
 		if _inputs.has(i):
 			has_input = true
 			input_type = _inputs[i]["type"]
-			input_color = _inputs[i]["color"]
+			input_color = ConceptGraphDataType.COLORS[input_type]
 		if _outputs.has(i):
 			has_output = true
 			output_type = _outputs[i]["type"]
-			output_color = _outputs[i]["color"]
+			output_color = ConceptGraphDataType.COLORS[output_type]
+
+		if not has_input and not has_output:
+			_hboxes[i].visible = false
 
 		# This causes more issues than it solves
 		#if _inputs[i].has("options") and _inputs[i]["options"].has("disable_slot"):
@@ -455,21 +540,41 @@ func _setup_slots() -> void:
 
 		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color)
 
+	for b in _hboxes:
+		if not b.visible:
+			_hboxes.erase(b)
+			remove_child(b)
+	if not resizable:
+		emit_signal("resize_request", Vector2.ZERO)
+
 
 """
 Based on graph node category this method will setup corresponding style and color of graph node
 """
 func _generate_default_gui_style() -> void:
+	# Base Style
 	var style = StyleBoxFlat.new()
 	var color = Color(0.121569, 0.145098, 0.192157, 0.9)
 	style.border_color = ConceptGraphDataType.to_category_color(category)
 	style.set_bg_color(color)
-	style.set_border_width_all(1)
-	style.set_border_width(MARGIN_TOP, 24)
+	style.set_border_width_all(2)
+	style.set_border_width(MARGIN_TOP, 32)
 	style.content_margin_left = 24;
 	style.content_margin_right = 24;
+	style.set_corner_radius_all(4)
+	style.set_expand_margin_all(4)
+	style.shadow_size = 8
+	style.shadow_color = Color(0,0,0,0.2)
 	add_stylebox_override("frame", style)
+
+	# Selected Style
+	var selected_style = style.duplicate()
+	selected_style.shadow_color = ConceptGraphDataType.to_category_color(category)
+	selected_style.shadow_size = 4
+	selected_style.border_color = Color(0.121569, 0.145098, 0.192157, 0.9)
+	add_stylebox_override("selectedframe", selected_style)
 	add_constant_override("port_offset", 12)
+	add_font_override("title_font", get_font("bold", "EditorFonts"))
 
 
 """
@@ -511,6 +616,7 @@ func _generate_default_gui() -> void:
 
 		# label_left holds the name of the input slot.
 		var label_left = Label.new()
+		label_left.name = "LabelLeft"
 		label_left.mouse_filter = MOUSE_FILTER_PASS
 		ui_elements.append(label_left)
 
@@ -520,6 +626,8 @@ func _generate_default_gui() -> void:
 			label_left.hint_tooltip = ConceptGraphDataType.Types.keys()[_inputs[i]["type"]].capitalize()
 
 			# Add the optional UI elements based on the data type.
+			# TODO : We could probably just check if the property exists with get_property_list
+			# and to that automatically instead of manually setting everything one by one
 			match _inputs[i]["type"]:
 				ConceptGraphDataType.BOOLEAN:
 					var opts = _inputs[i]["options"]
@@ -527,6 +635,7 @@ func _generate_default_gui() -> void:
 					checkbox.name = "CheckBox"
 					checkbox.pressed = opts["value"] if opts.has("value") else false
 					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
+					checkbox.connect("toggled", self, "_on_default_gui_interaction", [checkbox, i])
 					ui_elements.append(checkbox)
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
@@ -541,34 +650,48 @@ func _generate_default_gui() -> void:
 					spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else false
 					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
 					spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [i])
+					spinbox.connect("value_changed", self, "_on_default_gui_interaction", [spinbox, i])
 					ui_elements.append(spinbox)
 				ConceptGraphDataType.STRING:
 					var opts = _inputs[i]["options"]
-					var line_edit = LineEdit.new()
-					line_edit.name = "LineEdit"
-					line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
-					line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
-					line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
-					ui_elements.append(line_edit)
+					if opts.has("type") and opts["type"] == "dropdown":
+						var dropdown = OptionButton.new()
+						dropdown.name = "OptionButton"
+						for item in opts["items"].keys():
+							dropdown.add_item(item, opts["items"][item])
+						dropdown.connect("item_selected", self, "_on_default_gui_value_changed", [i])
+						dropdown.connect("item_selected", self, "_on_default_gui_interaction", [dropdown, i])
+						ui_elements.append(dropdown)
+					else:
+						var line_edit = LineEdit.new()
+						line_edit.name = "LineEdit"
+						line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
+						line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
+						line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
+						line_edit.connect("text_changed", self, "_on_default_gui_interaction", [line_edit, i])
+						ui_elements.append(line_edit)
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel
 		var label_right = Label.new()
+		label_right.name = "LabelRight"
 		label_right.mouse_filter = MOUSE_FILTER_PASS
 		label_right.size_flags_horizontal = SIZE_EXPAND_FILL
 		label_right.align = Label.ALIGN_RIGHT
+
 		if _outputs.has(i):
 			label_right.text = _outputs[i]["name"]
 			label_right.hint_tooltip = ConceptGraphDataType.Types.keys()[_outputs[i]["type"]].capitalize()
 		ui_elements.append(label_right)
 
+		# Make sure it appears in the editor and store along the other Hboxes
+		_hboxes.append(hbox)
+		add_child(hbox)
+
 		# Push all the ui elements in order in the Hbox container
 		for ui in ui_elements:
 			hbox.add_child(ui)
 
-		# Make sure it appears in the editor and store along the other Hboxes
-		add_child(hbox)
-		_hboxes.append(hbox)
 	hide()
 	show()
 
@@ -611,16 +734,35 @@ func _on_close_request() -> void:
 
 
 """
-When the nodes connections changes, this method check for all the input slots and hide
+When the nodes connections changes, this method checks for all the input slots and hides
 everything that's not a label if something is connected to the associated slot.
 """
 func _on_connection_changed() -> void:
-	var slots = _hboxes.size()
-	for i in range(0, slots):
-		var visible = !is_input_connected(i)
+	var slots_types_updated = false
+	for i in _hboxes.size():
+		var input_connected = is_input_connected(i)
 		for ui in _hboxes[i].get_children():
 			if not ui is Label:
-				ui.visible = visible
+				ui.visible = !input_connected
+
+		# Handle dynamic slot type
+		if i >= _inputs.size():
+			continue
+		for o in _inputs[i]["mirror"]:
+			slots_types_updated = true
+			var type = _inputs[i]["default_type"]
+			# Copy the connected input type if there's one
+			if input_connected:
+				var data = get_parent().get_left_node(self, i)
+				type = data["node"]._outputs[data["slot"]]["type"]
+
+			_inputs[i]["type"] = type
+			_outputs[o]["type"] = type
+
+	if slots_types_updated:
+		_generate_default_gui()
+		_setup_slots()
+
 	hide()
 	show()
 
@@ -629,3 +771,7 @@ func _on_default_gui_value_changed(value, slot: int) -> void:
 	emit_signal("node_changed", self, true)
 	emit_signal("input_changed", slot, value)
 	reset()
+
+
+func _on_default_gui_interaction(value, control, slot) -> void:
+	pass

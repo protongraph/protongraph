@@ -12,8 +12,8 @@ func _init() -> void:
 	description = "Extrudes a curve along another curve to create a pipe-like mesh"
 
 	set_input(0, "Bevel curve", ConceptGraphDataType.VECTOR_CURVE)
-	set_input(1, "Path curve", ConceptGraphDataType.CURVE)
-	set_input(2, "Taper curve", ConceptGraphDataType.MATH_CURVE)
+	set_input(1, "Path curve", ConceptGraphDataType.CURVE_3D)
+	set_input(2, "Taper curve", ConceptGraphDataType.CURVE_2D)
 	set_input(3, "Resolution", ConceptGraphDataType.SCALAR, {"min": 0.01, "value": 1.0})
 	set_input(4, "Merge all", ConceptGraphDataType.BOOLEAN, {"value": true})
 	set_output(0, "Mesh", ConceptGraphDataType.MESH)

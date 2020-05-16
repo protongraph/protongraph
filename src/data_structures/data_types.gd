@@ -7,53 +7,73 @@ class_name ConceptGraphDataType
 extends Reference
 
 
-const BOOLEAN = 0
-const SCALAR = 1
-const VECTOR = 2
-const NODE = 3
-const CURVE = 4
-const NOISE = 5
-const MATERIAL = 6
-const MESH = 7
-const STRING = 8
-const BOX = 9
-const VECTOR_CURVE = 10
-const ANY = 11
-const MATH_CURVE = 12
-
-# Workaround to get type name by it's ID for hint_tooltip on input and output
 enum Types {
-	BOOLEAN = 0
-	SCALAR = 1
-	VECTOR = 2
-	NODE = 3
-	CURVE = 4
-	NOISE = 5
-	MATERIAL = 6
-	MESH = 7
-	STRING = 8
-	BOX = 9
-	VECTOR_CURVE = 10
-	ANY = 11
-	MATH_CURVE = 12
+	ANY,
+	BOOLEAN,
+	SCALAR,
+	STRING,
+	MATERIAL,
+	NOISE,
+
+	NODE_2D,
+	CURVE_2D,
+
+	NODE_3D,
+	MESH,
+	BOX,
+	CURVE_3D,
+	VECTOR_CURVE,
+
+	VECTOR2,
+	VECTOR3,
+	VECTOR4,
 }
 
-# Common types also used in the VisualShader editor share the same color
+# Shorthand so we don't have to type ConceptGraphDataType.Types.ANY and skip the Types part
+const ANY = Types.ANY
+const BOOLEAN = Types.BOOLEAN
+const SCALAR = Types.SCALAR
+const STRING = Types.STRING
+const MATERIAL = Types.MATERIAL
+const NOISE = Types.NOISE
+
+const NODE_2D = Types.NODE_2D
+const CURVE_2D = Types.CURVE_2D
+
+const NODE_3D = Types.NODE_3D
+const MESH = Types.MESH
+const BOX = Types.BOX
+const CURVE_3D = Types.CURVE_3D
+const VECTOR_CURVE = Types.VECTOR_CURVE
+
+const VECTOR2 = Types.VECTOR2
+const VECTOR3 = Types.VECTOR3
+const VECTOR4 = Types.VECTOR4
+
+
+# Slot connections colors. Share the same color as common types also used in the VisualShader editor.
 const COLORS = {
+	ANY: Color.white,
 	BOOLEAN: Color("8ca6f4"),
 	SCALAR: Color("61d9f5"),
-	VECTOR: Color("d67ded"),
-	NODE: Color.crimson,
-	CURVE: Color.yellowgreen,
-	NOISE: Color.ivory,
-	MATERIAL: Color.darkmagenta,
-	MESH: Color.chocolate,
 	STRING: Color.gold,
-	BOX: Color.maroon,
+	MATERIAL: Color.darkmagenta,
+	NOISE: Color("b48700"),
+
+	NODE_2D: Color.dodgerblue,
+	CURVE_2D: Color.dodgerblue,
+
+	NODE_3D: Color.crimson,
+	MESH: Color.chocolate,
+	BOX: Color.mediumvioletred,
+	CURVE_3D: Color.forestgreen,
 	VECTOR_CURVE: Color.sandybrown,
-	ANY: Color.white,
-	MATH_CURVE: Color.dodgerblue,
+
+	VECTOR2: Color("7e3f97"),
+	VECTOR3: Color("d67ded"),
+	VECTOR4: Color("ebadf6"),
 }
+
 
 """
 Convert graph node category name to color
@@ -63,25 +83,27 @@ static func to_category_color(category: String) -> Color:
 		"Boxes":
 			return COLORS[BOX]
 		"Curves", "Curves/Inputs", "Curves/Operations", "Curves/Conversion", "Curves/Generators":
-			return COLORS[CURVE]
+			return COLORS[CURVE_3D]
 		"Debug":
-			return Color.palegreen
+			return Color.black
 		"Inputs":
-			return Color("8ca6f4")
+			return Color.steelblue
 		"Inspector properties":
-			return Color.navyblue
-		"Maths/Scalars":
-			return COLORS[SCALAR]
+			return Color.teal
+		"Maths":
+			return Color.steelblue
 		"Meshes":
 			return COLORS[MESH]
 		"Nodes/Generators", "Nodes/Operations", "Nodes/Instancers":
-			return COLORS[NODE]
+			return Color.firebrick
 		"Noise":
-			return Color.olive#COLORS[NOISE]
+			return COLORS[NOISE]
 		"Output":
 			return Color.black
 		"Vectors":
-			return COLORS[VECTOR]
+			return COLORS[VECTOR2]
+		"Transforms":
+			return Color.maroon
 		_:
 			return Color.black
 
@@ -90,10 +112,14 @@ static func to_category_color(category: String) -> Color:
 Allows extra connections between different types
 """
 static func setup_valid_connection_types(graph_edit: GraphEdit) -> void:
-	graph_edit.add_valid_connection_type(NODE, MESH)
-	graph_edit.add_valid_connection_type(NODE, CURVE)
-	graph_edit.add_valid_connection_type(NODE, BOX)
+	graph_edit.add_valid_connection_type(NODE_3D, MESH)
+	graph_edit.add_valid_connection_type(NODE_3D, BOX)
+	graph_edit.add_valid_connection_type(NODE_3D, CURVE_3D)
+	graph_edit.add_valid_connection_type(NODE_3D, VECTOR_CURVE)
 
+	# Allow everything to connect to ANY
+	for type in Types.values():
+		graph_edit.add_valid_connection_type(ANY, type)
 
 
 """
@@ -104,13 +130,13 @@ static func to_variant_type(type: int) -> int:
 	match type:
 		SCALAR:
 			return TYPE_REAL
-		VECTOR:
+		VECTOR3:
 			return TYPE_VECTOR3
 		STRING:
 			return TYPE_STRING
 		BOOLEAN:
 			return TYPE_BOOL
-		MATH_CURVE:
+		CURVE_2D:
 			return TYPE_OBJECT
 		MATERIAL:
 			return TYPE_OBJECT

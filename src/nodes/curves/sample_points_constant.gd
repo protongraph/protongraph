@@ -15,13 +15,13 @@ func _init() -> void:
 	var spacing_opts = {"min": 0.001, "allow_lesser": false, "value": 1.0}
 	var range_opts = {"min": 0, "max": 1, "allow_lesser": false, "allow_higher": false, "steps": 0.001, "value": 0.0}
 
-	set_input(0, "Curve", ConceptGraphDataType.CURVE)
+	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)
 	set_input(1, "Spacing", ConceptGraphDataType.SCALAR, spacing_opts)
 	set_input(2, "Start", ConceptGraphDataType.SCALAR, range_opts)
 	range_opts["value"] = 1.0
 	set_input(3, "End", ConceptGraphDataType.SCALAR, range_opts)
 	set_input(4, "Align rotation", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.NODE)
+	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
 
 func _generate_outputs() -> void:

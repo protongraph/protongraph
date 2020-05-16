@@ -15,7 +15,7 @@ func _init() -> void:
 	set_input(0, "Vertex count", ConceptGraphDataType.SCALAR,
 		{"step": 1, "value": 1.0, "min": 3, "allow_lesser": false})
 	set_input(1, "Radius", ConceptGraphDataType.SCALAR, {"value": 1.0})
-	set_output(0, "", ConceptGraphDataType.CURVE)
+	set_output(0, "", ConceptGraphDataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:
