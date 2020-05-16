@@ -380,8 +380,6 @@ func post_generation_ui_fixes():
 	for box in _hboxes:
 		for ui in box.get_children():
 			if ui is OptionButton:
-				print(ui)
-				print("selected ", ui.selected)
 				var new_btn = ui.duplicate()
 				var pos = ui.get_position_in_parent()
 				box.remove_child(ui)
