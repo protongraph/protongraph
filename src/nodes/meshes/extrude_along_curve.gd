@@ -16,6 +16,8 @@ func _init() -> void:
 	set_input(2, "Taper curve", ConceptGraphDataType.CURVE_2D)
 	set_input(3, "Resolution", ConceptGraphDataType.SCALAR, {"min": 0.01, "value": 1.0})
 	set_input(4, "Merge all", ConceptGraphDataType.BOOLEAN, {"value": true})
+	set_input(5, "UV scale X", ConceptGraphDataType.SCALAR, {"min": 0.01, "value": 1.0})
+	set_input(6, "UV scale Y", ConceptGraphDataType.SCALAR, {"min": 0.01, "value": 1.0})
 	set_output(0, "Mesh", ConceptGraphDataType.MESH)
 
 
@@ -24,6 +26,8 @@ func _generate_outputs() -> void:
 	var paths := get_input(1)	# following these
 	var taper: Curve = get_input_single(2)	# and vary its scale at each step based on this
 	var resolution: float = get_input_single(3, 1.0)	# at this interval
+	var uv_scale_x: float = get_input_single(5, 1.0)
+	var uv_scale_y: float = get_input_single(6, 1.0)
 
 	if resolution == 0:
 		resolution = 0.01
@@ -73,6 +77,7 @@ func _generate_outputs() -> void:
 				pos = node.transform.xform(pos)
 
 				surface_tool.add_color(Color(1, 1, 1, 1));
+				surface_tool.add_uv(Vector2(current_offset/length * uv_scale_x, j/float(bevel_count)*uv_scale_y))
 				surface_tool.add_vertex(pos)
 
 			if i > 0:
