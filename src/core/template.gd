@@ -69,7 +69,7 @@ func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
 	new_node.offset = scroll_offset + Vector2(250, 150)
 	new_node.thread_pool = _thread_pool
 
-	if new_node.unique_id == "final_output":
+	if new_node.unique_id.find("_output") != -1:
 		_output_nodes.append(new_node)
 		new_node.connect("output_ready", self, "_on_output_ready")
 
@@ -91,7 +91,7 @@ func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
 
 
 func delete_node(node) -> void:
-	if node.unique_id == "final_output":
+	if node.unique_id.find("_output") != -1:
 		_output_nodes.erase(node)
 
 	_disconnect_node_signals(node)
@@ -103,7 +103,7 @@ func delete_node(node) -> void:
 
 
 func restore_node(node) -> void:
-	if node.unique_id == "final_output":
+	if node.unique_id.find("_output") != -1:
 		_output_nodes.append(node)
 
 	_connect_node_signals(node)
