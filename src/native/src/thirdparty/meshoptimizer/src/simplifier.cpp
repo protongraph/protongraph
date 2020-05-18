@@ -576,7 +576,7 @@ static void fillEdgeQuadrics(Quadric* vertex_quadrics, const unsigned int* indic
 {
 	for (size_t i = 0; i < index_count; i += 3)
 	{
-		static const int next[3] = {1, 2, 0};
+		static const int next[3] = { 1, 2, 0 };
 
 		for (int e = 0; e < 3; ++e)
 		{
@@ -588,8 +588,12 @@ static void fillEdgeQuadrics(Quadric* vertex_quadrics, const unsigned int* indic
 
 			// check that i0 and i1 are border/seam and are on the same edge loop
 			// loop[] tracks half edges so we only need to check i0->i1
-			if (k0 != k1 || (k0 != Kind_Border && k0 != Kind_Seam) || loop[i0] != i1)
+			if ((k0 == Kind_Locked || k1 == Kind_Locked) && (k0 == Kind_Border || k1 == Kind_Border)) {
+				; // hack: keep computing border errors for locked-border without a loop[] check
+			}
+			else if (k0 != k1 || (k0 != Kind_Border && k0 != Kind_Seam) || loop[i0] != i1) {
 				continue;
+			}
 
 			unsigned int i2 = indices[i + next[next[e]]];
 
