@@ -46,12 +46,12 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 
 	if nodes.empty():
 		nodes = _node_library.get_list().values()
-		
+
 	if !_search_text:
 		folder_collapsed = true
 	else:
 		folder_collapsed = false
-		
+
 	for node in nodes:
 		if _filter_node(node):
 			var item_parent = _get_or_create_category(node.category, folder_collapsed)

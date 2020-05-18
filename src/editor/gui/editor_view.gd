@@ -50,6 +50,7 @@ func enable_template_editor_for(node: ConceptGraph) -> void:
 	_current_template = weakref(node._template)
 
 	node.connect("template_path_changed", self, "_on_load_template")
+	node.connect("tree_exited", self, "clear_template_editor")
 	node._template.connect("graph_changed", self, "_on_graph_changed")
 	node._template.connect("popup_request", self, "_show_node_dialog")
 	node._template.undo_redo = undo_redo
@@ -92,6 +93,7 @@ func clear_template_editor() -> void:
 	template.disconnect("graph_changed", self, "_on_graph_changed")
 	template.disconnect("popup_request", self, "_show_node_dialog")
 	graph.disconnect("template_path_changed", self, "_on_load_template")
+	graph.disconnect("tree_exited", self, "clear_template_editor")
 
 	_template_parent.remove_child(template)
 	graph.add_child(template)

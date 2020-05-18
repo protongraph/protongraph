@@ -3,6 +3,7 @@
 [ext_resource path="res://addons/concept_graph/src/editor/gui/add_node_panel.gd" type="Script" id=1]
 
 [node name="AddNodeDialog" type="WindowDialog"]
+visible = true
 margin_right = 417.0
 margin_bottom = 277.0
 rect_min_size = Vector2( 512, 400 )
@@ -42,7 +43,7 @@ __meta__ = {
 margin_right = 484.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
-placeholder_text = "Search node (press enter)"
+placeholder_text = "Search node"
 caret_blink = true
 
 [node name="NodeTree" type="Tree" parent="MarginContainer/VBoxContainer"]
