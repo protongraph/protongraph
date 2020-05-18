@@ -464,7 +464,7 @@ func _on_paste_nodes_request() -> void:
 		new_node.selected = true
 		new_node.offset += scroll_offset + Vector2(80, 80)
 		undo_redo.add_do_method(self, "restore_node", new_node)
-		undo_redo.add_do_method(new_node, "post_generation_ui_fixes")
+		undo_redo.add_do_method(new_node, "regenerate_default_ui")
 		undo_redo.add_undo_method(self, "remove_child", new_node)
 	undo_redo.commit_action()
 

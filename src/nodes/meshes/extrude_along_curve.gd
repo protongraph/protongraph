@@ -76,8 +76,9 @@ func _generate_outputs() -> void:
 				var pos = taper_size * bevel.points[j]
 				pos = node.transform.xform(pos)
 
+				# TODO : Adding UV breaks the smooth group
 				surface_tool.add_color(Color(1, 1, 1, 1));
-				surface_tool.add_uv(Vector2(current_offset/length * uv_scale_x, j/float(bevel_count)*uv_scale_y))
+				surface_tool.add_uv(Vector2(current_offset / length * uv_scale_x, j / float(bevel_count) * uv_scale_y))
 				surface_tool.add_vertex(pos)
 
 			if i > 0:

@@ -2,7 +2,7 @@ tool
 extends ConceptNode
 
 
-var _noise := OpenSimplexNoise.new()
+var _noise: OpenSimplexNoise
 var _texture_rect = TextureRect.new()
 var _image_texture = ImageTexture.new()
 var _is_preview_show = false
@@ -23,8 +23,30 @@ func _init() -> void:
 	set_output(0, "Noise", ConceptGraphDataType.NOISE)
 
 
+func _update_noise_preview() -> void:
+	_image_texture.create_from_image(_noise.get_image(175,175))
+
+
+func _generate_outputs() -> void:
+	var input_seed: int = get_input_single(0, 0)
+	var octaves: int = get_input_single(1, 3)
+	var period: float = get_input_single(2, 64.0)
+	var persistence: float = get_input_single(3, 0.5)
+	var lacunarity: float = get_input_single(4, 2.0)
+
+	_noise = OpenSimplexNoise.new()
+	_noise.seed = input_seed
+	_noise.octaves = octaves
+	_noise.period = period
+	_noise.persistence = persistence
+	_noise.lacunarity = lacunarity
+
+	output[0] = _noise
+	_update_noise_preview()
+
+
 # TODO : Set noise size with the avaiable space on X axis
-func _ready() -> void:
+func _on_default_gui_ready() -> void:
 	var button_preview := Button.new()
 	button_preview.text = "Preview"
 	add_child(button_preview)
@@ -34,7 +56,6 @@ func _ready() -> void:
 
 
 func _on_button_preview_pressed() -> void:
-	emit_signal("raise_request")
 	if _is_preview_show:
 		remove_child(_texture_rect)
 		rect_size = _buffer_rect_size
@@ -43,25 +64,4 @@ func _on_button_preview_pressed() -> void:
 		add_child(_texture_rect)
 
 	_is_preview_show = !_is_preview_show
-
-
-func _update_noise() -> void:
-	_image_texture.create_from_image(_noise.get_image(175,175))
-
-
-# TODO : Make a super class ConceptGraphNoise with a common api in case we introduce more noise types
-func _generate_outputs() -> void:
-	var input_seed: int = get_input_single(0, 0)
-	var octaves: int = get_input_single(1, 3)
-	var period: float = get_input_single(2, 64.0)
-	var persistence: float = get_input_single(3, 0.5)
-	var lacunarity: float = get_input_single(4, 2.0)
-
-	_noise.seed = input_seed
-	_noise.octaves = octaves
-	_noise.period = period
-	_noise.persistence = persistence
-	_noise.lacunarity = lacunarity
-
-	output[0] = _noise
-	_update_noise()
+	emit_signal("raise_request")

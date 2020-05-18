@@ -3,12 +3,7 @@ extends ConceptNode
 
 """
 Takes a node or a node array and parent it to the selected node. Returns the parent.
-TODO : Move the dynamic slot system to the ConceptNode
 """
-
-
-var _btn_container: HBoxContainer
-var _children_count := 1
 
 
 func _init() -> void:
@@ -22,20 +17,7 @@ func _init() -> void:
 	set_output(0, "Parent", ConceptGraphDataType.NODE_3D)
 
 	mirror_slots_type(0, 0)
-
-
-func _ready() -> void:
-	var add = _make_button("+")
-	var remove = _make_button("-")
-	add.connect("pressed", self, "add_child_slot")
-	remove.connect("pressed", self, "remove_child_slot")
-
-	_btn_container = HBoxContainer.new()
-	_btn_container.alignment = BoxContainer.ALIGN_END
-	_btn_container.add_child(add)
-	_btn_container.add_child(remove)
-
-	add_child(_btn_container)
+	enable_dynamic_inputs("Child", ConceptGraphDataType.NODE_3D)
 
 
 func _generate_outputs() -> void:
@@ -44,7 +26,7 @@ func _generate_outputs() -> void:
 	if not parent:
 		return
 
-	for i in range(1, _children_count + 1):
+	for i in range(1, get_inputs_count()):
 		var children = get_input(i)
 		if not children or children.size() == 0:
 			continue
@@ -57,53 +39,3 @@ func _generate_outputs() -> void:
 			c.owner = parent
 
 	output[0] = parent
-
-
-func export_custom_data() -> Dictionary:
-	return {"children_count": _children_count}
-
-
-func restore_custom_data(data: Dictionary) -> void:
-	if not data.has("children_count"):
-		return
-
-	_children_count = data["children_count"]
-	if _children_count > 1:
-		for i in range(2, _children_count + 1):
-			set_input(i, "Child", ConceptGraphDataType.NODE_3D)
-
-		remove_child(_btn_container)
-		._generate_default_gui()
-		._setup_slots()
-		add_child(_btn_container)
-
-
-func add_child_slot() -> void:
-	_children_count += 1
-	set_input(_children_count, "Child", ConceptGraphDataType.NODE_3D)
-	_update_gui()
-	emit_signal("node_changed", self, true)
-
-
-func remove_child_slot() -> void:
-	if _children_count <= 1:
-		return
-
-	if remove_input(_children_count):
-		_children_count -= 1
-		_update_gui()
-		emit_signal("node_changed", self, true)
-
-
-func _update_gui() -> void:
-	remove_child(_btn_container)
-	._generate_default_gui()
-	._setup_slots()
-	add_child(_btn_container)
-
-
-func _make_button(text: String) -> Button:
-	var btn = Button.new()
-	btn.text = text
-	btn.rect_min_size.y = 24
-	return btn

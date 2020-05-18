@@ -71,12 +71,14 @@ func _find_all_nodes(path) -> void:
 			continue
 
 		var full_path = path_root + file
+		var script = load(full_path)
+		if not script or not script.can_instance():
+			print("Error: Failed to load script ", file)
+			continue
 
-		print("Loading ", name, " (", file, ")")
-		var node = load(full_path).new()
+		var node = script.new()
 		var name = node.display_name
 		var id = node.unique_id
-
 
 		# ConceptNode is abstract, don't add it to the list
 		if not (node is ConceptNode) or name == "ConceptNode":

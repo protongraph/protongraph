@@ -10,8 +10,8 @@ for nodes with simple parameters as well as a caching system and other utilities
 
 signal delete_node
 signal node_changed
-signal connection_changed
 signal input_changed
+signal connection_changed
 signal all_inputs_ready
 signal output_ready
 
@@ -27,6 +27,8 @@ var output := []
 var _inputs := {}
 var _outputs := {}
 var _hboxes := []
+var _dynamic_inputs := {}
+var _btn_container: HBoxContainer # Used for dynamic input system
 var _resize_timer := Timer.new()
 var _initialized := false	# True when all enter_tree initialization is done
 var _generation_requested := false # True after calling prepare_output once
@@ -113,6 +115,15 @@ func prepare_output() -> void:
 
 	call_deferred("_run_background_generation") # Single thread execution
 	#thread_pool.submit_task(self, "_run_background_generation") # Broken multithread execution
+
+
+"""
+Return how many total inputs slots are available on this node. Includes the dynamic ones as well.
+"""
+func get_inputs_count() -> int:
+	if _dynamic_inputs.empty():
+		return _inputs.size()
+	return _inputs.size() + _dynamic_inputs["count"]
 
 
 """
@@ -246,19 +257,23 @@ func export_editor_data() -> Dictionary:
 		data["rect_x"] = rect_size.x
 		data["rect_y"] = rect_size.y
 
+	if not _dynamic_inputs.empty():
+		data["dynamic_inputs"] = _dynamic_inputs["count"]
+
 	data["slots"] = {}
 	var slots = _hboxes.size()
-	for i in range(0, slots):
+	for i in slots:
+		var idx = String(i) # Needed to fix inconsistencies when calling restore
 		var hbox = _hboxes[i]
 		for c in hbox.get_children():
 			if c is CheckBox:
-				data["slots"][i] = c.pressed
+				data["slots"][idx] = c.pressed
 			if c is SpinBox:
-				data["slots"][i] = c.value
+				data["slots"][idx] = c.value
 			if c is LineEdit:
-				data["slots"][i] = c.text
+				data["slots"][idx] = c.text
 			if c is OptionButton:
-				data["slots"][i] = c.get_item_id(c.selected)
+				data["slots"][idx] = c.get_item_id(c.selected)
 
 	return data
 
@@ -277,12 +292,22 @@ func restore_editor_data(data: Dictionary) -> void:
 	if has_custom_gui():
 		return
 
+	# Recreate all slots before trying to restore their data but only it this is called from
+	# load template, not from regenerate_default_gui
+	if data.has("dynamic_inputs") and _dynamic_inputs["count"] == 0:
+		_dynamic_inputs["count"] = data["dynamic_inputs"]
+		for i in data["dynamic_inputs"]:
+			set_input(_inputs.size(), _dynamic_inputs["name"], _dynamic_inputs["type"], _dynamic_inputs["opts"])
+		_generate_default_gui()
+
 	var slots = _hboxes.size()
-	for i in range(0, slots):
+
+	for i in slots:
 		if data["slots"].has(String(i)):
 			var type = _inputs[i]["type"]
 			var value = data["slots"][String(i)]
 			var hbox = _hboxes[i]
+
 			match type:
 				ConceptGraphDataType.BOOLEAN:
 					hbox.get_node("CheckBox").pressed = value
@@ -310,7 +335,7 @@ func export_custom_data() -> Dictionary:
 This method get exactly what it exported from the export_custom_data method. Use it to manually
 restore the previous node state.
 """
-func restore_custom_data(data: Dictionary) -> void:
+func restore_custom_data(_data: Dictionary) -> void:
 	pass
 
 
@@ -340,13 +365,12 @@ func set_output(idx: int, name: String, type: int, opts: Dictionary = {}) -> voi
 
 
 func remove_input(idx: int) -> bool:
-	if not _inputs.has(idx):
+	if not _inputs.erase(idx):
 		return false
 
 	if is_input_connected(idx):
 		get_parent()._disconnect_input(self, idx)
 
-	_inputs.erase(idx)
 	return true
 
 
@@ -361,6 +385,18 @@ func mirror_slots_type(input_index, output_index) -> void:
 
 	_inputs[input_index]["mirror"].append(output_index)
 	_inputs[input_index]["default_type"] = _inputs[input_index]["type"]
+
+
+"""
+Dynamic inputs are inputs the user can create on the fly from the graph editor. Pressing a button
+creates or removes an input. They all share the same type, name and options.
+"""
+func enable_dynamic_inputs(input_name: String, type, options := {}) -> void:
+	_dynamic_inputs = {}
+	_dynamic_inputs["count"] = 0
+	_dynamic_inputs["type"] = type
+	_dynamic_inputs["name"] = input_name
+	_dynamic_inputs["opts"] = options
 
 
 """
@@ -394,32 +430,19 @@ func register_to_garbage_collection(resource):
 
 
 """
-Some UI elements are broken the first time the graph is generated. Not sure if it's because it's
-a child of a spatial node or something else. This is called when the template is disconnected
-from the ConceptGraph and parented to the graph editor. Regenerating problematic parts of the UI
-works at that moment.
+Force the node to rebuild the user interface. This is needed because the Node is generated under
+a spatial, which make accessing the current theme impossible and breaks OptionButtons.
 """
-func post_generation_ui_fixes():
-	# Regenerate the font style to avoid using the default one
-	_generate_default_gui_style()
+func regenerate_default_ui():
+	if has_custom_gui():
+		return
 
-	# OptionButtons doesn't work so we recreate them here, reconnect the signals and fire them once
-	for box in _hboxes:
-		for ui in box.get_children():
-			if ui is OptionButton:
-				var new_btn: OptionButton = ui.duplicate()
-				var pos = ui.get_position_in_parent()
-				box.remove_child(ui)
-				if pos - 1 < 0:
-					box.add_child_below_node(box, new_btn)
-				else:
-					box.add_child_below_node(box.get_child(pos - 1), new_btn)
-
-				var slot = box.get_position_in_parent()
-				new_btn.connect("item_selected", self, "_on_default_gui_value_changed", [slot])
-				new_btn.connect("item_selected", self, "_on_default_gui_interaction", [new_btn, slot])
-				_on_default_gui_interaction(new_btn.get_item_text(new_btn.get_item_id(new_btn.selected)), new_btn, slot)
-				ui.queue_free()
+	var editor_data = export_editor_data()
+	var custom_data = export_custom_data()
+	_generate_default_gui()
+	restore_editor_data(editor_data)
+	restore_custom_data(custom_data)
+	_setup_slots()
 
 
 """
@@ -478,7 +501,7 @@ func _generate_outputs() -> void:
 Override this if you're using a custom GUI to change input slots default behavior. This returns
 the local input data for the given slot
 """
-func _get_input(index: int) -> Array:
+func _get_input(_index: int) -> Array:
 	return []
 
 
@@ -514,7 +537,7 @@ wise on the child node side and make it more readable.
 """
 func _setup_slots() -> void:
 	var slots = _hboxes.size()
-	for i in slots:
+	for i in slots + 1:	# +1 to prevent leaving an extra slot active when removing dynamic inputs
 		var has_input = false
 		var input_type = 0
 		var input_color = Color(0)
@@ -531,21 +554,32 @@ func _setup_slots() -> void:
 			output_type = _outputs[i]["type"]
 			output_color = ConceptGraphDataType.COLORS[output_type]
 
-		if not has_input and not has_output:
+		if not has_input and not has_output and i < _hboxes.size():
 			_hboxes[i].visible = false
-
-		# This causes more issues than it solves
-		#if _inputs[i].has("options") and _inputs[i]["options"].has("disable_slot"):
-		#	has_input = not _inputs[i]["options"]["disable_slot"]
 
 		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color)
 
+	# Remove elements generated as part of the default gui but doesn't match any slots
 	for b in _hboxes:
 		if not b.visible:
+			print("erased ", b)
 			_hboxes.erase(b)
 			remove_child(b)
+
+	# If the node can't be resized, make it as small as possible
 	if not resizable:
 		emit_signal("resize_request", Vector2.ZERO)
+
+
+"""
+Clear all child controls
+"""
+func _clear_gui() -> void:
+	_hboxes = []
+	for child in get_children():
+		if child is Control:
+			remove_child(child)
+			child.queue_free()
 
 
 """
@@ -589,11 +623,7 @@ func _generate_default_gui() -> void:
 	if has_custom_gui():
 		return
 
-	for box in _hboxes:
-		remove_child(box)
-		box.queue_free()
-	_hboxes = []
-
+	_clear_gui()
 	_generate_default_gui_style()
 
 	title = display_name
@@ -604,21 +634,20 @@ func _generate_default_gui() -> void:
 
 	# TODO : Some refactoring would be nice
 	var slots = max(_inputs.size(), _outputs.size())
-	for i in range(0, slots):
-
+	for i in slots:
 		# Create a Hbox container per slot like this -> [LabelIn, (opt), LabelOut]
 		var hbox = HBoxContainer.new()
 		hbox.rect_min_size.y = 24
 
-		# Hbox have at least two elements (In and Out label), or more for some base types
-		# for example with additional spinboxes. All of them are stored in ui_elements
-		var ui_elements = []
+		# Make sure it appears in the editor and store along the other Hboxes
+		_hboxes.append(hbox)
+		add_child(hbox)
 
 		# label_left holds the name of the input slot.
 		var label_left = Label.new()
 		label_left.name = "LabelLeft"
 		label_left.mouse_filter = MOUSE_FILTER_PASS
-		ui_elements.append(label_left)
+		hbox.add_child(label_left)
 
 		# If this slot has an input
 		if _inputs.has(i):
@@ -636,7 +665,7 @@ func _generate_default_gui() -> void:
 					checkbox.pressed = opts["value"] if opts.has("value") else false
 					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
 					checkbox.connect("toggled", self, "_on_default_gui_interaction", [checkbox, i])
-					ui_elements.append(checkbox)
+					hbox.add_child(checkbox)
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
 					var spinbox = SpinBox.new()
@@ -651,7 +680,7 @@ func _generate_default_gui() -> void:
 					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
 					spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [i])
 					spinbox.connect("value_changed", self, "_on_default_gui_interaction", [spinbox, i])
-					ui_elements.append(spinbox)
+					hbox.add_child(spinbox)
 				ConceptGraphDataType.STRING:
 					var opts = _inputs[i]["options"]
 					if opts.has("type") and opts["type"] == "dropdown":
@@ -661,7 +690,7 @@ func _generate_default_gui() -> void:
 							dropdown.add_item(item, opts["items"][item])
 						dropdown.connect("item_selected", self, "_on_default_gui_value_changed", [i])
 						dropdown.connect("item_selected", self, "_on_default_gui_interaction", [dropdown, i])
-						ui_elements.append(dropdown)
+						hbox.add_child(dropdown)
 					else:
 						var line_edit = LineEdit.new()
 						line_edit.name = "LineEdit"
@@ -669,7 +698,7 @@ func _generate_default_gui() -> void:
 						line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
 						line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
 						line_edit.connect("text_changed", self, "_on_default_gui_interaction", [line_edit, i])
-						ui_elements.append(line_edit)
+						hbox.add_child(line_edit)
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel
@@ -682,16 +711,68 @@ func _generate_default_gui() -> void:
 		if _outputs.has(i):
 			label_right.text = _outputs[i]["name"]
 			label_right.hint_tooltip = ConceptGraphDataType.Types.keys()[_outputs[i]["type"]].capitalize()
-		ui_elements.append(label_right)
+		hbox.add_child(label_right)
 
-		# Make sure it appears in the editor and store along the other Hboxes
-		_hboxes.append(hbox)
-		add_child(hbox)
+	if not _dynamic_inputs.empty():
+		_setup_dynamic_input_controls()
 
-		# Push all the ui elements in order in the Hbox container
-		for ui in ui_elements:
-			hbox.add_child(ui)
+	_on_connection_changed()
+	_on_default_gui_ready()
+	_redraw()
 
+
+"""
+Creates two buttons to create or remove inputs on the fly
+"""
+func _setup_dynamic_input_controls() -> void:
+	if not _dynamic_inputs:
+		return
+
+	var add = _make_button("+")
+	var remove = _make_button("-")
+	add.connect("pressed", self, "_create_new_input_slot")
+	remove.connect("pressed", self, "_delete_last_input_slot")
+
+	_btn_container = HBoxContainer.new()
+	_btn_container.alignment = BoxContainer.ALIGN_END
+	_btn_container.add_child(add)
+	_btn_container.add_child(remove)
+
+	add_child(_btn_container)
+
+
+"""
+Create a generic button with the given text
+"""
+func _make_button(text: String) -> Button:
+	var btn = Button.new()
+	btn.text = text
+	btn.rect_min_size.y = 24
+	return btn
+
+
+func _create_new_input_slot() -> void:
+	_dynamic_inputs["count"] += 1
+	var index = _inputs.size()
+	set_input(index, _dynamic_inputs["name"], _dynamic_inputs["type"], _dynamic_inputs["opts"])
+	regenerate_default_ui()
+	emit_signal("node_changed", self, true)
+
+
+func _delete_last_input_slot() -> void:
+	if _dynamic_inputs["count"] <= 0:
+		return
+
+	if remove_input(_inputs.size() - 1):
+		_dynamic_inputs["count"] -= 1
+		regenerate_default_ui()
+		emit_signal("node_changed", self, true)
+
+
+"""
+Forces the GraphNode to redraw its gui, mostly to get rid of outdated connections after a delete.
+"""
+func _redraw() -> void:
 	hide()
 	show()
 
@@ -709,7 +790,6 @@ if every other connected node has completed their task. If they are ready, notif
 resume its output generation
 """
 func _on_input_ready() -> void:
-	#print("Input ready received on ", display_name)
 	var all_inputs_ready := true
 	var connected_inputs := _get_connected_inputs()
 	for input_node in connected_inputs:
@@ -738,21 +818,24 @@ When the nodes connections changes, this method checks for all the input slots a
 everything that's not a label if something is connected to the associated slot.
 """
 func _on_connection_changed() -> void:
-	var slots_types_updated = false
+	# Hides the default gui (except for the labels) if a connection is present for the given slot
 	for i in _hboxes.size():
-		var input_connected = is_input_connected(i)
 		for ui in _hboxes[i].get_children():
 			if not ui is Label:
-				ui.visible = !input_connected
+				ui.visible = !is_input_connected(i)
 
-		# Handle dynamic slot type
-		if i >= _inputs.size():
-			continue
+	# Change the slots type if the mirror option is enabled
+	var slots_types_updated = false
+	var count = _inputs.size()
+	if not _dynamic_inputs.empty():
+		count -= _dynamic_inputs["count"]
+
+	for i in count:
 		for o in _inputs[i]["mirror"]:
 			slots_types_updated = true
 			var type = _inputs[i]["default_type"]
-			# Copy the connected input type if there's one
-			if input_connected:
+			# Copy the connected input type if there is one
+			if is_input_connected(i):
 				var data = get_parent().get_left_node(self, i)
 				type = data["node"]._outputs[data["slot"]]["type"]
 
@@ -760,11 +843,16 @@ func _on_connection_changed() -> void:
 			_outputs[o]["type"] = type
 
 	if slots_types_updated:
-		_generate_default_gui()
 		_setup_slots()
 
-	hide()
-	show()
+	_redraw()
+
+
+"""
+Override this function if you have custom gui to create on top of the default one
+"""
+func _on_default_gui_ready():
+	pass
 
 
 func _on_default_gui_value_changed(value, slot: int) -> void:
@@ -773,5 +861,5 @@ func _on_default_gui_value_changed(value, slot: int) -> void:
 	reset()
 
 
-func _on_default_gui_interaction(value, control, slot) -> void:
+func _on_default_gui_interaction(_value, _control: Control, _slot: int) -> void:
 	pass

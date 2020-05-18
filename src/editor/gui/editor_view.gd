@@ -58,15 +58,17 @@ func enable_template_editor_for(node: ConceptGraph) -> void:
 	_template_parent.add_child(node._template)
 	_graph_name.text = node.get_name()
 
-	# Force graphnodes to rebuild part of the UI because they were generated under a spatial node
+	# Force graphnodes to rebuild their UI because they were generated under a spatial node but they
+	# are now under a Control node so the editor theme is now available
 	for child in node._template.get_children():
 		if child is ConceptNode:
-			child.post_generation_ui_fixes()
+			child.regenerate_default_ui()
 
 	_no_graph_panel.visible = false
-	_template_parent.visible = true
 	if node.template_path == "":
 		_load_panel.visible = true
+	else:
+		_template_parent.visible = true
 
 
 """
@@ -74,8 +76,7 @@ Give the template back to the ConceptGraph and remove references to these nodes 
 clean state. Disconnect the signals to avoid impacting deselected templates.
 """
 func clear_template_editor() -> void:
-	_no_graph_panel.visible = true
-	_template_parent.visible = false
+	_hide_all()
 	var graph = _get_ref(_current_graph)
 	var template = _get_ref(_current_template)
 
@@ -133,6 +134,8 @@ func _hide_node_dialog() -> void:
 func _hide_all() -> void:
 	_load_panel.visible = false
 	_node_dialog.visible = false
+	_template_parent.visible = false
+	_no_graph_panel.visible = true
 
 
 func _on_load_template(path: String) -> void:
@@ -141,6 +144,7 @@ func _on_load_template(path: String) -> void:
 		graph.template_path = path
 		graph.property_list_changed_notify() # Forces the inspector to refresh
 		_load_panel.visible = false
+		_template_parent.visible = true
 
 
 func _on_create_node_request(node) -> void:
