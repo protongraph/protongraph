@@ -88,7 +88,7 @@ margin_bottom = 24.0
 rect_min_size = Vector2( 24, 24 )
 disabled = true
 text = "Create node"
-[connection signal="text_entered" from="MarginContainer/VBoxContainer/Search" to="." method="_on_search_text"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Search" to="." method="_on_Search_text_changed"]
 [connection signal="item_activated" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_item_activated"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_item_selected"]
 [connection signal="nothing_selected" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_nothing_selected"]
