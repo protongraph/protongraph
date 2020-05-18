@@ -22,6 +22,8 @@ var _default_description: String
 var _node_library: ConceptNodeLibrary
 var _categories: Dictionary
 
+var _search_text: String = ""
+
 
 func _ready() -> void:
 	_node_library = ConceptNodeLibrary.new()
@@ -45,13 +47,18 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 	if nodes.empty():
 		nodes = _node_library.get_list().values()
 		
+	if !_search_text:
+		folder_collapsed = true
+	else:
+		folder_collapsed = false
+		
 	for node in nodes:
-		var item_parent = _get_or_create_category(node.category, folder_collapsed)
-		var item = _node_tree.create_item(item_parent)
-		item.set_text(0, node.display_name)
-		item.set_tooltip(0, node.description)
-		item.set_metadata(0, node.unique_id)
-
+		if _filter_node(node):
+			var item_parent = _get_or_create_category(node.category, folder_collapsed)
+			var item = _node_tree.create_item(item_parent)
+			item.set_text(0, node.display_name)
+			item.set_tooltip(0, node.description)
+			item.set_metadata(0, node.unique_id)
 
 func _get_or_create_category(category: String, collapsed := true) -> TreeItem:
 	var levels = category.split('/')
@@ -110,13 +117,9 @@ func _on_item_activated() -> void:
 func _on_create_button_pressed() -> void:
 	_on_item_activated()
 
+func _on_Search_text_changed(new_text):
+	_search_text = new_text
+	_ready()
 
-func _on_search_text(new_text):
-	var index_list = _node_library.get_index_list()
-	var nodes = _node_library.get_list()
-	var found = []
-	for node_name in index_list.keys():
-		if node_name.findn(new_text) != -1:
-			found.append(nodes[index_list[node_name]])
-	_refresh_concept_nodes_list(found, found.empty())
-
+func _filter_node(node) -> bool:
+	return node.display_name.matchn("*" + _search_text+"*")
