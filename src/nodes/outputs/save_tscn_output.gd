@@ -35,8 +35,6 @@ func _save_scene(scene, path:String):
 
 	if last_export == null and last_export_path == "" and directory.file_exists(path):
 		# consider that the file in path is an old packaged scene
-		# FIXME: this has a bug: if the user puts a path where there is a file already,
-		# FIXME: and then restarts godot, this node will consider that file as ours on startup, and will overwrite it.
 		last_export_path = path
 		return
 	elif directory.file_exists(path):
@@ -73,6 +71,16 @@ func _generate_outputs() -> void:
 		_remove_scene(last_export_path)
 		last_export_path = ""
 
+
+func export_custom_data() -> Dictionary:
+	return {"last_export_path": last_export_path}
+
+
+func restore_custom_data(data: Dictionary) -> void:
+	if not data.has("last_export_path"):
+		return
+
+	last_export_path = data["last_export_path"]
 
 func reset() -> void:
 	.reset()
