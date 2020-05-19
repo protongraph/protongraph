@@ -24,7 +24,7 @@ func _generate_outputs() -> void:
 
 	for i in get_inputs_count():
 		var mesh_instances := get_input(i)
-		if not mesh_instances or mesh_instances.size() <= 1:
+		if not mesh_instances or mesh_instances.size() <= 0:
 			continue
 
 		for instance in mesh_instances:
@@ -47,5 +47,5 @@ func _generate_outputs() -> void:
 
 	var instance = MeshInstance.new()
 	instance.mesh = array_mesh
-	output[0] = instance
+	output[0].append(instance)
 

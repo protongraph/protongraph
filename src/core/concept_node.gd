@@ -121,9 +121,7 @@ func prepare_output() -> void:
 Return how many total inputs slots are available on this node. Includes the dynamic ones as well.
 """
 func get_inputs_count() -> int:
-	if _dynamic_inputs.empty():
-		return _inputs.size()
-	return _inputs.size() + _dynamic_inputs["count"]
+	return _inputs.size()
 
 
 """
