@@ -10,6 +10,8 @@ var _load_title := "Load an existing template"
 var _default_file_suggestion := "new_template.cgraph"
 var _save_mode = true
 
+var default_output_node : String = '{"connections":[],"nodes":[{"data":{},"editor":{"offset_x":-218,"offset_y":-37,"slots":{}},"name":"GraphNode","type":"final_output"}]}'
+
 
 func _ready() -> void:
 	_file_dialog = get_node("FileDialog")
@@ -36,5 +38,6 @@ func _on_file_selected(path: String) -> void:
 	if _save_mode:
 		var template_file = File.new()
 		template_file.open(path, File.WRITE)
+		template_file.store_line(default_output_node)
 		template_file.close()
 	emit_signal("load_template", path)
