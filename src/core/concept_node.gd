@@ -194,9 +194,12 @@ func get_output(idx: int, default := []) -> Array:
 	if res[0] is Node:
 		var duplicates = []
 		for i in res.size():
-			var node = res[i].duplicate(7)
-			register_to_garbage_collection(node)
-			duplicates.append(node)
+			var node = res[i] # TODO move the duplication in a helper function instead
+			var duplicate = node.duplicate(7)
+			if node is Path: # TODO : Check if other nodes needs extra steps
+				duplicate.curve = node.curve.duplicate(true)
+			register_to_garbage_collection(duplicate)
+			duplicates.append(duplicate)
 		return duplicates
 
 	# If it's not a node array, it's made of built in types (scalars, vectors ...) which are passed

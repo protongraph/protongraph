@@ -11,7 +11,7 @@ deleted) when the ConceptGraph is deselected.
 var undo_redo: UndoRedo
 
 var _template_parent: Control
-var _node_dialog: ConceptGraphNodeDialog
+var _node_dialog: WindowDialog
 var _load_panel: PanelContainer
 var _no_graph_panel: PanelContainer
 var _graph_name: Label
