@@ -39,7 +39,7 @@ static func get_dpi_scale() -> float:
 Returns the path to res://addons/concept_graph, no matter how the user renamed the addon folder
 """
 static func get_plugin_root_path() -> String:
-	var dummy = ConceptGraph.new()
+	var dummy = ConceptGraphNodePool.new()
 	var path = dummy.get_script().get_path()
 	dummy.queue_free()
-	return path.replace("src/core/concept_graph.gd", "")
+	return path.replace("src/core/node_pool.gd", "")
