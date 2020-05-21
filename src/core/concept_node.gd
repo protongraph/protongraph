@@ -30,6 +30,7 @@ var _hboxes := []
 var _dynamic_inputs := {}
 var _btn_container: HBoxContainer # Used for dynamic input system
 var _resize_timer := Timer.new()
+var _file_dialog: FileDialog
 var _initialized := false	# True when all enter_tree initialization is done
 var _generation_requested := false # True after calling prepare_output once
 var _output_ready := false # True when the background generation was completed
@@ -666,6 +667,7 @@ func _generate_default_gui() -> void:
 					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
 					checkbox.connect("toggled", self, "_on_default_gui_interaction", [checkbox, i])
 					hbox.add_child(checkbox)
+
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
 					var spinbox = SpinBox.new()
@@ -681,6 +683,7 @@ func _generate_default_gui() -> void:
 					spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [i])
 					spinbox.connect("value_changed", self, "_on_default_gui_interaction", [spinbox, i])
 					hbox.add_child(spinbox)
+
 				ConceptGraphDataType.STRING:
 					var opts = _inputs[i]["options"]
 					if opts.has("type") and opts["type"] == "dropdown":
@@ -699,6 +702,12 @@ func _generate_default_gui() -> void:
 						line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
 						line_edit.connect("text_changed", self, "_on_default_gui_interaction", [line_edit, i])
 						hbox.add_child(line_edit)
+
+						if opts.has("file_dialog"):
+							var folder_button = Button.new()
+							folder_button.icon = load(ConceptGraphEditorUtil.get_plugin_root_path() + "icons/icon_folder.svg")
+							folder_button.connect("pressed", self, "_show_file_dialog", [opts["file_dialog"], line_edit])
+							hbox.add_child(folder_button)
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel
@@ -782,6 +791,37 @@ func _connect_signals() -> void:
 	connect("resize_request", self, "_on_resize_request")
 	connect("connection_changed", self, "_on_connection_changed")
 	_resize_timer.connect("timeout", self, "_on_resize_timeout")
+
+
+"""
+Shows a FileDialog window and write the selected file path to the given line edit.
+"""
+func _show_file_dialog(opts: Dictionary, line_edit: LineEdit) -> void:
+	if not _file_dialog:
+		_file_dialog = FileDialog.new()
+		add_child(_file_dialog)
+
+	_file_dialog.rect_min_size = Vector2(500, 500)
+	_file_dialog.mode = opts["mode"] if opts.has("mode") else FileDialog.MODE_SAVE_FILE
+	_file_dialog.resizable = true
+
+	if opts.has("filters"):
+		var filters = PoolStringArray()
+		for filter in opts["filters"]:
+			filters.append(filter)
+		_file_dialog.set_filters(filters)
+
+	if _file_dialog.is_connected("confirmed", self, "_on_file_selected"):
+		_file_dialog.disconnect("confirmed", self, "_on_file_selected")
+	_file_dialog.connect("confirmed", self, "_on_file_selected", [line_edit])
+	_file_dialog.popup_centered()
+
+
+"""
+Called from _show_file_dialog when confirming the selection
+"""
+func _on_file_selected(line_edit: LineEdit) -> void:
+	line_edit.text = _file_dialog.current_path
 
 
 """

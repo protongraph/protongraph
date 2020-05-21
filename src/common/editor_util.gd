@@ -1,9 +1,8 @@
 tool
 class_name ConceptGraphEditorUtil
 
+
 # Taken from https://github.com/Zylann/godot_heightmap_plugin/blob/master/addons/zylann.hterrain/tools/util/editor_util.gd
-
-
 static func get_dpi_scale() -> float:
 	var editor_plugin = EditorPlugin.new()
 	var editor_settings = editor_plugin.get_editor_interface().get_editor_settings()
@@ -33,5 +32,14 @@ static func get_dpi_scale() -> float:
 		_:
 			edscale = custom_display_scale
 
-
 	return edscale
+
+
+"""
+Returns the path to res://addons/concept_graph, no matter how the user renamed the addon folder
+"""
+static func get_plugin_root_path() -> String:
+	var dummy = ConceptGraph.new()
+	var path = dummy.get_script().get_path()
+	dummy.queue_free()
+	return path.replace("src/core/concept_graph.gd", "")

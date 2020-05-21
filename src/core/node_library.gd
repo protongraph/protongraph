@@ -47,7 +47,7 @@ func refresh_list() -> void:
 	# Writing res://addons/concept_graph/src/nodes isn't an option because the end user can rename
 	# the plugin folder.
 	var script_path = get_script().get_path()
-	var nodes_dir = script_path.replace("node_library.gd", "") + "../nodes/"
+	var nodes_dir = script_path.replace("node_library.gd", "../nodes/")
 	_find_all_nodes(nodes_dir)
 
 
