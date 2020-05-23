@@ -29,6 +29,9 @@ func _generate_outputs() -> void:
 	var node = get_editor_input(node_name)
 	if not node:
 		return
+		
+	if node is ConceptGraph:
+		node = node.get_child(1)
 
 	if children_only:
 		output[0] = node.get_children()
