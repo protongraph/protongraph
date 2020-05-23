@@ -1,6 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://addons/concept_graph/src/nodes/comment.gd" type="Script" id=1]
+[ext_resource path="res://addons/concept_graph/src/nodes/utilities/comment.gd" type="Script" id=1]
+
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
