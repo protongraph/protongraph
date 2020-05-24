@@ -2,27 +2,36 @@ tool
 extends ConceptNode
 
 """
-This node allows the user to save the input as a .tscn file by using ResourceSaver
+This node allows the user to save the input as a scene file by using ResourceSaver
 """
+
 
 var last_export_path := ""
 var last_export = null
 var directory := Directory.new()
 
+
 func _init() -> void:
 	unique_id = "save_tscn_output"
-	display_name = "Save Output"
+	display_name = "Save output scene"
 	category = "Output"
-	description = "Saves the output as a tscn file"
+	description = "Saves the output as a scene file"
 
-	set_input(0, "Path", ConceptGraphDataType.STRING)
+	var opts = {
+		"file_dialog": {
+			"mode": FileDialog.MODE_SAVE_FILE,
+			"filters": ["*.scn", "*.tscn"]
+		}
+	}
+	set_input(0, "Path", ConceptGraphDataType.STRING, opts)
 	set_input(1, "Node", ConceptGraphDataType.NODE_3D)
 
 
 func _fix_path(path:String):
 	if not path.begins_with("res://"):
 		path = "res://" + path
-	if not path.ends_with(".tscn"):
+	var ext = path.get_extension()
+	if ext != "tscn" and ext != "scn":
 		path += ".tscn"
 	return path
 
@@ -81,6 +90,7 @@ func restore_custom_data(data: Dictionary) -> void:
 		return
 
 	last_export_path = data["last_export_path"]
+
 
 func reset() -> void:
 	.reset()

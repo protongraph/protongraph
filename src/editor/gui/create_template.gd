@@ -10,7 +10,8 @@ var _load_title := "Load an existing template"
 var _default_file_suggestion := "new_template.cgraph"
 var _save_mode = true
 
-var default_output_node : String = '{"connections":[],"nodes":[{"data":{},"editor":{"offset_x":-218,"offset_y":-37,"slots":{}},"name":"GraphNode","type":"final_output"}]}'
+# TODO : Move this in a default template file instead
+var default_output_node : String = '{"connections":[],"nodes":[{"data":{},"editor":{"offset_x":100,"offset_y":20,"slots":{}},"name":"GraphNode","type":"final_output"}]}'
 
 
 func _ready() -> void:
