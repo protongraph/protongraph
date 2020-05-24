@@ -180,7 +180,7 @@ output node is connected to more than one node. It ensure the results are the sa
 some performance
 """
 func get_output(idx: int, default := []) -> Array:
-	if not is_output_ready():
+	if not is_output_ready() or output.size() < idx + 1:
 		return default
 
 	var res = output[idx]
