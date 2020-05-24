@@ -2,9 +2,10 @@
 
 An addon for node based content creation directly from the Godot engine editor.
 
-The graph node can be as simple ![image](https://user-images.githubusercontent.com/52043844/75927366-850e3080-5e6c-11ea-8596-ea8e1450c9e2.png)
+The graph node can be as simple ...
+![image](https://user-images.githubusercontent.com/52043844/82753238-77f64300-9dc4-11ea-9526-f7ada2883abc.png)
 
-... or as complicated as you want ![image](https://user-images.githubusercontent.com/52043844/75927502-c69edb80-5e6c-11ea-9f40-21c1f9684786.png)
+... or as complicated as you want ![image](https://user-images.githubusercontent.com/52043844/82753149-d0791080-9dc3-11ea-8b76-035d7115ee55.png)
 
 [Video example 1](https://streamable.com/1gke2)
 
@@ -16,34 +17,6 @@ This addon is still a **work in progress**. Until it hits version 1.0, it is not
 considered production ready and there's no guarantees the files generated with
 this addon will be compatible with later versions.
 
-
-### Known issues and roadmap
-
-#### General issues
-+ Save files needs improvement to make them work with future versions.
-+ Missing Undo/Redo support
-+ Search bar in the **Add node panel** doesn't work.
-+ Overall performance could be improved.
-
-#### Graph nodes issues
-+ No **Output** node by default.
-+ Duplicating graph nodes doesn't work.
-
-#### Roadmap
-
-1. Make it work
-2. Make it user friendly
-3. Make it fast
-
-+ Right now my focus is on user experience and stability. I'm working on this tool
-while also using it for my own game so I can actually see what's missing and
-what part of the workflow could be improved for real world use.
-+ New features will be added as I need them when the overall usability will be
-good enough for most people.
-+ Comment nodes, groups and other QoL features are planned.
-+ At some point, I'd like to add some sort of control flow (conditional and loops)
-but it likely won't be implemented anytime soon.
-
 ## Quick start
 
 [Check out the wiki](https://github.com/HungryProton/concept_graph/wiki) for detailled explainations
@@ -53,8 +26,29 @@ templates and example scences.
 
 Check out [this video tutorial](https://www.youtube.com/watch?v=hLFgfyKbPoU) for a step by step guide on how to create your first graph
 
-## Licence
+### Known issues and roadmap
 
-+ Unless stated otherwise, everything in this repository is MIT licenced.
-+ The textures and 3d models found in the assets folder come from https://kenney.nl/ under a CC0 licence.
+For a complete list of known issues, [head over there](https://github.com/HungryProton/concept_graph/issues)
 
+#### General issues
++ Save files needs improvement to make them work with future versions.
++ Missing Undo/Redo support for some operations.
++ Overall performance needs to be improved.
+
+#### Roadmap
+
+1. Make it work
+2. Make it user friendly
+3. Make it fast
+
+Right now my focus is on user experience and stability. I'm working on this tool
+while also using it for my own game so I can actually see what's missing and
+what part of the workflow could be improved for real world use.
+
++ **Future plans** include
+  - More mesh operations
+  - Heightmap tools
+  - Automation
+  - Execution flow control (conditionals and loops)
+
+New ideas are welcome!
