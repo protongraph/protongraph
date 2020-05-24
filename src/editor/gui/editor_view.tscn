@@ -23,6 +23,7 @@ __meta__ = {
 }
 
 [node name="TemplateParent" type="VBoxContainer" parent="PanelContainer"]
+visible = false
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 1913.0
@@ -111,6 +112,7 @@ size_flags_vertical = 3
 scroll_offset = Vector2( -2, -6 )
 
 [node name="AddNodeDialog" parent="." instance=ExtResource( 3 )]
+visible = false
 
 [node name="LoadOrCreateTemplate" parent="." instance=ExtResource( 2 )]
 visible = false
@@ -134,7 +136,6 @@ __meta__ = {
 }
 
 [node name="NoGraphSelected" type="PanelContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {

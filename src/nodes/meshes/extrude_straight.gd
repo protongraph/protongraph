@@ -19,7 +19,7 @@ func _init() -> void:
 func _generate_outputs() -> void:
 	var polygon_curves := get_input(0)
 	var depth: float = get_input_single(1, 1.0)
-	var material: SpatialMaterial = get_input_single(2)
+	var material: Material = get_input_single(2)
 	var use_collision: bool = get_input_single(3, false)
 	var smooth: bool = get_input_single(4, true)
 
@@ -36,6 +36,7 @@ func _generate_outputs() -> void:
 		mesh.depth = depth
 		mesh.smooth_faces = smooth
 		mesh.use_collision = use_collision
+		mesh.material = material
 		output[0].append(mesh)
 
 

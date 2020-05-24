@@ -1,5 +1,5 @@
 tool
-class_name ConceptGraph, "../../icons/graph.svg"
+class_name ConceptGraph, "../../icons/icon_concept_graph.svg"
 extends Spatial
 
 """

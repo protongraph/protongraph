@@ -11,7 +11,7 @@ deleted) when the ConceptGraph is deselected.
 var undo_redo: UndoRedo
 
 var _template_parent: Control
-var _node_dialog: ConceptGraphNodeDialog
+var _node_dialog: WindowDialog
 var _load_panel: PanelContainer
 var _no_graph_panel: PanelContainer
 var _graph_name: Label
@@ -145,8 +145,13 @@ func _on_load_template(path: String) -> void:
 	if graph:
 		graph.template_path = path
 		graph.property_list_changed_notify() # Forces the inspector to refresh
-		_load_panel.visible = false
-		_template_parent.visible = true
+		_hide_all()
+		_no_graph_panel.visible = false
+
+		if not path or path == "":
+			_load_panel.visible = true
+		else:
+			_template_parent.visible = true
 
 
 func _on_create_node_request(node) -> void:
