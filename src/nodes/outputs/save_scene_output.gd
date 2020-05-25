@@ -27,26 +27,26 @@ func _init() -> void:
 	set_input(1, "Node", ConceptGraphDataType.NODE_3D)
 
 
-func _fix_path(path:String):
+func _fix_path(path: String):
 	if not path.begins_with("res://"):
 		path = "res://" + path
 	var ext = path.get_extension()
 	if ext != "tscn" and ext != "scn":
 		path += ".tscn"
 	return path
-	
-func _set_children_owner(root:Node, node:Node):
+
+
+func _set_children_owner(root: Node, node: Node):
 	for child in node.get_children():
 		child.set_owner(root)
 		if child.get_children().size() > 0:
 			_set_children_owner(root, child)
-			
 
-func _save_scene(scene, path:String):
-	
+
+func _save_scene(scene, path: String):
 	# sets the owner of all the children to scene
-	_set_children_owner(scene, scene) 
-	
+	_set_children_owner(scene, scene)
+
 	var packed_scene := PackedScene.new()
 	if packed_scene.pack(scene) != OK:
 		print("Failed to pack resource")
@@ -74,7 +74,7 @@ func _save_scene(scene, path:String):
 		last_export = packed_scene
 
 
-func _remove_scene(path:String):
+func _remove_scene(path: String):
 	if path != "" and directory.file_exists(path):
 		directory.remove(path)
 
@@ -98,7 +98,6 @@ func export_custom_data() -> Dictionary:
 func restore_custom_data(data: Dictionary) -> void:
 	if not data.has("last_export_path"):
 		return
-
 	last_export_path = data["last_export_path"]
 
 

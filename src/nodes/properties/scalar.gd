@@ -30,8 +30,8 @@ func _generate_outputs() -> void:
 	var name: String = get_input_single(0, "")
 	var value = get_parent().get_value_from_inspector(name)
 
-	if not value:
-		value =  get_input_single(1, 1.0)
+	if value == null:
+		value =  get_input_single(1, 0.0)
 
 	output[0] = value
 
