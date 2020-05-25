@@ -18,8 +18,7 @@ func _generate_outputs() -> void:
 	var node:Node = get_input_single(0)
 	var name:String = get_input_single(1)
 	
-	if name:
+	if node and name:
 		node.name = name
 		
-
 	output[0] = node

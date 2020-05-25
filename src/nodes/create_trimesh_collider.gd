@@ -15,6 +15,9 @@ func _init() -> void:
 func _generate_outputs() -> void:
 	var mesh:MeshInstance = get_input_single(0)
 	
-	mesh.create_trimesh_collision()
-	
-	output[0] = mesh
+	if mesh is MeshInstance:
+		mesh.create_trimesh_collision()
+		output[0] = mesh
+		
+	else:
+		print("Input was not MeshInstance") #TODO : print this on the node itself
