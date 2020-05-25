@@ -34,9 +34,19 @@ func _fix_path(path:String):
 	if ext != "tscn" and ext != "scn":
 		path += ".tscn"
 	return path
-
+	
+func _set_children_owner(root:Node, node:Node):
+	for child in node.get_children():
+		child.set_owner(root)
+		if child.get_children().size() > 0:
+			_set_children_owner(root, child)
+			
 
 func _save_scene(scene, path:String):
+	
+	# sets the owner of all the children to scene
+	_set_children_owner(scene, scene) 
+	
 	var packed_scene := PackedScene.new()
 	if packed_scene.pack(scene) != OK:
 		print("Failed to pack resource")
