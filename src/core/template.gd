@@ -19,6 +19,7 @@ var root: Spatial
 var node_library: ConceptNodeLibrary	# Injected from the concept graph
 var undo_redo: UndoRedo
 
+var _json_util = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/thirdparty/json_beautifier/json_beautifier.gd")
 var _output_nodes := [] # of ConceptNodes
 var _template_loaded := false
 var _node_pool := ConceptGraphNodePool.new()
@@ -190,15 +191,18 @@ func get_output() -> Array:
 
 
 """
-Returns a dictionnary containing the ConceptNode and the slot index the connection originates from
+Returns an array of ConceptNodes connected to the left of the given slot, including the slot index
+the connection originates from
 """
-func get_left_node(node: ConceptNode, slot: int) -> Dictionary:
-	var result = {}
+func get_left_nodes(node: ConceptNode, slot: int) -> Array:
+	var result = []
 	for c in get_connection_list():
 		if c["to"] == node.get_name() and c["to_port"] == slot:
-			result["node"] = get_node(c["from"])
-			result["slot"] = c["from_port"]
-			return result
+			var data = {
+				"node": get_node(c["from"]),
+				"slot": c["from_port"]
+			}
+			result.append(data)
 	return result
 
 
@@ -214,6 +218,17 @@ func get_right_nodes(node: ConceptNode, slot: int) -> Array:
 
 
 """
+Returns an array of all the ConceptNodes on the left, regardless of the slot.
+"""
+func get_all_left_nodes(node) -> Array:
+	var result = []
+	for c in get_connection_list():
+		if c["to"] == node.get_name():
+			result.append(get_node(c["from"]))
+	return result
+
+
+"""
 Returns an array of all the ConceptNodes on the right, regardless of the slot.
 """
 func get_all_right_nodes(node) -> Array:
@@ -224,6 +239,9 @@ func get_all_right_nodes(node) -> Array:
 	return result
 
 
+"""
+Returns true if the given node is connected to the given slot
+"""
 func is_node_connected_to_input(node: GraphNode, idx: int) -> bool:
 	var name = node.get_name()
 	for c in get_connection_list():
@@ -248,8 +266,9 @@ func load_from_file(path: String, soft_load := false) -> void:
 	# Open the file and read the contents
 	var file = File.new()
 	file.open(path, File.READ)
-	var json = JSON.parse(file.get_line())	# TODO: Don't assume the whole json fits in one line
+	var json = JSON.parse(file.get_as_text())
 	if not json or not json.result:
+		print("Failed to parse json")
 		return	# Template file is either empty or not a valid Json. Ignore
 
 	# Abort if the file doesn't have node data
@@ -295,9 +314,10 @@ func save_to_file(path: String) -> void:
 			node["data"] = c.export_custom_data()
 			graph["nodes"].append(node)
 
+	var json = _json_util.beautify_json(to_json(graph))
 	var file = File.new()
 	file.open(path, File.WRITE)
-	file.store_line(to_json(graph))
+	file.store_string(json)
 	file.close()
 
 
@@ -398,11 +418,13 @@ func _on_connection_request(from_node: String, from_slot: int, to_node: String, 
 	if from_node == to_node:
 		return
 
-	# Disconnect any existing connection to the input slot first
-	for c in get_connection_list():
-		if c["to"] == to_node and c["to_port"] == to_slot:
-			disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
-			break
+	# Disconnect any existing connection to the input slot first unless multi connection is enabled
+	var node = get_node(to_node)
+	if not node.is_multiple_connections_enabled_on_slot(to_slot):
+		for c in get_connection_list():
+			if c["to"] == to_node and c["to_port"] == to_slot:
+				disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
+				break
 
 	connect_node(from_node, from_slot, to_node, to_slot)
 	emit_signal("graph_changed")

@@ -12,28 +12,26 @@ func _init() -> void:
 	category = "Meshes"
 	description = "Combine all the MeshInstances into a single one"
 
-	set_input(0, "Merge surfaces", ConceptGraphDataType.BOOLEAN)
-	set_input(1, "Meshes", ConceptGraphDataType.NODE_3D)
+	set_input(0, "Meshes", ConceptGraphDataType.NODE_3D)
+	set_input(1, "Merge surfaces", ConceptGraphDataType.BOOLEAN)
 	set_output(0, "", ConceptGraphDataType.MESH)
 
-	enable_dynamic_inputs("Meshes", ConceptGraphDataType.NODE_3D)
+	enable_multiple_connections_on_slot(0)
 
 
 func _generate_outputs() -> void:
-	var mesh_instances = Array()
-
-	for i in range(1, get_inputs_count()):
-		var nodes := get_input(i)
-		if not nodes or nodes.size() <= 0:
-			continue
-
-		for node in nodes:
-			mesh_instances = _get_meshes_from_node(node, null, mesh_instances)
-
-	if not mesh_instances:
+	var nodes := get_input(0)
+	var merge_surfaces = get_input_single(1)
+	if not nodes or nodes.size() <= 0:
 		return
 
-	var merge_surfaces = get_input_single(0)
+	var mesh_instances = Array()
+	for node in nodes:
+		mesh_instances += _get_meshes_from_node(node)
+
+	if not mesh_instances or mesh_instances.size() == 0:
+		return
+
 	if merge_surfaces:
 		output[0] = merge_mesh_surfaces(mesh_instances)
 	else:
@@ -150,7 +148,7 @@ func merge_mesh_surfaces(mesh_instances: Array) -> MeshInstance:
 	return instance
 
 
-func _get_meshes_from_node(node:Spatial, parent:Spatial = null, array = Array()) -> Array:
+func _get_meshes_from_node(node: Spatial, parent: Spatial = null, array := Array()) -> Array:
 	if node is CSGShape and node.is_root_shape():
 		add_child(node)	# update_shape doesn't work on nodes not in the tree
 		node._update_shape()

@@ -24,10 +24,12 @@ var node_pool: ConceptGraphNodePool # Injected from template
 var thread_pool: ConceptGraphThreadPool # Injected from template
 var output := []
 
+var _folder_icon
+var _multi_input_icon
+
 var _inputs := {}
 var _outputs := {}
 var _hboxes := []
-var _dynamic_inputs := {}
 var _btn_container: HBoxContainer # Used for dynamic input system
 var _resize_timer := Timer.new()
 var _file_dialog: FileDialog
@@ -134,15 +136,22 @@ func get_input(idx: int, default = []) -> Array:
 	if not parent:
 		return default
 
-	var input: Dictionary = parent.get_left_node(self, idx)
-	if input.has("node"):	# Input source connected, ignore local data
-		return input["node"].get_output(input["slot"], default)
+	var inputs: Array = parent.get_left_nodes(self, idx)
+	if inputs.size() > 0: # Input source connected, ignore local data
+		var res = []
+		for input in inputs:
+			var node_output = input["node"].get_output(input["slot"], default)
+			if node_output is Array:
+				res += node_output
+			else:
+				res.append(node_output)
+		return res
 
 	if has_custom_gui():
-		var output = _get_input(idx)
-		if output == null:
+		var node_output = _get_input(idx)
+		if node_output == null:
 			return default
-		return output
+		return node_output
 
 	# If no source is connected, check if it's a base type with a value defined on the node itself
 	match _inputs[idx]["type"]:
@@ -259,9 +268,6 @@ func export_editor_data() -> Dictionary:
 		data["rect_x"] = rect_size.x
 		data["rect_y"] = rect_size.y
 
-	if not _dynamic_inputs.empty():
-		data["dynamic_inputs"] = _dynamic_inputs["count"]
-
 	data["slots"] = {}
 	var slots = _hboxes.size()
 	for i in slots:
@@ -293,14 +299,6 @@ func restore_editor_data(data: Dictionary) -> void:
 
 	if has_custom_gui():
 		return
-
-	# Recreate all slots before trying to restore their data but only it this is called from
-	# load template, not from regenerate_default_gui
-	if data.has("dynamic_inputs") and _dynamic_inputs["count"] == 0:
-		_dynamic_inputs["count"] = data["dynamic_inputs"]
-		for i in data["dynamic_inputs"]:
-			set_input(_inputs.size(), _dynamic_inputs["name"], _dynamic_inputs["type"], _dynamic_inputs["opts"])
-		_generate_default_gui()
 
 	var slots = _hboxes.size()
 
@@ -354,7 +352,8 @@ func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void
 		"name": name,
 		"type": type,
 		"options": opts,
-		"mirror": []
+		"mirror": [],
+		"multi": false
 	}
 
 
@@ -376,6 +375,9 @@ func remove_input(idx: int) -> bool:
 	return true
 
 
+"""
+Automatically change the output data type to mirror the type of what's connected to the input slot
+"""
 func mirror_slots_type(input_index, output_index) -> void:
 	if input_index >= _inputs.size():
 		print("Error: invalid input index passed to mirror_slots_type ", input_index)
@@ -390,15 +392,18 @@ func mirror_slots_type(input_index, output_index) -> void:
 
 
 """
-Dynamic inputs are inputs the user can create on the fly from the graph editor. Pressing a button
-creates or removes an input. They all share the same type, name and options.
+Allows multiple connections on the same input slot.
 """
-func enable_dynamic_inputs(input_name: String, type, options := {}) -> void:
-	_dynamic_inputs = {}
-	_dynamic_inputs["count"] = 0
-	_dynamic_inputs["type"] = type
-	_dynamic_inputs["name"] = input_name
-	_dynamic_inputs["opts"] = options
+func enable_multiple_connections_on_slot(idx: int) -> void:
+	if idx >= _inputs.size():
+		return
+	_inputs[idx]["multi"] = true
+
+
+func is_multiple_connections_enabled_on_slot(idx: int) -> bool:
+	if idx >= _inputs.size():
+		return false
+	return _inputs[idx]["multi"]
 
 
 """
@@ -453,9 +458,9 @@ Returns a list of every ConceptNode connected to this node
 func _get_connected_inputs() -> Array:
 	var connected_inputs = []
 	for i in _inputs.size():
-		var info = get_parent().get_left_node(self, i)
-		if info.has("node"):
-			connected_inputs.append(info["node"])
+		var nodes: Array = get_parent().get_left_nodes(self, i)
+		for data in nodes:
+			connected_inputs.append(data["node"])
 	return connected_inputs
 
 
@@ -539,7 +544,7 @@ wise on the child node side and make it more readable.
 """
 func _setup_slots() -> void:
 	var slots = _hboxes.size()
-	for i in slots + 1:	# +1 to prevent leaving an extra slot active when removing dynamic inputs
+	for i in slots + 1:	# +1 to prevent leaving an extra slot active when removing inputs
 		var has_input = false
 		var input_type = 0
 		var input_color = Color(0)
@@ -564,7 +569,6 @@ func _setup_slots() -> void:
 	# Remove elements generated as part of the default gui but doesn't match any slots
 	for b in _hboxes:
 		if not b.visible:
-			print("erased ", b)
 			_hboxes.erase(b)
 			remove_child(b)
 
@@ -588,28 +592,30 @@ func _clear_gui() -> void:
 Based on graph node category this method will setup corresponding style and color of graph node
 """
 func _generate_default_gui_style() -> void:
+	var scale: float = ConceptGraphEditorUtil.get_dpi_scale()
+
 	# Base Style
 	var style = StyleBoxFlat.new()
 	var color = Color(0.121569, 0.145098, 0.192157, 0.9)
 	style.border_color = ConceptGraphDataType.to_category_color(category)
 	style.set_bg_color(color)
-	style.set_border_width_all(2)
-	style.set_border_width(MARGIN_TOP, 32)
-	style.content_margin_left = 24;
-	style.content_margin_right = 24;
-	style.set_corner_radius_all(4)
-	style.set_expand_margin_all(4)
-	style.shadow_size = 8
+	style.set_border_width_all(2 * scale)
+	style.set_border_width(MARGIN_TOP, 32 * scale)
+	style.content_margin_left = 24 * scale;
+	style.content_margin_right = 24 * scale;
+	style.set_corner_radius_all(4 * scale)
+	style.set_expand_margin_all(4 * scale)
+	style.shadow_size = 8 * scale
 	style.shadow_color = Color(0,0,0,0.2)
 	add_stylebox_override("frame", style)
 
 	# Selected Style
 	var selected_style = style.duplicate()
 	selected_style.shadow_color = ConceptGraphDataType.to_category_color(category)
-	selected_style.shadow_size = 4
+	selected_style.shadow_size = 4 * scale
 	selected_style.border_color = Color(0.121569, 0.145098, 0.192157, 0.9)
 	add_stylebox_override("selectedframe", selected_style)
-	add_constant_override("port_offset", 12)
+	add_constant_override("port_offset", 12 * scale)
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
 
 
@@ -658,7 +664,7 @@ func _generate_default_gui() -> void:
 
 			# Add the optional UI elements based on the data type.
 			# TODO : We could probably just check if the property exists with get_property_list
-			# and to that automatically instead of manually setting everything one by one
+			# and do that automatically instead of manually setting everything one by one
 			match _inputs[i]["type"]:
 				ConceptGraphDataType.BOOLEAN:
 					var opts = _inputs[i]["options"]
@@ -706,7 +712,9 @@ func _generate_default_gui() -> void:
 
 						if opts.has("file_dialog"):
 							var folder_button = Button.new()
-							folder_button.icon = load(ConceptGraphEditorUtil.get_plugin_root_path() + "icons/icon_folder.svg")
+							if not _folder_icon:
+								_folder_icon = load(ConceptGraphEditorUtil.get_plugin_root_path() + "icons/icon_folder.svg")
+							folder_button.icon = _folder_icon
 							folder_button.connect("pressed", self, "_show_file_dialog", [opts["file_dialog"], line_edit])
 							hbox.add_child(folder_button)
 
@@ -723,60 +731,9 @@ func _generate_default_gui() -> void:
 			label_right.hint_tooltip = ConceptGraphDataType.Types.keys()[_outputs[i]["type"]].capitalize()
 		hbox.add_child(label_right)
 
-	if not _dynamic_inputs.empty():
-		_setup_dynamic_input_controls()
-
 	_on_connection_changed()
 	_on_default_gui_ready()
 	_redraw()
-
-
-"""
-Creates two buttons to create or remove inputs on the fly
-"""
-func _setup_dynamic_input_controls() -> void:
-	if not _dynamic_inputs:
-		return
-
-	var add = _make_button("+")
-	var remove = _make_button("-")
-	add.connect("pressed", self, "_create_new_input_slot")
-	remove.connect("pressed", self, "_delete_last_input_slot")
-
-	_btn_container = HBoxContainer.new()
-	_btn_container.alignment = BoxContainer.ALIGN_END
-	_btn_container.add_child(add)
-	_btn_container.add_child(remove)
-
-	add_child(_btn_container)
-
-
-"""
-Create a generic button with the given text
-"""
-func _make_button(text: String) -> Button:
-	var btn = Button.new()
-	btn.text = text
-	btn.rect_min_size.y = 24
-	return btn
-
-
-func _create_new_input_slot() -> void:
-	_dynamic_inputs["count"] += 1
-	var index = _inputs.size()
-	set_input(index, _dynamic_inputs["name"], _dynamic_inputs["type"], _dynamic_inputs["opts"])
-	regenerate_default_ui()
-	emit_signal("node_changed", self, true)
-
-
-func _delete_last_input_slot() -> void:
-	if _dynamic_inputs["count"] <= 0:
-		return
-
-	if remove_input(_inputs.size() - 1):
-		_dynamic_inputs["count"] -= 1
-		regenerate_default_ui()
-		emit_signal("node_changed", self, true)
 
 
 """
@@ -867,24 +824,33 @@ func _on_connection_changed() -> void:
 
 	# Change the slots type if the mirror option is enabled
 	var slots_types_updated = false
-	var count = _inputs.size()
-	if not _dynamic_inputs.empty():
-		count -= _dynamic_inputs["count"]
 
-	for i in count:
+	for i in _inputs.size():
 		for o in _inputs[i]["mirror"]:
 			slots_types_updated = true
 			var type = _inputs[i]["default_type"]
-			# Copy the connected input type if there is one
+
+			# Copy the connected input type if there is one but if multi connection is enabled,
+			# all connected inputs must share the same type otherwise it will use the default type.
 			if is_input_connected(i):
-				var data = get_parent().get_left_node(self, i)
-				type = data["node"]._outputs[data["slot"]]["type"]
+				var inputs: Array = get_parent().get_left_nodes(self, i)
+				var input_type = -1
+
+				for data in inputs:
+					if input_type == -1:
+						input_type = data["node"]._outputs[data["slot"]]["type"]
+					else:
+						if data["node"]._outputs[data["slot"]]["type"] != input_type:
+							input_type = -2
+				if input_type >= 0:
+					type = input_type
 
 			_inputs[i]["type"] = type
 			_outputs[o]["type"] = type
 
 	if slots_types_updated:
 		_setup_slots()
+		# TODO: propagate the type change to next the connected nodes
 
 	_redraw()
 

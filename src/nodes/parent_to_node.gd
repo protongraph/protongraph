@@ -13,11 +13,11 @@ func _init() -> void:
 	description = "Parent the given node(s) to another one and return the parent"
 
 	set_input(0, "Parent", ConceptGraphDataType.NODE_3D)
-	set_input(1, "Child", ConceptGraphDataType.NODE_3D)
+	set_input(1, "Children", ConceptGraphDataType.NODE_3D)
 	set_output(0, "Parent", ConceptGraphDataType.NODE_3D)
 
 	mirror_slots_type(0, 0)
-	enable_dynamic_inputs("Child", ConceptGraphDataType.NODE_3D)
+	enable_multiple_connections_on_slot(1)
 
 
 func _generate_outputs() -> void:
