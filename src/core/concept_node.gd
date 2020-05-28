@@ -545,12 +545,12 @@ wise on the child node side and make it more readable.
 func _setup_slots() -> void:
 	var slots = _hboxes.size()
 	for i in slots + 1:	# +1 to prevent leaving an extra slot active when removing inputs
-		var has_input = false
-		var input_type = 0
-		var input_color = Color(0)
-		var has_output = false
-		var output_type = 0
-		var output_color = Color(0)
+		var has_input := false
+		var input_type := 0
+		var input_color := Color(0)
+		var has_output := false
+		var output_type := 0
+		var output_color := Color(0)
 		var icon = null
 
 		if _inputs.has(i):
@@ -558,7 +558,7 @@ func _setup_slots() -> void:
 			input_type = _inputs[i]["type"]
 			input_color = ConceptGraphDataType.COLORS[input_type]
 			if _inputs[i]["multi"]:
-				icon = ConceptGraphEditorUtil.get_square_texture(input_color)
+				icon = ConceptGraphEditorUtil.get_square_texture(input_color.lightened(0.6))
 		if _outputs.has(i):
 			has_output = true
 			output_type = _outputs[i]["type"]
