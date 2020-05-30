@@ -96,31 +96,6 @@ func is_output_ready() -> bool:
 
 
 """
-Call this first to generate everything in the background first. This method then emits a signal
-when the results are ready. Outputs can then be fetched using the get_output method.
-"""
-func prepare_output() -> void:
-	if not _initialized or not get_parent():
-		return
-
-	# If the output was already generated, skip the whole function and notify directly
-	if is_output_ready():
-		call_deferred("emit_signal", "output_ready")
-		return
-
-	if _generation_requested:	# Prepare output was already called
-		return
-
-	_generation_requested = true
-
-	if not _request_inputs_to_get_ready():
-		yield(self, "all_inputs_ready")
-
-	call_deferred("_run_background_generation") # Single thread execution
-	#thread_pool.submit_task(self, "_run_background_generation") # Broken multithread execution
-
-
-"""
 Return how many total inputs slots are available on this node. Includes the dynamic ones as well.
 """
 func get_inputs_count() -> int:
@@ -187,7 +162,11 @@ output node is connected to more than one node. It ensure the results are the sa
 some performance
 """
 func get_output(idx: int, default := []) -> Array:
-	if not is_output_ready() or output.size() < idx + 1:
+	if not is_output_ready():
+		_generate_outputs()
+		_output_ready = true
+
+	if output.size() < idx + 1:
 		return default
 
 	var res = output[idx]
@@ -481,19 +460,8 @@ func _request_inputs_to_get_ready() -> bool:
 	for input_node in connected_inputs:
 		if not input_node.is_connected("output_ready", self, "_on_input_ready"):
 			input_node.connect("output_ready", self, "_on_input_ready")
-		input_node.call_deferred("prepare_output")
+		input_node.prepare_output()
 	return false
-
-
-"""
-This function is ran in the background from prepare_output(). Emits a signal when the outputs
-are ready.
-"""
-func _run_background_generation() -> void:
-	_generate_outputs()
-	_output_ready = true
-	_generation_requested = false
-	call_deferred("emit_signal", "output_ready")
 
 
 """
@@ -783,22 +751,6 @@ Called from _show_file_dialog when confirming the selection
 """
 func _on_file_selected(line_edit: LineEdit) -> void:
 	line_edit.text = _file_dialog.current_path
-
-
-"""
-Called when a connected input node has finished generating its output data. This method checks
-if every other connected node has completed their task. If they are ready, notify this node to
-resume its output generation
-"""
-func _on_input_ready() -> void:
-	var all_inputs_ready := true
-	var connected_inputs := _get_connected_inputs()
-	for input_node in connected_inputs:
-		if not input_node.is_output_ready():
-			all_inputs_ready = false
-
-	if all_inputs_ready:
-		emit_signal("all_inputs_ready")
 
 
 func _on_resize_request(new_size) -> void:
