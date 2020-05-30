@@ -14,6 +14,7 @@ enum Types {
 	STRING,
 	MATERIAL,
 	NOISE,
+	HEIGHTMAP,
 
 	NODE_2D,
 	CURVE_2D,
@@ -36,6 +37,7 @@ const SCALAR = Types.SCALAR
 const STRING = Types.STRING
 const MATERIAL = Types.MATERIAL
 const NOISE = Types.NOISE
+const HEIGHTMAP = Types.HEIGHTMAP
 
 const NODE_2D = Types.NODE_2D
 const CURVE_2D = Types.CURVE_2D
@@ -59,6 +61,7 @@ const COLORS = {
 	STRING: Color.gold,
 	MATERIAL: Color.darkmagenta,
 	NOISE: Color("b48700"),
+	HEIGHTMAP: Color("cc8f20"),
 
 	NODE_2D: Color.dodgerblue,
 	CURVE_2D: Color.dodgerblue,
@@ -104,6 +107,8 @@ static func to_category_color(category: String) -> Color:
 			return COLORS[VECTOR2]
 		"Transforms":
 			return Color.maroon
+		"Heigthmaps":
+			return COLORS[HEIGHTMAP].darkened(0.5)
 		_:
 			return Color.black
 
