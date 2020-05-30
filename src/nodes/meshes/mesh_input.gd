@@ -16,7 +16,6 @@ func _generate_outputs() -> void:
 	var input_name: String = get_input_single(0)
 	var input = get_editor_input(input_name)
 
-	print(input)
 	if not input:
 		return
 

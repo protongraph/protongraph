@@ -149,6 +149,9 @@ func generate(force_full_simulation := false) -> void:
 	if not Engine.is_editor_hint() or paused:
 		return
 
+	if _is_2d():
+		_template.multithreading_enabled = false
+
 	_template.generate(force_full_simulation) # Actual simulation happens here
 
 
@@ -181,11 +184,19 @@ func get_input(name: String) -> Node:
 	return _input_root.get_node(name)
 
 
-func _get_or_create_root(name: String) -> Spatial:
-	if has_node(name):
-		return get_node(name) as Spatial
+func _is_2d() -> bool:
+	var tmp = self # Comparing self directly just makes gdscript complain it's not possible even though it is.
+	return tmp is Node2D
 
-	var root = ConceptGraphInputManager.new() if name == "Input" else Spatial.new()
+
+func _get_or_create_root(name: String) -> Node:
+	if has_node(name):
+		return get_node(name)
+
+	var root = Node2D.new() if _is_2d() else Spatial.new()
+	if name == "Input":
+		root.set_script(ConceptGraphInputManager)
+
 	root.set_name(name)
 	add_child(root)
 	root.set_owner(get_tree().get_edited_scene_root())

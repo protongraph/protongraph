@@ -47,11 +47,17 @@ Takes the Template node from the ConceptGraph and add it as a child of the edito
 in the bottom dock. This way the template can be edited there.
 """
 func enable_template_editor_for(node: ConceptGraph) -> void:
+	if not node:
+		return
+
 	clear_template_editor()
+	if not node._template:
+		node.reload_template()
+
 	_current_graph = weakref(node)
 	_current_template = weakref(node._template)
 
-	node._template.paused = true # Prevent regenerations while the UI is not ready
+	node._template.paused = true # Prevent output generation while the UI is not ready
 
 	node.connect("template_path_changed", self, "_on_load_template")
 	node.connect("tree_exited", self, "clear_template_editor")

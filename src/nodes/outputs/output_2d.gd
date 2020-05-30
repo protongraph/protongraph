@@ -7,12 +7,12 @@ This node marks the end of every ConceptNodeTemplate. A template can have multip
 
 
 func _init() -> void:
-	unique_id = "final_output"
-	display_name = "Output 3D"
+	unique_id = "final_output_2d"
+	display_name = "Output 2D"
 	category = "Output"
 	description = "The final node of any template"
 
-	set_input(0, "Node", ConceptGraphDataType.NODE_3D)
+	set_input(0, "Node", ConceptGraphDataType.NODE_2D)
 
 
 func _generate_outputs() -> void:

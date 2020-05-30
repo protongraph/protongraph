@@ -1,13 +1,14 @@
+tool
+class_name ConceptGraphInputManager
+extends Node
+
+
 """
 The InputManager listen for changes in the Input nodes attached to the concept graph and notify
 it to its parent so it can rerun the simulation in real time as changes happens. Right now
 this is a naive approach where we reset the whole graph anytime something change but we may need
 a way to only reset the associated Input node sometime in the future.
 """
-
-tool
-class_name ConceptGraphInputManager
-extends Spatial
 
 
 signal input_changed

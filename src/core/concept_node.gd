@@ -12,8 +12,6 @@ signal delete_node
 signal node_changed
 signal input_changed
 signal connection_changed
-signal all_inputs_ready
-signal output_ready
 
 
 var unique_id := "concept_node"
@@ -441,27 +439,6 @@ func _get_connected_inputs() -> Array:
 		for data in nodes:
 			connected_inputs.append(data["node"])
 	return connected_inputs
-
-
-"""
-Loops through all connected input nodes and request them to prepare their output. Each output
-then signals this node when they finished their task. When all the inputs are ready, signals this
-node that the generation can begin.
-Returns true if all inputs are already ready.
-"""
-func _request_inputs_to_get_ready() -> bool:
-	var connected_inputs = _get_connected_inputs()
-
-	# No connected nodes, inputs data are available locally
-	if connected_inputs.size() == 0:
-		return true
-
-	# Call prepare_output on every connected inputs
-	for input_node in connected_inputs:
-		if not input_node.is_connected("output_ready", self, "_on_input_ready"):
-			input_node.connect("output_ready", self, "_on_input_ready")
-		input_node.prepare_output()
-	return false
 
 
 """
