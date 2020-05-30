@@ -4,9 +4,9 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "edit_transform"
-	display_name = "Edit transform"
+	display_name = "Transform (Constant)"
 	category = "Transforms"
-	description = "Edit the position, rotation and scale of any node 3D"
+	description = "Apply a constant position, rotation or scale to a set of nodes"
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Position", ConceptGraphDataType.VECTOR3)

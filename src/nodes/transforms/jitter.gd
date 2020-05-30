@@ -4,11 +4,11 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "offset_transforms_random"
-	display_name = "Jitter"
+	display_name = "Position (Random)"
 	category = "Transforms"
-	description = "Applies a random offset to each transforms"
+	description = "Apply a random position to a set of nodes"
 
-	set_input(0, "Input", ConceptGraphDataType.NODE_3D)
+	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Amount", ConceptGraphDataType.VECTOR3)
 	set_input(2, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
 	set_input(3, "Local space", ConceptGraphDataType.BOOLEAN, {"value": true})
@@ -23,7 +23,7 @@ func _generate_outputs() -> void:
 	var input_seed: int = get_input_single(2, 0)
 	var local: bool = get_input_single(3, true)
 
-	if not nodes or nodes.size() == 0:
+	if not nodes:
 		return
 	if not nodes[0] is Spatial:
 		return

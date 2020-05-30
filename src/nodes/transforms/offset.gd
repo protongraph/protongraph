@@ -4,9 +4,9 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "offset_transform_constant"
-	display_name = "Offset"
+	display_name = "Position (Constant)"
 	category = "Transforms"
-	description = "Applies an constant offset to a set of nodes"
+	description = "Apply a constant position to a set of nodes"
 
 	set_input(0, "Transforms", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Vector", ConceptGraphDataType.VECTOR3)
