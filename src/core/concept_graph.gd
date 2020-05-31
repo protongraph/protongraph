@@ -149,10 +149,15 @@ func generate(force_full_simulation := false) -> void:
 	if not Engine.is_editor_hint() or paused:
 		return
 
-	if _is_2d():
+	if is_2d():
 		_template.multithreading_enabled = false
 
 	_template.generate(force_full_simulation) # Actual simulation happens here
+
+
+func is_2d() -> bool:
+	var tmp = self # Comparing self directly just makes gdscript complain it's not possible even though it is.
+	return tmp is Node2D
 
 
 func set_template_path(val) -> void:
@@ -184,16 +189,11 @@ func get_input(name: String) -> Node:
 	return _input_root.get_node(name)
 
 
-func _is_2d() -> bool:
-	var tmp = self # Comparing self directly just makes gdscript complain it's not possible even though it is.
-	return tmp is Node2D
-
-
 func _get_or_create_root(name: String) -> Node:
 	if has_node(name):
 		return get_node(name)
 
-	var root = Node2D.new() if _is_2d() else Spatial.new()
+	var root = Node2D.new() if is_2d() else Spatial.new()
 	if name == "Input":
 		root.set_script(ConceptGraphInputManager)
 

@@ -330,6 +330,8 @@ func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void
 		"type": type,
 		"options": opts,
 		"mirror": [],
+		"driver": -1,
+		"linked": [],
 		"multi": false
 	}
 
@@ -356,16 +358,20 @@ func remove_input(idx: int) -> bool:
 Automatically change the output data type to mirror the type of what's connected to the input slot
 """
 func mirror_slots_type(input_index, output_index) -> void:
-	if input_index >= _inputs.size():
-		print("Error: invalid input index passed to mirror_slots_type ", input_index)
-		return
-
-	if output_index >= _outputs.size():
-		print("Error: invalid output index passed to mirror_slots_type ", output_index)
+	if not _mirror_type_check(input_index, output_index):
 		return
 
 	_inputs[input_index]["mirror"].append(output_index)
 	_inputs[input_index]["default_type"] = _inputs[input_index]["type"]
+	_update_slots_types()
+
+
+func cancel_type_mirroring(input_index, output_index) -> void:
+	if not _mirror_type_check(input_index, output_index):
+		return
+
+	_inputs[input_index]["mirror"].erase(output_index)
+	_update_slots_types()
 
 
 """
@@ -483,6 +489,22 @@ func _reset_output():
 
 
 """
+Used in mirror_slot_types and cancel_slot_types. Prints a warning if the provided slot is out of
+bounds.
+"""
+func _mirror_type_check(input_index, output_index) -> bool:
+	if input_index >= _inputs.size():
+		print("Error: invalid input index (", input_index, ") passed to ", display_name)
+		return false
+
+	if output_index >= _outputs.size():
+		print("Error: invalid output index (", input_index, ") passed to ", display_name)
+		return false
+
+	return true
+
+
+"""
 Based on the previous calls to set_input and set_ouput, this method will call the
 GraphNode.set_slot method accordingly with the proper parameters. This makes it easier syntax
 wise on the child node side and make it more readable.
@@ -500,7 +522,11 @@ func _setup_slots() -> void:
 
 		if _inputs.has(i):
 			has_input = true
-			input_type = _inputs[i]["type"]
+			var driver = _inputs[i]["driver"]
+			if driver != -1:
+				input_type = _inputs[driver]["type"]
+			else:
+				input_type = _inputs[i]["type"]
 			input_color = ConceptGraphDataType.COLORS[input_type]
 			if _inputs[i]["multi"]:
 				icon = ConceptGraphEditorUtil.get_square_texture(input_color.lightened(0.6))
@@ -723,6 +749,38 @@ func _show_file_dialog(opts: Dictionary, line_edit: LineEdit) -> void:
 	_file_dialog.popup_centered()
 
 
+func _update_slots_types() -> void:
+	# Change the slots type if the mirror option is enabled
+	var slots_types_updated = false
+
+	for i in _inputs.size():
+		for o in _inputs[i]["mirror"]:
+			slots_types_updated = true
+			var type = _inputs[i]["default_type"]
+
+			# Copy the connected input type if there is one but if multi connection is enabled,
+			# all connected inputs must share the same type otherwise it will use the default type.
+			if is_input_connected(i):
+				var inputs: Array = get_parent().get_left_nodes(self, i)
+				var input_type = -1
+
+				for data in inputs:
+					if input_type == -1:
+						input_type = data["node"]._outputs[data["slot"]]["type"]
+					else:
+						if data["node"]._outputs[data["slot"]]["type"] != input_type:
+							input_type = -2
+				if input_type >= 0:
+					type = input_type
+
+			_inputs[i]["type"] = type
+			_outputs[o]["type"] = type
+
+	if slots_types_updated:
+		_setup_slots()
+		# TODO: propagate the type change to next the connected nodes
+
+
 """
 Called from _show_file_dialog when confirming the selection
 """
@@ -754,36 +812,7 @@ func _on_connection_changed() -> void:
 			if not ui is Label:
 				ui.visible = !is_input_connected(i)
 
-	# Change the slots type if the mirror option is enabled
-	var slots_types_updated = false
-
-	for i in _inputs.size():
-		for o in _inputs[i]["mirror"]:
-			slots_types_updated = true
-			var type = _inputs[i]["default_type"]
-
-			# Copy the connected input type if there is one but if multi connection is enabled,
-			# all connected inputs must share the same type otherwise it will use the default type.
-			if is_input_connected(i):
-				var inputs: Array = get_parent().get_left_nodes(self, i)
-				var input_type = -1
-
-				for data in inputs:
-					if input_type == -1:
-						input_type = data["node"]._outputs[data["slot"]]["type"]
-					else:
-						if data["node"]._outputs[data["slot"]]["type"] != input_type:
-							input_type = -2
-				if input_type >= 0:
-					type = input_type
-
-			_inputs[i]["type"] = type
-			_outputs[o]["type"] = type
-
-	if slots_types_updated:
-		_setup_slots()
-		# TODO: propagate the type change to next the connected nodes
-
+	_update_slots_types()
 	_redraw()
 
 
