@@ -4,12 +4,11 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "create_trimesh_collider"
-	display_name = "Create collision trimesh"
+	display_name = "Create Collision Trimesh"
 	category = "Meshes"
 	description = "Creates a trimesh collider from a mesh"
 
 	set_input(0, "Node", ConceptGraphDataType.MESH)
-		
 	set_output(0, "", ConceptGraphDataType.MESH)
 	
 func _generate_outputs() -> void:

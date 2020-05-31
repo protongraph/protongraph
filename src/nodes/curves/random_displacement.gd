@@ -9,7 +9,7 @@ var _rng: RandomNumberGenerator
 
 func _init() -> void:
 	unique_id = "curve_random_displacement"
-	display_name = "Random displacement"
+	display_name = "Random Displacement"
 	category = "Curves/Operations"
 	description = "Add a random offset to each points of the curve"
 

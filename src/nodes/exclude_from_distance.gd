@@ -8,7 +8,7 @@ Discard all the nodes within a certain distance from the origin
 
 func _init() -> void:
 	unique_id = "exclude_nodes_from_distance"
-	display_name = "Exclude from Distance"
+	display_name = "Exclude From Distance"
 	category = "Nodes/Operations"
 	description = "Discard all the objects within a radius from the given position"
 

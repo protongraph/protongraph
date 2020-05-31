@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "curve_smooth"
-	display_name = "Smooth vector curve"
+	display_name = "Smooth Vector Curve"
 	category = "Curves/Operations"
 	description = "Smooth a vector curve. Does not create new points."
 
