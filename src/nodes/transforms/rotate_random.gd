@@ -12,7 +12,7 @@ func _init() -> void:
 	set_input(1, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
 	set_input(2, "Amount", ConceptGraphDataType.VECTOR3)
 	set_input(3, "Local Space", ConceptGraphDataType.BOOLEAN, {"value": true})
-	set_input(4, "Snap angle", ConceptGraphDataType.VECTOR3)
+	set_input(4, "Snap Angle", ConceptGraphDataType.VECTOR3)
 	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
 	mirror_slots_type(0, 0)
@@ -34,10 +34,12 @@ func _generate_outputs() -> void:
 
 	var rand = RandomNumberGenerator.new()
 	rand.seed = input_seed
+	
+	var r: Vector3
+	var t: Transform
 
-	var i = 0
 	for n in nodes:
-		var r = Vector3.ZERO
+		r = Vector3.ZERO
 		r.x += deg2rad(stepify(rand.randf_range(-1.0, 1.0) * amount.x, snap.x))
 		r.y += deg2rad(stepify(rand.randf_range(-1.0, 1.0) * amount.y, snap.y))
 		r.z += deg2rad(stepify(rand.randf_range(-1.0, 1.0) * amount.z, snap.z))
@@ -46,11 +48,11 @@ func _generate_outputs() -> void:
 			n.rotate_object_local(Vector3.UP, r.y)
 			n.rotate_object_local(Vector3.FORWARD, r.z)
 		else:
-			n.rotate_x(r.x)
-			n.rotate_y(r.y)
-			n.rotate_z(r.z)
-		nodes[i] = n
-		i += 1
+			t = n.transform
+			t = t.rotated(Vector3.RIGHT, r.x)
+			t = t.rotated(Vector3.UP, r.y)
+			t = t.rotated(Vector3.FORWARD, r.z)
+			n.transform = t
 
 	output[0] = nodes
 

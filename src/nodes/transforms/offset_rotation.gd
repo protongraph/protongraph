@@ -19,9 +19,13 @@ func _init() -> void:
 func _generate_outputs() -> void:
 	var nodes := get_input(0)
 	var amount: Vector3 = get_input_single(1, Vector3.ZERO)
-	var local: bool = get_input_single(2, true)
+	var local_space: bool = get_input_single(2, true)
 
 	if not nodes:
+		return
+		
+	if not amount: 
+		output[0] = nodes
 		return
 
 	amount.x = deg2rad(amount.x)
@@ -29,17 +33,15 @@ func _generate_outputs() -> void:
 	amount.z = deg2rad(amount.z)
 	
 	var t: Transform
-	var i = 0
 	
 	for n in nodes:
-		if local:
-			nodes[i].rotation += amount
+		if local_space:
+			n.rotation += amount
 		else:
 			t = n.transform
 			t = t.rotated(Vector3.LEFT, amount.x)
 			t = t.rotated(Vector3.UP, amount.y)
 			t = t.rotated(Vector3.FORWARD, amount.z)
-			nodes[i].transform = t
-		i += 0
+			n.transform = t
 
 	output[0] = nodes

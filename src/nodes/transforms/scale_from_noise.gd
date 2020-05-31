@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "scale_transforms_from_noise"
-	display_name = "Scale (Noised)"
+	display_name = "Scale (Noise)"
 	category = "Transforms"
 	description = "Apply a random scaling to a set of nodes, based on a noise input"
 
@@ -19,7 +19,7 @@ func _init() -> void:
 func _generate_outputs() -> void:
 	var nodes := get_input(0)
 	var noise = get_input_single(1)
-	var amount: Vector3 = get_input_single(2, Vector3.ZERO)
+	var amount: Vector3 = get_input_single(2, null)
 
 	if not nodes:
 		return
@@ -28,19 +28,10 @@ func _generate_outputs() -> void:
 		output[0] = nodes
 		return
 	
-	var scale: Vector3
-	var t: Transform
-	var origin: Vector3
+	var rand: float
 	
-	var i = 0
 	for n in nodes:
-		t = n.transform
-		origin = t.origin
-		scale = Vector3.ONE + (amount * (noise.get_noise_3dv(origin) * 0.5 + 0.5))
-		t.origin = Vector3.ZERO
-		t = t.scaled(scale)
-		t.origin = origin
-		nodes[i].transform = t
-		i += 1
+		rand = noise.get_noise_3dv(n.transform.origin) * 0.5 + 0.5
+		n.scale_object_local(Vector3.ONE + rand * amount)
 
 	output[0] = nodes

@@ -9,7 +9,7 @@ func _init() -> void:
 	description = "Apply a random scaling to a set of nodes"
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
-	set_input(1, "Seed", ConceptGraphDataType.SCALAR)
+	set_input(1, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
 	set_input(2, "Amount", ConceptGraphDataType.VECTOR3)
 	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
@@ -30,20 +30,8 @@ func _generate_outputs() -> void:
 
 	var rand = RandomNumberGenerator.new()
 	rand.seed = input_seed
-
-	var scale: Vector3
-	var t: Transform
-	var origin: Vector3
 	
-	var i = 0
 	for n in nodes:
-		t = n.transform
-		origin = t.origin
-		scale = amount * rand.randf_range(0.0, 1.0)
-		t.origin = Vector3.ZERO
-		t = t.scaled(scale)
-		t.origin = origin
-		nodes[i].transform = t
-		i += 1
+		n.scale_object_local(Vector3.ONE + rand.randf_range(0.0, 1.0) * amount)
 
 	output[0] = nodes

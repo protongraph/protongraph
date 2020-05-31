@@ -19,7 +19,7 @@ func _generate_outputs() -> void:
 	var nodes := get_input(0)
 	var reference: Spatial = get_input_single(1)
 
-	if not nodes or nodes.size() == 0:
+	if not nodes:
 		return
 
 	var t = reference.transform

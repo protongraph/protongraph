@@ -17,22 +17,16 @@ func _init() -> void:
 
 func _generate_outputs() -> void:
 	var nodes := get_input(0)
-	var scale: Vector3 = get_input_single(1, Vector3.ONE)
-
+	var amount: Vector3 = get_input_single(1, Vector3.ZERO)
+	
 	if not nodes:
 		return
-
-	var t: Transform
-	var origin: Vector3
-
-	var i = 0
+	
+	if not amount:
+		output[0] = nodes
+		return
+		
 	for n in nodes:
-		t = nodes[i].transform
-		origin = t.origin
-		t.origin = Vector3.ZERO
-		t = t.scaled(scale)
-		t.origin = origin
-		nodes[i].transform = t
-		i += 1
+		n.scale_object_local(Vector3.ONE + amount)
 
 	output[0] = nodes
