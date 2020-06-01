@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "nodetree_input_mesh"
-	display_name = "Mesh input"
+	display_name = "Mesh Input"
 	category = "Inputs"
 	description = "Expose a mesh from the editor to the graph"
 

@@ -9,7 +9,7 @@ TODO: It would be nice to have a WrapAroundCurve instead, so we could use a regu
 
 func _init() -> void:
 	unique_id = "create_grid_follow_curve"
-	display_name = "Create grid along curve"
+	display_name = "Create Grid Along Curve"
 	category = "Nodes/Generators"
 	description = "Create transforms along a curve"
 

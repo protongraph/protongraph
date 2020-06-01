@@ -7,7 +7,7 @@ Take a point curve in input and creates a Path node from it
 
 func _init() -> void:
 	unique_id = "convert_points_to_curve"
-	display_name = "To curve"
+	display_name = "Vector To Curve"
 	category = "Curves/Conversion"
 	description = "Takes a point curve in input and creates a Path node from it"
 

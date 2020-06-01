@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "expand_curve_normal"
-	display_name = "Expand curve (Normal)"
+	display_name = "Expand Curve (Normal)"
 	category = "Curves/Operations"
 	description = "Move each point of the curve along its normal vector."
 

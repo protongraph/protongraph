@@ -8,7 +8,7 @@ Combine all meshes into one
 
 func _init() -> void:
 	unique_id = "merge_meshes"
-	display_name = "Merge meshes"
+	display_name = "Merge Meshes"
 	category = "Meshes"
 	description = "Combine all the MeshInstances into a single one"
 

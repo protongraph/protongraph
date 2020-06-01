@@ -4,8 +4,8 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "inspector_string"
-	display_name = "String property"
-	category = "Inspector properties"
+	display_name = "String Property"
+	category = "Inspector"
 	description = "Expose a String value to the inspector"
 
 	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})

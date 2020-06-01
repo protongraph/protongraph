@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "rename_node"
-	display_name = "Rename node"
+	display_name = "Rename Node"
 	category = "Nodes"
 	description = "Takes a node and renames it"
 

@@ -8,7 +8,7 @@ Takes a node or a node array and parent it to the selected node. Returns the par
 
 func _init() -> void:
 	unique_id = "parent_to"
-	display_name = "Parent to node"
+	display_name = "Parent To Node"
 	category = "Nodes/Operations"
 	description = "Parent the given node(s) to another one and return the parent"
 

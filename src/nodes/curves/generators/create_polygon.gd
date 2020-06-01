@@ -8,7 +8,7 @@ Generates a polygon curve made of n points at regular interval
 
 func _init() -> void:
 	unique_id = "curve_generator_polygon"
-	display_name = "Make polygon curve"
+	display_name = "Create Polygon Curve"
 	category = "Curves/Generators"
 	description = "Creates a polygon curve"
 
