@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "conditional_bool"
-	display_name = "Conditional"
+	display_name = "Conditional (Bool)"
 	category = "Flow Control"
 	description = "Simple boolean condition, returns one of the two inputs"
 
