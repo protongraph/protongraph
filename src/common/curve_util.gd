@@ -1,13 +1,12 @@
 tool
 class_name ConceptGraphCurveUtil
-extends Reference
 
 """
 Utility tools for curves' related operations.
 """
 
 
-static func make_polygons_path(paths: Array, resolution: float = 1.0) -> Array:
+static func make_polygons_path(paths: Array, axis: Vector3, resolution: float = 1.0) -> Array:
 	var result = []
 	for path in paths:
 		var curve = path.curve
@@ -23,8 +22,11 @@ static func make_polygons_path(paths: Array, resolution: float = 1.0) -> Array:
 
 		for i in range(steps):
 			# Get a point on the curve
-			var coords_3d = curve.interpolate_baked((i/(steps-2)) * length)
-			var coords = Vector2(coords_3d.x, coords_3d.z)
+			var transform = path.transform
+			if path.is_inside_tree():
+				transform = path.global_transform
+			var coords_3d = transform.xform(curve.interpolate_baked((i/(steps-2)) * length))
+			var coords = ConceptGraphVectorUtil.project(coords_3d, axis)
 
 			# Store polygon data
 			polygon_points.append(coords)

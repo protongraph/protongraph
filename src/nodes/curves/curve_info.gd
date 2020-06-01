@@ -38,7 +38,7 @@ func _generate_outputs() -> void:
 
 		for j in range(steps):
 			# Get a point on the curve
-			var coords = curve.interpolate_baked((j / (steps-2)) * length) + path.translation
+			var coords = path.transform.xform_inv(curve.interpolate_baked((j / (steps-2)) * length)) # + path.translation)
 
 			# Check for bounds
 			if i == 0 and j == 0:

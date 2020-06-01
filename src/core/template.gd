@@ -13,6 +13,7 @@ signal simulation_started
 signal simulation_outdated
 signal simulation_completed
 signal thread_completed
+signal json_ready
 
 
 var concept_graph
@@ -27,7 +28,8 @@ var _json_util = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/thir
 var _node_pool := ConceptGraphNodePool.new()
 var _thread_pool := ConceptGraphThreadPool.new()
 var _thread: Thread
-var _is_thread_busy := false
+var _save_thread: Thread
+var _save_queued := false
 var _timer := Timer.new()
 var _simulation_delay := 0.075
 var _template_loaded := false
@@ -212,11 +214,26 @@ func save_to_file(path: String) -> void:
 			node["data"] = c.export_custom_data()
 			graph["nodes"].append(node)
 
-	var json = _json_util.beautify_json(to_json(graph))
+	if not _save_thread:
+		_save_thread = Thread.new()
+
+	if _save_thread.is_active():
+		_save_queued = true
+		return
+
+	_save_thread.start(self, "_beautify_json", to_json(graph))
+
+	yield(self, "json_ready")
+
+	var json = _save_thread.wait_to_finish()
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_string(json)
 	file.close()
+
+	if _save_queued:
+		_save_queued = false
+		save_to_file(path)
 
 
 """
@@ -293,6 +310,12 @@ func _run_generation_threaded(_var = null) -> void:
 
 	# Call deferred causes the main thread to emit the signal, won't work otherwise
 	call_deferred("emit_signal", "thread_completed")
+
+
+func _beautify_json(json: String) -> String:
+	var res = _json_util.beautify_json(json)
+	call_deferred("emit_signal", "json_ready")
+	return res
 
 
 func _is_output_node(node) -> bool:
