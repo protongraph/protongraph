@@ -8,7 +8,7 @@ March along the curve to create new transforms at regular intervals
 
 func _init() -> void:
 	unique_id = "curve_sample_points_constant"
-	display_name = "Sample curve points"
+	display_name = "Sample Curve Points"
 	category = "Curves/Operations"
 	description = "Creates points on a curve at regular intervals"
 

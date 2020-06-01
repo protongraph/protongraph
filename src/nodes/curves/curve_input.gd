@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "nodetree_input_curve"
-	display_name = "Curve input"
+	display_name = "Curve Input"
 	category = "Curves/Inputs"
 	description = "Expose one or multiple curves from the editor to the graph"
 

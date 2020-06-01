@@ -5,8 +5,8 @@ var default: Curve
 
 func _init() -> void:
 	unique_id = "inspector_curve_2d"
-	display_name = "Curve property"
-	category = "Inspector properties"
+	display_name = "Curve Property"
+	category = "Inspector"
 	description = "Expose a 2D curve value to the inspector"
 
 	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})

@@ -8,7 +8,7 @@ Generates as many curve objects as there are transforms
 
 func _init() -> void:
 	unique_id = "curve_generator_line_mutli"
-	display_name = "Make multi line curves"
+	display_name = "Create Line Curves"
 	category = "Curves/Generators"
 	description = "Creates a line curve"
 

@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "break_transform"
-	display_name = "Break transform"
+	display_name = "Transform (Break)"
 	category = "Transforms"
 	description = "Expose position, rotation and scale from a node 3D"
 

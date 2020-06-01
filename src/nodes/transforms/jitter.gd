@@ -4,14 +4,14 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "offset_transforms_random"
-	display_name = "Jitter"
+	display_name = "Position (Random)"
 	category = "Transforms"
-	description = "Applies a random offset to each transforms"
+	description = "Apply a random position to a set of nodes"
 
-	set_input(0, "Input", ConceptGraphDataType.NODE_3D)
+	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Amount", ConceptGraphDataType.VECTOR3)
 	set_input(2, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
-	set_input(3, "Local space", ConceptGraphDataType.BOOLEAN, {"value": true})
+	set_input(3, "Local Space", ConceptGraphDataType.BOOLEAN, {"value": true})
 	set_output(0, " ", ConceptGraphDataType.NODE_3D)
 
 	mirror_slots_type(0, 0)
@@ -21,25 +21,35 @@ func _generate_outputs() -> void:
 	var nodes := get_input(0)
 	var amount: Vector3 = get_input_single(1, Vector3.ZERO)
 	var input_seed: int = get_input_single(2, 0)
-	var local: bool = get_input_single(3, true)
-
-	if not nodes or nodes.size() == 0:
+	var local_space: bool = get_input_single(3, false)
+	
+	if not nodes:
 		return
+	
 	if not nodes[0] is Spatial:
 		return
-
+	
+	if not amount:
+		output[0] = nodes
+		return
+	
 	var rand = RandomNumberGenerator.new()
 	rand.seed = input_seed
-
-	for i in nodes.size():
-		var offset := Vector3.ZERO
-		offset.x = rand.randf_range(-1.0, 1.0) * amount.x
-		offset.y = rand.randf_range(-1.0, 1.0) * amount.y
-		offset.z = rand.randf_range(-1.0, 1.0) * amount.z
-
-		if local:
-			nodes[i].translate_object_local(offset)
+	
+	var p: Vector3
+	
+	for n in nodes:
+		p = Vector3.ZERO
+		p.x = rand.randf_range(-1.0, 1.0) * amount.x
+		p.y = rand.randf_range(-1.0, 1.0) * amount.y
+		p.z = rand.randf_range(-1.0, 1.0) * amount.z
+		if local_space:
+			n.translate_object_local(p)
 		else:
-			nodes[i].global_translate(offset)
+			# this throws a not inside tree error
+			# and it doesn't seem to be different from local
+#			n.global_translate(p) 
+			# this is from offset node, it also doesn't seem to be different from local
+			n.transform.origin += p
 
 	output[0] = nodes

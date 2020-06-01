@@ -7,7 +7,7 @@ Extrude a curve along another one at constant intervals.
 
 func _init() -> void:
 	unique_id = "extrude_bevel_along_path"
-	display_name = "Extrude along curve"
+	display_name = "Extrude Along Curve"
 	category = "Meshes"
 	description = "Extrudes a curve along another curve to create a pipe-like mesh"
 
