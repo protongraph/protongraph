@@ -9,8 +9,8 @@ func _init() -> void:
 	description = "Apply a random rotation to a set of nodes"
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
-	set_input(1, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
-	set_input(2, "Amount", ConceptGraphDataType.VECTOR3)
+	set_input(1, "Amount", ConceptGraphDataType.VECTOR3)
+	set_input(2, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
 	set_input(3, "Local Space", ConceptGraphDataType.BOOLEAN, {"value": true})
 	set_input(4, "Snap Angle", ConceptGraphDataType.VECTOR3)
 	set_output(0, "", ConceptGraphDataType.NODE_3D)
@@ -20,21 +20,21 @@ func _init() -> void:
 
 func _generate_outputs() -> void:
 	var nodes := get_input(0)
-	var input_seed: int = get_input_single(1, 0)
-	var amount: Vector3 = get_input_single(2, Vector3.ZERO)
+	var amount: Vector3 = get_input_single(1, Vector3.ZERO)
+	var input_seed: int = get_input_single(2, 0)
 	var local_space: bool = get_input_single(3, true)
 	var snap: Vector3 = get_input_single(4, Vector3.ZERO)
 
 	if not nodes:
 		return
-	
-	if not amount: 
+
+	if not amount:
 		output[0] = nodes
 		return
 
 	var rand = RandomNumberGenerator.new()
 	rand.seed = input_seed
-	
+
 	var r: Vector3
 	var t: Transform
 

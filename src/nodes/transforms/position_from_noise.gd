@@ -13,7 +13,7 @@ func _init() -> void:
 	set_input(2, "Amount", ConceptGraphDataType.VECTOR3)
 	set_input(3, "Negative", ConceptGraphDataType.BOOLEAN)
 	set_input(4, "Local space", ConceptGraphDataType.BOOLEAN, {"value": true})
-	
+
 	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
 	mirror_slots_type(0, 0)
@@ -25,28 +25,27 @@ func _generate_outputs() -> void:
 	var amount: Vector3 = get_input_single(2, Vector3.ZERO)
 	var negative: bool = get_input_single(3, false)
 	var local_space: bool = get_input_single(4, true)
-	
+
 	if not nodes:
 		return
-		
-	if not noise or not amount: 
+
+	if not noise or not amount:
 		output[0] = nodes
 		return
-		
+
 	if negative:
 		amount *= -1
-	
+
 	var rand: float
-	
+
 	for n in nodes:
 		rand = noise.get_noise_3dv(n.transform.origin) * 0.5 + 0.5
 		if local_space:
 			n.translate_object_local(rand * amount)
 		else:
-			# this throws a not inside tree error
-			# and it doesn't seem to be different from local
-#			n.global_translate(rand * amount) 
-			# this is from offset node, it also doesn't seem to be different from local
-			n.transform.origin += rand * amount
-	
+			if n.is_inside_tree():
+				n.global_translate(rand * amount)
+			else:
+				n.transform.origin += rand * amount
+
 	output[0] = nodes

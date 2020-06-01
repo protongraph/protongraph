@@ -23,17 +23,17 @@ func _generate_outputs() -> void:
 
 	if not nodes:
 		return
-		
-	if not amount: 
+
+	if not amount:
 		output[0] = nodes
 		return
 
 	amount.x = deg2rad(amount.x)
 	amount.y = deg2rad(amount.y)
 	amount.z = deg2rad(amount.z)
-	
+
 	var t: Transform
-	
+
 	for n in nodes:
 		if local_space:
 			n.rotation += amount

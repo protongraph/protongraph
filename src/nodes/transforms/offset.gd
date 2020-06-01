@@ -33,7 +33,9 @@ func _generate_outputs() -> void:
 		if local_space:
 			n.translate_object_local(amount)
 		else:
-			# this doesn't seem to be different from local!?
-			n.transform.origin += amount
+			if n.is_inside_tree():
+				n.global_translate(amount)
+			else:
+				n.transform.origin += amount
 
 	output[0] = nodes

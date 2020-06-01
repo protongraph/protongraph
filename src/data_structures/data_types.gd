@@ -91,7 +91,7 @@ static func to_category_color(category: String) -> Color:
 			return Color.black
 		"Inputs":
 			return Color.steelblue
-		"Inspector properties":
+		"Inspector":
 			return Color.teal
 		"Maths":
 			return Color.steelblue

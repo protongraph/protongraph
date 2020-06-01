@@ -30,29 +30,27 @@ func _generate_outputs() -> void:
 
 	if not nodes[0] is Spatial:
 		return
-		
-	if not position and not rotation and not scale: 
+
+	if not position and not rotation and not scale:
 		output[0] = nodes
 		return
-	
+
 	if rotation:
 		rotation.x = deg2rad(rotation.x)
 		rotation.y = deg2rad(rotation.y)
 		rotation.z = deg2rad(rotation.z)
 
 	var t: Transform
-	
-	for n in nodes:
 
+	for n in nodes:
 		if position:
 			if local_space:
 				n.translate_object_local(position)
 			else:
-				# this throws a not inside tree error
-				# also it don't seem to be different from local
-	#			n.global_translate(position) 
-				# is this right? it doesn't look right!
-				n.transform.origin += position
+				if n.is_inside_tree():
+					n.global_translate(position)
+				else:
+					n.transform.origin += position
 
 		if rotation:
 			if local_space:

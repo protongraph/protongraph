@@ -23,15 +23,15 @@ func _generate_outputs() -> void:
 
 	if not nodes:
 		return
-	
-	if not noise or not amount: 
+
+	if not noise or not amount:
 		output[0] = nodes
 		return
-	
+
 	var rand: float
-	
+
 	for n in nodes:
 		rand = noise.get_noise_3dv(n.transform.origin) * 0.5 + 0.5
-		n.scale_object_local(Vector3.ONE + rand * amount)
+		n.scale_object_local(rand * amount)
 
 	output[0] = nodes

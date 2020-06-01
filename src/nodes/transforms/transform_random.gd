@@ -15,7 +15,7 @@ func _init() -> void:
 	set_input(4, "Scale", ConceptGraphDataType.VECTOR3)
 	set_input(5, "Local Space", ConceptGraphDataType.BOOLEAN, {"value": true})
 #	set_input(6, "Snap Angle", ConceptGraphDataType.VECTOR3)
-	
+
 	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
 	mirror_slots_type(0, 0)
@@ -35,8 +35,8 @@ func _generate_outputs() -> void:
 
 	if not nodes[0] is Spatial:
 		return
-		
-	if not position and not rotation and not scale: 
+
+	if not position and not rotation and not scale:
 		output[0] = nodes
 		return
 
@@ -48,7 +48,7 @@ func _generate_outputs() -> void:
 	var r: Vector3
 
 	for n in nodes:
-		
+
 		if position:
 			p = Vector3.ZERO
 			p.x = rand.randf_range(-1.0, 1.0) * position.x
@@ -59,10 +59,10 @@ func _generate_outputs() -> void:
 			else:
 				# this throws a not inside tree error
 				# and it doesn't seem to be different from local
-#				n.global_translate(p) 
+#				n.global_translate(p)
 				# this is from offset node, it also doesn't seem to be different from local
 				n.transform.origin += p
-		
+
 		if rotation:
 			r = Vector3.ZERO
 			r.x += deg2rad(rand.randf_range(-1.0, 1.0) * rotation.x)
@@ -81,8 +81,8 @@ func _generate_outputs() -> void:
 				t = t.rotated(Vector3.UP, r.y)
 				t = t.rotated(Vector3.FORWARD, r.z)
 				n.transform = t
-		
+
 		if scale:
-			n.scale_object_local(Vector3.ONE + rand.randf_range(0.0, 1.0) * scale)
+			n.scale_object_local(rand.randf_range(0.0, 1.0) * scale)
 
 	output[0] = nodes

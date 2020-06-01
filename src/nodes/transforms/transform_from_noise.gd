@@ -35,29 +35,29 @@ func _generate_outputs() -> void:
 
 	if not nodes[0] is Spatial:
 		return
-		
-	if not noise or (not position and not rotation and not scale): 
+
+	if not noise or (not position and not rotation and not scale):
 		output[0] = nodes
 		return
-	
+
 	var rand: float
 	var t: Transform
 	var r: Vector3
-	
+
 	for n in nodes:
-		
+
 		rand = noise.get_noise_3dv(n.transform.origin) * 0.5 + 0.5
-		
+
 		if position:
 			if local_space:
 				n.translate_object_local(rand * position)
 			else:
 				# this throws a not inside tree error
 				# and it doesn't seem to be different from local
-#				n.global_translate(rand * amount) 
+#				n.global_translate(rand * amount)
 				# this is from offset node, it also doesn't seem to be different from local
 				n.transform.origin += rand * position
-		
+
 		if rotation:
 			r = Vector3.ZERO
 			r.x += deg2rad(rand * rotation.x)
@@ -76,8 +76,8 @@ func _generate_outputs() -> void:
 				t = t.rotated(Vector3.UP, r.y)
 				t = t.rotated(Vector3.FORWARD, r.z)
 				n.transform = t
-		
+
 		if scale:
-			n.scale_object_local(Vector3.ONE + rand * scale)
+			n.scale_object_local(rand * scale)
 
 	output[0] = nodes

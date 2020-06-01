@@ -22,22 +22,22 @@ func _generate_outputs() -> void:
 	var amount: Vector3 = get_input_single(1, Vector3.ZERO)
 	var input_seed: int = get_input_single(2, 0)
 	var local_space: bool = get_input_single(3, false)
-	
+
 	if not nodes:
 		return
-	
+
 	if not nodes[0] is Spatial:
 		return
-	
+
 	if not amount:
 		output[0] = nodes
 		return
-	
+
 	var rand = RandomNumberGenerator.new()
 	rand.seed = input_seed
-	
+
 	var p: Vector3
-	
+
 	for n in nodes:
 		p = Vector3.ZERO
 		p.x = rand.randf_range(-1.0, 1.0) * amount.x
@@ -46,10 +46,9 @@ func _generate_outputs() -> void:
 		if local_space:
 			n.translate_object_local(p)
 		else:
-			# this throws a not inside tree error
-			# and it doesn't seem to be different from local
-#			n.global_translate(p) 
-			# this is from offset node, it also doesn't seem to be different from local
-			n.transform.origin += p
+			if n.is_inside_tree():
+				n.global_translate(p)
+			else:
+				n.transform.origin += p
 
 	output[0] = nodes
