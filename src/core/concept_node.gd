@@ -186,9 +186,9 @@ func get_output(idx: int, default := []) -> Array:
 			duplicates.append(duplicate)
 		return duplicates
 
-	# If it's not a node array, it's made of built in types (scalars, vectors ...) which are passed
-	# as copy by default.
-	return res
+	# If it's not a node array, it either contains built in types or nested arrays.
+	# Arrays are passed as reference so return a deep copy
+	return res.duplicate(true)
 
 
 """
