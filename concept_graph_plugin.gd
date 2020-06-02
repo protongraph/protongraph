@@ -24,6 +24,7 @@ func _enter_tree() -> void:
 	_connect_editor_signals()
 	_setup_node_library()
 	_register_editor_gizmos()
+	ConceptGraphSettings.initialize()
 
 
 func _exit_tree() -> void:

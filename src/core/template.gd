@@ -20,7 +20,6 @@ var concept_graph
 var root: Spatial
 var node_library: ConceptNodeLibrary	# Injected from the concept graph
 
-var multithreading_enabled := true
 var paused := false
 var restart_generation := false
 
@@ -281,7 +280,7 @@ func _run_generation() -> void:
 	if _clear_cache_on_next_run:
 		clear_simulation_cache()
 
-	if multithreading_enabled:
+	if ProjectSettings.get(ConceptGraphSettings.MULTITHREAD_ENABLED):
 		_thread.start(self, "_run_generation_threaded")
 	else:
 		_run_generation_threaded()
@@ -323,7 +322,7 @@ func _is_output_node(node) -> bool:
 
 
 func _on_thread_completed() -> void:
-	if multithreading_enabled:
+	if ProjectSettings.get(ConceptGraphSettings.MULTITHREAD_ENABLED):
 		_thread.wait_to_finish()
 	if restart_generation:
 		generate()
