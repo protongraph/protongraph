@@ -38,7 +38,7 @@ func _generate_outputs() -> void:
 		for x in steps:
 			st.add_color(Color(1,1,1))
 			st.add_uv(Vector2(x / steps, y / steps))
-			st.add_vertex(Vector3(x * offset, heightmap.get_data(round(x * ratio), round(y * ratio)) * 4.0, y * offset))
+			st.add_vertex(Vector3(x * offset, heightmap.get_point(round(x * ratio), round(y * ratio)) * 4.0, y * offset))
 
 			if x > 0 and y > 0:
 				st.add_index((y - 1) * steps + (x - 1))
