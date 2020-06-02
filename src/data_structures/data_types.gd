@@ -1,10 +1,10 @@
+tool
+class_name ConceptGraphDataType
+
 """
 Define the constants used when setting up the GraphNodes slots type. Each of these values should
 have an associated color in the COLORS dictionnary.
 """
-
-class_name ConceptGraphDataType
-extends Reference
 
 
 enum Types {
