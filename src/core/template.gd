@@ -241,7 +241,7 @@ have created in the process. Because graphnodes hand over their result to the ne
 handle the removal themselves as they don't know if the resource is still in use or not.
 """
 func register_to_garbage_collection(resource):
-	if resource is Object:
+	if resource is Object and not resource is Reference:
 		_registered_resources.append(weakref(resource))
 
 

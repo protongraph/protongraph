@@ -193,6 +193,7 @@ func get_output(idx: int, default := []) -> Array:
 			# Outputs from final nodes are the responsibility of the ConceptGraph node
 			if not is_final_output_node():
 				register_to_garbage_collection(duplicate)
+
 			duplicates.append(duplicate)
 		return duplicates
 
