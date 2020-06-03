@@ -15,6 +15,16 @@ func init(_size: Vector2) -> void:
 	transform = Transform()
 
 
+func duplicate(_opts):
+	# Don't use ConceptGraphHeightmap.new() here because it causes a cyclic dependency
+	var res = get_script().new()
+	res.size = size
+	res.data = data.duplicate()
+	res.transform = Transform(transform)
+	res.mesh_size = mesh_size
+	return res
+
+
 func to_global_space(x: int, y: int, y2: float = 0.0) -> Vector3:
 	var pos = Vector3.ZERO
 	var ratio = mesh_size.x / size.x

@@ -88,18 +88,6 @@
 		{
 			"data": {},
 			"editor": {
-				"offset_x": -80,
-				"offset_y": 40,
-				"slots": {
-					"2": 3
-				}
-			},
-			"name": "GraphNode7",
-			"type": "heightmap_flatten_area"
-		},
-		{
-			"data": {},
-			"editor": {
 				"offset_x": -740,
 				"offset_y": 40,
 				"slots": {
@@ -112,18 +100,6 @@
 			},
 			"name": "GraphNode3",
 			"type": "simplex_noise"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": 200,
-				"offset_y": 40,
-				"slots": {
-					"1": 1.2
-				}
-			},
-			"name": "GraphNode4",
-			"type": "mesh_from_heightmap"
 		},
 		{
 			"data": {},
@@ -146,6 +122,30 @@
 			},
 			"name": "GraphNode8",
 			"type": "input_box"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -80,
+				"offset_y": 40,
+				"slots": {
+					"2": 3
+				}
+			},
+			"name": "GraphNode7",
+			"type": "heightmap_flatten_area"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 200,
+				"offset_y": 40,
+				"slots": {
+					"1": 1
+				}
+			},
+			"name": "GraphNode4",
+			"type": "mesh_from_heightmap"
 		}
 	]
 }

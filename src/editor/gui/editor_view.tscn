@@ -66,9 +66,10 @@ rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 0
 
 [node name="Left" type="HBoxContainer" parent="PanelContainer/TemplateParent/TemplateControls"]
-margin_right = 1732.0
+margin_right = 1724.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
+custom_constants/separation = 10
 
 [node name="Autosave" type="CheckBox" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
 margin_right = 87.0
@@ -81,8 +82,8 @@ __meta__ = {
 }
 
 [node name="SaveButton" type="Button" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
-margin_left = 91.0
-margin_right = 132.0
+margin_left = 97.0
+margin_right = 138.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 4
@@ -92,8 +93,8 @@ __meta__ = {
 }
 
 [node name="ReplayButton" type="Button" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
-margin_left = 136.0
-margin_right = 262.0
+margin_left = 148.0
+margin_right = 274.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 4
@@ -102,37 +103,37 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LoadingIndicator" type="HBoxContainer" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
-visible = false
-margin_left = 266.0
-margin_right = 410.0
+[node name="VSeparator3" type="VSeparator" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 284.0
+margin_right = 288.0
 margin_bottom = 24.0
 
-[node name="VSeparator3" type="VSeparator" parent="PanelContainer/TemplateParent/TemplateControls/Left/LoadingIndicator"]
-modulate = Color( 1, 1, 1, 0 )
-margin_right = 4.0
+[node name="LoadingIndicator" type="HBoxContainer" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
+margin_left = 298.0
+margin_right = 434.0
 margin_bottom = 24.0
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/TemplateParent/TemplateControls/Left/LoadingIndicator"]
-margin_left = 8.0
 margin_top = 4.0
-margin_right = 24.0
+margin_right = 16.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 8, 8 )
 size_flags_vertical = 4
 texture = SubResource( 1 )
 
 [node name="Label" type="Label" parent="PanelContainer/TemplateParent/TemplateControls/Left/LoadingIndicator"]
-margin_left = 28.0
+margin_left = 20.0
 margin_top = 5.0
-margin_right = 144.0
+margin_right = 136.0
 margin_bottom = 19.0
 text = "Generating output"
 
 [node name="Right" type="HBoxContainer" parent="PanelContainer/TemplateParent/TemplateControls"]
-margin_left = 1736.0
+margin_left = 1728.0
 margin_right = 1906.0
 margin_bottom = 24.0
+custom_constants/separation = 20
 
 [node name="GraphName" type="Label" parent="PanelContainer/TemplateParent/TemplateControls/Right"]
 margin_top = 5.0
@@ -141,15 +142,9 @@ margin_bottom = 19.0
 size_flags_horizontal = 0
 text = "MyGraphName"
 
-[node name="VSeparator2" type="VSeparator" parent="PanelContainer/TemplateParent/TemplateControls/Right"]
-modulate = Color( 1, 1, 1, 0 )
-margin_left = 99.0
-margin_right = 103.0
-margin_bottom = 24.0
-
 [node name="ClearGraph" type="Button" parent="PanelContainer/TemplateParent/TemplateControls/Right"]
-margin_left = 107.0
-margin_right = 170.0
+margin_left = 115.0
+margin_right = 178.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 4

@@ -58,3 +58,9 @@ func _generate_outputs() -> void:
 
 	heightmap.data = data
 	output[0].append(heightmap)
+
+
+func _on_default_gui_interaction(_value, control, slot) -> void:
+	if slot == 2:
+		# Selected operation changed, regenerate
+		reset()

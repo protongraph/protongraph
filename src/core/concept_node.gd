@@ -179,17 +179,17 @@ func get_output(idx: int, default := []) -> Array:
 
 	# If the output is a node array, we need to duplicate them first otherwise they get passed as
 	# references which causes issues when the same output is sent to two different nodes.
-	if res[0] is Node:
+	if res[0] is Object and res[0].has_method("duplicate"):
 		var duplicates = []
 		for i in res.size():
 			# TODO move the duplication in a helper function instead
-			var node = res[i] 
+			var node = res[i]
 			var duplicate = node.duplicate(7)
-			
+
 			# TODO : Check if other nodes needs extra steps
-			if node is Path: 
+			if node is Path:
 				duplicate.curve = node.curve.duplicate(true)
-				
+
 			# Outputs from final nodes are the responsibility of the ConceptGraph node
 			if not is_final_output_node():
 				register_to_garbage_collection(duplicate)

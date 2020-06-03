@@ -64,14 +64,15 @@ func _disconnect_editor_signals() -> void:
 
 func _setup_node_library() -> void:
 	if _node_library:
-		return	# TMP during development
+		_node_library.refresh_list()
+		return
 	_node_library = ConceptNodeLibrary.new()
 	_node_library.name = "ConceptNodeLibrary"
 	get_tree().root.call_deferred("add_child", _node_library)
 
 
 func _remove_node_library() -> void:
-	return # TMP during development
+	# return # TMP during development
 	if _node_library:
 		get_tree().root.remove_child(_node_library)
 		_node_library.queue_free()
