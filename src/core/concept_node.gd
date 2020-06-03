@@ -93,6 +93,10 @@ func is_output_ready() -> bool:
 	return _output_ready
 
 
+func is_final_output_node() -> bool:
+	return unique_id.find("_output") != -1
+
+
 """
 Return how many total inputs slots are available on this node. Includes the dynamic ones as well.
 """
@@ -178,11 +182,17 @@ func get_output(idx: int, default := []) -> Array:
 	if res[0] is Node:
 		var duplicates = []
 		for i in res.size():
-			var node = res[i] # TODO move the duplication in a helper function instead
+			# TODO move the duplication in a helper function instead
+			var node = res[i] 
 			var duplicate = node.duplicate(7)
-			if node is Path: # TODO : Check if other nodes needs extra steps
+			
+			# TODO : Check if other nodes needs extra steps
+			if node is Path: 
 				duplicate.curve = node.curve.duplicate(true)
-			register_to_garbage_collection(duplicate)
+				
+			# Outputs from final nodes are the responsibility of the ConceptGraph node
+			if not is_final_output_node():
+				register_to_garbage_collection(duplicate)
 			duplicates.append(duplicate)
 		return duplicates
 

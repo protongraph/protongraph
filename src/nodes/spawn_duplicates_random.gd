@@ -32,5 +32,5 @@ func _generate_outputs() -> void:
 	for t in transforms:
 		var i = rng.randi_range(0, count - 1)
 		var n = sources[i].duplicate() as Spatial
-		n.global_transform = t.transform
+		n.transform = t.transform
 		output[0].append(n)

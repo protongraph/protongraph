@@ -69,7 +69,7 @@ func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
 	new_node.offset = scroll_offset + Vector2(250, 150)
 	new_node.thread_pool = _thread_pool
 
-	if _is_output_node(new_node):
+	if new_node.is_final_output_node():
 		_output_nodes.append(new_node)
 
 	add_child(new_node)
@@ -293,6 +293,7 @@ func _run_generation_threaded(_var = null) -> void:
 			print("Error : No output node found in ", get_parent().get_name())
 			call_deferred("emit_signal", "thread_completed")
 
+	_output = []
 	var node_output
 	for node in _output_nodes:
 		if not node:
@@ -317,10 +318,6 @@ func _beautify_json(json: String) -> String:
 	return res
 
 
-func _is_output_node(node) -> bool:
-	return node.unique_id.find("_output") != -1
-
-
 func _on_thread_completed() -> void:
 	if ProjectSettings.get(ConceptGraphSettings.MULTITHREAD_ENABLED):
 		_thread.wait_to_finish()
@@ -331,12 +328,12 @@ func _on_thread_completed() -> void:
 
 
 func _on_node_created(node) -> void:
-	if _is_output_node(node):
+	if node.is_final_output_node():
 		_output_nodes.append(node)
 
 
 func _on_node_deleted(node) -> void:
-	if _is_output_node(node):
+	if node.is_final_output_node():
 		_output_nodes.erase(node)
 
 

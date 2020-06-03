@@ -33,7 +33,6 @@ func _generate_outputs() -> void:
 	var local: bool = get_input_single(4, false)
 
 	for node in nodes:
-		#var transform = node.transform if local else node.get_global_transform()
 		var n = noise.get_noise_3dv(node.transform.origin)
 		if invert and n < threshold:
 			output[0].append(node)

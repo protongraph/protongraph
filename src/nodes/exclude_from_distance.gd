@@ -31,7 +31,7 @@ func _generate_outputs() -> void:
 
 	for node in nodes:
 		var pos = node.transform.origin
-		if node.get_parent():
+		if node.is_inside_tree():
 			pos = node.global_transform.origin
 		var dist2 = origin.distance_squared_to(pos)
 		if not invert and dist2 > radius2:

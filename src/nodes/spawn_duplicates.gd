@@ -21,8 +21,13 @@ func _generate_outputs() -> void:
 
 	if not source or not transforms or transforms.size() == 0:
 		return
-
+	
+	var parent
 	for t in transforms:
 		var n = source.duplicate() as Spatial
-		n.global_transform = t.transform
+		parent = n.get_parent()
+		if parent:
+			parent.remove_child(n)
+			
+		n.transform = t.transform
 		output[0].append(n)

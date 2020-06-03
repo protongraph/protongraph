@@ -29,8 +29,11 @@ func _notification(type: int):
 
 
 func is_inside(pos: Vector3) -> bool:
-	var local = transform.xform_inv(pos)
-	var aabb = AABB(global_transform.origin + center - (size / 2.0), size)
+	var t = transform
+	if is_inside_tree():
+		t = global_transform
+	var local = t.xform_inv(pos)
+	var aabb = AABB(center - (size / 2.0), size)
 	return aabb.has_point(local)
 
 

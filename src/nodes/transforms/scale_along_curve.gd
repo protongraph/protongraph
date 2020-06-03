@@ -27,7 +27,7 @@ func _generate_outputs() -> void:
 	for i in range(nodes.size()):
 		# Get position of node local to the curve
 		var origin = nodes[i].transform.origin
-		if nodes[i].get_parent():
+		if nodes[i].is_inside_tree():
 			origin = nodes[i].global_transform.origin # Not available if the node isn't in the tree
 		var local_position = curve_path.transform.xform(origin)
 		var pixels_along_curve = curve_path.curve.get_closest_offset(local_position)
