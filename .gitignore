@@ -8,3 +8,17 @@ export_presets.cfg
 .mono/
 # data_*/
 
+native/bin/win64/
+*.o
+*.os
+*.so
+*.dylib
+*.import
+*.dblite
+*.dll
+*.exp
+*.lib
+*.obj
+native/logs
+*.idb
+*.pdb
