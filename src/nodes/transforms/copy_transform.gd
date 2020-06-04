@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "copy_transform"
-	display_name = "Copy transform"
+	display_name = "Transform (Copy)"
 	category = "Transforms"
 	description = "Replace the target's transform by the source's transform"
 
@@ -19,7 +19,7 @@ func _generate_outputs() -> void:
 	var nodes := get_input(0)
 	var reference: Spatial = get_input_single(1)
 
-	if not nodes or nodes.size() == 0:
+	if not nodes:
 		return
 
 	var t = reference.transform

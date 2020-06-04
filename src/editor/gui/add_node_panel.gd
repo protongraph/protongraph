@@ -19,7 +19,7 @@ var _create_button: Button
 var _description_label: Label
 var _default_description: String
 var _node_library: ConceptNodeLibrary
-var _categories: Dictionary
+#var _categories: Dictionary
 
 var _search_text: String = ""
 
@@ -38,19 +38,29 @@ func _ready() -> void:
 
 
 func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
-	_categories = Dictionary()
+#	_categories = Dictionary()
 	_node_tree.clear()
 	var root = _node_tree.create_item()
 	_node_tree.set_hide_root(true)
 
 	if nodes.empty():
 		nodes = _node_library.get_list().values()
+		nodes.sort_custom(self, "_sort_nodes_by_display_name")
 
+	var categories := []
+	for node in nodes:
+		if _filter_node(node) and not categories.has(node.category):
+			categories.append(node.category)
+	categories.sort()
+	
 	if !_search_text:
 		folder_collapsed = true
 	else:
 		folder_collapsed = false
-
+	
+	for cat in categories:
+		_get_or_create_category(cat, folder_collapsed)
+	
 	for node in nodes:
 		if _filter_node(node):
 			var item_parent = _get_or_create_category(node.category, folder_collapsed)
@@ -122,3 +132,9 @@ func _on_Search_text_changed(new_text):
 
 func _filter_node(node) -> bool:
 	return node.display_name.matchn("*" + _search_text+"*")
+
+
+func _sort_nodes_by_display_name(a, b):
+	if a.display_name < b.display_name:
+		return true
+	return false

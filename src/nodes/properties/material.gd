@@ -4,8 +4,8 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "inspector_spatial_material"
-	display_name = "Material property"
-	category = "Inspector properties"
+	display_name = "Material Property"
+	category = "Inspector"
 	description = "Expose a material to the inspector"
 
 	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})

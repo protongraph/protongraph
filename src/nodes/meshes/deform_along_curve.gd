@@ -9,14 +9,14 @@ Deform a mesh along a curve.
 #  Todo:
 # - User set initial axis
 # - Flip the winding of triangles if the start and end are inverted
-# - bool to lock the length? Right now it stretches the object along the entire 
-#  curve, but might be good to have an option lock this, post thoughts in the thread? 
-# - Could a scalar to project the verts out wider or less. Fairly trivial 
-#  hook that up to a 2d Curve as well. 
+# - bool to lock the length? Right now it stretches the object along the entire
+#  curve, but might be good to have an option lock this, post thoughts in the thread?
+# - Could a scalar to project the verts out wider or less. Fairly trivial
+#  hook that up to a 2d Curve as well.
 
 func _init() -> void:
 	unique_id = "deform_along_path"
-	display_name = "Deform along curve"
+	display_name = "Deform Along Curve"
 	category = "Meshes"
 	description = "Deforms a mesh's y axis along a curve."
 
@@ -30,7 +30,7 @@ func _init() -> void:
 
 func _generate_outputs() -> void:
 	var mesh : Mesh = get_input_single(0).mesh
-	var paths := get_input(1)	
+	var paths := get_input(1)
 	var start_offset : float = get_input_single(2,0.0)
 	var end_offset : float = get_input_single(3,1.0)
 	var tilt: bool = get_input_single(4,false)
@@ -54,7 +54,7 @@ func _generate_outputs() -> void:
 	# temporary_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 
 	# Muzz: would potentially be faster if I use ArrayMesh instead but the data tool
-	# makes things a fair bit easier. 
+	# makes things a fair bit easier.
 	var mesh_data_tool = MeshDataTool.new()
 	mesh_data_tool.create_from_surface(mesh, 0)
 	var rotate_angle = Vector2(cos(rotate_along_axis), sin(rotate_along_axis))
@@ -64,16 +64,16 @@ func _generate_outputs() -> void:
 	var pre_look_at = Vector3(rotate_angle.x,rotate_angle.y,0)
 	pre_transform = pre_transform.looking_at(pre_look_at , Vector3(0, 0, 1))
 
-	# Muzz: if there are multiple paths, we'll duplicate the mesh for every single one. 
-	# Output doesn't handle this yet though. 
+	# Muzz: if there are multiple paths, we'll duplicate the mesh for every single one.
+	# Output doesn't handle this yet though.
 	for path in paths:
 		if path.curve.get_point_count() < 2:
 			return
 
 		# this is really buggy, this will break if up vector is not enabled
-		# Will investigate how to fix. 
+		# Will investigate how to fix.
 		if not path.curve.is_up_vector_enabled():
-			# this can't work if this is off, so we just disable the node and print a warning. 
+			# this can't work if this is off, so we just disable the node and print a warning.
 			print("Up vector in curve must be enabled for mesh deform node.")
 			return
 
@@ -107,7 +107,7 @@ func _generate_outputs() -> void:
 			offset = offset * length
 			var position_on_curve: Vector3 = curve.interpolate_baked(offset)
 
-			# I should add a check that there is an up vector in the curve. 
+			# I should add a check that there is an up vector in the curve.
 			var up: Vector3 = curve.interpolate_baked_up_vector (offset,tilt)
 			var position_look_at: Vector3
 

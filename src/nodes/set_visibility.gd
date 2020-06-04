@@ -8,7 +8,7 @@ Sets a node visibility, useful for colliders for example.
 
 func _init() -> void:
 	unique_id = "set_node_visibility"
-	display_name = "Set visibility"
+	display_name = "Set Visibility"
 	category = "Nodes/Operations"
 	description = "Set node visibility"
 

@@ -14,6 +14,7 @@ var _template_parent: Control
 var _node_dialog: WindowDialog
 var _load_panel: PanelContainer
 var _no_graph_panel: PanelContainer
+var _loading_indicator: HBoxContainer
 var _graph_name: Label
 var _current_graph: WeakRef
 var _current_template: WeakRef
@@ -28,6 +29,7 @@ func _ready() -> void:
 	_no_graph_panel = get_node("NoGraphSelected")
 	_node_dialog = get_node("AddNodeDialog")
 	_graph_name = get_node("PanelContainer/TemplateParent/TemplateControls/Right/GraphName")
+	_loading_indicator = get_node("PanelContainer/TemplateParent/TemplateControls/Left/LoadingIndicator")
 	_autosave = get_node("PanelContainer/TemplateParent/TemplateControls/Left/Autosave").pressed
 
 	_load_panel.connect("load_template", self, "_on_load_template")
@@ -45,14 +47,24 @@ Takes the Template node from the ConceptGraph and add it as a child of the edito
 in the bottom dock. This way the template can be edited there.
 """
 func enable_template_editor_for(node: ConceptGraph) -> void:
+	if not node:
+		return
+
 	clear_template_editor()
+	if not node._template:
+		node.reload_template()
+
 	_current_graph = weakref(node)
 	_current_template = weakref(node._template)
+
+	node._template.paused = true # Prevent output generation while the UI is not ready
 
 	node.connect("template_path_changed", self, "_on_load_template")
 	node.connect("tree_exited", self, "clear_template_editor")
 	node._template.connect("graph_changed", self, "_on_graph_changed")
 	node._template.connect("popup_request", self, "_show_node_dialog")
+	node._template.connect("simulation_started", self, "_show_loading_panel")
+	node._template.connect("simulation_completed", self, "_hide_loading_panel")
 	node._template.undo_redo = undo_redo
 
 	node.remove_child(node._template)
@@ -70,6 +82,8 @@ func enable_template_editor_for(node: ConceptGraph) -> void:
 		_load_panel.visible = true
 	else:
 		_template_parent.visible = true
+
+	node._template.paused = false
 
 
 """
@@ -92,6 +106,8 @@ func clear_template_editor() -> void:
 
 	template.disconnect("graph_changed", self, "_on_graph_changed")
 	template.disconnect("popup_request", self, "_show_node_dialog")
+	template.disconnect("simulation_started", self, "_show_loading_panel")
+	template.disconnect("simulation_completed", self, "_hide_loading_panel")
 	graph.disconnect("template_path_changed", self, "_on_load_template")
 	graph.disconnect("tree_exited", self, "clear_template_editor")
 
@@ -131,6 +147,14 @@ func _show_node_dialog(position: Vector2) -> void:
 
 func _hide_node_dialog() -> void:
 	_node_dialog.visible = false
+
+
+func _show_loading_panel() -> void:
+	_loading_indicator.visible = true
+
+
+func _hide_loading_panel() -> void:
+	_loading_indicator.visible = false
 
 
 func _hide_all() -> void:

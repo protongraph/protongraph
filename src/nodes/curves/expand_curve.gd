@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "expand_curve_center"
-	display_name = "Expand curve (Center)"
+	display_name = "Expand Curve (Center)"
 	category = "Curves/Operations"
 	description = "Move each point of the curve away from the center. Works best on circular paths."
 

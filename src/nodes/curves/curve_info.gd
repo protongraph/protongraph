@@ -10,7 +10,7 @@ var _resolution := 0.1 # TMP
 
 func _init() -> void:
 	unique_id = "expose_curve_info"
-	display_name = "Curve Info"
+	display_name = "Curve Size/Center"
 	category = "Curves"
 	description = "Exposes the BoundingBox and the Center position of a curve"
 
@@ -38,7 +38,7 @@ func _generate_outputs() -> void:
 
 		for j in range(steps):
 			# Get a point on the curve
-			var coords = curve.interpolate_baked((j / (steps-2)) * length) + path.translation
+			var coords = path.transform.xform(curve.interpolate_baked((j / (steps-2)) * length))
 
 			# Check for bounds
 			if i == 0 and j == 0:
@@ -59,4 +59,5 @@ func _generate_outputs() -> void:
 					_min.z = coords.z
 
 	output[0] = Vector3(_max.x - _min.x, _max.y - _min.y, _max.z - _min.z)
-	output[1] = Vector3((_min.x + _max.x) / 2, (_min.y + _max.y) / 2, (_min.z + _max.z) / 2)
+	output[1] = _min + output[0] / 2.0
+

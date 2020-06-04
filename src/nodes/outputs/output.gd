@@ -8,7 +8,7 @@ This node marks the end of every ConceptNodeTemplate. A template can have multip
 
 func _init() -> void:
 	unique_id = "final_output"
-	display_name = "Output"
+	display_name = "Output 3D"
 	category = "Output"
 	description = "The final node of any template"
 

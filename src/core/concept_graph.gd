@@ -1,10 +1,11 @@
 tool
 class_name ConceptGraph, "../../icons/icon_concept_graph.svg"
-extends Spatial
+extends Node
 
 """
-The main class of this plugin. Add a ConceptGraph node to your scene and attach a template to this
-node to start editing the graph from the bottom panel editor.
+The main class of this plugin.
+Don't use it directly, instead create a ConceptGraph2D or ConceptGraph3D node to your scene and
+attach a template to this node to start editing the graph from the bottom panel editor.
 This node then travel through the ConceptGraphTemplate object to generate content on the fly every
 time the associated graph is updated.
 """
@@ -14,7 +15,7 @@ signal template_path_changed
 
 
 export(String, FILE, "*.cgraph") var template_path := "" setget set_template_path
-export var show_result_in_editor_tree := false setget set_show_result
+export var show_result_in_editor_tree := true setget set_show_result
 export var paused := false
 
 var _initialized := false
@@ -121,6 +122,7 @@ func reload_template() -> void:
 		_template.root = _output_root
 		_template.node_library = get_tree().root.get_node("ConceptNodeLibrary")
 		_template.connect("simulation_outdated", self, "generate")
+		_template.connect("simulation_completed", self, "_on_simulation_completed")
 
 	_template.load_from_file(template_path)
 	_template.update_exposed_variables()
@@ -147,26 +149,15 @@ func generate(force_full_simulation := false) -> void:
 	if not Engine.is_editor_hint() or paused:
 		return
 
-	#print("Memory MB : ", OS.get_static_memory_usage() / (1024 * 1024))
+	if is_2d():
+		_template.multithreading_enabled = false
 
-	if force_full_simulation:
-		_template.clear_simulation_cache()
+	_template.generate(force_full_simulation) # Actual simulation happens here
 
-	_template.run_simulation() # Actual simulation happens here
-	yield(_template, "simulation_completed")
 
-	clear_output()
-
-	var result = _template.get_output()
-	if not result or result.size() == 0:
-		return
-
-	for node in result:
-		if not node:
-			continue
-		_output_root.add_child(node)
-		node.set_owner(get_tree().get_edited_scene_root())
-		_set_children_owner(node)
+func is_2d() -> bool:
+	var tmp = self # Comparing self directly just makes gdscript complain it's not possible even though it is.
+	return tmp is Node2D
 
 
 func set_template_path(val) -> void:
@@ -183,14 +174,13 @@ visible in the viewport)
 """
 func set_show_result(val) -> void: # TODO : not working
 	show_result_in_editor_tree = val
-	return
+
 	if not _output_root:
 		_output_root = _get_or_create_root("Output")
-
 	if val:
-		_output_root.set_owner(get_tree().get_edited_scene_root())
+		_set_children_owner(_output_root, get_tree().get_edited_scene_root())
 	else:
-		_output_root.set_owner(self)
+		_set_children_owner(_output_root, self)
 
 
 func get_input(name: String) -> Node:
@@ -199,22 +189,44 @@ func get_input(name: String) -> Node:
 	return _input_root.get_node(name)
 
 
-func _get_or_create_root(name: String) -> Spatial:
+func _get_or_create_root(name: String) -> Node:
 	if has_node(name):
-		return get_node(name) as Spatial
+		return get_node(name)
 
-	var root = ConceptGraphInputManager.new() if name == "Input" else Spatial.new()
+	var root = Node2D.new() if is_2d() else Spatial.new()
+	if name == "Input":
+		root.set_script(ConceptGraphInputManager)
+
 	root.set_name(name)
 	add_child(root)
 	root.set_owner(get_tree().get_edited_scene_root())
 	return root
 
 
-func _set_children_owner(node) -> void:
+func _set_children_owner(node, owner) -> void:
 	for c in node.get_children():
-		c.set_owner(get_tree().get_edited_scene_root())
-		_set_children_owner(c)
+		c.set_owner(owner)
+		_set_children_owner(c, owner)
 
 
 func _on_input_changed(node) -> void:
 	generate(true)
+
+
+func _on_simulation_completed() -> void:
+	var result = _template.get_output()
+	if not result or result.size() == 0:
+		return
+
+	clear_output()
+
+	var owner = self
+	if show_result_in_editor_tree:
+		owner = get_tree().get_edited_scene_root()
+
+	for node in result:
+		if not node:
+			continue
+		_output_root.add_child(node)
+		node.set_owner(owner)
+		_set_children_owner(node, owner)
