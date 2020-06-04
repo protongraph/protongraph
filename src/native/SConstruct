@@ -1,12 +1,32 @@
 #!python
-import os, subprocess
+import os, subprocess, sys
 
 opts = Variables([], ARGUMENTS)
 
 # Gets the standard flags CC, CCX, etc.
 env = DefaultEnvironment()
 
+# Try to detect the host platform automatically.
+# This is used if no `platform` argument is passed
+if sys.platform.startswith('linux'):
+    host_platform = 'linux'
+elif sys.platform == 'darwin':
+    host_platform = 'osx'
+elif sys.platform == 'win32' or sys.platform == 'msys':
+    host_platform = 'windows'
+else:
+    raise ValueError(
+        'Could not detect platform automatically, please specify with '
+        'platform=<platform>'
+    )
+
 # Define our options
+opts.Add(EnumVariable(
+    'bits',
+    'Target platform bits',
+    'default',
+    ('default', '32', '64')
+))
 opts.Add(EnumVariable('target', "Compilation target", 'debug', ['d', 'debug', 'r', 'release']))
 opts.Add(EnumVariable('platform', "Compilation platform", '', ['', 'windows', 'x11', 'linux', 'osx']))
 opts.Add(EnumVariable('p', "Compilation target, alias for 'platform'", '', ['', 'windows', 'x11', 'linux', 'osx']))
@@ -66,22 +86,43 @@ elif env['platform'] in ('x11', 'linux'):
         env.Append(CCFLAGS=['-fPIC', '-g', '-O3'])
         env.Append(CXXFLAGS=['-std=c++17'])
 
-elif env['platform'] == "windows":
-    env['target_path'] += 'win64/'
-    cpp_library += '.windows'
-    # This makes sure to keep the session environment variables on windows,
-    # that way you can run scons in a vs 2017 prompt and it will find all the required tools
-    env.Append(ENV=os.environ)
+elif env['platform'] == 'windows':
+    env['target_path'] += 'win/'
+    if host_platform == 'windows' and not env['use_mingw']:
+        # MSVC
+        env.Append(LINKFLAGS=['/WX'])
+        if env['target'] == 'debug':
+            env.Append(CCFLAGS=['/Z7', '/Od', '/EHsc', '/D_DEBUG', '/MDd'])
+        elif env['target'] == 'release':
+            env.Append(CCFLAGS=['/O2', '/EHsc', '/DNDEBUG', '/MD'])
 
-    env.Append(CPPDEFINES=['WIN32', '_WIN32', '_WINDOWS', '_CRT_SECURE_NO_WARNINGS'])
-    env.Append(CCFLAGS=['-W3', '-GR'])
-    if env['target'] in ('debug', 'd'):
-        env.Append(CPPDEFINES=['_DEBUG'])
-        env.Append(CCFLAGS=['-EHsc', '-MDd', '-ZI'])
-        env.Append(LINKFLAGS=['-DEBUG'])
-    else:
-        env.Append(CPPDEFINES=['NDEBUG'])
-        env.Append(CCFLAGS=['-O2', '-EHsc', '-MD'])
+    elif host_platform == 'linux' or host_platform == 'osx':
+        # Cross-compilation using MinGW
+        cpp_library += '.windows'
+        if env['bits'] == '32':
+            env['CXX'] = 'i686-w64-mingw32-g++'
+            env['AR'] = "i686-w64-mingw32-ar"
+            env['RANLIB'] = "i686-w64-mingw32-ranlib"
+            env['LINK'] = "i686-w64-mingw32-g++"
+        else:
+            env['CXX'] = 'x86_64-w64-mingw32-g++'
+            env['AR'] = "x86_64-w64-mingw32-ar"
+            env['RANLIB'] = "x86_64-w64-mingw32-ranlib"
+            env['LINK'] = "x86_64-w64-mingw32-g++"
+
+    elif host_platform == 'windows' and env['use_mingw']:
+        env = env.Clone(tools=['mingw'])
+        env["SPAWN"] = mySpawn
+
+    # Native or cross-compilation using MinGW
+    if host_platform == 'linux' or host_platform == 'osx' or env['use_mingw']:
+        env.Append(CCFLAGS=['-g', '-O3', '-std=c++14', '-Wwrite-strings'])
+        env.Append(LINKFLAGS=[
+            '--static',
+            '-Wl,--no-undefined',
+            '-static-libgcc',
+            '-static-libstdc++',
+        ])
 
 if env['target'] in ('debug', 'd'):
     cpp_library += '.debug'
