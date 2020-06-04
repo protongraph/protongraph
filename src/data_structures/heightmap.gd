@@ -25,12 +25,14 @@ func duplicate(_opts):
 	return res
 
 
-func to_global_space(x: int, y: int, y2: float = 0.0) -> Vector3:
+func to_global_space(x: int, y: int, ignore_y: bool = true) -> Vector3:
 	var pos = Vector3.ZERO
 	var ratio = mesh_size.x / size.x
 
 	pos.x = x * ratio
-	pos.y = y2
+	pos.y = 0.0
+	if not ignore_y:
+		pos.y = data[y * size.y + x]
 	pos.z = y * ratio
 	pos += transform.origin
 

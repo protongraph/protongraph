@@ -28,10 +28,7 @@ func _generate_outputs() -> void:
 	var offset: float = 1.0 / density
 	var ratio: float
 
-	if steps > heightmap.size.x:
-		ratio = steps / heightmap.size.x
-	else:
-		ratio = heightmap.size.x / steps
+	ratio = heightmap.size.x / steps
 
 	for y in steps:
 		for x in steps:

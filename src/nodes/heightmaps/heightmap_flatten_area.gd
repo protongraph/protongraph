@@ -30,19 +30,21 @@ func _generate_outputs() -> void:
 		return
 
 	var box_position = ConceptGraphNodeUtil.get_global_position3(box)
-	var box_level = box_position.y - (box.size.y / 2.0)
+	var box_level: float = box_position.y - (box.size.y / 2.0)
 
 	var data = heightmap.data
 	var height := 0.0
 	var i := 0
 	for y in heightmap.size.y:
 		for x in heightmap.size.x:
-			var p = heightmap.to_global_space(x, y, box_position.y)
-			if not box.is_inside(p):
+			var p = heightmap.to_global_space(x, y, true)
+			if not box.is_inside(p, true):
 				i += 1
 				continue
 
 			height = data[i]
+			box_level = -box.transform.xform_inv(Vector3(p.x, box.size.y / 2.0, p.z)).y
+
 			match operation:
 				"Flatten":
 					data[i] = box_level

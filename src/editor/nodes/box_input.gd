@@ -28,11 +28,13 @@ func _notification(type: int):
 		_on_box_changed()
 
 
-func is_inside(pos: Vector3) -> bool:
+func is_inside(pos: Vector3, ignore_y_axis: bool = false) -> bool:
 	var t = transform
 	if is_inside_tree():
 		t = global_transform
 	var local = t.xform_inv(pos)
+	if ignore_y_axis:
+		local.y = size.y / 3.0
 	var aabb = AABB(center - (size / 2.0), size)
 	return aabb.has_point(local)
 
