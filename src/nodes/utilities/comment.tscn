@@ -1,32 +1,44 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/concept_graph/src/nodes/utilities/comment.gd" type="Script" id=1]
 
-
-[sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 5.0
-content_margin_right = 20.0
-content_margin_top = 24.0
-draw_center = false
+[sub_resource type="StyleBoxFlat" id=3]
+content_margin_left = 8.0
+content_margin_right = 28.0
+bg_color = Color( 0.262745, 0.443137, 0.709804, 0.0392157 )
 border_width_left = 2
-border_width_top = 20
+border_width_top = 32
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color( 0.27451, 0.478431, 0.792157, 1 )
-border_blend = true
+border_color = Color( 0.6052, 0.71912, 0.89, 1 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 8.0
+content_margin_right = 28.0
+bg_color = Color( 0.262745, 0.443137, 0.709804, 0.0392157 )
+border_width_left = 2
+border_width_top = 32
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.262745, 0.443137, 0.709804, 1 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxEmpty" id=2]
 
 [node name="GraphNode" type="GraphNode"]
-margin_left = 14.9937
-margin_top = 15.5046
-margin_right = 266.994
-margin_bottom = 140.505
+margin_right = 300.0
+margin_bottom = 147.0
 rect_clip_content = true
-custom_styles/commentfocus = SubResource( 1 )
+custom_styles/commentfocus = SubResource( 3 )
 custom_styles/comment = SubResource( 1 )
-custom_styles/frame = SubResource( 1 )
-custom_constants/close_offset = 20
+custom_constants/close_offset = 24
 show_close = true
 resizable = true
 comment = true
@@ -42,14 +54,15 @@ __meta__ = {
 }
 
 [node name="LineEditComment" type="LineEdit" parent="."]
-margin_left = 5.0
+margin_left = 16.0
 margin_top = 24.0
-margin_right = 232.0
+margin_right = 284.0
 margin_bottom = 48.0
-rect_min_size = Vector2( 0, 24 )
+rect_min_size = Vector2( 50, 24 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/normal = SubResource( 2 )
-placeholder_text = "Write your comment.."
+placeholder_text = "Write your comment here"
+placeholder_alpha = 0.8
 caret_blink = true
 [connection signal="text_changed" from="LineEditComment" to="." method="_on_LineEditComment_text_changed"]
