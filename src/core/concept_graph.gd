@@ -181,7 +181,7 @@ func set_show_result(val) -> void: # TODO : not working
 
 	if not _output_root:
 		_output_root = _get_or_create_root("Output")
-	if val:
+	if val and get_tree():
 		_set_children_owner(_output_root, get_tree().get_edited_scene_root())
 	else:
 		_set_children_owner(_output_root, self)
@@ -203,7 +203,10 @@ func _get_or_create_root(name: String) -> Node:
 
 	root.set_name(name)
 	add_child(root)
-	root.set_owner(get_tree().get_edited_scene_root())
+	if get_tree():
+		root.set_owner(get_tree().get_edited_scene_root())
+	else:
+		root.set_owner(self)
 	return root
 
 

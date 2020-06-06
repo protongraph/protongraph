@@ -19,8 +19,6 @@ var _create_button: Button
 var _description_label: Label
 var _default_description: String
 var _node_library: ConceptNodeLibrary
-#var _categories: Dictionary
-
 var _search_text: String = ""
 
 
@@ -38,7 +36,6 @@ func _ready() -> void:
 
 
 func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
-#	_categories = Dictionary()
 	_node_tree.clear()
 	var root = _node_tree.create_item()
 	_node_tree.set_hide_root(true)
@@ -52,15 +49,15 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 		if _filter_node(node) and not categories.has(node.category):
 			categories.append(node.category)
 	categories.sort()
-	
+
 	if !_search_text:
 		folder_collapsed = true
 	else:
 		folder_collapsed = false
-	
+
 	for cat in categories:
 		_get_or_create_category(cat, folder_collapsed)
-	
+
 	for node in nodes:
 		if _filter_node(node):
 			var item_parent = _get_or_create_category(node.category, folder_collapsed)
@@ -68,6 +65,7 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 			item.set_text(0, node.display_name)
 			item.set_tooltip(0, node.description)
 			item.set_metadata(0, node.unique_id)
+
 
 func _get_or_create_category(category: String, collapsed := true) -> TreeItem:
 	var levels = category.split('/')
@@ -126,12 +124,15 @@ func _on_item_activated() -> void:
 func _on_create_button_pressed() -> void:
 	_on_item_activated()
 
+
 func _on_Search_text_changed(new_text):
 	_search_text = new_text
 	_ready()
 
+
 func _filter_node(node) -> bool:
-	return node.display_name.matchn("*" + _search_text+"*")
+	var pattern := "*" + _search_text + "*"
+	return node.display_name.matchn(pattern) or node.category.matchn(pattern)
 
 
 func _sort_nodes_by_display_name(a, b):

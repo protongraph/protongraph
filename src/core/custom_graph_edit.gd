@@ -41,6 +41,10 @@ func clear_editor() -> void:
 			c.queue_free()
 
 
+func duplicate_node(_node):
+	pass
+
+
 func delete_node(node) -> void:
 	_disconnect_node_signals(node)
 	_disconnect_active_connections(node)
@@ -171,13 +175,6 @@ func _get_selected_nodes() -> Array:
 	return nodes
 
 
-func _duplicate_node(node: GraphNode) -> GraphNode:
-	var res: GraphNode = node.duplicate(7)
-	res.init_from_node(node)
-	res._initialized = true
-	return res
-
-
 func _on_connection_request(from_node: String, from_slot: int, to_node: String, to_slot: int) -> void:
 	# Prevent connecting the node to itself
 	if from_node == to_node:
@@ -216,7 +213,7 @@ func _on_copy_nodes_request() -> void:
 	_connections_buffer = get_connection_list()
 
 	for node in _get_selected_nodes():
-		var new_node = _duplicate_node(node)
+		var new_node = duplicate_node(node)
 		new_node.name = node.name	# Needed to retrieve active connections later
 		new_node.offset -= scroll_offset
 		_copy_buffer.append(new_node)
@@ -231,7 +228,7 @@ func _on_paste_nodes_request() -> void:
 
 	undo_redo.create_action("Copy " + String(_copy_buffer.size()) + " GraphNode(s)")
 	for node in _copy_buffer:
-		var new_node = _duplicate_node(node)
+		var new_node = duplicate_node(node)
 		tmp.append(new_node)
 		new_node.selected = true
 		new_node.offset += scroll_offset + Vector2(80, 80)
@@ -257,7 +254,6 @@ func _on_paste_nodes_request() -> void:
 		if from != -1 and to != -1:
 			undo_redo.add_do_method(self, "connect_node", tmp[from].get_name(), co["from_port"], tmp[to].get_name(), co["to_port"])
 			undo_redo.add_undo_method(self, "disconnect_node", tmp[from].get_name(), co["from_port"], tmp[to].get_name(), co["to_port"])
-
 	undo_redo.commit_action()
 
 

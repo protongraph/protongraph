@@ -8,7 +8,7 @@ func _init() -> void:
 	category =  "Vectors"
 	description = "Exposes a Vector2 (x,y) components"
 
-	set_input(0, "", ConceptGraphDataType.VECTOR2)
+	set_input(0, "Vector", ConceptGraphDataType.VECTOR2)
 	set_output(0, "x", ConceptGraphDataType.SCALAR)
 	set_output(1, "y", ConceptGraphDataType.SCALAR)
 

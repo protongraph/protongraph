@@ -37,11 +37,9 @@ func _generate_outputs() -> void:
 
 	for i in range(polygon_curves.size()):
 		var pc := polygon_curves[i] as ConceptNodeVectorCurve
-
 		var polygon = pc.to_pool_vector_2(axis, !local)
 
 		var mesh = CSGPolygon.new()
-
 		mesh.polygon = polygon
 		mesh.depth = depth
 		mesh.smooth_faces = smooth

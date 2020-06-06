@@ -12,19 +12,19 @@
 [ext_resource path="res://addons/concept_graph/src/editor/gui/styles/spinbox_button_left.tres" type="StyleBox" id=10]
 [ext_resource path="res://addons/concept_graph/icons/icon_increase.svg" type="Texture" id=11]
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0.156863 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
 [node name="ProgressBar" type="ProgressBar"]
-margin_right = 76.0
+margin_right = 110.0
 margin_bottom = 24.0
-mouse_default_cursor_shape = 10
+rect_min_size = Vector2( 110, 24 )
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_styles/fg = ExtResource( 6 )
@@ -45,7 +45,7 @@ value_edit = NodePath("SpinBoxContainer/Value")
 [node name="SpinBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 0, 24 )
+rect_min_size = Vector2( 110, 24 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -61,11 +61,11 @@ icon = ExtResource( 8 )
 
 [node name="Value" type="LineEdit" parent="SpinBoxContainer"]
 margin_left = 23.0
-margin_right = 83.0
+margin_right = 87.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
-custom_styles/focus = SubResource( 3 )
-custom_styles/normal = SubResource( 4 )
+custom_styles/focus = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
 text = "50"
 align = 2
 expand_to_text_length = true
@@ -77,7 +77,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_styles/normal = SubResource( 5 )
+custom_styles/normal = SubResource( 3 )
 text = "A"
 valign = 1
 __meta__ = {
@@ -85,11 +85,12 @@ __meta__ = {
 }
 
 [node name="Increase" type="Button" parent="SpinBoxContainer"]
-margin_left = 87.0
-margin_right = 106.0
+margin_left = 91.0
+margin_right = 110.0
 margin_bottom = 24.0
 custom_styles/hover = ExtResource( 3 )
 custom_styles/pressed = ExtResource( 2 )
 custom_styles/focus = ExtResource( 3 )
 custom_styles/normal = ExtResource( 9 )
 icon = ExtResource( 11 )
+[connection signal="gui_input" from="SpinBoxContainer/Value" to="." method="_on_value_gui_input"]

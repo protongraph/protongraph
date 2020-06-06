@@ -18,10 +18,9 @@ signal json_ready
 
 var concept_graph
 var root: Spatial
-var node_library: ConceptNodeLibrary	# Injected from the concept graph
-
 var paused := false
 var restart_generation := false
+var node_library: ConceptNodeLibrary	# Injected from the concept graph
 
 var _json_util = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/thirdparty/json_beautifier/json_beautifier.gd")
 var _node_pool := ConceptGraphNodePool.new()
@@ -87,6 +86,13 @@ func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
 		emit_signal("simulation_outdated")
 
 	return new_node
+
+
+func duplicate_node(node: ConceptNode) -> GraphNode:
+	var ref = node_library.create_node(node.unique_id)
+	ref.restore_editor_data(node.export_editor_data())
+	ref.restore_custom_data(node.export_custom_data())
+	return ref
 
 
 """
@@ -342,7 +348,7 @@ func _on_node_changed_zero():
 	_on_node_changed(null, false)
 
 
-func _on_node_changed(node: ConceptNode, replay_simulation := false) -> void:
+func _on_node_changed(_node: ConceptNode, replay_simulation := false) -> void:
 	# Prevent regeneration hell while loading the template from file
 	if not _template_loaded:
 		return

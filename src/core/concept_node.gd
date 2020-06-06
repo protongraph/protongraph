@@ -52,33 +52,6 @@ func _enter_tree() -> void:
 	_initialized = true
 
 
-# Called from the template when the user copy paste nodes
-func init_from_node(node: ConceptNode) -> void:
-	for c in get_children():
-		remove_child(c)
-		c.queue_free()
-
-	unique_id = node.unique_id
-	display_name = node.display_name
-	category = node.category
-	description = node.description
-	node_pool = node.node_pool
-	thread_pool = node.thread_pool
-
-	_inputs = node._inputs
-	_outputs = node._outputs
-	_hboxes = []
-
-	for b in node._hboxes:
-		var d = b.duplicate()
-		add_child(d)
-		_hboxes.append(d)
-
-	_setup_slots()
-	_generate_default_gui_style()
-	_initialized = true
-
-
 """
 Override and make it return true if your node should be instanced from a scene directly.
 Scene should have the same name as the script and use a .tscn extension.
@@ -591,7 +564,7 @@ func _generate_default_gui_style() -> void:
 	style.set_corner_radius_all(4 * scale)
 	style.set_expand_margin_all(4 * scale)
 	style.shadow_size = 8 * scale
-	style.shadow_color = Color(0,0,0,0.2)
+	style.shadow_color = Color(0, 0, 0, 0.2)
 	add_stylebox_override("frame", style)
 
 	# Selected Style
@@ -667,7 +640,7 @@ func _generate_default_gui() -> void:
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
 					var n = _inputs[i]["name"]
-					var spinbox = _create_spinbox(n, opts, hbox, i)
+					_create_spinbox(n, opts, hbox, i)
 					label_left.visible = false
 
 					# Make sure there's enough horizontal space for the custom spinbox when the name
@@ -721,10 +694,13 @@ func _generate_default_gui() -> void:
 		label_right.mouse_filter = MOUSE_FILTER_PASS
 		label_right.size_flags_horizontal = SIZE_EXPAND_FILL
 		label_right.align = Label.ALIGN_RIGHT
+		label_right.visible = false
 
 		if _outputs.has(i):
 			label_right.text = _outputs[i]["name"]
 			label_right.hint_tooltip = ConceptGraphDataType.Types.keys()[_outputs[i]["type"]].capitalize()
+			if label_right.text != "":
+				label_right.visible = true
 		hbox.add_child(label_right)
 
 	_on_connection_changed()
@@ -886,12 +862,12 @@ everything that's not a label if something is connected to the associated slot.
 """
 func _on_connection_changed() -> void:
 	# Hides the default gui (except for the labels) if a connection is present for the given slot
-	for i in _hboxes.size():
+	for i in _inputs.size():
 		var type = _inputs[i]["type"]
 		for ui in _hboxes[i].get_children():
 			if not ui is Label:
 				ui.visible = !is_input_connected(i)
-			else:
+			elif ui.name == "LabelLeft":
 				ui.visible = true
 				if type == ConceptGraphDataType.SCALAR \
 					or type == ConceptGraphDataType.VECTOR2 \
