@@ -18,7 +18,7 @@ func _init() -> void:
 	set_input(2, "Steps", ConceptGraphDataType.SCALAR,
 		{"step": 1, "min": 0, "allow_lesser": false, "value": 1})
 	set_input(3, "Factor", ConceptGraphDataType.SCALAR, {"value": 1})
-	set_input(4, "Attenuation %", ConceptGraphDataType.SCALAR, {"value": 50})
+	set_input(4, "Attenuation %", ConceptGraphDataType.SCALAR, {"value": 50, "min": 0, "max": 100})
 	set_input(5, "Axis", ConceptGraphDataType.VECTOR3)
 	set_input(6, "Min segment size", ConceptGraphDataType.SCALAR,
 		{"min": 0.01, "allow_lesser": false, "value": 1})

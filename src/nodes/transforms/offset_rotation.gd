@@ -28,20 +28,19 @@ func _generate_outputs() -> void:
 		output[0] = nodes
 		return
 
-	amount.x = deg2rad(amount.x)
-	amount.y = deg2rad(amount.y)
-	amount.z = deg2rad(amount.z)
-
-	var t: Transform
+	var r: Vector3
+	r.x = deg2rad(amount.x)
+	r.y = deg2rad(amount.y)
+	r.z = deg2rad(amount.z)
 
 	for n in nodes:
 		if local_space:
-			n.rotation += amount
+			n.rotate_object_local(Vector3.RIGHT, r.x)
+			n.rotate_object_local(Vector3.UP, r.y)
+			n.rotate_object_local(Vector3.FORWARD, r.z)
 		else:
-			t = n.transform
-			t = t.rotated(Vector3.LEFT, amount.x)
-			t = t.rotated(Vector3.UP, amount.y)
-			t = t.rotated(Vector3.FORWARD, amount.z)
-			n.transform = t
+			n.rotate(Vector3.RIGHT, r.x)
+			n.rotate(Vector3.UP, r.y)
+			n.rotate(Vector3.FORWARD, r.z)
 
 	output[0] = nodes

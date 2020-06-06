@@ -37,6 +37,7 @@ func _generate_outputs() -> void:
 
 	var r: Vector3
 	var t: Transform
+	var o: Vector3
 
 	for n in nodes:
 		r = Vector3.ZERO
@@ -48,11 +49,9 @@ func _generate_outputs() -> void:
 			n.rotate_object_local(Vector3.UP, r.y)
 			n.rotate_object_local(Vector3.FORWARD, r.z)
 		else:
-			t = n.transform
-			t = t.rotated(Vector3.RIGHT, r.x)
-			t = t.rotated(Vector3.UP, r.y)
-			t = t.rotated(Vector3.FORWARD, r.z)
-			n.transform = t
+			n.rotate(Vector3.RIGHT, r.x)
+			n.rotate(Vector3.UP, r.y)
+			n.rotate(Vector3.FORWARD, r.z)
 
 	output[0] = nodes
 

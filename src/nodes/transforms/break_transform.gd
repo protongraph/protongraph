@@ -20,6 +20,11 @@ func _generate_outputs() -> void:
 	if not node:
 		return
 
+	var rotation = Vector3.ZERO
+	rotation.x = rad2deg(node.rotation.x)
+	rotation.y = rad2deg(node.rotation.y)
+	rotation.z = rad2deg(node.rotation.z)
+
 	output[0] = node.translation
-	output[1] = node.rotation
+	output[1] = rotation
 	output[2] = node.scale

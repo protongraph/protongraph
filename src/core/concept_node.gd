@@ -24,11 +24,11 @@ var output := []
 
 var _folder_icon
 var _multi_input_icon
+var _spinbox
 
 var _inputs := {}
 var _outputs := {}
 var _hboxes := []
-var _btn_container: HBoxContainer # Used for dynamic input system
 var _resize_timer := Timer.new()
 var _file_dialog: FileDialog
 var _initialized := false	# True when all enter_tree initialization is done
@@ -603,6 +603,10 @@ func _generate_default_gui_style() -> void:
 	add_constant_override("port_offset", 12 * scale)
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
 
+	# GraphNode slots doesn't take in account the separation parameter so where you have to click and
+	# where the slot is displayed doesn't match.
+	# add_constant_override("separation", 0)
+
 
 """
 If the child node does not define a custom UI itself, this function will generate a default UI
@@ -662,19 +666,15 @@ func _generate_default_gui() -> void:
 
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
-					var spinbox = SpinBox.new()
-					spinbox.name = "SpinBox"
-					spinbox.max_value = opts["max"] if opts.has("max") else 1000
-					spinbox.min_value = opts["min"] if opts.has("min") else 0
-					spinbox.value = opts["value"] if opts.has("value") else 0
-					spinbox.step = opts["step"] if opts.has("step") else 0.001
-					spinbox.exp_edit = opts["exp"] if opts.has("exp") else true
-					spinbox.allow_greater = opts["allow_greater"] if opts.has("allow_greater") else true
-					spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else false
-					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
-					spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [i])
-					spinbox.connect("value_changed", self, "_on_default_gui_interaction", [spinbox, i])
-					hbox.add_child(spinbox)
+					var n = _inputs[i]["name"]
+					var spinbox = _create_spinbox(n, opts, hbox, i)
+					label_left.visible = false
+
+					# Make sure there's enough horizontal space for the custom spinbox when the name
+					# is too large
+					var rx = n.length() * 17.0
+					if rect_min_size.x < rx:
+						rect_min_size.x = rx
 
 				ConceptGraphDataType.STRING:
 					var opts = _inputs[i]["options"]
@@ -703,6 +703,17 @@ func _generate_default_gui() -> void:
 							folder_button.connect("pressed", self, "_show_file_dialog", [opts["file_dialog"], line_edit])
 							hbox.add_child(folder_button)
 
+				ConceptGraphDataType.VECTOR2:
+					var opts = _inputs[i]["options"]
+					label_left.visible = false
+					hbox.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 2, i))
+
+				ConceptGraphDataType.VECTOR3:
+					var opts = _inputs[i]["options"]
+					label_left.visible = false
+					hbox.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 3, i))
+
+
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel
 		var label_right = Label.new()
@@ -721,12 +732,69 @@ func _generate_default_gui() -> void:
 	_redraw()
 
 
+func _create_spinbox(property_name, opts, parent, idx) -> SpinBox:
+	if not _spinbox:
+		_spinbox = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/editor/gui/spinbox.tscn")
+	var spinbox = _spinbox.instance()
+	if parent:
+		parent.add_child(spinbox)
+	spinbox.set_label_value(property_name)
+	spinbox.name = "SpinBox"
+	spinbox.max_value = opts["max"] if opts.has("max") else 1000
+	spinbox.min_value = opts["min"] if opts.has("min") else 0
+	spinbox.value = opts["value"] if opts.has("value") else 0
+	spinbox.step = opts["step"] if opts.has("step") else 0.001
+	spinbox.exp_edit = opts["exp"] if opts.has("exp") else false
+	spinbox.allow_greater = opts["allow_greater"] if opts.has("allow_greater") else true
+	spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else true
+	spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
+	spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [idx])
+	spinbox.connect("value_changed", self, "_on_default_gui_interaction", [spinbox, idx])
+	return spinbox
+
+
+func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContainer:
+	var item_indexes = ["x", "y"]
+	if count == 3:
+		item_indexes.append("z")
+
+	var vbox = VBoxContainer.new()
+	vbox.add_constant_override("separation", 0)
+
+	if property_name:
+		var label = Label.new()
+		label.text = property_name
+		vbox.add_child(label)
+
+	var s
+	for i in item_indexes.size():
+		var vector_index = item_indexes[i]
+		if opts.has(vector_index):
+			s = _create_spinbox(vector_index, opts[vector_index], vbox, idx)
+		else:
+			s = _create_spinbox(vector_index, opts, vbox, idx)
+		if i == 0:
+			s.style = 0
+		elif i == item_indexes.size() - 1:
+			s.style = 2
+		else:
+			s.style = 1
+
+	var separator = HSeparator.new()
+	separator.modulate = Color(0, 0, 0, 0)
+	vbox.add_child(separator)
+
+	return vbox
+
+
 """
 Forces the GraphNode to redraw its gui, mostly to get rid of outdated connections after a delete.
 """
 func _redraw() -> void:
+	emit_signal("resize_request", Vector2(rect_min_size.x, 0.0))
 	hide()
 	show()
+	get_parent().update()
 
 
 func _connect_signals() -> void:
@@ -819,9 +887,16 @@ everything that's not a label if something is connected to the associated slot.
 func _on_connection_changed() -> void:
 	# Hides the default gui (except for the labels) if a connection is present for the given slot
 	for i in _hboxes.size():
+		var type = _inputs[i]["type"]
 		for ui in _hboxes[i].get_children():
 			if not ui is Label:
 				ui.visible = !is_input_connected(i)
+			else:
+				ui.visible = true
+				if type == ConceptGraphDataType.SCALAR \
+					or type == ConceptGraphDataType.VECTOR2 \
+					or type == ConceptGraphDataType.VECTOR3:
+					ui.visible = is_input_connected(i)
 
 	_update_slots_types()
 	_redraw()

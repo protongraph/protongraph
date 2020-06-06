@@ -44,7 +44,7 @@ func _add_custom_editor_view() -> void:
 func _remove_custom_editor_view() -> void:
 	if _graph_editor_view:
 		remove_control_from_bottom_panel(_graph_editor_view)
-		_graph_editor_view.free()
+		_graph_editor_view.queue_free()
 
 
 func _connect_editor_signals() -> void:

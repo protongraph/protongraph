@@ -15,8 +15,9 @@ signal node_deleted
 
 var undo_redo: UndoRedo
 
-var _copy_buffer = []
-var _connections_buffer = []
+var _copy_buffer := []
+var _connections_buffer := []
+var _ui_style_ready := false
 
 
 func _init() -> void:
@@ -37,7 +38,7 @@ func clear_editor() -> void:
 	for c in get_children():
 		if c is GraphNode:
 			remove_child(c)
-			c.free()
+			c.queue_free()
 
 
 func delete_node(node) -> void:
@@ -57,6 +58,15 @@ func restore_node(node) -> void:
 	emit_signal("simulation_outdated")
 	emit_signal("node_created", node)
 
+
+func regenerate_graphnodes_style() -> void:
+	if _ui_style_ready:
+		return
+
+	for child in get_children():
+		if child is ConceptNode:
+			child._generate_default_gui_style()
+	_ui_style_ready = true
 
 """
 Returns an array of GraphNodes connected to the left of the given slot, including the slot index

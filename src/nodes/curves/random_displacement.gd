@@ -30,7 +30,7 @@ func _generate_outputs() -> void:
 	var axis: Vector3 = get_input_single(3, Vector3.ZERO)
 
 	_rng = RandomNumberGenerator.new()
-	_rng.seed = random_seed
+	_rng.set_seed(random_seed)
 
 	for path in paths:
 		var point_count = path.curve.get_point_count()
@@ -39,7 +39,6 @@ func _generate_outputs() -> void:
 		var start: Vector3 = path.curve.get_point_position(0)
 		var end: Vector3 = path.curve.get_point_position(1)
 		var closed: bool = path.curve.get_point_position(0) == path.curve.get_point_position(point_count - 1)
-
 		for i in path.curve.get_point_count():
 			# Ignore if it's the last point of the curve and the curve is closed
 			if closed and i == point_count - 1:
@@ -52,6 +51,7 @@ func _generate_outputs() -> void:
 				offset = _rand_vector()
 			else:
 				offset = (end - start).cross(axis).normalized()
+				offset = offset.rotated(axis, _rng.randf_range(-PI, PI))
 			offset *= factor
 			var new_pos = path.curve.get_point_position(i) + offset
 			path.curve.set_point_position(i, new_pos)

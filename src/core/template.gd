@@ -258,7 +258,7 @@ func run_garbage_collection():
 					parent.remove_child(resource)
 				resource.queue_free()
 			elif resource is Object:
-				resource.free()
+				resource.call_deferred("free")
 	_registered_resources = []
 
 
@@ -350,3 +350,4 @@ func _on_node_changed(node: ConceptNode, replay_simulation := false) -> void:
 	emit_signal("graph_changed")
 	if replay_simulation:
 		emit_signal("simulation_outdated")
+	update()

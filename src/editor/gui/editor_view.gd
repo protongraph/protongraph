@@ -73,9 +73,7 @@ func enable_template_editor_for(node: ConceptGraph) -> void:
 
 	# Force graphnodes to rebuild their UI because they were generated under a spatial node but they
 	# are now under a Control node so the editor theme is now available
-	for child in node._template.get_children():
-		if child is ConceptNode:
-			child.regenerate_default_ui()
+	node._template.regenerate_graphnodes_style()
 
 	_no_graph_panel.visible = false
 	if node.template_path == "":
@@ -101,7 +99,7 @@ func clear_template_editor() -> void:
 		for c in _template_parent.get_children():
 			if c is GraphEdit:
 				_template_parent.remove_child(c)
-				c.free()
+				c.queue_free()
 		return
 
 	template.disconnect("graph_changed", self, "_on_graph_changed")

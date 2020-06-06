@@ -15,8 +15,10 @@ signal template_path_changed
 
 
 export(String, FILE, "*.cgraph") var template_path := "" setget set_template_path
-export var show_result_in_editor_tree := true setget set_show_result
+export var auto_generate_on_load := true
 export var paused := false
+export var show_result_in_editor_tree := true setget set_show_result
+
 
 var _initialized := false
 var _template: ConceptGraphTemplate
@@ -37,7 +39,7 @@ func _enter_tree():
 		_input_root = _get_or_create_root("Input")
 		_input_root.connect("input_changed", self, "_on_input_changed")
 		_output_root = _get_or_create_root("Output")
-		reload_template()
+		reload_template(auto_generate_on_load)
 		_initialized = true
 
 
@@ -114,7 +116,7 @@ func update_exposed_variables(variables: Array) -> void:
 	property_list_changed_notify()
 
 
-func reload_template() -> void:
+func reload_template(generate: bool = true) -> void:
 	if not _template:
 		_template = ConceptGraphTemplate.new()
 		add_child(_template)
@@ -126,7 +128,9 @@ func reload_template() -> void:
 
 	_template.load_from_file(template_path)
 	_template.update_exposed_variables()
-	generate()
+
+	if generate:
+		generate()
 
 
 """
