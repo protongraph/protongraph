@@ -65,8 +65,11 @@ from the Concept Graph Editor
 """
 func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
 	var new_node: ConceptNode = node.duplicate()
-	new_node.offset = scroll_offset + Vector2(250, 150)
 	new_node.thread_pool = _thread_pool
+	if data.has("offset"):
+		new_node.offset = data["offset"]
+	else:
+		new_node.offset = scroll_offset + Vector2(250, 150)
 
 	if new_node.is_final_output_node():
 		_output_nodes.append(new_node)

@@ -21,6 +21,7 @@ var _current_template: WeakRef
 var _autosave: bool
 var _autosave_interval := 3
 var _save_timer: Timer
+var _last_position: Vector2
 
 
 func _ready() -> void:
@@ -139,6 +140,7 @@ func replay_simulation() -> void:
 
 
 func _show_node_dialog(position: Vector2) -> void:
+	_last_position = position
 	_node_dialog.set_global_position(position)
 	_node_dialog.popup()
 
@@ -179,7 +181,8 @@ func _on_load_template(path: String) -> void:
 func _on_create_node_request(node) -> void:
 	var template = _get_ref(_current_template)
 	if template:
-		template.create_node(node)
+		var local_pos = _last_position - template.get_global_transform().origin + template.scroll_offset
+		template.create_node(node, {"offset": local_pos})
 
 
 func _on_graph_changed() -> void:
