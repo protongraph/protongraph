@@ -104,17 +104,9 @@ func get_input(idx: int, default = []) -> Array:
 		return node_output
 
 	# If no source is connected, check if it's a base type with a value defined on the node itself
-	match _inputs[idx]["type"]:
-		ConceptGraphDataType.BOOLEAN:
-			return [_hboxes[idx].get_node("CheckBox").pressed]
-		ConceptGraphDataType.SCALAR:
-			return [_hboxes[idx].get_node("SpinBox").value]
-		ConceptGraphDataType.STRING:
-			if _hboxes[idx].has_node("LineEdit"):
-				return [_hboxes[idx].get_node("LineEdit").text]
-			elif _hboxes[idx].has_node("OptionButton"):
-				var btn = _hboxes[idx].get_node("OptionButton")
-				return [btn.get_item_text(btn.selected)]
+	var local_value = _get_default_gui_value(idx)
+	if local_value:
+		return [local_value]
 
 	return default # Not a base type and no source connected
 
@@ -230,19 +222,11 @@ func export_editor_data() -> Dictionary:
 		data["rect_y"] = rect_size.y
 
 	data["slots"] = {}
-	var slots = _hboxes.size()
-	for i in slots:
+	for i in _inputs.size():
 		var idx = String(i) # Needed to fix inconsistencies when calling restore
-		var hbox = _hboxes[i]
-		for c in hbox.get_children():
-			if c is CheckBox:
-				data["slots"][idx] = c.pressed
-			if c is SpinBox:
-				data["slots"][idx] = c.value
-			if c is LineEdit:
-				data["slots"][idx] = c.text
-			if c is OptionButton:
-				data["slots"][idx] = c.get_item_id(c.selected)
+		var local_value = _get_default_gui_value(i)
+		if local_value != null:
+			data["slots"][idx] = local_value
 
 	return data
 
@@ -280,6 +264,10 @@ func restore_editor_data(data: Dictionary) -> void:
 					elif hbox.has_node("OptionButton"):
 						var btn: OptionButton = hbox.get_node("OptionButton")
 						btn.selected = btn.get_item_index(value)
+				ConceptGraphDataType.VECTOR2:
+					_set_vector_value(i, value)
+				ConceptGraphDataType.VECTOR3:
+					_set_vector_value(i, value)
 
 
 """
@@ -645,7 +633,7 @@ func _generate_default_gui() -> void:
 
 					# Make sure there's enough horizontal space for the custom spinbox when the name
 					# is too large
-					var rx = n.length() * 17.0
+					var rx = n.length() * 18.0
 					if rect_min_size.x < rx:
 						rect_min_size.x = rx
 
@@ -735,6 +723,7 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 		item_indexes.append("z")
 
 	var vbox = VBoxContainer.new()
+	vbox.name = "VectorContainer"
 	vbox.add_constant_override("separation", 0)
 
 	if property_name:
@@ -756,12 +745,66 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 		else:
 			s.style = 1
 
-	var separator = HSeparator.new()
+	var separator = VSeparator.new()
 	separator.modulate = Color(0, 0, 0, 0)
 	vbox.add_child(separator)
 
 	return vbox
 
+
+func _get_vector_value(idx: int):
+	var vec3 = Vector3.ZERO
+	var vbox = _hboxes[idx].get_node("VectorContainer")
+	if not vbox:
+		return
+
+	var i = 0
+	for c in vbox.get_children():
+		if c is Label or c is VSeparator:
+			continue
+		vec3[i] = c.value
+		i += 1
+	if i == 3:
+		return vec3
+	return Vector2(vec3.x, vec3.y)
+
+
+func _set_vector_value(idx: int, value) -> void:
+	if idx >= _inputs.size():
+		return
+
+	var vbox = _hboxes[idx].get_node("VectorContainer")
+	if not vbox:
+		return
+
+	# String to Vector conversion
+	value = value.substr(1, value.length() - 2)
+	var tokens = value.split(',')
+
+	var i = 0
+	for c in vbox.get_children():
+		if c is Label or c is VSeparator:
+			continue
+		c.value = float(tokens[i])
+		i += 1
+
+
+func _get_default_gui_value(idx: int):
+	match _inputs[idx]["type"]:
+		ConceptGraphDataType.BOOLEAN:
+			return _hboxes[idx].get_node("CheckBox").pressed
+		ConceptGraphDataType.SCALAR:
+			return _hboxes[idx].get_node("SpinBox").value
+		ConceptGraphDataType.STRING:
+			if _hboxes[idx].has_node("LineEdit"):
+				return _hboxes[idx].get_node("LineEdit").text
+			elif _hboxes[idx].has_node("OptionButton"):
+				var btn = _hboxes[idx].get_node("OptionButton")
+				return btn.get_item_text(btn.selected)
+		ConceptGraphDataType.VECTOR2:
+			return _get_vector_value(idx)
+		ConceptGraphDataType.VECTOR3:
+			return _get_vector_value(idx)
 
 """
 Forces the GraphNode to redraw its gui, mostly to get rid of outdated connections after a delete.

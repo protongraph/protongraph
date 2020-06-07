@@ -52,8 +52,8 @@ func enable_template_editor_for(node: ConceptGraph) -> void:
 		return
 
 	clear_template_editor()
-	if not node._template:
-		node.reload_template()
+	#if not node._template:
+	node.reload_template(false)
 
 	_current_graph = weakref(node)
 	_current_template = weakref(node._template)
