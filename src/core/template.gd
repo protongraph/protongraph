@@ -21,6 +21,7 @@ var root: Spatial
 var paused := false
 var restart_generation := false
 var node_library: ConceptNodeLibrary	# Injected from the concept graph
+var multithreading_enabled := true	# Set to false to ignore the ProjectSettings and force multithreading off
 
 var _json_util = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/thirdparty/json_beautifier/json_beautifier.gd")
 var _node_pool := ConceptGraphNodePool.new()
@@ -289,7 +290,7 @@ func _run_generation() -> void:
 	if _clear_cache_on_next_run:
 		clear_simulation_cache()
 
-	if ProjectSettings.get(ConceptGraphSettings.MULTITHREAD_ENABLED):
+	if _is_multithreading_enabled():
 		_thread.start(self, "_run_generation_threaded")
 	else:
 		_run_generation_threaded()
@@ -327,8 +328,12 @@ func _beautify_json(json: String) -> String:
 	return res
 
 
+func _is_multithreading_enabled() -> bool:
+	return ProjectSettings.get(ConceptGraphSettings.MULTITHREAD_ENABLED) and multithreading_enabled
+
+
 func _on_thread_completed() -> void:
-	if ProjectSettings.get(ConceptGraphSettings.MULTITHREAD_ENABLED):
+	if _is_multithreading_enabled():
 		_thread.wait_to_finish()
 	if restart_generation:
 		generate()

@@ -22,9 +22,9 @@ bg_color = Color( 0.6, 0.6, 0.6, 0 )
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
 [node name="ProgressBar" type="ProgressBar"]
-margin_right = 110.0
+margin_right = 95.0
 margin_bottom = 24.0
-rect_min_size = Vector2( 110, 24 )
+rect_min_size = Vector2( 95, 24 )
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_styles/fg = ExtResource( 6 )
@@ -45,7 +45,7 @@ value_edit = NodePath("SpinBoxContainer/Value")
 [node name="SpinBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 110, 24 )
+rect_min_size = Vector2( 95, 24 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -61,14 +61,13 @@ icon = ExtResource( 8 )
 
 [node name="Value" type="LineEdit" parent="SpinBoxContainer"]
 margin_left = 23.0
-margin_right = 87.0
+margin_right = 72.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
 text = "50"
 align = 2
-expand_to_text_length = true
 caret_blink = true
 caret_blink_speed = 0.5
 
@@ -85,8 +84,8 @@ __meta__ = {
 }
 
 [node name="Increase" type="Button" parent="SpinBoxContainer"]
-margin_left = 91.0
-margin_right = 110.0
+margin_left = 76.0
+margin_right = 95.0
 margin_bottom = 24.0
 custom_styles/hover = ExtResource( 3 )
 custom_styles/pressed = ExtResource( 2 )

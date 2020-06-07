@@ -251,7 +251,7 @@ func restore_editor_data(data: Dictionary) -> void:
 		if data["slots"].has(String(i)):
 			var type = _inputs[i]["type"]
 			var value = data["slots"][String(i)]
-			var hbox = _hboxes[i]
+			var hbox = _hboxes[i].get_node("Left")
 
 			match type:
 				ConceptGraphDataType.BOOLEAN:
@@ -263,7 +263,7 @@ func restore_editor_data(data: Dictionary) -> void:
 						hbox.get_node("LineEdit").text = value
 					elif hbox.has_node("OptionButton"):
 						var btn: OptionButton = hbox.get_node("OptionButton")
-						btn.selected = btn.get_item_index(value)
+						btn.selected = btn.get_item_index(int(value))
 				ConceptGraphDataType.VECTOR2:
 					_set_vector_value(i, value)
 				ConceptGraphDataType.VECTOR3:
@@ -359,24 +359,6 @@ func is_multiple_connections_enabled_on_slot(idx: int) -> bool:
 	if idx >= _inputs.size():
 		return false
 	return _inputs[idx]["multi"]
-
-
-"""
-Override the default gui value with a new one. // TODO : might not be useful, could be removed if not used
-"""
-func set_default_gui_input_value(idx: int, value) -> void:
-	if _hboxes.size() <= idx:
-		return
-
-	var hbox = _hboxes[idx]
-	var type = _inputs[idx]["type"]
-	match type:
-		ConceptGraphDataType.BOOLEAN:
-			hbox.get_node("CheckBox").pressed = value
-		ConceptGraphDataType.SCALAR:
-			hbox.get_node("SpinBox").value = value
-		ConceptGraphDataType.STRING:
-			hbox.get_node("LineEdit").text = value
 
 
 """
@@ -520,7 +502,7 @@ func _setup_slots() -> void:
 
 	# If the node can't be resized, make it as small as possible
 	if not resizable:
-		emit_signal("resize_request", Vector2.ZERO)
+		emit_signal("resize_request", Vector2(rect_min_size.x, 0.0))
 
 
 """
@@ -589,6 +571,7 @@ func _generate_default_gui() -> void:
 	show_close = true
 	rect_min_size = Vector2(0.0, 0.0)
 	rect_size = Vector2(0.0, 0.0)
+	var max_output_label_length := 0
 
 	# TODO : Some refactoring would be nice
 	var slots = max(_inputs.size(), _outputs.size())
@@ -601,11 +584,16 @@ func _generate_default_gui() -> void:
 		_hboxes.append(hbox)
 		add_child(hbox)
 
+		var left_box = HBoxContainer.new()
+		left_box.name = "Left"
+		left_box.size_flags_horizontal = SIZE_EXPAND_FILL
+		hbox.add_child(left_box)
+
 		# label_left holds the name of the input slot.
 		var label_left = Label.new()
 		label_left.name = "LabelLeft"
 		label_left.mouse_filter = MOUSE_FILTER_PASS
-		hbox.add_child(label_left)
+		left_box.add_child(label_left)
 
 		# If this slot has an input
 		if _inputs.has(i):
@@ -623,12 +611,12 @@ func _generate_default_gui() -> void:
 					checkbox.pressed = opts["value"] if opts.has("value") else false
 					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
 					checkbox.connect("toggled", self, "_on_default_gui_interaction", [checkbox, i])
-					hbox.add_child(checkbox)
+					left_box.add_child(checkbox)
 
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
 					var n = _inputs[i]["name"]
-					_create_spinbox(n, opts, hbox, i)
+					_create_spinbox(n, opts, left_box, i)
 					label_left.visible = false
 
 					# Make sure there's enough horizontal space for the custom spinbox when the name
@@ -646,7 +634,7 @@ func _generate_default_gui() -> void:
 							dropdown.add_item(item, opts["items"][item])
 						dropdown.connect("item_selected", self, "_on_default_gui_value_changed", [i])
 						dropdown.connect("item_selected", self, "_on_default_gui_interaction", [dropdown, i])
-						hbox.add_child(dropdown)
+						left_box.add_child(dropdown)
 					else:
 						var line_edit = LineEdit.new()
 						line_edit.name = "LineEdit"
@@ -654,7 +642,7 @@ func _generate_default_gui() -> void:
 						line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
 						line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
 						line_edit.connect("text_changed", self, "_on_default_gui_interaction", [line_edit, i])
-						hbox.add_child(line_edit)
+						left_box.add_child(line_edit)
 
 						if opts.has("file_dialog"):
 							var folder_button = Button.new()
@@ -662,17 +650,17 @@ func _generate_default_gui() -> void:
 								_folder_icon = load(ConceptGraphEditorUtil.get_plugin_root_path() + "icons/icon_folder.svg")
 							folder_button.icon = _folder_icon
 							folder_button.connect("pressed", self, "_show_file_dialog", [opts["file_dialog"], line_edit])
-							hbox.add_child(folder_button)
+							left_box.add_child(folder_button)
 
 				ConceptGraphDataType.VECTOR2:
 					var opts = _inputs[i]["options"]
 					label_left.visible = false
-					hbox.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 2, i))
+					left_box.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 2, i))
 
 				ConceptGraphDataType.VECTOR3:
 					var opts = _inputs[i]["options"]
 					label_left.visible = false
-					hbox.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 3, i))
+					left_box.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 3, i))
 
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
@@ -680,17 +668,21 @@ func _generate_default_gui() -> void:
 		var label_right = Label.new()
 		label_right.name = "LabelRight"
 		label_right.mouse_filter = MOUSE_FILTER_PASS
-		label_right.size_flags_horizontal = SIZE_EXPAND_FILL
+		#label_right.size_flags_horizontal = SIZE_EXPAND_FILL
+		label_right.size_flags_horizontal = SIZE_FILL
 		label_right.align = Label.ALIGN_RIGHT
 		label_right.visible = false
 
 		if _outputs.has(i):
 			label_right.text = _outputs[i]["name"]
+			if label_right.text.length() > max_output_label_length:
+				max_output_label_length = label_left.text.length()
 			label_right.hint_tooltip = ConceptGraphDataType.Types.keys()[_outputs[i]["type"]].capitalize()
 			if label_right.text != "":
 				label_right.visible = true
 		hbox.add_child(label_right)
 
+	rect_min_size.x += max_output_label_length * 12.0 # TODO; tmp hack, use editor scale here and find a better layout
 	_on_connection_changed()
 	_on_default_gui_ready()
 	_redraw()
@@ -724,21 +716,33 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 
 	var vbox = VBoxContainer.new()
 	vbox.name = "VectorContainer"
-	vbox.add_constant_override("separation", 0)
 
 	if property_name:
 		var label = Label.new()
 		label.text = property_name
 		vbox.add_child(label)
 
+	var inline = ProjectSettings.get(ConceptGraphSettings.INLINE_VECTOR_FIELDS)
+	var vector_box
+	if inline:
+		vector_box = HBoxContainer.new()
+	else:
+		vector_box = VBoxContainer.new()
+		vector_box.rect_min_size.x = 120
+	vector_box.name = "Vector"
+	vector_box.add_constant_override("separation", 0)
+	vbox.add_child(vector_box)
+
 	var s
 	for i in item_indexes.size():
 		var vector_index = item_indexes[i]
 		if opts.has(vector_index):
-			s = _create_spinbox(vector_index, opts[vector_index], vbox, idx)
+			s = _create_spinbox(vector_index, opts[vector_index], vector_box, idx)
 		else:
-			s = _create_spinbox(vector_index, opts, vbox, idx)
-		if i == 0:
+			s = _create_spinbox(vector_index, opts, vector_box, idx)
+		if inline:
+			s.style = 3
+		elif i == 0:
 			s.style = 0
 		elif i == item_indexes.size() - 1:
 			s.style = 2
@@ -753,27 +757,28 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 
 
 func _get_vector_value(idx: int):
-	var vec3 = Vector3.ZERO
-	var vbox = _hboxes[idx].get_node("VectorContainer")
+	var vbox = _hboxes[idx].get_node("Left").get_node("VectorContainer")
 	if not vbox:
 		return
 
-	var i = 0
-	for c in vbox.get_children():
-		if c is Label or c is VSeparator:
-			continue
-		vec3[i] = c.value
-		i += 1
-	if i == 3:
-		return vec3
-	return Vector2(vec3.x, vec3.y)
+	var vector_box = vbox.get_node("Vector")
+	var count = vector_box.get_child_count()
+	var res
+	if count == 2:
+		res = Vector2.ZERO
+	else:
+		res = Vector3.ZERO
+
+	for i in count:
+		res[i] = vector_box.get_child(i).value
+	return res
 
 
 func _set_vector_value(idx: int, value) -> void:
 	if idx >= _inputs.size():
 		return
 
-	var vbox = _hboxes[idx].get_node("VectorContainer")
+	var vbox = _hboxes[idx].get_node("Left").get_node("VectorContainer")
 	if not vbox:
 		return
 
@@ -781,26 +786,29 @@ func _set_vector_value(idx: int, value) -> void:
 	value = value.substr(1, value.length() - 2)
 	var tokens = value.split(',')
 
-	var i = 0
-	for c in vbox.get_children():
-		if c is Label or c is VSeparator:
-			continue
-		c.value = float(tokens[i])
-		i += 1
+	var vector_box = vbox.get_node("Vector")
+	var count = vector_box.get_child_count()
+
+	for i in count:
+		vector_box.get_child(i).value = float(tokens[i])
 
 
 func _get_default_gui_value(idx: int):
+	var left = _hboxes[idx].get_node("Left")
+	if not left:
+		return null
+
 	match _inputs[idx]["type"]:
 		ConceptGraphDataType.BOOLEAN:
-			return _hboxes[idx].get_node("CheckBox").pressed
+			return left.get_node("CheckBox").pressed
 		ConceptGraphDataType.SCALAR:
-			return _hboxes[idx].get_node("SpinBox").value
+			return left.get_node("SpinBox").value
 		ConceptGraphDataType.STRING:
-			if _hboxes[idx].has_node("LineEdit"):
-				return _hboxes[idx].get_node("LineEdit").text
-			elif _hboxes[idx].has_node("OptionButton"):
-				var btn = _hboxes[idx].get_node("OptionButton")
-				return btn.get_item_text(btn.selected)
+			if left.has_node("LineEdit"):
+				return left.get_node("LineEdit").text
+			elif left.has_node("OptionButton"):
+				var btn = left.get_node("OptionButton")
+				return btn.get_item_id(btn.selected)
 		ConceptGraphDataType.VECTOR2:
 			return _get_vector_value(idx)
 		ConceptGraphDataType.VECTOR3:
@@ -907,7 +915,7 @@ func _on_connection_changed() -> void:
 	# Hides the default gui (except for the labels) if a connection is present for the given slot
 	for i in _inputs.size():
 		var type = _inputs[i]["type"]
-		for ui in _hboxes[i].get_children():
+		for ui in _hboxes[i].get_node("Left").get_children():
 			if not ui is Label:
 				ui.visible = !is_input_connected(i)
 			elif ui.name == "LabelLeft":
