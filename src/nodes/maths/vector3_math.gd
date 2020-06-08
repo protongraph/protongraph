@@ -9,7 +9,7 @@ var _opts = {"allow_lesser": true}
 
 func _init() -> void:
 	unique_id = "math_vector3"
-	display_name = "Vector3 Math"
+	display_name = "Math Vector3"
 	category = "Maths"
 	description = "Perform common math operations on two Vector3"
 

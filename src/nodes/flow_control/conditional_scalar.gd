@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "conditional_scalar"
-	display_name = "Conditional (Scalar)"
+	display_name = "Conditional Scalar"
 	category = "Flow Control"
 	description = "Compare two numbers and returns one of the three inputs"
 

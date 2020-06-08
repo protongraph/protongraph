@@ -13,7 +13,7 @@ var directory := Directory.new()
 
 func _init() -> void:
 	unique_id = "save_tscn_output"
-	display_name = "Save output scene"
+	display_name = "Save Output Scene"
 	category = "Output"
 	description = "Saves the output as a scene file"
 
