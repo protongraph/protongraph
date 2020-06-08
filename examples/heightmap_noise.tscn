@@ -1,0 +1,41 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/concept_graph/src/core/concept_graph.gd" type="Script" id=1]
+[ext_resource path="res://addons/concept_graph/src/editor/nodes/input_manager.gd" type="Script" id=2]
+[ext_resource path="res://addons/concept_graph/examples/assets/lighting/lighting.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/concept_graph/examples/assets/materials/m_grass.tres" type="Material" id=4]
+[ext_resource path="res://addons/concept_graph/src/editor/nodes/box_input.gd" type="Script" id=5]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0.156626, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 1.34141, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=2]
+max_value = 1.5
+_data = [ Vector2( 0.379518, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1.5 ), 2.8124, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=3]
+min_value = 0.5
+_data = [ Vector2( 0.376404, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.488764, 0.5 ), 0.0, 0.0, 0, 0, Vector2( 0.634831, 1 ), 0.0, 0.0, 0, 0 ]
+
+[node name="World" type="Spatial"]
+
+[node name="Lighting" parent="." instance=ExtResource( 3 )]
+
+[node name="Terrain" type="Node" parent="."]
+script = ExtResource( 1 )
+template_path = "res://addons/concept_graph/examples/templates/heightmap_noise.cgraph"
+show_result_in_editor_tree = false
+Template/Elevation = SubResource( 1 )
+Template/Hills = SubResource( 2 )
+Template/Erosion = SubResource( 3 )
+Template/Terrain = ExtResource( 4 )
+
+[node name="Input" type="Spatial" parent="Terrain"]
+script = ExtResource( 2 )
+
+[node name="Hole" type="Spatial" parent="Terrain/Input"]
+transform = Transform( 0.642788, -0.198267, -0.739942, 0, 0.965926, -0.258819, 0.766045, 0.166366, 0.620885, 520, -22, 610 )
+script = ExtResource( 5 )
+size = Vector3( 180, 10, 180 )
+
+[node name="Output" type="Spatial" parent="Terrain"]

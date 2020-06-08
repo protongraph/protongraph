@@ -27,7 +27,7 @@ func _init() -> void:
 
 func _generate_outputs() -> void:
 	var nodes := get_input(0)
-	var noise: OpenSimplexNoise = get_input_single(1)
+	var noise: ConceptGraphNoise = get_input_single(1)
 	var threshold: float = get_input_single(2, 0.0)
 	var invert: bool = get_input_single(3, false)
 	var local: bool = get_input_single(4, false)

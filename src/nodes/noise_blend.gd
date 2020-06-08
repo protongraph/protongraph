@@ -11,18 +11,15 @@ var _buffer_rect_size : Vector2
 
 
 func _init() -> void:
-	unique_id = "simplex_noise"
-	display_name = "Simplex Noise"
+	unique_id = "blend_noises"
+	display_name = "Blend Noises"
 	category = "Noise"
-	description = "Create an OpenSimplexNoise to be used by other nodes"
+	description = "Blend multiple noises together"
 
-	set_input(0, "Seed", ConceptGraphDataType.SCALAR, {"step": 1, "allow_lesser":true})
-	set_input(1, "Octaves", ConceptGraphDataType.SCALAR, {"value": 3, "step": 1, "max": 6, "allow_greater":false})
-	set_input(2, "Period", ConceptGraphDataType.SCALAR, {"value": 64, "step": 0.1})
-	set_input(3, "Persistence", ConceptGraphDataType.SCALAR, {"value": 0.5, "max": 1, "allow_greater":false})
-	set_input(4, "Lacunarity", ConceptGraphDataType.SCALAR, {"value": 2, "step": 0.01, "max":4, "allow_greater":false})
-	set_input(5, "Curve", ConceptGraphDataType.CURVE_2D)
-	set_output(0, "Noise", ConceptGraphDataType.NOISE)
+	set_input(0, "Noise 1", ConceptGraphDataType.NOISE)
+	set_input(1, "Noise 2", ConceptGraphDataType.NOISE)
+	set_input(2, "Blend", ConceptGraphDataType.SCALAR, {"step": 0.01, "max": 1.0, "allow_greater": false, "value": 0.5})
+	set_output(0, "", ConceptGraphDataType.NOISE)
 
 
 func _ready() -> void:
@@ -30,18 +27,24 @@ func _ready() -> void:
 
 
 func _generate_outputs() -> void:
+	var noise1: ConceptGraphNoise = get_input_single(0)
+	var noise2: ConceptGraphNoise = get_input_single(1)
+	var blend_amount: float = get_input_single(2, 0.5)
 	
-	_noise = ConceptGraphNoise_Simplex.new()
-	_noise.noise.seed = get_input_single(0, 0)
-	_noise.noise.octaves = get_input_single(1, 3)
-	_noise.noise.period = get_input_single(2, 64.0)
-	_noise.noise.persistence = get_input_single(3, 0.5)
-	_noise.noise.lacunarity = get_input_single(4, 2.0)
-	_noise.curve = get_input_single(5)
+	if noise1:
+		if noise2: 
+			_noise = noise1.blend(noise2, blend_amount)
+		else:
+			_noise = noise1
+	elif noise2:
+		_noise = noise2
+	else:
+		return
 	
 	output[0] = _noise
 	
-	if _is_preview_displayed and _is_preview_outdated:
+	# Generating an image takes time so only do so if the preview panel is open
+	if _is_preview_displayed:
 		_image_texture.create_from_image(_noise.get_image(175, 175, 8))
 
 
@@ -64,14 +67,14 @@ func _on_default_gui_ready() -> void:
 
 func _on_button_preview_pressed() -> void:
 	if _is_preview_displayed:
+		_is_preview_displayed = false
 		remove_child(_texture_rect)
 		rect_size = _buffer_rect_size
-		_is_preview_displayed = false
 	else:
 		_is_preview_displayed = true
 		_generate_outputs()
 		if _image_texture:
 			_buffer_rect_size = rect_size
 			add_child(_texture_rect)
-
+	
 	emit_signal("raise_request")

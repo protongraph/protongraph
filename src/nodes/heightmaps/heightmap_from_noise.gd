@@ -3,40 +3,44 @@ extends ConceptNode
 
 
 func _init() -> void:
-	unique_id = "heightmap_from_noise"
-	display_name = "Heightmap from Noise"
+	unique_id = "heightmap_apply_noise"
+	display_name = "Heightmap: Apply Noise"
 	category = "Heightmaps"
-	description = "Creates a heightmap from noise"
+	description = "Apply noise to a heightmap"
 
-	set_input(0, "Noise", ConceptGraphDataType.NOISE)
-	set_input(1, "Size", ConceptGraphDataType.VECTOR2)
+	set_input(0, "Heightmap", ConceptGraphDataType.HEIGHTMAP)
+	set_input(1, "Noise", ConceptGraphDataType.NOISE)
+	set_input(2, "Noise Scale", ConceptGraphDataType.VECTOR3, {"value":1, "min":0.001, "allow_lesser": false})
+	set_input(3, "Noise Offset", ConceptGraphDataType.VECTOR3)
+	
 	set_output(0, "", ConceptGraphDataType.HEIGHTMAP)
 
 
 func _generate_outputs() -> void:
+#	var start_time = OS.get_ticks_msec()
+	var heightmap: ConceptGraphHeightmap = get_input_single(0)
+	var noise: ConceptGraphNoise = get_input_single(1)
+	var noise_scale: Vector3 = get_input_single(2, Vector3.ONE)
+	var noise_offset: Vector3 = get_input_single(3, Vector3.ZERO)
+	
+	var data: Array = heightmap.data # looping on a local var is faster
+	var map_size: Vector2 = heightmap.size
+	var mesh_size: Vector2 = heightmap.mesh_size
+	var scale: Vector2 = mesh_size / map_size * Vector2(noise_scale.x, noise_scale.z)
+	
+	if noise:
+		var i = 0
+		for y in map_size.y:
+			for x in map_size.x:
+				data[i] += noise.get_noise_2d(
+					noise_offset.x + x * scale.x,
+					noise_offset.z + y * scale.y
+				) * noise_scale.y + noise_offset.y
+				i += 1
+	
+	heightmap.data = data
+	
+	output[0].append(heightmap)
 
-	var start_time = OS.get_ticks_msec()
-
-	var noise: OpenSimplexNoise = get_input_single(0)
-	var size: Vector2 = get_input_single(1, Vector2.ZERO)
-
-	if not noise:
-		return
-
-	var map = ConceptGraphHeightmap.new()
-	map.init(size)
-
-	var data = map.data # looping on a local var is faster
-
-	var i = 0
-	for y in size.y:
-		for x in size.x:
-			data[i] = noise.get_noise_2d(x, y)
-			i += 1
-
-	map.data = data
-
-	output[0].append(map)
-
-	var gen_time = OS.get_ticks_msec() - start_time
-	#print("Heightmap created in " + str(gen_time) + "ms")
+#	var gen_time = OS.get_ticks_msec() - start_time
+#	print("Heightmap created in " + str(gen_time) + "ms")

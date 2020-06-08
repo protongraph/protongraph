@@ -4,9 +4,9 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "heightmap_flatten_area"
-	display_name = "Heightmap Flatten Area"
+	display_name = "Heightmap: Flatten Area"
 	category = "Heightmaps"
-	description = "Flattens part of the heightmap"
+	description = "Flattens part of the heightmap based on a box input"
 
 	set_input(0, "HeightMap", ConceptGraphDataType.HEIGHTMAP)
 	set_input(1, "Box", ConceptGraphDataType.BOX)
@@ -17,45 +17,57 @@ func _init() -> void:
 			"Raise": 1,
 			"Lower": 2,
 			"Modulate": 3,
-			}})
+		}})
 	set_output(0, "", ConceptGraphDataType.HEIGHTMAP)
 
 
 func _generate_outputs() -> void:
 	var heightmap: ConceptGraphHeightmap = get_input_single(0)
-	var box: ConceptBoxInput = get_input_single(1, 1.0)
-	var operation: String = get_input_single(2, "Raise")
-
+	var box: ConceptBoxInput = get_input_single(1)
+	var operation: String = get_input_single(2, "Flatten")
+	
 	if not heightmap:
 		return
+		
+	if not box:
+		output[0].append(heightmap)
+		return
 
+	var data: Array = heightmap.data
+	var size: Vector2 = heightmap.size
+	
 	var box_position = ConceptGraphNodeUtil.get_global_position3(box)
-	var box_level: float = box_position.y - (box.size.y / 2.0)
-
-	var data = heightmap.data
-	var height := 0.0
+	var box_level: float
+	var p: Vector3
+	var height: float
 	var i := 0
-	for y in heightmap.size.y:
-		for x in heightmap.size.x:
-			var p = heightmap.to_global_space(x, y, true)
+	
+	for y in size.y:
+		for x in size.x:
+			
+			p = heightmap.get_point_global(x, y)
 			if not box.is_inside(p, true):
 				i += 1
 				continue
-
-			height = data[i]
+			
 			box_level = -box.transform.xform_inv(Vector3(p.x, box.size.y / 2.0, p.z)).y
+			height = p.y
+			
+			if operation == "Flatten":
+				height = box_level
 
-			match operation:
-				"Flatten":
-					data[i] = box_level
-				"Raise":
-					if height < box_level:
-						data[i] = box_level
-				"Lower":
-					if height > box_level:
-						data[i] = box_level
-				"Modulate":
-					data[i] = height + box_level
+			elif operation == "Raise":
+				if height < box_level:
+					height = box_level
+
+			elif operation == "Lower":
+				if height > box_level:
+					height = box_level
+
+			elif operation == "Modulate":
+				height += box_level
+			
+			data[i] = (height - heightmap.height_offset) / heightmap.height_scale
 			i += 1
 
 	heightmap.data = data
