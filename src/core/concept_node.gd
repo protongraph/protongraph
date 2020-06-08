@@ -682,7 +682,7 @@ func _generate_default_gui() -> void:
 				label_right.visible = true
 		hbox.add_child(label_right)
 
-	rect_min_size.x += max_output_label_length * 12.0 # TODO; tmp hack, use editor scale here and find a better layout
+	rect_min_size.x += max_output_label_length * 6.0 # TODO; tmp hack, use editor scale here and find a better layout
 	_on_connection_changed()
 	_on_default_gui_ready()
 	_redraw()
