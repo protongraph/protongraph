@@ -177,7 +177,7 @@
 				"offset_y": -200,
 				"slots": {
 					"1": 100,
-					"2": true,
+					"2": false,
 					"3": false
 				}
 			},
@@ -264,6 +264,18 @@
 			"data": {},
 			"editor": {
 				"offset_x": -325,
+				"offset_y": 0,
+				"slots": {
+					"2": 0.01
+				}
+			},
+			"name": "GraphNode12",
+			"type": "blend_noises"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -325,
 				"offset_y": -250,
 				"slots": {
 					"2": 0.25
@@ -287,18 +299,6 @@
 			},
 			"name": "GraphNode10",
 			"type": "simplex_noise"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -325,
-				"offset_y": 0,
-				"slots": {
-					"2": 0.01
-				}
-			},
-			"name": "GraphNode12",
-			"type": "blend_noises"
 		}
 	]
 }
