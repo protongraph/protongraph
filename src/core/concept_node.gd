@@ -21,6 +21,9 @@ var description := "A brief description of the node functionality"
 var node_pool: ConceptGraphNodePool # Injected from template
 var thread_pool: ConceptGraphThreadPool # Injected from template
 var output := []
+# Set to true to force the template to recreate the whole node instead of the style only. Useful if the
+# graphnode has UI controls like OptionButtons that can't be generated properly under a spatial node.
+var requires_full_gui_rebuild := false
 
 var _folder_icon
 var _multi_input_icon
@@ -176,7 +179,7 @@ func get_editor_input(name: String) -> Node:
 	if not parent:
 		return null
 	var input = parent.concept_graph.get_input(name)
-	if not input:
+	if input == null:
 		return null
 
 	var input_copy = input.duplicate(7)
@@ -251,18 +254,18 @@ func restore_editor_data(data: Dictionary) -> void:
 		if data["slots"].has(String(i)):
 			var type = _inputs[i]["type"]
 			var value = data["slots"][String(i)]
-			var hbox = _hboxes[i].get_node("Left")
+			var left = _hboxes[i].get_node("Left")
 
 			match type:
 				ConceptGraphDataType.BOOLEAN:
-					hbox.get_node("CheckBox").pressed = value
+					left.get_node("CheckBox").pressed = value
 				ConceptGraphDataType.SCALAR:
-					hbox.get_node("SpinBox").value = value
+					left.get_node("SpinBox").value = value
 				ConceptGraphDataType.STRING:
-					if hbox.has_node("LineEdit"):
-						hbox.get_node("LineEdit").text = value
-					elif hbox.has_node("OptionButton"):
-						var btn: OptionButton = hbox.get_node("OptionButton")
+					if left.has_node("LineEdit"):
+						left.get_node("LineEdit").text = value
+					elif left.has_node("OptionButton"):
+						var btn: OptionButton = left.get_node("OptionButton")
 						btn.selected = btn.get_item_index(int(value))
 				ConceptGraphDataType.VECTOR2:
 					_set_vector_value(i, value)
@@ -635,6 +638,7 @@ func _generate_default_gui() -> void:
 						dropdown.connect("item_selected", self, "_on_default_gui_value_changed", [i])
 						dropdown.connect("item_selected", self, "_on_default_gui_interaction", [dropdown, i])
 						left_box.add_child(dropdown)
+						requires_full_gui_rebuild = true
 					else:
 						var line_edit = LineEdit.new()
 						line_edit.name = "LineEdit"
@@ -757,9 +761,10 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 
 
 func _get_vector_value(idx: int):
-	var vbox = _hboxes[idx].get_node("Left").get_node("VectorContainer")
-	if not vbox:
-		return
+	var left = _hboxes[idx].get_node("Left")
+	var vbox = left.get_node("VectorContainer")
+	if not left or not vbox:
+		return null
 
 	var vector_box = vbox.get_node("Vector")
 	var count = vector_box.get_child_count()
@@ -800,9 +805,11 @@ func _get_default_gui_value(idx: int):
 
 	match _inputs[idx]["type"]:
 		ConceptGraphDataType.BOOLEAN:
-			return left.get_node("CheckBox").pressed
+			if left.has_node("CheckBox"):
+				return left.get_node("CheckBox").pressed
 		ConceptGraphDataType.SCALAR:
-			return left.get_node("SpinBox").value
+			if left.has_node("SpinBox"):
+				return left.get_node("SpinBox").value
 		ConceptGraphDataType.STRING:
 			if left.has_node("LineEdit"):
 				return left.get_node("LineEdit").text
@@ -813,6 +820,8 @@ func _get_default_gui_value(idx: int):
 			return _get_vector_value(idx)
 		ConceptGraphDataType.VECTOR3:
 			return _get_vector_value(idx)
+
+	return null
 
 """
 Forces the GraphNode to redraw its gui, mostly to get rid of outdated connections after a delete.

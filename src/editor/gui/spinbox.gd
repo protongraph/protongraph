@@ -128,7 +128,7 @@ func _on_value_gui_input(event: InputEvent) -> void:
 			_acc = 0.0
 
 		_acc += event.relative.x
-		if abs(_acc) >= min(20 * step, 20):
+		if abs(_acc) >= min(max(5, 20 * step), 20):
 			if step < 1:
 				value += sign(_acc)
 			else:
