@@ -4,38 +4,22 @@ extends Object
 
 var noise: Object
 var curve: Curve
-var blend_noise: ConceptGraphNoise
-var blend_amount: float = 0.5 setget set_blend_amount
 
-# Implement these functions when inheriting from this class
 func _init():
-	pass
+	pass #noise = noise_object_to_wrap
 
-# wrap calls to the noise class in ._calc_noise()
+# wrap return values in ._apply_curve()
 func get_noise_2d(x:float, y:float) -> float:
-	return 0.0 #_calc_noise(value, x, y)
+	return 0.0 #._apply_curve(value)
 
 func get_noise_2dv(v: Vector2) -> float:
-	return 0.0 #_calc_noise(value, v.x, v.y)
+	return 0.0 #._apply_curve(value)
 
 func get_noise_3d(x: float, y: float, z: float) -> float:
-	return 0.0 #_calc_noise(value, x, y, z)
+	return 0.0 #._apply_curve(value)
 
 func get_noise_3dv(v: Vector3) -> float:
-	return 0.0 #_calc_noise(value, v.x, v.y, v.z)
-
-
-func set_blend_amount(amount) -> void:
-	blend_amount = clamp(amount, 0.0, 1.0)
-
-
-func blend(_noise: ConceptGraphNoise, _amount: float) -> ConceptGraphNoise:
-	var res = get_script().new()
-	res.noise = self
-	res.curve = null
-	res.blend_noise = _noise
-	res.blend_amount = _amount
-	return res
+	return 0.0 #._apply_curve(value)
 
 
 func get_image(width: int, height: int, scale = 1.0, offset = Vector2()) -> Image:
@@ -65,20 +49,11 @@ func get_image(width: int, height: int, scale = 1.0, offset = Vector2()) -> Imag
 	return img
 
 
-func _calc_noise(noise_value: float, x: float, y:float, z = null) -> float:
-
-	if curve is Curve:
-		noise_value = clamp(
-			curve.interpolate_baked(noise_value * 0.5 + 0.5) * 2.0 - 1.0,
-			-1.0, 1.0)
+func _apply_curve(noise_value: float) -> float:
 	
-	if not blend_noise: 
+	if not curve is Curve:
 		return noise_value
 	
-	var blend_value := 0.0
-	if z == null:
-		blend_value = blend_noise.get_noise_2d(x, y)
-	else:
-		blend_value = blend_noise.get_noise_3d(x, y, z)
-	
-	return lerp(noise_value, blend_value, blend_amount)
+	return clamp(
+		curve.interpolate_baked(noise_value * 0.5 + 0.5) * 2.0 - 1.0,
+		-1.0, 1.0)

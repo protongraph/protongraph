@@ -31,11 +31,10 @@ func _generate_outputs() -> void:
 	var noise2: ConceptGraphNoise = get_input_single(1)
 	var blend_amount: float = get_input_single(2, 0.5)
 	
-	if noise1:
-		if noise2: 
-			_noise = noise1.blend(noise2, blend_amount)
-		else:
-			_noise = noise1
+	if noise1 and noise2:
+		_noise = ConceptGraphNoiseBlend.new(noise1, noise2, blend_amount)
+	elif noise1:
+		_noise = noise1
 	elif noise2:
 		_noise = noise2
 	else:
