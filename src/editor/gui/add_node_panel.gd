@@ -19,7 +19,8 @@ var _create_button: Button
 var _description_label: Label
 var _default_description: String
 var _node_library: ConceptNodeLibrary
-var _search_text: String = ""
+var _search_text := ""
+var _group_by_type := false
 
 
 func _ready() -> void:
@@ -45,9 +46,11 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 		nodes.sort_custom(self, "_sort_nodes_by_display_name")
 
 	var categories := []
+	var node_category
 	for node in nodes:
-		if _filter_node(node) and not categories.has(node.category):
-			categories.append(node.category)
+		node_category = _get_node_category(node)
+		if _filter_node(node) and not categories.has(node_category):
+			categories.append(node_category)
 	categories.sort()
 
 	if !_search_text:
@@ -60,7 +63,7 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 
 	for node in nodes:
 		if _filter_node(node):
-			var item_parent = _get_or_create_category(node.category, folder_collapsed)
+			var item_parent = _get_or_create_category(_get_node_category(node), folder_collapsed)
 			var item = _node_tree.create_item(item_parent)
 			item.set_text(0, node.display_name)
 			item.set_tooltip(0, node.description)
@@ -90,6 +93,20 @@ func _get_tree_item(root: TreeItem, name: String) -> TreeItem:
 			return child
 		child = child.get_next()
 	return null
+
+
+func _get_node_category(node) -> String:
+	if not _group_by_type:
+		return node.category
+
+	var tokens = node.category.split('/')
+	tokens.invert()
+	var reversed := ""
+	for i in tokens.size():
+		if i != 0:
+			reversed += "/"
+		reversed += tokens[i]
+	return reversed
 
 
 func _sort_tree(root: TreeItem) -> void:
@@ -127,7 +144,7 @@ func _on_create_button_pressed() -> void:
 
 func _on_Search_text_changed(new_text):
 	_search_text = new_text
-	_ready()
+	_refresh_concept_nodes_list()
 
 
 func _filter_node(node) -> bool:
@@ -139,3 +156,8 @@ func _sort_nodes_by_display_name(a, b):
 	if a.display_name < b.display_name:
 		return true
 	return false
+
+
+func _on_grouping_mode_changed(button_pressed: bool) -> void:
+	_group_by_type = button_pressed
+	_refresh_concept_nodes_list()

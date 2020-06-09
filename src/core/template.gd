@@ -30,7 +30,6 @@ var _thread: Thread
 var _save_thread: Thread
 var _save_queued := false
 var _timer := Timer.new()
-var _simulation_delay := 0.075
 var _template_loaded := false
 var _clear_cache_on_next_run := false
 var _registered_resources := [] # References to Objects needing garbage collection
@@ -147,7 +146,7 @@ Actual simulation happens in _run_generation
 func generate(force_full_simulation := false) -> void:
 	if paused:
 		return
-	_timer.start(_simulation_delay)
+	_timer.start(ProjectSettings.get(ConceptGraphSettings.GENERATION_DELAY) / 1000.0)
 	_clear_cache_on_next_run = _clear_cache_on_next_run or force_full_simulation
 	emit_signal("simulation_started")
 

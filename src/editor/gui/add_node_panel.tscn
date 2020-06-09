@@ -3,7 +3,6 @@
 [ext_resource path="res://addons/concept_graph/src/editor/gui/add_node_panel.gd" type="Script" id=1]
 
 [node name="AddNodeDialog" type="WindowDialog"]
-visible = true
 margin_right = 417.0
 margin_bottom = 277.0
 rect_min_size = Vector2( 512, 400 )
@@ -39,12 +38,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Search" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_right = 484.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Search" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 362.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 placeholder_text = "Search node"
 caret_blink = true
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 366.0
+margin_top = 5.0
+margin_right = 456.0
+margin_bottom = 19.0
+text = "Group by type"
+
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 460.0
+margin_right = 484.0
+margin_bottom = 24.0
 
 [node name="NodeTree" type="Tree" parent="MarginContainer/VBoxContainer"]
 margin_top = 28.0
@@ -89,7 +107,8 @@ margin_bottom = 24.0
 rect_min_size = Vector2( 24, 24 )
 disabled = true
 text = "Create node"
-[connection signal="text_changed" from="MarginContainer/VBoxContainer/Search" to="." method="_on_Search_text_changed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/Search" to="." method="_on_Search_text_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/CheckBox" to="." method="_on_grouping_mode_changed"]
 [connection signal="item_activated" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_item_activated"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_item_selected"]
 [connection signal="nothing_selected" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_nothing_selected"]
