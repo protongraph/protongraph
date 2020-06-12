@@ -30,8 +30,7 @@ func _ready() -> void:
 
 
 func _generate_outputs() -> void:
-
-	_noise = ConceptGraphNoise_Simplex.new()
+	_noise = ConceptGraphNoiseSimplex.new()
 	_noise.noise.seed = get_input_single(0, 0)
 	_noise.noise.octaves = get_input_single(1, 3)
 	_noise.noise.period = get_input_single(2, 64.0)
