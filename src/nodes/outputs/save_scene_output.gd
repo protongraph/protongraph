@@ -27,6 +27,10 @@ func _init() -> void:
 	set_input(1, "Node", ConceptGraphDataType.NODE_3D)
 
 
+func is_final_output_node() -> bool:
+	return true
+
+
 func _fix_path(path: String):
 	if not path.begins_with("res://"):
 		path = "res://" + path

@@ -16,6 +16,8 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var output = get_input(0)
-	if output:
-		print(output)
+	print("Output Console : ", get_input(0))
+
+
+func is_final_output_node() -> bool:
+	return true

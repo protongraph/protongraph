@@ -70,8 +70,11 @@ func is_output_ready() -> bool:
 	return _output_ready
 
 
+"""
+Override this function to return true if the node marks the end of a graphnode.
+"""
 func is_final_output_node() -> bool:
-	return unique_id.find("_output") != -1
+	return false
 
 
 """
@@ -109,7 +112,7 @@ func get_input(idx: int, default = []) -> Array:
 
 	# If no source is connected, check if it's a base type with a value defined on the node itself
 	var local_value = _get_default_gui_value(idx)
-	if local_value:
+	if local_value != null:
 		return [local_value]
 
 	return default # Not a base type and no source connected
