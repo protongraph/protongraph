@@ -81,6 +81,7 @@ func regenerate_graphnodes_style() -> void:
 				child._generate_default_gui_style()
 	_ui_style_ready = true
 
+
 """
 Returns an array of GraphNodes connected to the left of the given slot, including the slot index
 the connection originates from
@@ -141,6 +142,13 @@ func is_node_connected_to_input(node: GraphNode, idx: int) -> bool:
 	return false
 
 
+# TMP hack because GraphEdit just love getting in my way. Update() alone won't redraw the connections
+# and there's nothing exposed to do that so we force a full redraw by moving the view just enough
+# to invalidate the previous view render.
+func force_redraw() -> void:
+	scroll_offset.x += 0.001
+
+
 func _setup_gui() -> void:
 	right_disconnects = true
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -164,8 +172,12 @@ func _disconnect_node_signals(node) -> void:
 func _disconnect_active_connections(node: GraphNode) -> void:
 	var name = node.get_name()
 	for c in get_connection_list():
-		if c["to"] == name or c["from"] == name:
-			disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
+		var to = c["to"]
+		var from = c["from"]
+		if to == name or from == name:
+			disconnect_node(from, c["from_port"], to, c["to_port"])
+			if to != name:
+				get_node(to).emit_signal("connection_changed")
 
 
 func _disconnect_input(node: GraphNode, idx: int) -> void:
@@ -252,7 +264,7 @@ func _on_paste_nodes_request() -> void:
 	undo_redo.commit_action()
 
 	# I couldn't find a way to merge these in a single action because the connect_node can't be called
-	# if the child was not added to the tree first.
+	# if the child was not added to the tree first. TODO : Merge this in a single undoredo action
 	undo_redo.create_action("Create connections")
 	for co in _connections_buffer:
 		var from := -1

@@ -836,13 +836,16 @@ func _get_default_gui_value(idx: int):
 	return null
 
 """
-Forces the GraphNode to redraw its gui, mostly to get rid of outdated connections after a delete.
+Forces the GraphNode to redraw its gui, mostly to fix outdated connections after a resize.
 """
 func _redraw() -> void:
-	emit_signal("resize_request", Vector2(rect_min_size.x, 0.0))
-	hide()
-	show()
-	get_parent().update()
+	if not resizable:
+		emit_signal("resize_request", Vector2(rect_min_size.x, 0.0))
+	if get_parent():
+		get_parent().force_redraw()
+	else:
+		hide()
+		show()
 
 
 func _connect_signals() -> void:
@@ -905,7 +908,11 @@ func _update_slots_types() -> void:
 
 	if slots_types_updated:
 		_setup_slots()
-		# TODO: propagate the type change to next the connected nodes
+		# Propagate the type change to the connected nodes
+		var parent = get_parent()
+		if parent:
+			for node in parent.get_all_right_nodes(self):
+				node.emit_signal("connection_changed")
 
 
 """
@@ -917,7 +924,8 @@ func _on_file_selected(line_edit: LineEdit) -> void:
 
 func _on_resize_request(new_size) -> void:
 	rect_size = new_size
-	_resize_timer.start(2.0)
+	if resizable:
+		_resize_timer.start(2.0)
 
 
 func _on_resize_timeout() -> void:
