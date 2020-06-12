@@ -74,7 +74,6 @@ const COLORS = {
 
 	VECTOR2: Color("7e3f97"),
 	VECTOR3: Color("d67ded"),
-	VECTOR4: Color("ebadf6"),
 }
 
 
@@ -82,13 +81,21 @@ const COLORS = {
 Convert graph node category name to color
 """
 static func to_category_color(category: String) -> Color:
-	match category:
+	var tokens := category.split("/")
+	tokens.invert()
+	var type = tokens[0]
+	if type == "2D" or type == "3D":
+		type = tokens[1]
+
+	match type:
 		"Boxes":
 			return COLORS[BOX]
-		"Curves", "Curves/Inputs", "Curves/Operations", "Curves/Conversion", "Curves/Generators":
+		"Curves":
 			return COLORS[CURVE_3D]
 		"Debug":
 			return Color.black
+		"Heigthmaps":
+			return COLORS[HEIGHTMAP].darkened(0.5)
 		"Inputs":
 			return Color.steelblue
 		"Inspector":
@@ -97,18 +104,20 @@ static func to_category_color(category: String) -> Color:
 			return Color.steelblue
 		"Meshes":
 			return COLORS[MESH]
-		"Nodes/Generators", "Nodes/Operations", "Nodes/Instancers":
+		"Nodes":
 			return Color.firebrick
-		"Noise":
+		"Noises":
 			return COLORS[NOISE]
 		"Output":
 			return Color.black
-		"Vectors":
-			return COLORS[VECTOR2]
 		"Transforms":
 			return Color.maroon
-		"Heigthmaps":
-			return COLORS[HEIGHTMAP].darkened(0.5)
+		"Utilities":
+			return Color("4371b5")
+		"Vectors":
+			return COLORS[VECTOR2]
+		"Scalars":
+			return COLORS[SCALAR].darkened(0.3)
 		_:
 			return Color.black
 

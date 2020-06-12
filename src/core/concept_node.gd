@@ -538,14 +538,22 @@ func _generate_default_gui_style() -> void:
 	style.set_expand_margin_all(4 * scale)
 	style.shadow_size = 8 * scale
 	style.shadow_color = Color(0, 0, 0, 0.2)
-	add_stylebox_override("frame", style)
 
 	# Selected Style
 	var selected_style = style.duplicate()
 	selected_style.shadow_color = ConceptGraphDataType.to_category_color(category)
 	selected_style.shadow_size = 4 * scale
 	selected_style.border_color = Color(0.121569, 0.145098, 0.192157, 0.9)
-	add_stylebox_override("selectedframe", selected_style)
+
+	if not comment:
+		add_stylebox_override("frame", style)
+		add_stylebox_override("selectedframe", selected_style)
+	else:
+		style.set_bg_color(Color("0a4371b5"))
+		style.content_margin_top = 40 * scale
+		add_stylebox_override("comment", style)
+		add_stylebox_override("commentfocus", selected_style)
+
 	add_constant_override("port_offset", 12 * scale)
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
 
@@ -570,7 +578,6 @@ func _generate_default_gui() -> void:
 	_generate_default_gui_style()
 
 	title = display_name
-	resizable = false
 	show_close = true
 	rect_min_size = Vector2(0.0, 0.0)
 	rect_size = Vector2(0.0, 0.0)

@@ -1,6 +1,8 @@
 tool
 extends ConceptNode
 
+var _line_edit_comment: LineEdit
+
 
 func _init() -> void:
 	unique_id = "comment"
@@ -8,20 +10,20 @@ func _init() -> void:
 	category = "Utilities"
 	description = "Insert comment in concept graph editor"
 	resizable = true
+	comment = true
+
+	_line_edit_comment = preload("line_edit_comment.tscn").instance()
+	call_deferred("add_child", _line_edit_comment)
 
 
 func export_custom_data() -> Dictionary:
-	return {"comment_text": $LineEditComment.text}
+	return {"comment_text": _line_edit_comment.text}
 
 
 func restore_custom_data(data: Dictionary) -> void:
 	if not data.has("comment_text"):
 		return
-	$LineEditComment.text = data["comment_text"]
-
-
-func has_custom_gui() -> bool:
-	return true
+	_line_edit_comment.text = data["comment_text"]
 
 
 """

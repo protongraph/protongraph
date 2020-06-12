@@ -13,7 +13,7 @@ var _buffer_rect_size : Vector2
 func _init() -> void:
 	unique_id = "simplex_noise"
 	display_name = "Simplex Noise"
-	category = "Generators/Noise"
+	category = "Generators/Noises"
 	description = "Create an OpenSimplexNoise to be used by other nodes"
 
 	set_input(0, "Seed", ConceptGraphDataType.SCALAR, {"step": 1, "allow_lesser":true})
