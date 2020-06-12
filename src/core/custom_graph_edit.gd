@@ -11,6 +11,7 @@ signal graph_changed
 signal connection_changed
 signal node_created
 signal node_deleted
+signal update_minimap
 
 
 var undo_redo: UndoRedo
@@ -18,6 +19,7 @@ var undo_redo: UndoRedo
 var _copy_buffer := []
 var _connections_buffer := []
 var _ui_style_ready := false
+var _minimap = preload("../editor/gui/graph_minimap.tscn").instance()
 
 
 func _init() -> void:
@@ -31,6 +33,10 @@ func _init() -> void:
 	connect("delete_nodes_request", self, "_on_delete_nodes_request")
 	connect("duplicate_nodes_request", self, "_on_duplicate_nodes_request")
 	connect("_end_node_move", self, "_on_node_changed_zero")
+	connect("node_selected", self, "_on_node_selected")
+
+	_minimap.graph_edit = self
+	call_deferred("add_child", _minimap)
 
 
 func clear_editor() -> void:
@@ -202,6 +208,11 @@ func _on_disconnection_request(from_node: String, from_slot: int, to_node: Strin
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
 	get_node(to_node).emit_signal("connection_changed")
+
+
+func _on_node_selected(_node) -> void:
+	# Make sure the minimap always stays on top
+	_minimap.raise()
 
 
 func _on_node_dragged(from: Vector2, to: Vector2, node: GraphNode) -> void:

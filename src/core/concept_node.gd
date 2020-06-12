@@ -21,6 +21,7 @@ var description := "A brief description of the node functionality"
 var node_pool: ConceptGraphNodePool # Injected from template
 var thread_pool: ConceptGraphThreadPool # Injected from template
 var output := []
+var minimap_color
 # Set to true to force the template to recreate the whole node instead of the style only. Useful if the
 # graphnode has UI controls like OptionButtons that can't be generated properly under a spatial node.
 var requires_full_gui_rebuild := false
@@ -529,6 +530,7 @@ func _generate_default_gui_style() -> void:
 	var style = StyleBoxFlat.new()
 	var color = Color(0.121569, 0.145098, 0.192157, 0.9)
 	style.border_color = ConceptGraphDataType.to_category_color(category)
+	minimap_color = style.border_color
 	style.set_bg_color(color)
 	style.set_border_width_all(2 * scale)
 	style.set_border_width(MARGIN_TOP, 32 * scale)
