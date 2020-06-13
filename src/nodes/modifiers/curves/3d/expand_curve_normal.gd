@@ -42,8 +42,11 @@ func _generate_outputs() -> void:
 			elif j > 0:
 				normal1 = axis.cross(vector_curve.points[j - 1] - vector_curve.points[j])
 
-			if j == point_count - 1 and closed:
-				normal2 = axis.cross(vector_curve.points[j] - vector_curve.points[1])
+			if j == point_count - 1:
+				if closed:
+					normal2 = axis.cross(vector_curve.points[j] - vector_curve.points[1])
+				else:
+					normal2 = axis.cross(vector_curve.points[j - 1] - vector_curve.points[j])
 			else:
 				normal2 = axis.cross(vector_curve.points[j] - vector_curve.points[j + 1])
 

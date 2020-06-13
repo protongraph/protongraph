@@ -159,7 +159,7 @@ func get_output(idx: int, default := []) -> Array:
 			var duplicate = node.duplicate(7)
 
 			# TODO : Check if other nodes needs extra steps
-			if node is Path:
+			if node is Path or node is Path2D:
 				duplicate.curve = node.curve.duplicate(true)
 
 			# Outputs from final nodes are the responsibility of the ConceptGraph node
