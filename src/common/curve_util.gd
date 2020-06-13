@@ -63,3 +63,38 @@ static func make_polygons_points(paths: Array, resolution: float = 1.0) -> Array
 		result.append(polygon_points)
 
 	return result
+
+
+static func make_polygons_path_2d(paths: Array, resolution: float = 50.0) -> Array:
+	var result = []
+	for path in paths:
+		var curve = path.curve
+		var connections = []
+		var polygon_points = []
+		var polygon = PolygonPathFinder.new()
+
+		var length = curve.get_baked_length()
+		var steps = round(length / resolution)
+
+		if steps == 0:
+			continue
+
+		for i in range(steps):
+			# Get a point on the curve
+			var transform = path.transform
+			if path.is_inside_tree():
+				transform = path.global_transform
+			var coords = transform.xform(curve.interpolate_baked((i / (steps - 2)) * length))
+
+			# Store polygon data
+			polygon_points.append(coords)
+			connections.append(i)
+			if(i == steps - 1):
+				connections.append(0)
+			else:
+				connections.append(i + 1)
+
+		polygon.setup(polygon_points, connections)
+		result.append(polygon)
+
+	return result

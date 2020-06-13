@@ -29,7 +29,6 @@ func _generate_outputs() -> void:
 		return
 
 	var polygons = ConceptGraphCurveUtil.make_polygons_path_2d(paths)
-	print(polygons)
 
 	for node in nodes:
 		var inside = false
