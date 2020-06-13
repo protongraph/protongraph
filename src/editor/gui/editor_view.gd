@@ -51,6 +51,10 @@ func enable_template_editor_for(node: ConceptGraph) -> void:
 	if not node:
 		return
 
+	var graph = _get_ref(_current_graph)
+	if graph == node:
+		return
+
 	clear_template_editor()
 	#if not node._template:
 	node.reload_template(false)
@@ -201,6 +205,12 @@ func _clear_graph():
 	var template = _get_ref(_current_template)
 	if template:
 		template.clear()
+
+
+func _clear_template():
+	var graph = _get_ref(_current_graph)
+	if graph:
+		graph.template_path = ""
 
 
 func _on_autosave_toggled(button_pressed: bool) -> void:

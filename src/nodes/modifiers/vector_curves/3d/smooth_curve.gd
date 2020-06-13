@@ -3,15 +3,15 @@ extends ConceptNode
 
 
 func _init() -> void:
-	unique_id = "curve_smooth_2d"
-	display_name = "Smooth Vector Curve 2D"
-	category = "Modifiers/Curves/2D"
+	unique_id = "curve_smooth"
+	display_name = "Smooth Vector Curve"
+	category = "Modifiers/Vector Curves/3D"
 	description = "Smooth a vector curve. Does not create new points."
 
-	set_input(0, "Curve", ConceptGraphDataType.VECTOR_CURVE_2D)
+	set_input(0, "Curve", ConceptGraphDataType.VECTOR_CURVE_3D)
 	set_input(1, "Smooth", ConceptGraphDataType.SCALAR, {"value": 0.25, "min": 0, "max": 1})
 	set_input(2, "Steps", ConceptGraphDataType.SCALAR, {"step": 1, "allow_lesser": false, "value": 1})
-	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE_2D)
+	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE_3D)
 
 
 func _generate_outputs() -> void:
@@ -24,10 +24,10 @@ func _generate_outputs() -> void:
 		var closed: bool = vector_curve.points[0] == vector_curve.points[point_count - 1]
 
 		for i in steps:
-			var previous: Vector2
-			var next: Vector2
-			var mean: Vector2
-			var points := []
+			var previous: Vector3
+			var next: Vector3
+			var mean: Vector3
+			var points := PoolVector3Array()
 
 			for j in point_count:
 				if j == 0:

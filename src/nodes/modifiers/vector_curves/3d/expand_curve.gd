@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "expand_curve_center"
 	display_name = "Expand Curve (Center)"
-	category = "Modifiers/Curves/3D"
+	category = "Modifiers/Vector Curves/3D"
 	description = "Move each point of the curve away from the center. Works best on circular paths."
 
 	set_input(0, "Curves", ConceptGraphDataType.VECTOR_CURVE_3D)

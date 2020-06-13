@@ -129,6 +129,7 @@ func _on_selection_changed() -> void:
 		if node is ConceptGraph:
 			_concept_graph = node
 			_graph_editor_view.enable_template_editor_for(_concept_graph)
+			return
 
 
 func _on_scene_changed(_param) -> void:

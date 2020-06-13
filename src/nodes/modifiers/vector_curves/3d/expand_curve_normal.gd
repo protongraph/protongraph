@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "expand_curve_normal"
 	display_name = "Expand Curve (Normal)"
-	category = "Modifiers/Curves/3D"
+	category = "Modifiers/Vector Curves/3D"
 	description = "Move each point of the curve along its normal vector."
 
 	set_input(0, "Curves", ConceptGraphDataType.VECTOR_CURVE_3D)
@@ -42,16 +42,12 @@ func _generate_outputs() -> void:
 			elif j > 0:
 				normal1 = axis.cross(vector_curve.points[j - 1] - vector_curve.points[j])
 
-			if j == point_count - 1:
-				if closed:
+			if j == point_count - 1 and closed:
 					normal2 = axis.cross(vector_curve.points[j] - vector_curve.points[1])
-				else:
-					normal2 = axis.cross(vector_curve.points[j - 1] - vector_curve.points[j])
-			else:
+			elif j < point_count - 1:
 				normal2 = axis.cross(vector_curve.points[j] - vector_curve.points[j + 1])
 
 			var normal = (normal1 + normal2).normalized()
-
 			points.append(vector_curve.points[j] + (normal * dist))
 
 		vector_curve.points = points

@@ -39,9 +39,9 @@ func _generate_outputs() -> void:
 		if steps == 0:
 			continue
 
-		var points = PoolVector3Array()
+		var points := []
 		for i in range(steps):
-			var pos = curve.interpolate_baked((i / (steps-2)) * length)
+			var pos = curve.interpolate_baked((i / (steps - 1)) * length)
 			points.append(pos)
 
 		p.points = points

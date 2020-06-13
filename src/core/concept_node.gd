@@ -831,13 +831,13 @@ func _get_default_gui_value(idx: int, for_export := false):
 					return btn.get_item_id(btn.selected)
 				else:
 					return btn.get_item_text(btn.selected)
-
 		ConceptGraphDataType.VECTOR2:
 			return _get_vector_value(idx)
 		ConceptGraphDataType.VECTOR3:
 			return _get_vector_value(idx)
 
 	return null
+
 
 """
 Forces the GraphNode to redraw its gui, mostly to fix outdated connections after a resize.
