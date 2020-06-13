@@ -18,7 +18,7 @@ func _init() -> void:
 	set_input(1, "Resolution", ConceptGraphDataType.SCALAR,
 		{"min": 0.001, "allow_lesser": false, "value": 1.0})
 	set_input(2, "Preserve sharp", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
+	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE_3D)
 
 
 func _generate_outputs() -> void:

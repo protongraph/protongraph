@@ -9,7 +9,7 @@ func _init() -> void:
 	description = "Expose a mesh from the editor to the graph"
 
 	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Input mesh"})
-	set_output(0, "", ConceptGraphDataType.MESH)
+	set_output(0, "", ConceptGraphDataType.MESH_3D)
 
 
 func _generate_outputs() -> void:

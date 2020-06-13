@@ -8,11 +8,11 @@ func _init() -> void:
 	category = "Modifiers/Meshes/3D"
 	description = "Expose the internal properties of the CSG mesh"
 
-	set_input(0, "Mesh", ConceptGraphDataType.MESH)
+	set_input(0, "Mesh", ConceptGraphDataType.MESH_3D)
 	set_input(1, "Materials", ConceptGraphDataType.MATERIAL)
 	set_input(2, "Use collision", ConceptGraphDataType.BOOLEAN)
 	set_input(3, "Smooth faces", ConceptGraphDataType.BOOLEAN, {"value": true})
-	set_output(0, "", ConceptGraphDataType.MESH)
+	set_output(0, "", ConceptGraphDataType.MESH_3D)
 
 
 func _generate_outputs() -> void:

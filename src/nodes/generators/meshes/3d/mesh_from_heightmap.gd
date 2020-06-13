@@ -12,7 +12,7 @@ func _init() -> void:
 	set_input(1, "Subdivide", ConceptGraphDataType.SCALAR, {"value": 64, "step":1, "min":1, "allow_lesser": false})
 	set_input(2, "Smoothing", ConceptGraphDataType.BOOLEAN, {"value": true})
 	set_input(3, "Wireframe", ConceptGraphDataType.BOOLEAN, {"value": false})
-	set_output(0, "", ConceptGraphDataType.MESH)
+	set_output(0, "", ConceptGraphDataType.MESH_3D)
 
 
 func _generate_outputs() -> void:

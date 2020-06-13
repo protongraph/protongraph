@@ -8,10 +8,10 @@ func _init() -> void:
 	category = "Modifiers/Curves/3D"
 	description = "Move each point of the curve away from the center. Works best on circular paths."
 
-	set_input(0, "Curves", ConceptGraphDataType.VECTOR_CURVE)
+	set_input(0, "Curves", ConceptGraphDataType.VECTOR_CURVE_3D)
 	set_input(1, "Distance", ConceptGraphDataType.SCALAR, {"min": -100, "allow_lesser": true})
 	set_input(2, "Invert", ConceptGraphDataType.BOOLEAN, {"value": false})
-	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
+	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE_3D)
 
 
 func _generate_outputs() -> void:

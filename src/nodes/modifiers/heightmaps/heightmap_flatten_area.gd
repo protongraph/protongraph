@@ -9,7 +9,7 @@ func _init() -> void:
 	description = "Flattens part of the heightmap based on a box input"
 
 	set_input(0, "HeightMap", ConceptGraphDataType.HEIGHTMAP)
-	set_input(1, "Box", ConceptGraphDataType.BOX)
+	set_input(1, "Box", ConceptGraphDataType.BOX_3D)
 	set_input(2, "", ConceptGraphDataType.STRING, \
 		{"type": "dropdown",
 		"items": {

@@ -8,10 +8,10 @@ func _init() -> void:
 	category = "Modifiers/Curves/3D"
 	description = "Smooth a vector curve. Does not create new points."
 
-	set_input(0, "Curve", ConceptGraphDataType.VECTOR_CURVE)
+	set_input(0, "Curve", ConceptGraphDataType.VECTOR_CURVE_3D)
 	set_input(1, "Smooth", ConceptGraphDataType.SCALAR, {"value": 0.25, "min": 0, "max": 1})
 	set_input(2, "Steps", ConceptGraphDataType.SCALAR, {"step": 1, "allow_lesser": false, "value": 1})
-	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
+	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE_3D)
 
 
 func _generate_outputs() -> void:

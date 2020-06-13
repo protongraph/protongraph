@@ -20,13 +20,13 @@ func _init() -> void:
 	category = "Modifiers/Meshes/3D"
 	description = "Deforms a mesh's y axis along a curve."
 
-	set_input(0, "Input mesh", ConceptGraphDataType.MESH)
+	set_input(0, "Input mesh", ConceptGraphDataType.MESH_3D)
 	set_input(1, "Path curve", ConceptGraphDataType.CURVE_3D)
 	set_input(2, "Start offset", ConceptGraphDataType.SCALAR,{"min": 0, "value": 0.0})
 	set_input(3, "End offset", ConceptGraphDataType.SCALAR,{"min": 0, "value": 1.0})
 	set_input(4, "Tilt", ConceptGraphDataType.BOOLEAN)
 	set_input(5, "Rotate", ConceptGraphDataType.SCALAR,{"min": 0, "value": 1.0})
-	set_output(0, "Mesh", ConceptGraphDataType.MESH)
+	set_output(0, "Mesh", ConceptGraphDataType.MESH_3D)
 
 func _generate_outputs() -> void:
 	var mesh : Mesh = get_input_single(0).mesh

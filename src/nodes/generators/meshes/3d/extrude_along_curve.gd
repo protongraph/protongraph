@@ -11,14 +11,14 @@ func _init() -> void:
 	category = "Generators/Meshes/3D"
 	description = "Extrudes a curve along another curve to create a pipe-like mesh"
 
-	set_input(0, "Bevel curve", ConceptGraphDataType.VECTOR_CURVE)
+	set_input(0, "Bevel curve", ConceptGraphDataType.VECTOR_CURVE_3D)
 	set_input(1, "Path curve", ConceptGraphDataType.CURVE_3D)
-	set_input(2, "Taper curve", ConceptGraphDataType.CURVE_2D)
+	set_input(2, "Taper curve", ConceptGraphDataType.CURVE_FUNC)
 	set_input(3, "Resolution", ConceptGraphDataType.SCALAR, {"min": 0.01, "value": 1.0})
 	set_input(4, "Merge all", ConceptGraphDataType.BOOLEAN, {"value": true})
 	set_input(5, "UV scale X", ConceptGraphDataType.SCALAR, {"min": 0.01, "value": 1.0})
 	set_input(6, "UV scale Y", ConceptGraphDataType.SCALAR, {"min": 0.01, "value": 1.0})
-	set_output(0, "Mesh", ConceptGraphDataType.MESH)
+	set_output(0, "Mesh", ConceptGraphDataType.MESH_3D)
 
 
 func _generate_outputs() -> void:

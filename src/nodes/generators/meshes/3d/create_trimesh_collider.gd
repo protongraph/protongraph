@@ -8,8 +8,8 @@ func _init() -> void:
 	category = "Generators/Meshes/3D"
 	description = "Creates a trimesh collider from a mesh"
 
-	set_input(0, "Node", ConceptGraphDataType.MESH)
-	set_output(0, "", ConceptGraphDataType.MESH)
+	set_input(0, "Node", ConceptGraphDataType.MESH_3D)
+	set_output(0, "", ConceptGraphDataType.MESH_3D)
 
 func _generate_outputs() -> void:
 	var mesh:MeshInstance = get_input_single(0)

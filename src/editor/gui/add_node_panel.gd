@@ -37,6 +37,8 @@ func _ready() -> void:
 
 
 func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
+	if not _node_library:
+		return
 	_node_tree.clear()
 	var root = _node_tree.create_item()
 	_node_tree.set_hide_root(true)

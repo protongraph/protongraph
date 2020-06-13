@@ -17,7 +17,7 @@ func _init() -> void:
 	set_input(1, "Max stages", ConceptGraphDataType.SCALAR, {"step": 1, "min": 0, "allow_lesser": false})
 	set_input(2, "Tolerance", ConceptGraphDataType.SCALAR,
 		{"min": 0, "max": 360, "allow_lesser": false, "allow_higher": false, "value": 4})
-	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
+	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE_3D)
 
 
 func _generate_outputs() -> void:

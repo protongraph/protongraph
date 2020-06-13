@@ -14,7 +14,7 @@ func _init() -> void:
 	description = "Creates a vector curve from the curve control points only"
 
 	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)
-	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE)
+	set_output(0, "", ConceptGraphDataType.VECTOR_CURVE_3D)
 
 
 func _generate_outputs() -> void:

@@ -8,14 +8,14 @@ func _init() -> void:
 	category = "Generators/Meshes/3D"
 	description = "Creates extruded CSG meshes defined by one or multiple polygon curve"
 
-	set_input(0, "Polygon curve", ConceptGraphDataType.VECTOR_CURVE)
+	set_input(0, "Polygon curve", ConceptGraphDataType.VECTOR_CURVE_3D)
 	set_input(1, "Depth", ConceptGraphDataType.SCALAR)
 	set_input(2, "Material", ConceptGraphDataType.MATERIAL)
 	set_input(3, "Use collision", ConceptGraphDataType.BOOLEAN)
 	set_input(4, "Smooth faces", ConceptGraphDataType.BOOLEAN, {"value": true})
 	set_input(5, "Axis", ConceptGraphDataType.VECTOR3)
 	set_input(6, "Local Space", ConceptGraphDataType.BOOLEAN, {"value": false})
-	set_output(0, "Mesh", ConceptGraphDataType.MESH)
+	set_output(0, "Mesh", ConceptGraphDataType.MESH_3D)
 
 
 func _generate_outputs() -> void:

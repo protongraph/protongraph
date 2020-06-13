@@ -21,7 +21,7 @@ func _init() -> void:
 	set_input(2, "Period", ConceptGraphDataType.SCALAR, {"value": 64, "step": 0.1})
 	set_input(3, "Persistence", ConceptGraphDataType.SCALAR, {"value": 0.5, "max": 1, "allow_greater":false})
 	set_input(4, "Lacunarity", ConceptGraphDataType.SCALAR, {"value": 2, "step": 0.01, "max":4, "allow_greater":false})
-	set_input(5, "Curve", ConceptGraphDataType.CURVE_2D)
+	set_input(5, "Curve", ConceptGraphDataType.CURVE_FUNC)
 	set_output(0, "Noise", ConceptGraphDataType.NOISE)
 
 

@@ -12,7 +12,7 @@ func _init() -> void:
 	category = "Generators/Vectors"
 	description = "Exposes the size and center of a box"
 
-	set_input(0, "Box", ConceptGraphDataType.BOX)
+	set_input(0, "Box", ConceptGraphDataType.BOX_3D)
 	set_output(0, "Size", ConceptGraphDataType.VECTOR3)
 	set_output(1, "Center", ConceptGraphDataType.VECTOR3)
 

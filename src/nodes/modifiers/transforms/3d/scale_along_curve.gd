@@ -10,7 +10,7 @@ func _init() -> void:
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Path curve", ConceptGraphDataType.CURVE_3D)
-	set_input(2, "Scale curve", ConceptGraphDataType.CURVE_2D)
+	set_input(2, "Scale curve", ConceptGraphDataType.CURVE_FUNC)
 	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
 	mirror_slots_type(0, 0)

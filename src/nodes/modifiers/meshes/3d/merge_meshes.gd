@@ -14,7 +14,7 @@ func _init() -> void:
 
 	set_input(0, "Meshes", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Merge surfaces", ConceptGraphDataType.BOOLEAN)
-	set_output(0, "", ConceptGraphDataType.MESH)
+	set_output(0, "", ConceptGraphDataType.MESH_3D)
 
 	enable_multiple_connections_on_slot(0)
 

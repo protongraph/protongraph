@@ -11,7 +11,7 @@ func _init() -> void:
 	category = "Converters/Vector Curves/3D"
 	description = "Takes a point curve in input and creates a Path node from it"
 
-	set_input(0, "Vector curve", ConceptGraphDataType.VECTOR_CURVE)
+	set_input(0, "Vector curve", ConceptGraphDataType.VECTOR_CURVE_3D)
 	set_output(0, "", ConceptGraphDataType.CURVE_3D)
 
 
