@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "heightmap_generator"
 	display_name = "Create Heightmap"
-	category = "Generators/Heightmaps"
+	category = "Generators/Heightmaps/3D"
 	description = "Starting point for generating heightmaps"
 
 	set_input(0, "Texture Size", ConceptGraphDataType.SCALAR, {"value":64, "step":1, "min":1, "allow_lesser": false})

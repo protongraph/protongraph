@@ -11,7 +11,7 @@ curve.
 func _init() -> void:
 	unique_id = "curve_tesselate_regular"
 	display_name = "Tesselate (Uniform)"
-	category = "Converters/Curves"
+	category = "Converters/Curves/3D"
 	description = "Creates a vector curve with the same density along the curve"
 
 	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)

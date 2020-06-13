@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "heightmap_flatten_area"
 	display_name = "Flatten Area"
-	category = "Modifiers/Heightmaps"
+	category = "Modifiers/Heightmaps/3D"
 	description = "Flattens part of the heightmap based on a box input"
 
 	set_input(0, "HeightMap", ConceptGraphDataType.HEIGHTMAP)

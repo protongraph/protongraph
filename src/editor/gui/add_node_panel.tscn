@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/concept_graph/src/editor/gui/add_node_panel.gd" type="Script" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "tool
+extends CheckBox
+
+
+func _ready() -> void:
+	if ProjectSettings.has_setting(ConceptGraphSettings.GROUP_NODES_BY_TYPE):
+		pressed = ProjectSettings.get(ConceptGraphSettings.GROUP_NODES_BY_TYPE)
+"
 
 [node name="AddNodeDialog" type="WindowDialog"]
 margin_right = 417.0
@@ -63,6 +73,8 @@ text = "Group by type"
 margin_left = 460.0
 margin_right = 484.0
 margin_bottom = 24.0
+pressed = true
+script = SubResource( 1 )
 
 [node name="NodeTree" type="Tree" parent="MarginContainer/VBoxContainer"]
 margin_top = 28.0

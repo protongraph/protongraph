@@ -9,7 +9,7 @@ Create plane mesh from transforms
 func _init() -> void:
 	unique_id = "plane_mesh_from_transforms"
 	display_name = "Plane Mesh From Transforms"
-	category = "Generators/Meshes"
+	category = "Generators/Meshes/3D"
 	description = "Creates a plane mesh from transforms"
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)

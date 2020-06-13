@@ -17,7 +17,7 @@ Deform a mesh along a curve.
 func _init() -> void:
 	unique_id = "deform_along_path"
 	display_name = "Deform Along Curve"
-	category = "Modifiers/Meshes"
+	category = "Modifiers/Meshes/3D"
 	description = "Deforms a mesh's y axis along a curve."
 
 	set_input(0, "Input mesh", ConceptGraphDataType.MESH)

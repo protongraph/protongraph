@@ -2,6 +2,7 @@ tool
 class_name ConceptGraph, "../../icons/icon_concept_graph.svg"
 extends Node
 
+
 """
 The main class of this plugin.
 Don't use it directly, instead create a ConceptGraph2D or ConceptGraph3D node to your scene and

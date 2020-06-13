@@ -64,10 +64,12 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 	for node in nodes:
 		if _filter_node(node):
 			var item_parent = _get_or_create_category(_get_node_category(node), folder_collapsed)
-			var item = _node_tree.create_item(item_parent)
+			var item: TreeItem = _node_tree.create_item(item_parent)
 			item.set_text(0, node.display_name)
 			item.set_tooltip(0, node.description)
 			item.set_metadata(0, node.unique_id)
+			var color = ConceptGraphDataType.to_category_color(node.category)
+			item.set_icon(0, ConceptGraphEditorUtil.get_square_texture(color))
 
 
 func _get_or_create_category(category: String, collapsed := true) -> TreeItem:

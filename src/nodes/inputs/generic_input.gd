@@ -12,7 +12,7 @@ var _input_name: LineEdit
 func _init() -> void:
 	unique_id = "input_generic"
 	display_name = "Input Generic 3D"
-	category = "Inputs/Nodes"
+	category = "Inputs/Nodes/3D"
 	description = "Exposes a Node3D from the scene tree to the graph editor. Must be a child of the Input node."
 
 	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Input node"})

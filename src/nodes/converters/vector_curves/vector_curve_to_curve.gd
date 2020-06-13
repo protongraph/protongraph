@@ -8,7 +8,7 @@ Take a point curve in input and creates a Path node from it
 func _init() -> void:
 	unique_id = "convert_points_to_curve"
 	display_name = "To Curve"
-	category = "Converters/Vector Curves"
+	category = "Converters/Vector Curves/3D"
 	description = "Takes a point curve in input and creates a Path node from it"
 
 	set_input(0, "Vector curve", ConceptGraphDataType.VECTOR_CURVE)

@@ -10,7 +10,7 @@ var _rng: RandomNumberGenerator
 func _init() -> void:
 	unique_id = "curve_random_displacement"
 	display_name = "Random Displacement"
-	category = "Modifiers/Curves"
+	category = "Modifiers/Curves/3D"
 	description = "Add a random offset to each points of the curve"
 
 	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)

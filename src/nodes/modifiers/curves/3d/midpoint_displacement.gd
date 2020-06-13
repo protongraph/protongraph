@@ -10,7 +10,7 @@ var _rng: RandomNumberGenerator
 func _init() -> void:
 	unique_id = "curve_midpoint_displacement"
 	display_name = "Midpoint Displacement"
-	category = "Modifiers/Curves"
+	category = "Modifiers/Curves/3D"
 	description = "Randomize a curve using midpoint displacement. This creates new points in the curve."
 
 	set_input(0, "Curve", ConceptGraphDataType.CURVE_3D)

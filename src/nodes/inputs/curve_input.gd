@@ -4,8 +4,8 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "nodetree_input_curve"
-	display_name = "Input Curve"
-	category = "Inputs/Curves"
+	display_name = "Input Curve 3D"
+	category = "Inputs/Curves/3D"
 	description = "Expose one or multiple curves from the scene tree to the graph editor. Must be a child of the Input node."
 
 	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Curve name"})

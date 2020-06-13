@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "csg_edit_mesh_property"
 	display_name = "Edit Mesh Properties"
-	category = "Modifiers/Meshes"
+	category = "Modifiers/Meshes/3D"
 	description = "Expose the internal properties of the CSG mesh"
 
 	set_input(0, "Mesh", ConceptGraphDataType.MESH)

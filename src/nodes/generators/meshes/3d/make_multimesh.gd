@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "make_multimesh"
 	display_name = "Make MultiMesh"
-	category = "Generators/Meshes"
+	category = "Generators/Meshes/3D"
 	description = "Makes a MultiMeshInstance from a single mesh or MultimeshInstance and a list of transforms"
 
 	set_input(0, "Source", ConceptGraphDataType.NODE_3D)

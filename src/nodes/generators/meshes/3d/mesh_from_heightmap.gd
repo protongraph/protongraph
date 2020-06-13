@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "mesh_from_heightmap"
 	display_name = "Mesh from Heightmap"
-	category = "Generators/Meshes"
+	category = "Generators/Meshes/3D"
 	description = "Creates a mesh from a heightmap"
 
 	set_input(0, "HeightMap", ConceptGraphDataType.HEIGHTMAP)

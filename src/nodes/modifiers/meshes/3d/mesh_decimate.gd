@@ -11,7 +11,7 @@ var mesh_optimizer = preload("res://addons/concept_graph/src/native/bin/mesh_opt
 func _init() -> void:
 	unique_id = "mesh_decimate"
 	display_name = "Decimate Mesh"
-	category = "Modifiers/Meshes"
+	category = "Modifiers/Meshes/3D"
 	description = "Reduce the mesh polycount"
 
 	set_input(0, "Mesh", ConceptGraphDataType.MESH)

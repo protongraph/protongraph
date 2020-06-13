@@ -9,7 +9,7 @@ Combine all meshes into one
 func _init() -> void:
 	unique_id = "merge_meshes"
 	display_name = "Merge Meshes"
-	category = "Modifiers/Meshes"
+	category = "Modifiers/Meshes/3D"
 	description = "Combine all the MeshInstances into a single one"
 
 	set_input(0, "Meshes", ConceptGraphDataType.NODE_3D)
