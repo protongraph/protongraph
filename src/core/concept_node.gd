@@ -231,7 +231,7 @@ func export_editor_data() -> Dictionary:
 	data["slots"] = {}
 	for i in _inputs.size():
 		var idx = String(i) # Needed to fix inconsistencies when calling restore
-		var local_value = _get_default_gui_value(i)
+		var local_value = _get_default_gui_value(i, true)
 		if local_value != null:
 			data["slots"][idx] = local_value
 
@@ -810,7 +810,7 @@ func _set_vector_value(idx: int, value) -> void:
 		vector_box.get_child(i).value = float(tokens[i])
 
 
-func _get_default_gui_value(idx: int):
+func _get_default_gui_value(idx: int, for_export := false):
 	var left = _hboxes[idx].get_node("Left")
 	if not left:
 		return null
@@ -827,7 +827,11 @@ func _get_default_gui_value(idx: int):
 				return left.get_node("LineEdit").text
 			elif left.has_node("OptionButton"):
 				var btn = left.get_node("OptionButton")
-				return btn.get_item_id(btn.selected)
+				if for_export:
+					return btn.get_item_id(btn.selected)
+				else:
+					return btn.get_item_text(btn.selected)
+
 		ConceptGraphDataType.VECTOR2:
 			return _get_vector_value(idx)
 		ConceptGraphDataType.VECTOR3:
