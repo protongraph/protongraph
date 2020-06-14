@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "scale_along_curve_2d"
-	display_name = "Scale Along Curve"
+	display_name = "Scale Along Curve 2D"
 	category = "Modifiers/Transforms/2D"
 	description = "Scales nodes along a curve"
 

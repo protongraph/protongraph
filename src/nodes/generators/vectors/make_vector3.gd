@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "value_vector3"
-	display_name = "Make Vector3"
+	display_name = "Create Vector3"
 	category = "Generators/Vectors"
 	description = "A vector constant"
 

@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "value_scalar"
-	display_name = "Make Scalar"
+	display_name = "Create Scalar"
 	category = "Generators/Scalars"
 	description = "Returns a number"
 

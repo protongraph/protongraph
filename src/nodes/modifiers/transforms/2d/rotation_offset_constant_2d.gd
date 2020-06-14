@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "rotate_transforms_offset_2d"
-	display_name = "Rotate (Constant)"
+	display_name = "Rotate (Constant) 2D"
 	category = "Modifiers/Transforms/2D"
 	description = "Apply a constant rotation to a set of nodes, on top of their existing rotation"
 

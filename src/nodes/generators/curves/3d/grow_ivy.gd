@@ -11,7 +11,7 @@ var _reference: Transform
 
 func _init() -> void:
 	unique_id = "curve_generator_ivy_1"
-	display_name = "Grow ivy curve"
+	display_name = "Grow Ivy 3D"
 	category = "Generators/Curves/3D"
 	description = "Generates a curve following a random path above physical geometry"
 

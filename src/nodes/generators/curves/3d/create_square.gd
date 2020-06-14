@@ -8,7 +8,7 @@ Generates a curve made of 4 points to make a rectangle
 
 func _init() -> void:
 	unique_id = "curve_generator_square"
-	display_name = "Create Rectangle"
+	display_name = "Create Rectangle 3D"
 	category = "Generators/Curves/3D"
 	description = "Creates a rectangle shaped path object"
 

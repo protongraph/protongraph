@@ -9,7 +9,7 @@ This does not preserve the in / out positions of each controls.
 
 func _init() -> void:
 	unique_id = "curve_tesselate_exact_2d"
-	display_name = "Tesselate - Exact"
+	display_name = "Tesselate (Exact) 2D"
 	category = "Converters/Curves/2D"
 	description = "Creates a vector curve from the curve control points only"
 

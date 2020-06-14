@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "scale_transforms_2d"
-	display_name = "Scale (Constant)"
+	display_name = "Scale (Constant) 2D"
 	category = "Modifiers/Transforms/2D"
 	description = "Apply a constant scale to a set of nodes"
 

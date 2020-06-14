@@ -102,6 +102,8 @@ static func to_category_color(category: String) -> Color:
 			return COLORS[BOX_3D]
 		"Curves":
 			return COLORS[CURVE_3D]
+		"Vector Curves":
+			return COLORS[VECTOR_CURVE_3D]
 		"Debug":
 			return Color.black
 		"Heigthmaps":

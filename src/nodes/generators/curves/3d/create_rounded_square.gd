@@ -8,7 +8,7 @@ Generates a rectangle with rounded edges curve
 
 func _init() -> void:
 	unique_id = "curve_generator_rounded_square"
-	display_name = "Create Rounded Square"
+	display_name = "Create Rounded Square 3D"
 	category = "Generators/Curves/3D"
 	description = "Creates a rounded square curve"
 

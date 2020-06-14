@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "copy_transform"
-	display_name = "Transform (Copy)"
+	display_name = "Replace Transform 3D"
 	category = "Modifiers/Transforms/3D"
 	description = "Replace the target's transform by the source's transform"
 

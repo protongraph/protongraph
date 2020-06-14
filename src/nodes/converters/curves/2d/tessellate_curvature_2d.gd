@@ -9,7 +9,7 @@ controlled by the curvature. Straight lines will have less points and curved par
 
 func _init() -> void:
 	unique_id = "curve_tesselate_curvature_2d"
-	display_name = "Tesselate - Curvature"
+	display_name = "Tesselate (Curvature) 2D"
 	category = "Converters/Curves/2D"
 	description = "Creates a vector curve with a curvature controlled point density"
 

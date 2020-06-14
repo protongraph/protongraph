@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "make_multimesh"
-	display_name = "Make MultiMesh"
+	display_name = "Create MultiMesh"
 	category = "Generators/Meshes/3D"
 	description = "Makes a MultiMeshInstance from a single mesh or MultimeshInstance and a list of transforms"
 

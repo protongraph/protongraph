@@ -11,7 +11,7 @@ var _resolution := 0.2 #tmp
 
 func _init() -> void:
 	unique_id = "exclude_points_from_noise"
-	display_name = "Exclude From Noise"
+	display_name = "Exclude From Noise 3D"
 	category = "Modifiers/Nodes/3D"
 	description = "Discard all the points with a corresponding noise value above a given threshold"
 

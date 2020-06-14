@@ -34,6 +34,7 @@ func _init() -> void:
 	connect("duplicate_nodes_request", self, "_on_duplicate_nodes_request")
 	connect("_end_node_move", self, "_on_node_changed_zero")
 	connect("node_selected", self, "_on_node_selected")
+	connect("graph_changed", self, "_on_graph_changed")
 
 	_minimap.graph_edit = self
 	call_deferred("add_child", _minimap)
@@ -224,6 +225,10 @@ func _on_disconnection_request(from_node: String, from_slot: int, to_node: Strin
 
 func _on_node_selected(_node) -> void:
 	# Make sure the minimap always stays on top
+	_minimap.raise()
+
+
+func _on_graph_changed() -> void:
 	_minimap.raise()
 
 

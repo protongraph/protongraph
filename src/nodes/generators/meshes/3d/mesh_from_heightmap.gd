@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "mesh_from_heightmap"
-	display_name = "Mesh from Heightmap"
+	display_name = "Create Mesh from Heightmap"
 	category = "Generators/Meshes/3D"
 	description = "Creates a mesh from a heightmap"
 

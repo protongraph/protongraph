@@ -8,7 +8,7 @@ Creates an array of transforms
 
 func _init() -> void:
 	unique_id = "create_point_array"
-	display_name = "Points Array"
+	display_name = "Create Points Array"
 	category = "Generators/Transforms/3D"
 	description = "Creates an array of points"
 

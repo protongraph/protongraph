@@ -7,7 +7,7 @@ Extrude a curve along another one at constant intervals.
 
 func _init() -> void:
 	unique_id = "extrude_bevel_along_path"
-	display_name = "Extrude Along Curve"
+	display_name = "Extrude Along Curve 3D"
 	category = "Generators/Meshes/3D"
 	description = "Extrudes a curve along another curve to create a pipe-like mesh"
 
@@ -16,6 +16,8 @@ func _init() -> void:
 	set_input(2, "Taper curve", ConceptGraphDataType.CURVE_FUNC)
 	set_input(3, "Resolution", ConceptGraphDataType.SCALAR, {"min": 0.01, "value": 1.0})
 	set_input(4, "UV scale", ConceptGraphDataType.VECTOR2, {"min": 0.01, "value": 1.0})
+	set_input(5, "Smooth", ConceptGraphDataType.BOOLEAN, {"value": false})
+	#set_input(6, "Close caps", ConceptGraphDataType.BOOLEAN, {"value": false})
 	set_output(0, "Mesh", ConceptGraphDataType.MESH_3D)
 
 
@@ -25,6 +27,8 @@ func _generate_outputs() -> void:
 	var taper: Curve = get_input_single(2)	# and vary its scale at each step based on this
 	var resolution: float = get_input_single(3, 1.0)	# at this interval
 	var uv_scale: Vector2 = get_input_single(4, 1.0)
+	var smooth: bool = get_input_single(5, false)
+	#var close_caps: bool = get_input_single(6, false)
 
 	if resolution == 0:
 		resolution = 0.01
@@ -37,7 +41,7 @@ func _generate_outputs() -> void:
 	for path in paths:
 		surface_tool.clear()
 		surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES);
-		surface_tool.add_smooth_group(true)
+		surface_tool.add_smooth_group(smooth)
 
 		var curve: Curve3D = path.curve
 		var length: float = curve.get_baked_length()

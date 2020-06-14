@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "duplicate_nodes"
-	display_name = "Spawn Duplicates"
+	display_name = "Create Duplicates 3D"
 	category = "Generators/Nodes/3D"
 	description = "Spawns multiple copies of a node at the given positions"
 

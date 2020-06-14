@@ -8,7 +8,7 @@ Combine all meshes into one
 
 func _init() -> void:
 	unique_id = "merge_meshes"
-	display_name = "Merge Meshes"
+	display_name = "Merge Meshes 3D"
 	category = "Modifiers/Meshes/3D"
 	description = "Combine all the MeshInstances into a single one"
 
@@ -42,7 +42,6 @@ func merge_mesh_instances(mesh_instances: Array) -> MeshInstance:
 	var total_surfaces = 0
 	var array_mesh = ArrayMesh.new()
 
-	var mi: MeshInstance
 	for mi in mesh_instances:
 		var material: Material = mi.material_override
 		var mesh: Mesh = mi.mesh
@@ -84,7 +83,6 @@ func merge_mesh_surfaces(mesh_instances: Array) -> MeshInstance:
 
 	var material: Material
 
-	var mi: MeshInstance
 	for mi in mesh_instances:
 		if not material:
 			material = mi.material_override

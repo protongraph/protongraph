@@ -8,7 +8,7 @@ Generates a curve object made of a single line
 
 func _init() -> void:
 	unique_id = "curve_generator_line"
-	display_name = "Create Line"
+	display_name = "Create Line 3D"
 	category = "Generators/Curves/3D"
 	description = "Creates a line curve"
 

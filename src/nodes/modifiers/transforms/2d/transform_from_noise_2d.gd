@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "transform_from_noise_2d"
-	display_name = "Transform (Noise)"
+	display_name = "Transform (Noise) 2D"
 	category = "Modifiers/Transforms/2D"
 	description = "Apply random positions, rotations or scales to a set of nodes, based on a noise input"
 

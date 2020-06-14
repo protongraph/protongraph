@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "transform_random_2d"
-	display_name = "Transform (Random)"
+	display_name = "Transform (Random) 2D"
 	category = "Modifiers/Transforms/2D"
 	description = "Apply random positions, rotations or scales to a set of nodes"
 

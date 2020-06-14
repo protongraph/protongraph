@@ -13,14 +13,17 @@ signal create_node
 export var node_tree: NodePath
 export var create_button: NodePath
 export var description_text: NodePath
+export var grouping_button: NodePath
 
 var _node_tree: Tree
 var _create_button: Button
 var _description_label: Label
+var _grouping_button: Button
 var _default_description: String
 var _node_library: ConceptNodeLibrary
 var _search_text := ""
 var _group_by_type := false
+var _ready := false
 
 
 func _ready() -> void:
@@ -35,10 +38,16 @@ func _ready() -> void:
 	_description_label = get_node(description_text)
 	_default_description = _description_label.text
 
+	_grouping_button = get_node(grouping_button)
+	_ready = true
+
 
 func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
-	if not _node_library:
+	if not _ready:
 		return
+
+	_group_by_type = _grouping_button.pressed
+
 	_node_tree.clear()
 	var root = _node_tree.create_item()
 	_node_tree.set_hide_root(true)
@@ -162,6 +171,9 @@ func _sort_nodes_by_display_name(a, b):
 	return false
 
 
-func _on_grouping_mode_changed(button_pressed: bool) -> void:
-	_group_by_type = button_pressed
+func _on_grouping_type_changed(_pressed):
+	_refresh_concept_nodes_list()
+
+
+func _on_dialog_about_to_show() -> void:
 	_refresh_concept_nodes_list()

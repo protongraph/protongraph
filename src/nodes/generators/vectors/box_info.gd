@@ -8,7 +8,7 @@ Returns the size and center of a box
 
 func _init() -> void:
 	unique_id = "expose_box_info"
-	display_name = "Box Size/Center"
+	display_name = "Break Box 3D"
 	category = "Generators/Vectors"
 	description = "Exposes the size and center of a box"
 

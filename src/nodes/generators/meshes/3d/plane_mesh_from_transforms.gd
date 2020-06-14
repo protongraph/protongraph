@@ -8,9 +8,9 @@ Create plane mesh from transforms
 
 func _init() -> void:
 	unique_id = "plane_mesh_from_transforms"
-	display_name = "Plane Mesh From Transforms"
+	display_name = "Create Plane Mesh from Transforms"
 	category = "Generators/Meshes/3D"
-	description = "Creates a plane mesh from transforms"
+	description = "Creates a plane mesh from a grid of transforms"
 
 	set_input(0, "Nodes", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Use collision", ConceptGraphDataType.BOOLEAN)
@@ -45,14 +45,14 @@ func _generate_outputs() -> void:
 	var i = 0
 	var j = 0
 	var pos: Vector3
-	var node:Position3D
+
 	for node in nodes:
 		x = i % verts_side
 		z = i / verts_side
 		pos = node.translation
 		verts[i] = pos
 #		points[i] = Vector2(Vector2(pos.x, pos.z))
-		uvs[i] = Vector2(z/float(verts_side), x/float(verts_side))
+		uvs[i] = Vector2(z / float(verts_side), x / float(verts_side))
 		if x and z:
 			indices[j]   = i-verts_side
 			indices[j+1] = i-verts_side-1
@@ -68,10 +68,10 @@ func _generate_outputs() -> void:
 
 	# calculate the normal for each triangle
 	# add it to each of the triangles vertex normals
-	for i in indices.size() / 3:
-		var i1 = indices[i*3]
-		var i2 = indices[i*3+1]
-		var i3 = indices[i*3+2]
+	for k in indices.size() / 3:
+		var i1 = indices[k * 3]
+		var i2 = indices[k * 3 + 1]
+		var i3 = indices[k * 3 + 2]
 		var a = verts[i1]
 		var b = verts[i2]
 		var c = verts[i3]
@@ -81,8 +81,8 @@ func _generate_outputs() -> void:
 		normals[i3] += n
 
 	# then normalize the blended normals of each vertex
-	for i in verts_total:
-		normals[i] = normals[i].normalized()
+	for k in verts_total:
+		normals[k] = normals[k].normalized()
 
 	var arrays = Array()
 	arrays.resize(Mesh.ARRAY_MAX)

@@ -25,6 +25,7 @@ __meta__ = {
 node_tree = NodePath("MarginContainer/VBoxContainer/NodeTree")
 create_button = NodePath("MarginContainer/VBoxContainer/ActionContainer/CreateButton")
 description_text = NodePath("MarginContainer/VBoxContainer/DescriptionText")
+grouping_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/CheckBox")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -119,8 +120,9 @@ margin_bottom = 24.0
 rect_min_size = Vector2( 24, 24 )
 disabled = true
 text = "Create node"
+[connection signal="about_to_show" from="." to="." method="_on_dialog_about_to_show"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/Search" to="." method="_on_Search_text_changed"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/CheckBox" to="." method="_on_grouping_mode_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/CheckBox" to="." method="_on_grouping_type_changed"]
 [connection signal="item_activated" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_item_activated"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_item_selected"]
 [connection signal="nothing_selected" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_nothing_selected"]
