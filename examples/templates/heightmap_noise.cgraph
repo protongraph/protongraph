@@ -1,0 +1,304 @@
+{
+	"connections": [
+		{
+			"from": "GraphNode4",
+			"from_port": 0,
+			"to": "GraphNode6",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode6",
+			"from_port": 0,
+			"to": "GraphNode",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode7",
+			"from_port": 0,
+			"to": "GraphNode6",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode9",
+			"from_port": 0,
+			"to": "GraphNode12",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode13",
+			"from_port": 0,
+			"to": "GraphNode12",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode11",
+			"from_port": 0,
+			"to": "GraphNode10",
+			"to_port": 5
+		},
+		{
+			"from": "GraphNode14",
+			"from_port": 0,
+			"to": "GraphNode13",
+			"to_port": 5
+		},
+		{
+			"from": "GraphNode5",
+			"from_port": 0,
+			"to": "GraphNode2",
+			"to_port": 5
+		},
+		{
+			"from": "GraphNode12",
+			"from_port": 0,
+			"to": "GraphNode8",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode16",
+			"from_port": 0,
+			"to": "GraphNode15",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode3",
+			"from_port": 0,
+			"to": "GraphNode8",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode8",
+			"from_port": 0,
+			"to": "GraphNode15",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode15",
+			"from_port": 0,
+			"to": "GraphNode4",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode10",
+			"from_port": 0,
+			"to": "GraphNode9",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode2",
+			"from_port": 0,
+			"to": "GraphNode9",
+			"to_port": 0
+		}
+	],
+	"nodes": [
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 975,
+				"offset_y": -200,
+				"slots": {}
+			},
+			"name": "GraphNode",
+			"type": "final_output"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -800,
+				"offset_y": -350,
+				"slots": {
+					"0": "Elevation"
+				}
+			},
+			"name": "GraphNode5",
+			"type": "inspector_curve_2d"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -600,
+				"offset_y": -475,
+				"slots": {
+					"0": 6,
+					"1": 4,
+					"2": 800,
+					"3": 0.2,
+					"4": 3.5
+				}
+			},
+			"name": "GraphNode2",
+			"type": "simplex_noise"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -800,
+				"offset_y": -100,
+				"slots": {
+					"0": "Hills"
+				}
+			},
+			"name": "GraphNode11",
+			"type": "inspector_curve_2d"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -600,
+				"offset_y": 25,
+				"slots": {
+					"0": 0,
+					"1": 4,
+					"2": 80,
+					"3": 0.25,
+					"4": 4
+				}
+			},
+			"name": "GraphNode13",
+			"type": "simplex_noise"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -800,
+				"offset_y": 150,
+				"slots": {
+					"0": "Erosion"
+				}
+			},
+			"name": "GraphNode14",
+			"type": "inspector_curve_2d"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 375,
+				"offset_y": -200,
+				"slots": {
+					"1": 100,
+					"2": false,
+					"3": false
+				}
+			},
+			"name": "GraphNode4",
+			"type": "mesh_from_heightmap"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 375,
+				"offset_y": -25,
+				"slots": {
+					"2": 0
+				}
+			},
+			"name": "GraphNode15",
+			"type": "heightmap_flatten_area"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 700,
+				"offset_y": -200,
+				"slots": {
+					"2": false
+				}
+			},
+			"name": "GraphNode6",
+			"type": "set_material_to_node"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 700,
+				"offset_y": -50,
+				"slots": {
+					"0": "Terrain"
+				}
+			},
+			"name": "GraphNode7",
+			"type": "inspector_spatial_material"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 0,
+				"offset_y": -200,
+				"slots": {
+					"0": 100,
+					"1": 1000,
+					"2": 300,
+					"3": 280
+				}
+			},
+			"name": "GraphNode3",
+			"type": "heightmap_generator"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 0,
+				"offset_y": -25,
+				"slots": {
+					"2": "(1, 1, 1)",
+					"3": "(0, 0, 0)"
+				}
+			},
+			"name": "GraphNode8",
+			"type": "heightmap_apply_noise"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 375,
+				"offset_y": 125,
+				"slots": {
+					"0": "Hole"
+				}
+			},
+			"name": "GraphNode16",
+			"type": "input_box"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -325,
+				"offset_y": 0,
+				"slots": {
+					"2": 0.01
+				}
+			},
+			"name": "GraphNode12",
+			"type": "blend_noises"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -325,
+				"offset_y": -250,
+				"slots": {
+					"2": 0.25
+				}
+			},
+			"name": "GraphNode9",
+			"type": "blend_noises"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -600,
+				"offset_y": -225,
+				"slots": {
+					"0": 3,
+					"1": 4,
+					"2": 200,
+					"3": 0.2,
+					"4": 4
+				}
+			},
+			"name": "GraphNode10",
+			"type": "simplex_noise"
+		}
+	]
+}

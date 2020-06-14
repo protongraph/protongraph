@@ -1,8 +1,36 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://addons/concept_graph/src/editor/gui/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/concept_graph/src/editor/gui/create_template.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/concept_graph/src/editor/gui/add_node_panel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/concept_graph/icons/progress/icon_progress_1.svg" type="Texture" id=4]
+[ext_resource path="res://addons/concept_graph/icons/progress/icon_progress_8.svg" type="Texture" id=5]
+[ext_resource path="res://addons/concept_graph/icons/progress/icon_progress_3.svg" type="Texture" id=6]
+[ext_resource path="res://addons/concept_graph/icons/progress/icon_progress_7.svg" type="Texture" id=7]
+[ext_resource path="res://addons/concept_graph/icons/progress/icon_progress_6.svg" type="Texture" id=8]
+[ext_resource path="res://addons/concept_graph/icons/progress/icon_progress_4.svg" type="Texture" id=9]
+[ext_resource path="res://addons/concept_graph/icons/progress/icon_progress_2.svg" type="Texture" id=10]
+[ext_resource path="res://addons/concept_graph/icons/progress/icon_progress_5.svg" type="Texture" id=11]
+
+[sub_resource type="AnimatedTexture" id=1]
+flags = 4
+frames = 8
+fps = 12.0
+frame_0/texture = ExtResource( 4 )
+frame_1/texture = ExtResource( 10 )
+frame_1/delay_sec = 0.0
+frame_2/texture = ExtResource( 6 )
+frame_2/delay_sec = 0.0
+frame_3/texture = ExtResource( 9 )
+frame_3/delay_sec = 0.0
+frame_4/texture = ExtResource( 11 )
+frame_4/delay_sec = 0.0
+frame_5/texture = ExtResource( 8 )
+frame_5/delay_sec = 0.0
+frame_6/texture = ExtResource( 7 )
+frame_6/delay_sec = 0.0
+frame_7/texture = ExtResource( 5 )
+frame_7/delay_sec = 0.0
 
 [node name="TemplateEditor" type="Control"]
 anchor_right = 1.0
@@ -39,9 +67,10 @@ rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 0
 
 [node name="Left" type="HBoxContainer" parent="PanelContainer/TemplateParent/TemplateControls"]
-margin_right = 1732.0
+margin_right = 1598.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
+custom_constants/separation = 10
 
 [node name="Autosave" type="CheckBox" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
 margin_right = 87.0
@@ -54,8 +83,8 @@ __meta__ = {
 }
 
 [node name="SaveButton" type="Button" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
-margin_left = 91.0
-margin_right = 132.0
+margin_left = 97.0
+margin_right = 138.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 4
@@ -65,8 +94,8 @@ __meta__ = {
 }
 
 [node name="ReplayButton" type="Button" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
-margin_left = 136.0
-margin_right = 262.0
+margin_left = 148.0
+margin_right = 274.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 4
@@ -75,10 +104,37 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="VSeparator3" type="VSeparator" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 284.0
+margin_right = 288.0
+margin_bottom = 24.0
+
+[node name="LoadingIndicator" type="HBoxContainer" parent="PanelContainer/TemplateParent/TemplateControls/Left"]
+margin_left = 298.0
+margin_right = 434.0
+margin_bottom = 24.0
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/TemplateParent/TemplateControls/Left/LoadingIndicator"]
+margin_top = 4.0
+margin_right = 16.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 8, 8 )
+size_flags_vertical = 4
+texture = SubResource( 1 )
+
+[node name="Label" type="Label" parent="PanelContainer/TemplateParent/TemplateControls/Left/LoadingIndicator"]
+margin_left = 20.0
+margin_top = 5.0
+margin_right = 136.0
+margin_bottom = 19.0
+text = "Generating output"
+
 [node name="Right" type="HBoxContainer" parent="PanelContainer/TemplateParent/TemplateControls"]
-margin_left = 1736.0
+margin_left = 1602.0
 margin_right = 1906.0
 margin_bottom = 24.0
+custom_constants/separation = 20
 
 [node name="GraphName" type="Label" parent="PanelContainer/TemplateParent/TemplateControls/Right"]
 margin_top = 5.0
@@ -87,15 +143,20 @@ margin_bottom = 19.0
 size_flags_horizontal = 0
 text = "MyGraphName"
 
-[node name="VSeparator2" type="VSeparator" parent="PanelContainer/TemplateParent/TemplateControls/Right"]
-modulate = Color( 1, 1, 1, 0 )
-margin_left = 99.0
-margin_right = 103.0
+[node name="ClearTemplate" type="Button" parent="PanelContainer/TemplateParent/TemplateControls/Right"]
+margin_left = 115.0
+margin_right = 221.0
 margin_bottom = 24.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_vertical = 4
+text = "Clear template"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ClearGraph" type="Button" parent="PanelContainer/TemplateParent/TemplateControls/Right"]
-margin_left = 107.0
-margin_right = 170.0
+margin_left = 241.0
+margin_right = 304.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 4
@@ -109,17 +170,16 @@ margin_top = 28.0
 margin_right = 1906.0
 margin_bottom = 1066.0
 size_flags_vertical = 3
-scroll_offset = Vector2( -2, -6 )
+scroll_offset = Vector2( -2, -28 )
 
 [node name="AddNodeDialog" parent="." instance=ExtResource( 3 )]
-visible = false
 
 [node name="LoadOrCreateTemplate" parent="." instance=ExtResource( 2 )]
 visible = false
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+[node name="ConfirmationDialogClearAll" type="ConfirmationDialog" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -131,6 +191,24 @@ margin_bottom = 35.0
 popup_exclusive = true
 window_title = "Clear all"
 dialog_text = "Delete all the graph nodes from this template ?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmationDialogClearTemplate" type="ConfirmationDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -159.5
+margin_top = -35.0
+margin_right = 159.5
+margin_bottom = 35.0
+popup_exclusive = true
+window_title = "Clear template"
+dialog_text = "Clear the associated template?
+(The template file will remain on disk)"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -155,7 +233,9 @@ valign = 1
 [connection signal="toggled" from="PanelContainer/TemplateParent/TemplateControls/Left/Autosave" to="." method="_on_autosave_toggled"]
 [connection signal="pressed" from="PanelContainer/TemplateParent/TemplateControls/Left/SaveButton" to="." method="save_template"]
 [connection signal="pressed" from="PanelContainer/TemplateParent/TemplateControls/Left/ReplayButton" to="." method="replay_simulation"]
-[connection signal="pressed" from="PanelContainer/TemplateParent/TemplateControls/Right/ClearGraph" to="ConfirmationDialog" method="popup_centered"]
+[connection signal="pressed" from="PanelContainer/TemplateParent/TemplateControls/Right/ClearTemplate" to="ConfirmationDialogClearTemplate" method="popup_centered"]
+[connection signal="pressed" from="PanelContainer/TemplateParent/TemplateControls/Right/ClearGraph" to="ConfirmationDialogClearAll" method="popup_centered"]
 [connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]
 [connection signal="hide_panel" from="AddNodeDialog" to="." method="_hide_node_dialog"]
-[connection signal="confirmed" from="ConfirmationDialog" to="." method="_clear_graph"]
+[connection signal="confirmed" from="ConfirmationDialogClearAll" to="." method="_clear_graph"]
+[connection signal="confirmed" from="ConfirmationDialogClearTemplate" to="." method="_clear_template"]

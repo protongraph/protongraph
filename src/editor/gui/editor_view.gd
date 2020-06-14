@@ -14,12 +14,14 @@ var _template_parent: Control
 var _node_dialog: WindowDialog
 var _load_panel: PanelContainer
 var _no_graph_panel: PanelContainer
+var _loading_indicator: HBoxContainer
 var _graph_name: Label
 var _current_graph: WeakRef
 var _current_template: WeakRef
 var _autosave: bool
 var _autosave_interval := 3
 var _save_timer: Timer
+var _last_position: Vector2
 
 
 func _ready() -> void:
@@ -28,6 +30,7 @@ func _ready() -> void:
 	_no_graph_panel = get_node("NoGraphSelected")
 	_node_dialog = get_node("AddNodeDialog")
 	_graph_name = get_node("PanelContainer/TemplateParent/TemplateControls/Right/GraphName")
+	_loading_indicator = get_node("PanelContainer/TemplateParent/TemplateControls/Left/LoadingIndicator")
 	_autosave = get_node("PanelContainer/TemplateParent/TemplateControls/Left/Autosave").pressed
 
 	_load_panel.connect("load_template", self, "_on_load_template")
@@ -45,14 +48,28 @@ Takes the Template node from the ConceptGraph and add it as a child of the edito
 in the bottom dock. This way the template can be edited there.
 """
 func enable_template_editor_for(node: ConceptGraph) -> void:
+	if not node:
+		return
+
+	var graph = _get_ref(_current_graph)
+	if graph == node:
+		return
+
 	clear_template_editor()
+	#if not node._template:
+	node.reload_template(false)
+
 	_current_graph = weakref(node)
 	_current_template = weakref(node._template)
+
+	node._template.paused = true # Prevent output generation while the UI is not ready
 
 	node.connect("template_path_changed", self, "_on_load_template")
 	node.connect("tree_exited", self, "clear_template_editor")
 	node._template.connect("graph_changed", self, "_on_graph_changed")
 	node._template.connect("popup_request", self, "_show_node_dialog")
+	node._template.connect("simulation_started", self, "_show_loading_panel")
+	node._template.connect("simulation_completed", self, "_hide_loading_panel")
 	node._template.undo_redo = undo_redo
 
 	node.remove_child(node._template)
@@ -61,15 +78,15 @@ func enable_template_editor_for(node: ConceptGraph) -> void:
 
 	# Force graphnodes to rebuild their UI because they were generated under a spatial node but they
 	# are now under a Control node so the editor theme is now available
-	for child in node._template.get_children():
-		if child is ConceptNode:
-			child.regenerate_default_ui()
+	node._template.regenerate_graphnodes_style()
 
 	_no_graph_panel.visible = false
 	if node.template_path == "":
 		_load_panel.visible = true
 	else:
 		_template_parent.visible = true
+
+	node._template.paused = false
 
 
 """
@@ -87,11 +104,13 @@ func clear_template_editor() -> void:
 		for c in _template_parent.get_children():
 			if c is GraphEdit:
 				_template_parent.remove_child(c)
-				c.free()
+				c.queue_free()
 		return
 
 	template.disconnect("graph_changed", self, "_on_graph_changed")
 	template.disconnect("popup_request", self, "_show_node_dialog")
+	template.disconnect("simulation_started", self, "_show_loading_panel")
+	template.disconnect("simulation_completed", self, "_hide_loading_panel")
 	graph.disconnect("template_path_changed", self, "_on_load_template")
 	graph.disconnect("tree_exited", self, "clear_template_editor")
 
@@ -125,12 +144,21 @@ func replay_simulation() -> void:
 
 
 func _show_node_dialog(position: Vector2) -> void:
+	_last_position = position
 	_node_dialog.set_global_position(position)
 	_node_dialog.popup()
 
 
 func _hide_node_dialog() -> void:
 	_node_dialog.visible = false
+
+
+func _show_loading_panel() -> void:
+	_loading_indicator.visible = true
+
+
+func _hide_loading_panel() -> void:
+	_loading_indicator.visible = false
 
 
 func _hide_all() -> void:
@@ -157,7 +185,8 @@ func _on_load_template(path: String) -> void:
 func _on_create_node_request(node) -> void:
 	var template = _get_ref(_current_template)
 	if template:
-		template.create_node(node)
+		var local_pos = _last_position - template.get_global_transform().origin + template.scroll_offset
+		template.create_node(node, {"offset": local_pos})
 
 
 func _on_graph_changed() -> void:
@@ -176,6 +205,12 @@ func _clear_graph():
 	var template = _get_ref(_current_template)
 	if template:
 		template.clear()
+
+
+func _clear_template():
+	var graph = _get_ref(_current_graph)
+	if graph:
+		graph.template_path = ""
 
 
 func _on_autosave_toggled(button_pressed: bool) -> void:

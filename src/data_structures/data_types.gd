@@ -1,10 +1,10 @@
+tool
+class_name ConceptGraphDataType
+
 """
 Define the constants used when setting up the GraphNodes slots type. Each of these values should
 have an associated color in the COLORS dictionnary.
 """
-
-class_name ConceptGraphDataType
-extends Reference
 
 
 enum Types {
@@ -14,19 +14,23 @@ enum Types {
 	STRING,
 	MATERIAL,
 	NOISE,
+	HEIGHTMAP,
+	CURVE_FUNC,
 
 	NODE_2D,
+	BOX_2D,
+	MESH_2D,
 	CURVE_2D,
+	VECTOR_CURVE_2D,
 
 	NODE_3D,
-	MESH,
-	BOX,
+	BOX_3D,
+	MESH_3D,
 	CURVE_3D,
-	VECTOR_CURVE,
+	VECTOR_CURVE_3D,
 
 	VECTOR2,
 	VECTOR3,
-	VECTOR4,
 }
 
 # Shorthand so we don't have to type ConceptGraphDataType.Types.ANY and skip the Types part
@@ -36,19 +40,23 @@ const SCALAR = Types.SCALAR
 const STRING = Types.STRING
 const MATERIAL = Types.MATERIAL
 const NOISE = Types.NOISE
+const HEIGHTMAP = Types.HEIGHTMAP
+const CURVE_FUNC = Types.CURVE_FUNC
 
 const NODE_2D = Types.NODE_2D
+const BOX_2D = Types.BOX_2D
+const MESH_2D = Types.MESH_2D
 const CURVE_2D = Types.CURVE_2D
+const VECTOR_CURVE_2D = Types.VECTOR_CURVE_2D
 
 const NODE_3D = Types.NODE_3D
-const MESH = Types.MESH
-const BOX = Types.BOX
+const BOX_3D = Types.BOX_3D
+const MESH_3D = Types.MESH_3D
 const CURVE_3D = Types.CURVE_3D
-const VECTOR_CURVE = Types.VECTOR_CURVE
+const VECTOR_CURVE_3D = Types.VECTOR_CURVE_3D
 
 const VECTOR2 = Types.VECTOR2
 const VECTOR3 = Types.VECTOR3
-const VECTOR4 = Types.VECTOR4
 
 
 # Slot connections colors. Share the same color as common types also used in the VisualShader editor.
@@ -59,19 +67,23 @@ const COLORS = {
 	STRING: Color.gold,
 	MATERIAL: Color.darkmagenta,
 	NOISE: Color("b48700"),
+	HEIGHTMAP: Color("cc8f20"),
+	CURVE_FUNC: Color.dodgerblue,
 
-	NODE_2D: Color.dodgerblue,
-	CURVE_2D: Color.dodgerblue,
+	NODE_2D: Color.crimson,
+	BOX_2D: Color.mediumvioletred,
+	MESH_2D: Color.chocolate,
+	CURVE_2D: Color.forestgreen,
+	VECTOR_CURVE_2D: Color.sandybrown,
 
 	NODE_3D: Color.crimson,
-	MESH: Color.chocolate,
-	BOX: Color.mediumvioletred,
+	BOX_3D: Color.mediumvioletred,
+	MESH_3D: Color.chocolate,
 	CURVE_3D: Color.forestgreen,
-	VECTOR_CURVE: Color.sandybrown,
+	VECTOR_CURVE_3D: Color.sandybrown,
 
 	VECTOR2: Color("7e3f97"),
 	VECTOR3: Color("d67ded"),
-	VECTOR4: Color("ebadf6"),
 }
 
 
@@ -79,31 +91,45 @@ const COLORS = {
 Convert graph node category name to color
 """
 static func to_category_color(category: String) -> Color:
-	match category:
+	var tokens := category.split("/")
+	tokens.invert()
+	var type = tokens[0]
+	if type == "2D" or type == "3D":
+		type = tokens[1]
+
+	match type:
 		"Boxes":
-			return COLORS[BOX]
-		"Curves", "Curves/Inputs", "Curves/Operations", "Curves/Conversion", "Curves/Generators":
+			return COLORS[BOX_3D]
+		"Curves":
 			return COLORS[CURVE_3D]
+		"Vector Curves":
+			return COLORS[VECTOR_CURVE_3D]
 		"Debug":
 			return Color.black
+		"Heigthmaps":
+			return COLORS[HEIGHTMAP].darkened(0.5)
 		"Inputs":
 			return Color.steelblue
-		"Inspector properties":
+		"Inspector":
 			return Color.teal
 		"Maths":
 			return Color.steelblue
 		"Meshes":
-			return COLORS[MESH]
-		"Nodes/Generators", "Nodes/Operations", "Nodes/Instancers":
+			return COLORS[MESH_3D]
+		"Nodes":
 			return Color.firebrick
-		"Noise":
+		"Noises":
 			return COLORS[NOISE]
 		"Output":
 			return Color.black
-		"Vectors":
-			return COLORS[VECTOR2]
 		"Transforms":
 			return Color.maroon
+		"Utilities":
+			return Color("4371b5")
+		"Vectors":
+			return COLORS[VECTOR2]
+		"Scalars":
+			return COLORS[SCALAR].darkened(0.3)
 		_:
 			return Color.black
 
@@ -112,10 +138,15 @@ static func to_category_color(category: String) -> Color:
 Allows extra connections between different types
 """
 static func setup_valid_connection_types(graph_edit: GraphEdit) -> void:
-	graph_edit.add_valid_connection_type(NODE_3D, MESH)
-	graph_edit.add_valid_connection_type(NODE_3D, BOX)
+	graph_edit.add_valid_connection_type(NODE_3D, BOX_3D)
+	graph_edit.add_valid_connection_type(NODE_3D, MESH_3D)
 	graph_edit.add_valid_connection_type(NODE_3D, CURVE_3D)
-	graph_edit.add_valid_connection_type(NODE_3D, VECTOR_CURVE)
+	graph_edit.add_valid_connection_type(NODE_3D, VECTOR_CURVE_3D)
+
+	graph_edit.add_valid_connection_type(NODE_2D, BOX_2D)
+	graph_edit.add_valid_connection_type(NODE_2D, MESH_2D)
+	graph_edit.add_valid_connection_type(NODE_2D, CURVE_2D)
+	graph_edit.add_valid_connection_type(NODE_2D, VECTOR_CURVE_2D)
 
 	# Allow everything to connect to ANY
 	for type in Types.values():
@@ -130,14 +161,20 @@ static func to_variant_type(type: int) -> int:
 	match type:
 		SCALAR:
 			return TYPE_REAL
+		VECTOR2:
+			return TYPE_VECTOR2
 		VECTOR3:
 			return TYPE_VECTOR3
 		STRING:
 			return TYPE_STRING
 		BOOLEAN:
 			return TYPE_BOOL
-		CURVE_2D:
+		CURVE_FUNC:
 			return TYPE_OBJECT
 		MATERIAL:
 			return TYPE_OBJECT
+		BOX_2D:
+			return TYPE_RECT2
+		BOX_3D:
+			return TYPE_AABB
 	return TYPE_NIL

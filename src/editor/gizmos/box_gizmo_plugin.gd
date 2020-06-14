@@ -37,7 +37,9 @@ func set_handle(gizmo: EditorSpatialGizmo, index: int, camera: Camera, point: Ve
 	if not _previous_size:
 		_previous_size = box.size
 
-	var global_transform: Transform = box.get_global_transform()
+	var global_transform: Transform = box.transform
+	if box.is_inside_tree():
+		global_transform = box.get_global_transform()
 	var global_inverse: Transform = global_transform.affine_inverse()
 
 	var ray_from = camera.project_ray_origin(point)

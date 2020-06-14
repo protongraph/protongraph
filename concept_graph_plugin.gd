@@ -17,19 +17,23 @@ var _editor_selection: EditorSelection
 var _concept_graph: ConceptGraph
 var _node_library: ConceptNodeLibrary
 var _editor_gizmo_plugins: Array
+var _proxy
 
 
 func _enter_tree() -> void:
 	_add_custom_editor_view()
 	_connect_editor_signals()
 	_setup_node_library()
+	_setup_editor_plugin_proxy()
 	_register_editor_gizmos()
+	ConceptGraphSettings.initialize()
 
 
 func _exit_tree() -> void:
 	_disconnect_editor_signals()
 	_remove_custom_editor_view()
 	_remove_node_library()
+	_remove_editor_plugin_proxy()
 	_deregister_editor_gizmos()
 
 
@@ -43,7 +47,7 @@ func _add_custom_editor_view() -> void:
 func _remove_custom_editor_view() -> void:
 	if _graph_editor_view:
 		remove_control_from_bottom_panel(_graph_editor_view)
-		_graph_editor_view.free()
+		_graph_editor_view.queue_free()
 
 
 func _connect_editor_signals() -> void:
@@ -63,18 +67,35 @@ func _disconnect_editor_signals() -> void:
 
 func _setup_node_library() -> void:
 	if _node_library:
-		return	# TMP during development
+		_node_library.refresh_list()
+		return
 	_node_library = ConceptNodeLibrary.new()
 	_node_library.name = "ConceptNodeLibrary"
 	get_tree().root.call_deferred("add_child", _node_library)
 
 
 func _remove_node_library() -> void:
-	return # TMP during development
+	# return # TMP during development
 	if _node_library:
 		get_tree().root.remove_child(_node_library)
 		_node_library.queue_free()
 		_node_library = null
+
+
+func _setup_editor_plugin_proxy() -> void:
+	if _proxy:
+		return
+	_proxy = preload("src/common/editor_plugin_proxy.gd").new()
+	_proxy.name = "ConceptGraphEditorPluginProxy"
+	_proxy.proxy = self
+	get_tree().root.call_deferred("add_child", _proxy)
+
+
+func _remove_editor_plugin_proxy() -> void:
+	if _proxy:
+		get_tree().root.remove_child(_proxy)
+		_proxy.queue_free()
+		_proxy = null
 
 
 func _register_editor_gizmos() -> void:
@@ -108,6 +129,7 @@ func _on_selection_changed() -> void:
 		if node is ConceptGraph:
 			_concept_graph = node
 			_graph_editor_view.enable_template_editor_for(_concept_graph)
+			return
 
 
 func _on_scene_changed(_param) -> void:

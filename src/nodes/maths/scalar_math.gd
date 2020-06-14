@@ -10,7 +10,7 @@ var _opts = {"allow_lesser": true}
 
 func _init() -> void:
 	unique_id = "math_scalar_2"
-	display_name = "Scalar Math "
+	display_name = "Math Scalar"
 	category = "Maths"
 	description = "Perform common math operations on two numbers"
 

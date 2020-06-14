@@ -1,1 +1,228 @@
-{"connections":[{"from":"GraphNode2","from_port":0,"to":"GraphNode","to_port":0},{"from":"GraphNode4","from_port":0,"to":"GraphNode5","to_port":0},{"from":"GraphNode6","from_port":0,"to":"GraphNode2","to_port":0},{"from":"GraphNode5","from_port":0,"to":"GraphNode3","to_port":0},{"from":"GraphNode5","from_port":1,"to":"GraphNode3","to_port":1},{"from":"GraphNode3","from_port":0,"to":"GraphNode7","to_port":0},{"from":"GraphNode8","from_port":0,"to":"GraphNode7","to_port":1},{"from":"GraphNode7","from_port":0,"to":"GraphNode9","to_port":0},{"from":"GraphNode10","from_port":0,"to":"GraphNode9","to_port":1},{"from":"GraphNode9","from_port":0,"to":"GraphNode2","to_port":1},{"from":"GraphNode11","from_port":0,"to":"GraphNode7","to_port":2},{"from":"GraphNode11","from_port":0,"to":"GraphNode9","to_port":2},{"from":"GraphNode11","from_port":0,"to":"GraphNode2","to_port":2},{"from":"GraphNode4","from_port":0,"to":"GraphNode3","to_port":4}],"nodes":[{"data":{},"editor":{"offset_x":860,"offset_y":0,"slots":{}},"name":"GraphNode","type":"final_output"},{"data":{},"editor":{"offset_x":-460,"offset_y":0,"slots":{}},"name":"GraphNode5","type":"expose_box_info"},{"data":{},"editor":{"offset_x":-260,"offset_y":0,"slots":{"2":0.668,"3":false,"5":true}},"name":"GraphNode3","type":"create_point_grid"},{"data":{},"editor":{"offset_x":20,"offset_y":0,"slots":{"2":0,"3":true}},"name":"GraphNode7","type":"offset_transforms_random"},{"data":{},"editor":{"offset_x":280,"offset_y":0,"slots":{"2":0,"3":true}},"name":"GraphNode9","type":"rotate_transforms_random"},{"data":{},"editor":{"offset_x":20,"offset_y":180,"slots":{"0":0,"1":20,"2":0}},"name":"GraphNode10","type":"value_vector3"},{"data":{},"editor":{"offset_x":560,"offset_y":0,"slots":{"2":0}},"name":"GraphNode2","type":"duplicate_nodes_random"},{"data":{},"editor":{"offset_x":-260,"offset_y":-140,"slots":{"0":"seed","1":1}},"name":"GraphNode11","type":"inspector_scalar"},{"data":{},"editor":{"offset_x":280,"offset_y":-140,"slots":{"0":"Tents","1":true}},"name":"GraphNode6","type":"input_generic"},{"data":{},"editor":{"offset_x":-660,"offset_y":100,"slots":{"0":"Box"}},"name":"GraphNode4","type":"input_box"},{"data":{},"editor":{"offset_x":-260,"offset_y":220,"slots":{"0":0.25,"1":0,"2":0.25}},"name":"GraphNode8","type":"value_vector3"}]}
+{
+	"connections": [
+		{
+			"from": "GraphNode2",
+			"from_port": 0,
+			"to": "GraphNode",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode4",
+			"from_port": 0,
+			"to": "GraphNode5",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode6",
+			"from_port": 0,
+			"to": "GraphNode2",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode5",
+			"from_port": 0,
+			"to": "GraphNode3",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode5",
+			"from_port": 1,
+			"to": "GraphNode3",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode3",
+			"from_port": 0,
+			"to": "GraphNode7",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode8",
+			"from_port": 0,
+			"to": "GraphNode7",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode7",
+			"from_port": 0,
+			"to": "GraphNode9",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode10",
+			"from_port": 0,
+			"to": "GraphNode9",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode9",
+			"from_port": 0,
+			"to": "GraphNode2",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode11",
+			"from_port": 0,
+			"to": "GraphNode7",
+			"to_port": 2
+		},
+		{
+			"from": "GraphNode11",
+			"from_port": 0,
+			"to": "GraphNode9",
+			"to_port": 2
+		},
+		{
+			"from": "GraphNode11",
+			"from_port": 0,
+			"to": "GraphNode2",
+			"to_port": 2
+		},
+		{
+			"from": "GraphNode4",
+			"from_port": 0,
+			"to": "GraphNode3",
+			"to_port": 4
+		}
+	],
+	"nodes": [
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 860,
+				"offset_y": 0,
+				"slots": {}
+			},
+			"name": "GraphNode",
+			"type": "final_output"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -460,
+				"offset_y": 0,
+				"slots": {}
+			},
+			"name": "GraphNode5",
+			"type": "expose_box_info"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -260,
+				"offset_y": 0,
+				"slots": {
+					"2": 0.668,
+					"3": false,
+					"5": true
+				}
+			},
+			"name": "GraphNode3",
+			"type": "create_point_grid"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 20,
+				"offset_y": 0,
+				"slots": {
+					"2": 0,
+					"3": true
+				}
+			},
+			"name": "GraphNode7",
+			"type": "offset_transforms_random"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 280,
+				"offset_y": 0,
+				"slots": {
+					"2": 0,
+					"3": true
+				}
+			},
+			"name": "GraphNode9",
+			"type": "rotate_transforms_random"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 20,
+				"offset_y": 180,
+				"slots": {
+					"0": 0,
+					"1": 20,
+					"2": 0
+				}
+			},
+			"name": "GraphNode10",
+			"type": "value_vector3"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 560,
+				"offset_y": 0,
+				"slots": {
+					"2": 0
+				}
+			},
+			"name": "GraphNode2",
+			"type": "duplicate_nodes_random"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -260,
+				"offset_y": -140,
+				"slots": {
+					"0": "seed",
+					"1": 1
+				}
+			},
+			"name": "GraphNode11",
+			"type": "inspector_scalar"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 280,
+				"offset_y": -140,
+				"slots": {
+					"0": "Tents",
+					"1": true
+				}
+			},
+			"name": "GraphNode6",
+			"type": "input_generic"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -660,
+				"offset_y": 100,
+				"slots": {
+					"0": "Box"
+				}
+			},
+			"name": "GraphNode4",
+			"type": "input_box"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -260,
+				"offset_y": 220,
+				"slots": {
+					"0": 0.25,
+					"1": 0,
+					"2": 0.25
+				}
+			},
+			"name": "GraphNode8",
+			"type": "value_vector3"
+		}
+	]
+}

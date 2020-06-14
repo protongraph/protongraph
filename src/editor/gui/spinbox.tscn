@@ -1,0 +1,95 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://addons/concept_graph/src/editor/gui/spinbox.gd" type="Script" id=1]
+[ext_resource path="res://addons/concept_graph/src/editor/gui/styles/spinbox_button_right_pressed.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/concept_graph/src/editor/gui/styles/spinbox_button_right_hover.tres" type="StyleBox" id=3]
+[ext_resource path="res://addons/concept_graph/src/editor/gui/styles/spinbox_button_left_hover.tres" type="StyleBox" id=4]
+[ext_resource path="res://addons/concept_graph/src/editor/gui/styles/spinbox_button_left_pressed.tres" type="StyleBox" id=5]
+[ext_resource path="res://addons/concept_graph/src/editor/gui/styles/progress_bar_fg.tres" type="StyleBox" id=6]
+[ext_resource path="res://addons/concept_graph/src/editor/gui/styles/progress_bar_bg.tres" type="StyleBox" id=7]
+[ext_resource path="res://addons/concept_graph/icons/icon_decrease.svg" type="Texture" id=8]
+[ext_resource path="res://addons/concept_graph/src/editor/gui/styles/spinbox_button_right.tres" type="StyleBox" id=9]
+[ext_resource path="res://addons/concept_graph/src/editor/gui/styles/spinbox_button_left.tres" type="StyleBox" id=10]
+[ext_resource path="res://addons/concept_graph/icons/icon_increase.svg" type="Texture" id=11]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.6, 0.6, 0.6, 0.156863 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[node name="ProgressBar" type="ProgressBar"]
+margin_right = 95.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 95, 24 )
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_styles/fg = ExtResource( 6 )
+custom_styles/bg = ExtResource( 7 )
+value = 50.0
+allow_greater = true
+allow_lesser = true
+percent_visible = false
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+decrease_button = NodePath("SpinBoxContainer/Decrease")
+increase_button = NodePath("SpinBoxContainer/Increase")
+name_label = NodePath("SpinBoxContainer/Value/Label")
+value_edit = NodePath("SpinBoxContainer/Value")
+
+[node name="SpinBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 95, 24 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Decrease" type="Button" parent="SpinBoxContainer"]
+margin_right = 19.0
+margin_bottom = 24.0
+custom_styles/hover = ExtResource( 4 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = ExtResource( 4 )
+custom_styles/normal = ExtResource( 10 )
+icon = ExtResource( 8 )
+
+[node name="Value" type="LineEdit" parent="SpinBoxContainer"]
+margin_left = 23.0
+margin_right = 72.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+custom_styles/focus = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
+text = "50"
+align = 2
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="Label" type="Label" parent="SpinBoxContainer/Value"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_styles/normal = SubResource( 3 )
+text = "A"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Increase" type="Button" parent="SpinBoxContainer"]
+margin_left = 76.0
+margin_right = 95.0
+margin_bottom = 24.0
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 2 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/normal = ExtResource( 9 )
+icon = ExtResource( 11 )
+[connection signal="gui_input" from="SpinBoxContainer/Value" to="." method="_on_value_gui_input"]

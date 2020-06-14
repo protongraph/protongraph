@@ -12,8 +12,6 @@ signal delete_node
 signal node_changed
 signal input_changed
 signal connection_changed
-signal all_inputs_ready
-signal output_ready
 
 
 var unique_id := "concept_node"
@@ -23,12 +21,18 @@ var description := "A brief description of the node functionality"
 var node_pool: ConceptGraphNodePool # Injected from template
 var thread_pool: ConceptGraphThreadPool # Injected from template
 var output := []
+var minimap_color
+# Set to true to force the template to recreate the whole node instead of the style only. Useful if the
+# graphnode has UI controls like OptionButtons that can't be generated properly under a spatial node.
+var requires_full_gui_rebuild := false
+
+var _folder_icon
+var _multi_input_icon
+var _spinbox
 
 var _inputs := {}
 var _outputs := {}
 var _hboxes := []
-var _dynamic_inputs := {}
-var _btn_container: HBoxContainer # Used for dynamic input system
 var _resize_timer := Timer.new()
 var _file_dialog: FileDialog
 var _initialized := false	# True when all enter_tree initialization is done
@@ -52,33 +56,6 @@ func _enter_tree() -> void:
 	_initialized = true
 
 
-# Called from the template when the user copy paste nodes
-func init_from_node(node: ConceptNode) -> void:
-	for c in get_children():
-		remove_child(c)
-		c.queue_free()
-
-	unique_id = node.unique_id
-	display_name = node.display_name
-	category = node.category
-	description = node.description
-	node_pool = node.node_pool
-	thread_pool = node.thread_pool
-
-	_inputs = node._inputs
-	_outputs = node._outputs
-	_hboxes = []
-
-	for b in node._hboxes:
-		var d = b.duplicate()
-		add_child(d)
-		_hboxes.append(d)
-
-	_setup_slots()
-	_generate_default_gui_style()
-	_initialized = true
-
-
 """
 Override and make it return true if your node should be instanced from a scene directly.
 Scene should have the same name as the script and use a .tscn extension.
@@ -94,28 +71,10 @@ func is_output_ready() -> bool:
 
 
 """
-Call this first to generate everything in the background first. This method then emits a signal
-when the results are ready. Outputs can then be fetched using the get_output method.
+Override this function to return true if the node marks the end of a graphnode.
 """
-func prepare_output() -> void:
-	if not _initialized or not get_parent():
-		return
-
-	# If the output was already generated, skip the whole function and notify directly
-	if is_output_ready():
-		call_deferred("emit_signal", "output_ready")
-		return
-
-	if _generation_requested:	# Prepare output was already called
-		return
-
-	_generation_requested = true
-
-	if not _request_inputs_to_get_ready():
-		yield(self, "all_inputs_ready")
-
-	call_deferred("_run_background_generation") # Single thread execution
-	#thread_pool.submit_task(self, "_run_background_generation") # Broken multithread execution
+func is_final_output_node() -> bool:
+	return false
 
 
 """
@@ -134,28 +93,27 @@ func get_input(idx: int, default = []) -> Array:
 	if not parent:
 		return default
 
-	var input: Dictionary = parent.get_left_node(self, idx)
-	if input.has("node"):	# Input source connected, ignore local data
-		return input["node"].get_output(input["slot"], default)
+	var inputs: Array = parent.get_left_nodes(self, idx)
+	if inputs.size() > 0: # Input source connected, ignore local data
+		var res = []
+		for input in inputs:
+			var node_output = input["node"].get_output(input["slot"], default)
+			if node_output is Array:
+				res += node_output
+			else:
+				res.append(node_output)
+		return res
 
 	if has_custom_gui():
-		var output = _get_input(idx)
-		if output == null:
+		var node_output = _get_input(idx)
+		if node_output == null:
 			return default
-		return output
+		return node_output
 
 	# If no source is connected, check if it's a base type with a value defined on the node itself
-	match _inputs[idx]["type"]:
-		ConceptGraphDataType.BOOLEAN:
-			return [_hboxes[idx].get_node("CheckBox").pressed]
-		ConceptGraphDataType.SCALAR:
-			return [_hboxes[idx].get_node("SpinBox").value]
-		ConceptGraphDataType.STRING:
-			if _hboxes[idx].has_node("LineEdit"):
-				return [_hboxes[idx].get_node("LineEdit").text]
-			elif _hboxes[idx].has_node("OptionButton"):
-				var btn = _hboxes[idx].get_node("OptionButton")
-				return [btn.get_item_text(btn.selected)]
+	var local_value = _get_default_gui_value(idx)
+	if local_value != null:
+		return [local_value]
 
 	return default # Not a base type and no source connected
 
@@ -178,7 +136,11 @@ output node is connected to more than one node. It ensure the results are the sa
 some performance
 """
 func get_output(idx: int, default := []) -> Array:
-	if not is_output_ready() or output.size() < idx + 1:
+	if not is_output_ready():
+		_generate_outputs()
+		_output_ready = true
+
+	if output.size() < idx + 1:
 		return default
 
 	var res = output[idx]
@@ -189,20 +151,27 @@ func get_output(idx: int, default := []) -> Array:
 
 	# If the output is a node array, we need to duplicate them first otherwise they get passed as
 	# references which causes issues when the same output is sent to two different nodes.
-	if res[0] is Node:
+	if res[0] is Object and res[0].has_method("duplicate"):
 		var duplicates = []
 		for i in res.size():
-			var node = res[i] # TODO move the duplication in a helper function instead
+			# TODO move the duplication in a helper function instead
+			var node = res[i]
 			var duplicate = node.duplicate(7)
-			if node is Path: # TODO : Check if other nodes needs extra steps
+
+			# TODO : Check if other nodes needs extra steps
+			if node is Path or node is Path2D:
 				duplicate.curve = node.curve.duplicate(true)
-			register_to_garbage_collection(duplicate)
+
+			# Outputs from final nodes are the responsibility of the ConceptGraph node
+			if not is_final_output_node():
+				register_to_garbage_collection(duplicate)
+
 			duplicates.append(duplicate)
 		return duplicates
 
-	# If it's not a node array, it's made of built in types (scalars, vectors ...) which are passed
-	# as copy by default.
-	return res
+	# If it's not a node array, it either contains built in types or nested arrays.
+	# Arrays are passed as reference so return a deep copy
+	return res.duplicate(true)
 
 
 """
@@ -214,7 +183,7 @@ func get_editor_input(name: String) -> Node:
 	if not parent:
 		return null
 	var input = parent.concept_graph.get_input(name)
-	if not input:
+	if input == null:
 		return null
 
 	var input_copy = input.duplicate(7)
@@ -259,23 +228,12 @@ func export_editor_data() -> Dictionary:
 		data["rect_x"] = rect_size.x
 		data["rect_y"] = rect_size.y
 
-	if not _dynamic_inputs.empty():
-		data["dynamic_inputs"] = _dynamic_inputs["count"]
-
 	data["slots"] = {}
-	var slots = _hboxes.size()
-	for i in slots:
+	for i in _inputs.size():
 		var idx = String(i) # Needed to fix inconsistencies when calling restore
-		var hbox = _hboxes[i]
-		for c in hbox.get_children():
-			if c is CheckBox:
-				data["slots"][idx] = c.pressed
-			if c is SpinBox:
-				data["slots"][idx] = c.value
-			if c is LineEdit:
-				data["slots"][idx] = c.text
-			if c is OptionButton:
-				data["slots"][idx] = c.get_item_id(c.selected)
+		var local_value = _get_default_gui_value(i, true)
+		if local_value != null:
+			data["slots"][idx] = local_value
 
 	return data
 
@@ -294,33 +252,29 @@ func restore_editor_data(data: Dictionary) -> void:
 	if has_custom_gui():
 		return
 
-	# Recreate all slots before trying to restore their data but only it this is called from
-	# load template, not from regenerate_default_gui
-	if data.has("dynamic_inputs") and _dynamic_inputs["count"] == 0:
-		_dynamic_inputs["count"] = data["dynamic_inputs"]
-		for i in data["dynamic_inputs"]:
-			set_input(_inputs.size(), _dynamic_inputs["name"], _dynamic_inputs["type"], _dynamic_inputs["opts"])
-		_generate_default_gui()
-
 	var slots = _hboxes.size()
 
 	for i in slots:
 		if data["slots"].has(String(i)):
 			var type = _inputs[i]["type"]
 			var value = data["slots"][String(i)]
-			var hbox = _hboxes[i]
+			var left = _hboxes[i].get_node("Left")
 
 			match type:
 				ConceptGraphDataType.BOOLEAN:
-					hbox.get_node("CheckBox").pressed = value
+					left.get_node("CheckBox").pressed = value
 				ConceptGraphDataType.SCALAR:
-					hbox.get_node("SpinBox").value = value
+					left.get_node("SpinBox").value = value
 				ConceptGraphDataType.STRING:
-					if hbox.has_node("LineEdit"):
-						hbox.get_node("LineEdit").text = value
-					elif hbox.has_node("OptionButton"):
-						var btn: OptionButton = hbox.get_node("OptionButton")
-						btn.selected = btn.get_item_index(value)
+					if left.has_node("LineEdit"):
+						left.get_node("LineEdit").text = value
+					elif left.has_node("OptionButton"):
+						var btn: OptionButton = left.get_node("OptionButton")
+						btn.selected = btn.get_item_index(int(value))
+				ConceptGraphDataType.VECTOR2:
+					_set_vector_value(i, value)
+				ConceptGraphDataType.VECTOR3:
+					_set_vector_value(i, value)
 
 
 """
@@ -354,7 +308,10 @@ func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void
 		"name": name,
 		"type": type,
 		"options": opts,
-		"mirror": []
+		"mirror": [],
+		"driver": -1,
+		"linked": [],
+		"multi": false
 	}
 
 
@@ -376,47 +333,39 @@ func remove_input(idx: int) -> bool:
 	return true
 
 
+"""
+Automatically change the output data type to mirror the type of what's connected to the input slot
+"""
 func mirror_slots_type(input_index, output_index) -> void:
-	if input_index >= _inputs.size():
-		print("Error: invalid input index passed to mirror_slots_type ", input_index)
-		return
-
-	if output_index >= _outputs.size():
-		print("Error: invalid output index passed to mirror_slots_type ", output_index)
+	if not _mirror_type_check(input_index, output_index):
 		return
 
 	_inputs[input_index]["mirror"].append(output_index)
 	_inputs[input_index]["default_type"] = _inputs[input_index]["type"]
+	_update_slots_types()
 
 
-"""
-Dynamic inputs are inputs the user can create on the fly from the graph editor. Pressing a button
-creates or removes an input. They all share the same type, name and options.
-"""
-func enable_dynamic_inputs(input_name: String, type, options := {}) -> void:
-	_dynamic_inputs = {}
-	_dynamic_inputs["count"] = 0
-	_dynamic_inputs["type"] = type
-	_dynamic_inputs["name"] = input_name
-	_dynamic_inputs["opts"] = options
-
-
-"""
-Override the default gui value with a new one. // TODO : might not be useful, could be removed if not used
-"""
-func set_default_gui_input_value(idx: int, value) -> void:
-	if _hboxes.size() <= idx:
+func cancel_type_mirroring(input_index, output_index) -> void:
+	if not _mirror_type_check(input_index, output_index):
 		return
 
-	var hbox = _hboxes[idx]
-	var type = _inputs[idx]["type"]
-	match type:
-		ConceptGraphDataType.BOOLEAN:
-			hbox.get_node("CheckBox").pressed = value
-		ConceptGraphDataType.SCALAR:
-			hbox.get_node("SpinBox").value = value
-		ConceptGraphDataType.STRING:
-			hbox.get_node("LineEdit").text = value
+	_inputs[input_index]["mirror"].erase(output_index)
+	_update_slots_types()
+
+
+"""
+Allows multiple connections on the same input slot.
+"""
+func enable_multiple_connections_on_slot(idx: int) -> void:
+	if idx >= _inputs.size():
+		return
+	_inputs[idx]["multi"] = true
+
+
+func is_multiple_connections_enabled_on_slot(idx: int) -> bool:
+	if idx >= _inputs.size():
+		return false
+	return _inputs[idx]["multi"]
 
 
 """
@@ -453,42 +402,10 @@ Returns a list of every ConceptNode connected to this node
 func _get_connected_inputs() -> Array:
 	var connected_inputs = []
 	for i in _inputs.size():
-		var info = get_parent().get_left_node(self, i)
-		if info.has("node"):
-			connected_inputs.append(info["node"])
+		var nodes: Array = get_parent().get_left_nodes(self, i)
+		for data in nodes:
+			connected_inputs.append(data["node"])
 	return connected_inputs
-
-
-"""
-Loops through all connected input nodes and request them to prepare their output. Each output
-then signals this node when they finished their task. When all the inputs are ready, signals this
-node that the generation can begin.
-Returns true if all inputs are already ready.
-"""
-func _request_inputs_to_get_ready() -> bool:
-	var connected_inputs = _get_connected_inputs()
-
-	# No connected nodes, inputs data are available locally
-	if connected_inputs.size() == 0:
-		return true
-
-	# Call prepare_output on every connected inputs
-	for input_node in connected_inputs:
-		if not input_node.is_connected("output_ready", self, "_on_input_ready"):
-			input_node.connect("output_ready", self, "_on_input_ready")
-		input_node.call_deferred("prepare_output")
-	return false
-
-
-"""
-This function is ran in the background from prepare_output(). Emits a signal when the outputs
-are ready.
-"""
-func _run_background_generation() -> void:
-	_generate_outputs()
-	_output_ready = true
-	_generation_requested = false
-	call_deferred("emit_signal", "output_ready")
 
 
 """
@@ -533,24 +450,47 @@ func _reset_output():
 
 
 """
+Used in mirror_slot_types and cancel_slot_types. Prints a warning if the provided slot is out of
+bounds.
+"""
+func _mirror_type_check(input_index, output_index) -> bool:
+	if input_index >= _inputs.size():
+		print("Error: invalid input index (", input_index, ") passed to ", display_name)
+		return false
+
+	if output_index >= _outputs.size():
+		print("Error: invalid output index (", input_index, ") passed to ", display_name)
+		return false
+
+	return true
+
+
+"""
 Based on the previous calls to set_input and set_ouput, this method will call the
 GraphNode.set_slot method accordingly with the proper parameters. This makes it easier syntax
 wise on the child node side and make it more readable.
 """
 func _setup_slots() -> void:
 	var slots = _hboxes.size()
-	for i in slots + 1:	# +1 to prevent leaving an extra slot active when removing dynamic inputs
-		var has_input = false
-		var input_type = 0
-		var input_color = Color(0)
-		var has_output = false
-		var output_type = 0
-		var output_color = Color(0)
+	for i in slots + 1:	# +1 to prevent leaving an extra slot active when removing inputs
+		var has_input := false
+		var input_type := 0
+		var input_color := Color(0)
+		var has_output := false
+		var output_type := 0
+		var output_color := Color(0)
+		var icon = null
 
 		if _inputs.has(i):
 			has_input = true
-			input_type = _inputs[i]["type"]
+			var driver = _inputs[i]["driver"]
+			if driver != -1:
+				input_type = _inputs[driver]["type"]
+			else:
+				input_type = _inputs[i]["type"]
 			input_color = ConceptGraphDataType.COLORS[input_type]
+			if _inputs[i]["multi"]:
+				icon = ConceptGraphEditorUtil.get_square_texture(input_color.lightened(0.6))
 		if _outputs.has(i):
 			has_output = true
 			output_type = _outputs[i]["type"]
@@ -559,18 +499,17 @@ func _setup_slots() -> void:
 		if not has_input and not has_output and i < _hboxes.size():
 			_hboxes[i].visible = false
 
-		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color)
+		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color, icon)
 
 	# Remove elements generated as part of the default gui but doesn't match any slots
 	for b in _hboxes:
 		if not b.visible:
-			print("erased ", b)
 			_hboxes.erase(b)
 			remove_child(b)
 
 	# If the node can't be resized, make it as small as possible
 	if not resizable:
-		emit_signal("resize_request", Vector2.ZERO)
+		emit_signal("resize_request", Vector2(rect_min_size.x, 0.0))
 
 
 """
@@ -588,29 +527,44 @@ func _clear_gui() -> void:
 Based on graph node category this method will setup corresponding style and color of graph node
 """
 func _generate_default_gui_style() -> void:
+	var scale: float = ConceptGraphEditorUtil.get_dpi_scale()
+
 	# Base Style
 	var style = StyleBoxFlat.new()
 	var color = Color(0.121569, 0.145098, 0.192157, 0.9)
 	style.border_color = ConceptGraphDataType.to_category_color(category)
+	minimap_color = style.border_color
 	style.set_bg_color(color)
-	style.set_border_width_all(2)
-	style.set_border_width(MARGIN_TOP, 32)
-	style.content_margin_left = 24;
-	style.content_margin_right = 24;
-	style.set_corner_radius_all(4)
-	style.set_expand_margin_all(4)
-	style.shadow_size = 8
-	style.shadow_color = Color(0,0,0,0.2)
-	add_stylebox_override("frame", style)
+	style.set_border_width_all(2 * scale)
+	style.set_border_width(MARGIN_TOP, 32 * scale)
+	style.content_margin_left = 24 * scale;
+	style.content_margin_right = 24 * scale;
+	style.set_corner_radius_all(4 * scale)
+	style.set_expand_margin_all(4 * scale)
+	style.shadow_size = 8 * scale
+	style.shadow_color = Color(0, 0, 0, 0.2)
 
 	# Selected Style
 	var selected_style = style.duplicate()
 	selected_style.shadow_color = ConceptGraphDataType.to_category_color(category)
-	selected_style.shadow_size = 4
+	selected_style.shadow_size = 4 * scale
 	selected_style.border_color = Color(0.121569, 0.145098, 0.192157, 0.9)
-	add_stylebox_override("selectedframe", selected_style)
-	add_constant_override("port_offset", 12)
+
+	if not comment:
+		add_stylebox_override("frame", style)
+		add_stylebox_override("selectedframe", selected_style)
+	else:
+		style.set_bg_color(Color("0a4371b5"))
+		style.content_margin_top = 40 * scale
+		add_stylebox_override("comment", style)
+		add_stylebox_override("commentfocus", selected_style)
+
+	add_constant_override("port_offset", 12 * scale)
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
+
+	# GraphNode slots doesn't take in account the separation parameter so where you have to click and
+	# where the slot is displayed doesn't match.
+	# add_constant_override("separation", 0)
 
 
 """
@@ -629,10 +583,10 @@ func _generate_default_gui() -> void:
 	_generate_default_gui_style()
 
 	title = display_name
-	resizable = false
 	show_close = true
 	rect_min_size = Vector2(0.0, 0.0)
 	rect_size = Vector2(0.0, 0.0)
+	var max_output_label_length := 0
 
 	# TODO : Some refactoring would be nice
 	var slots = max(_inputs.size(), _outputs.size())
@@ -645,11 +599,16 @@ func _generate_default_gui() -> void:
 		_hboxes.append(hbox)
 		add_child(hbox)
 
+		var left_box = HBoxContainer.new()
+		left_box.name = "Left"
+		left_box.size_flags_horizontal = SIZE_EXPAND_FILL
+		hbox.add_child(left_box)
+
 		# label_left holds the name of the input slot.
 		var label_left = Label.new()
 		label_left.name = "LabelLeft"
 		label_left.mouse_filter = MOUSE_FILTER_PASS
-		hbox.add_child(label_left)
+		left_box.add_child(label_left)
 
 		# If this slot has an input
 		if _inputs.has(i):
@@ -658,7 +617,7 @@ func _generate_default_gui() -> void:
 
 			# Add the optional UI elements based on the data type.
 			# TODO : We could probably just check if the property exists with get_property_list
-			# and to that automatically instead of manually setting everything one by one
+			# and do that automatically instead of manually setting everything one by one
 			match _inputs[i]["type"]:
 				ConceptGraphDataType.BOOLEAN:
 					var opts = _inputs[i]["options"]
@@ -667,23 +626,19 @@ func _generate_default_gui() -> void:
 					checkbox.pressed = opts["value"] if opts.has("value") else false
 					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
 					checkbox.connect("toggled", self, "_on_default_gui_interaction", [checkbox, i])
-					hbox.add_child(checkbox)
+					left_box.add_child(checkbox)
 
 				ConceptGraphDataType.SCALAR:
 					var opts = _inputs[i]["options"]
-					var spinbox = SpinBox.new()
-					spinbox.name = "SpinBox"
-					spinbox.max_value = opts["max"] if opts.has("max") else 1000
-					spinbox.min_value = opts["min"] if opts.has("min") else 0
-					spinbox.value = opts["value"] if opts.has("value") else 0
-					spinbox.step = opts["step"] if opts.has("step") else 0.001
-					spinbox.exp_edit = opts["exp"] if opts.has("exp") else true
-					spinbox.allow_greater = opts["allow_greater"] if opts.has("allow_greater") else true
-					spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else false
-					spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
-					spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [i])
-					spinbox.connect("value_changed", self, "_on_default_gui_interaction", [spinbox, i])
-					hbox.add_child(spinbox)
+					var n = _inputs[i]["name"]
+					_create_spinbox(n, opts, left_box, i)
+					label_left.visible = false
+
+					# Make sure there's enough horizontal space for the custom spinbox when the name
+					# is too large
+					var rx = n.length() * 18.0
+					if rect_min_size.x < rx:
+						rect_min_size.x = rx
 
 				ConceptGraphDataType.STRING:
 					var opts = _inputs[i]["options"]
@@ -694,7 +649,8 @@ func _generate_default_gui() -> void:
 							dropdown.add_item(item, opts["items"][item])
 						dropdown.connect("item_selected", self, "_on_default_gui_value_changed", [i])
 						dropdown.connect("item_selected", self, "_on_default_gui_interaction", [dropdown, i])
-						hbox.add_child(dropdown)
+						left_box.add_child(dropdown)
+						requires_full_gui_rebuild = true
 					else:
 						var line_edit = LineEdit.new()
 						line_edit.name = "LineEdit"
@@ -702,89 +658,198 @@ func _generate_default_gui() -> void:
 						line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
 						line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
 						line_edit.connect("text_changed", self, "_on_default_gui_interaction", [line_edit, i])
-						hbox.add_child(line_edit)
+						left_box.add_child(line_edit)
 
 						if opts.has("file_dialog"):
 							var folder_button = Button.new()
-							folder_button.icon = load(ConceptGraphEditorUtil.get_plugin_root_path() + "icons/icon_folder.svg")
+							if not _folder_icon:
+								_folder_icon = load(ConceptGraphEditorUtil.get_plugin_root_path() + "icons/icon_folder.svg")
+							folder_button.icon = _folder_icon
 							folder_button.connect("pressed", self, "_show_file_dialog", [opts["file_dialog"], line_edit])
-							hbox.add_child(folder_button)
+							left_box.add_child(folder_button)
+
+				ConceptGraphDataType.VECTOR2:
+					var opts = _inputs[i]["options"]
+					label_left.visible = false
+					left_box.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 2, i))
+
+				ConceptGraphDataType.VECTOR3:
+					var opts = _inputs[i]["options"]
+					label_left.visible = false
+					left_box.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 3, i))
+
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel
 		var label_right = Label.new()
 		label_right.name = "LabelRight"
 		label_right.mouse_filter = MOUSE_FILTER_PASS
-		label_right.size_flags_horizontal = SIZE_EXPAND_FILL
+		#label_right.size_flags_horizontal = SIZE_EXPAND_FILL
+		label_right.size_flags_horizontal = SIZE_FILL
 		label_right.align = Label.ALIGN_RIGHT
+		label_right.visible = false
 
 		if _outputs.has(i):
 			label_right.text = _outputs[i]["name"]
+			if label_right.text.length() > max_output_label_length:
+				max_output_label_length = label_left.text.length()
 			label_right.hint_tooltip = ConceptGraphDataType.Types.keys()[_outputs[i]["type"]].capitalize()
+			if label_right.text != "":
+				label_right.visible = true
 		hbox.add_child(label_right)
 
-	if not _dynamic_inputs.empty():
-		_setup_dynamic_input_controls()
-
+	rect_min_size.x += max_output_label_length * 6.0 # TODO; tmp hack, use editor scale here and find a better layout
 	_on_connection_changed()
 	_on_default_gui_ready()
 	_redraw()
 
 
-"""
-Creates two buttons to create or remove inputs on the fly
-"""
-func _setup_dynamic_input_controls() -> void:
-	if not _dynamic_inputs:
+func _create_spinbox(property_name, opts, parent, idx) -> SpinBox:
+	if not _spinbox:
+		_spinbox = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/editor/gui/spinbox.tscn")
+	var spinbox = _spinbox.instance()
+	if parent:
+		parent.add_child(spinbox)
+	spinbox.set_label_value(property_name)
+	spinbox.name = "SpinBox"
+	spinbox.max_value = opts["max"] if opts.has("max") else 1000
+	spinbox.min_value = opts["min"] if opts.has("min") else 0
+	spinbox.value = opts["value"] if opts.has("value") else 0
+	spinbox.step = opts["step"] if opts.has("step") else 0.001
+	spinbox.exp_edit = opts["exp"] if opts.has("exp") else false
+	spinbox.allow_greater = opts["allow_greater"] if opts.has("allow_greater") else true
+	spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else true
+	spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
+	spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [idx])
+	spinbox.connect("value_changed", self, "_on_default_gui_interaction", [spinbox, idx])
+	return spinbox
+
+
+func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContainer:
+	var item_indexes = ["x", "y"]
+	if count == 3:
+		item_indexes.append("z")
+
+	var vbox = VBoxContainer.new()
+	vbox.name = "VectorContainer"
+
+	if property_name:
+		var label = Label.new()
+		label.text = property_name
+		vbox.add_child(label)
+
+	var inline = ProjectSettings.get(ConceptGraphSettings.INLINE_VECTOR_FIELDS)
+	var vector_box
+	if inline:
+		vector_box = HBoxContainer.new()
+	else:
+		vector_box = VBoxContainer.new()
+		vector_box.rect_min_size.x = 120
+	vector_box.name = "Vector"
+	vector_box.add_constant_override("separation", 0)
+	vbox.add_child(vector_box)
+
+	var s
+	for i in item_indexes.size():
+		var vector_index = item_indexes[i]
+		if opts.has(vector_index):
+			s = _create_spinbox(vector_index, opts[vector_index], vector_box, idx)
+		else:
+			s = _create_spinbox(vector_index, opts, vector_box, idx)
+		if inline:
+			s.style = 3
+		elif i == 0:
+			s.style = 0
+		elif i == item_indexes.size() - 1:
+			s.style = 2
+		else:
+			s.style = 1
+
+	var separator = VSeparator.new()
+	separator.modulate = Color(0, 0, 0, 0)
+	vbox.add_child(separator)
+
+	return vbox
+
+
+func _get_vector_value(idx: int):
+	var left = _hboxes[idx].get_node("Left")
+	var vbox = left.get_node("VectorContainer")
+	if not left or not vbox:
+		return null
+
+	var vector_box = vbox.get_node("Vector")
+	var count = vector_box.get_child_count()
+	var res
+	if count == 2:
+		res = Vector2.ZERO
+	else:
+		res = Vector3.ZERO
+
+	for i in count:
+		res[i] = vector_box.get_child(i).value
+	return res
+
+
+func _set_vector_value(idx: int, value) -> void:
+	if idx >= _inputs.size():
 		return
 
-	var add = _make_button("+")
-	var remove = _make_button("-")
-	add.connect("pressed", self, "_create_new_input_slot")
-	remove.connect("pressed", self, "_delete_last_input_slot")
-
-	_btn_container = HBoxContainer.new()
-	_btn_container.alignment = BoxContainer.ALIGN_END
-	_btn_container.add_child(add)
-	_btn_container.add_child(remove)
-
-	add_child(_btn_container)
-
-
-"""
-Create a generic button with the given text
-"""
-func _make_button(text: String) -> Button:
-	var btn = Button.new()
-	btn.text = text
-	btn.rect_min_size.y = 24
-	return btn
-
-
-func _create_new_input_slot() -> void:
-	_dynamic_inputs["count"] += 1
-	var index = _inputs.size()
-	set_input(index, _dynamic_inputs["name"], _dynamic_inputs["type"], _dynamic_inputs["opts"])
-	regenerate_default_ui()
-	emit_signal("node_changed", self, true)
-
-
-func _delete_last_input_slot() -> void:
-	if _dynamic_inputs["count"] <= 0:
+	var vbox = _hboxes[idx].get_node("Left").get_node("VectorContainer")
+	if not vbox:
 		return
 
-	if remove_input(_inputs.size() - 1):
-		_dynamic_inputs["count"] -= 1
-		regenerate_default_ui()
-		emit_signal("node_changed", self, true)
+	# String to Vector conversion
+	value = value.substr(1, value.length() - 2)
+	var tokens = value.split(',')
+
+	var vector_box = vbox.get_node("Vector")
+	var count = vector_box.get_child_count()
+
+	for i in count:
+		vector_box.get_child(i).value = float(tokens[i])
+
+
+func _get_default_gui_value(idx: int, for_export := false):
+	var left = _hboxes[idx].get_node("Left")
+	if not left:
+		return null
+
+	match _inputs[idx]["type"]:
+		ConceptGraphDataType.BOOLEAN:
+			if left.has_node("CheckBox"):
+				return left.get_node("CheckBox").pressed
+		ConceptGraphDataType.SCALAR:
+			if left.has_node("SpinBox"):
+				return left.get_node("SpinBox").value
+		ConceptGraphDataType.STRING:
+			if left.has_node("LineEdit"):
+				return left.get_node("LineEdit").text
+			elif left.has_node("OptionButton"):
+				var btn = left.get_node("OptionButton")
+				if for_export:
+					return btn.get_item_id(btn.selected)
+				else:
+					return btn.get_item_text(btn.selected)
+		ConceptGraphDataType.VECTOR2:
+			return _get_vector_value(idx)
+		ConceptGraphDataType.VECTOR3:
+			return _get_vector_value(idx)
+
+	return null
 
 
 """
-Forces the GraphNode to redraw its gui, mostly to get rid of outdated connections after a delete.
+Forces the GraphNode to redraw its gui, mostly to fix outdated connections after a resize.
 """
 func _redraw() -> void:
-	hide()
-	show()
+	if not resizable:
+		emit_signal("resize_request", Vector2(rect_min_size.x, 0.0))
+	if get_parent():
+		get_parent().force_redraw()
+	else:
+		hide()
+		show()
 
 
 func _connect_signals() -> void:
@@ -818,6 +883,42 @@ func _show_file_dialog(opts: Dictionary, line_edit: LineEdit) -> void:
 	_file_dialog.popup_centered()
 
 
+func _update_slots_types() -> void:
+	# Change the slots type if the mirror option is enabled
+	var slots_types_updated = false
+
+	for i in _inputs.size():
+		for o in _inputs[i]["mirror"]:
+			slots_types_updated = true
+			var type = _inputs[i]["default_type"]
+
+			# Copy the connected input type if there is one but if multi connection is enabled,
+			# all connected inputs must share the same type otherwise it will use the default type.
+			if is_input_connected(i):
+				var inputs: Array = get_parent().get_left_nodes(self, i)
+				var input_type = -1
+
+				for data in inputs:
+					if input_type == -1:
+						input_type = data["node"]._outputs[data["slot"]]["type"]
+					else:
+						if data["node"]._outputs[data["slot"]]["type"] != input_type:
+							input_type = -2
+				if input_type >= 0:
+					type = input_type
+
+			_inputs[i]["type"] = type
+			_outputs[o]["type"] = type
+
+	if slots_types_updated:
+		_setup_slots()
+		# Propagate the type change to the connected nodes
+		var parent = get_parent()
+		if parent:
+			for node in parent.get_all_right_nodes(self):
+				node.emit_signal("connection_changed")
+
+
 """
 Called from _show_file_dialog when confirming the selection
 """
@@ -825,25 +926,10 @@ func _on_file_selected(line_edit: LineEdit) -> void:
 	line_edit.text = _file_dialog.current_path
 
 
-"""
-Called when a connected input node has finished generating its output data. This method checks
-if every other connected node has completed their task. If they are ready, notify this node to
-resume its output generation
-"""
-func _on_input_ready() -> void:
-	var all_inputs_ready := true
-	var connected_inputs := _get_connected_inputs()
-	for input_node in connected_inputs:
-		if not input_node.is_output_ready():
-			all_inputs_ready = false
-
-	if all_inputs_ready:
-		emit_signal("all_inputs_ready")
-
-
 func _on_resize_request(new_size) -> void:
 	rect_size = new_size
-	_resize_timer.start(2.0)
+	if resizable:
+		_resize_timer.start(2.0)
 
 
 func _on_resize_timeout() -> void:
@@ -860,32 +946,19 @@ everything that's not a label if something is connected to the associated slot.
 """
 func _on_connection_changed() -> void:
 	# Hides the default gui (except for the labels) if a connection is present for the given slot
-	for i in _hboxes.size():
-		for ui in _hboxes[i].get_children():
+	for i in _inputs.size():
+		var type = _inputs[i]["type"]
+		for ui in _hboxes[i].get_node("Left").get_children():
 			if not ui is Label:
 				ui.visible = !is_input_connected(i)
+			elif ui.name == "LabelLeft":
+				ui.visible = true
+				if type == ConceptGraphDataType.SCALAR \
+					or type == ConceptGraphDataType.VECTOR2 \
+					or type == ConceptGraphDataType.VECTOR3:
+					ui.visible = is_input_connected(i)
 
-	# Change the slots type if the mirror option is enabled
-	var slots_types_updated = false
-	var count = _inputs.size()
-	if not _dynamic_inputs.empty():
-		count -= _dynamic_inputs["count"]
-
-	for i in count:
-		for o in _inputs[i]["mirror"]:
-			slots_types_updated = true
-			var type = _inputs[i]["default_type"]
-			# Copy the connected input type if there is one
-			if is_input_connected(i):
-				var data = get_parent().get_left_node(self, i)
-				type = data["node"]._outputs[data["slot"]]["type"]
-
-			_inputs[i]["type"] = type
-			_outputs[o]["type"] = type
-
-	if slots_types_updated:
-		_setup_slots()
-
+	_update_slots_types()
 	_redraw()
 
 
