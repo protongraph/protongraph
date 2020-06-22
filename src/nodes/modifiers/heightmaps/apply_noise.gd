@@ -32,10 +32,10 @@ func _generate_outputs() -> void:
 		var i = 0
 		for y in map_size.y:
 			for x in map_size.x:
-				data[i] += noise.get_noise_2d(
+				data[i] += (noise.get_noise_2d(
 					noise_offset.x + x * scale.x,
 					noise_offset.z + y * scale.y
-				) * noise_scale.y + noise_offset.y
+				) * 0.5 + 0.5) * noise_scale.y + noise_offset.y
 				i += 1
 
 	heightmap.data = data
