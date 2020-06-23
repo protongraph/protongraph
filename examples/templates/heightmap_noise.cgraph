@@ -95,16 +95,6 @@
 		{
 			"data": {},
 			"editor": {
-				"offset_x": 975,
-				"offset_y": -200,
-				"slots": {}
-			},
-			"name": "GraphNode",
-			"type": "final_output"
-		},
-		{
-			"data": {},
-			"editor": {
 				"offset_x": -800,
 				"offset_y": -350,
 				"slots": {
@@ -117,22 +107,6 @@
 		{
 			"data": {},
 			"editor": {
-				"offset_x": -600,
-				"offset_y": -475,
-				"slots": {
-					"0": 6,
-					"1": 4,
-					"2": 800,
-					"3": 0.2,
-					"4": 3.5
-				}
-			},
-			"name": "GraphNode2",
-			"type": "simplex_noise"
-		},
-		{
-			"data": {},
-			"editor": {
 				"offset_x": -800,
 				"offset_y": -100,
 				"slots": {
@@ -141,22 +115,6 @@
 			},
 			"name": "GraphNode11",
 			"type": "inspector_curve_2d"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -600,
-				"offset_y": 25,
-				"slots": {
-					"0": 0,
-					"1": 4,
-					"2": 80,
-					"3": 0.25,
-					"4": 4
-				}
-			},
-			"name": "GraphNode13",
-			"type": "simplex_noise"
 		},
 		{
 			"data": {},
@@ -176,7 +134,7 @@
 				"offset_x": 375,
 				"offset_y": -200,
 				"slots": {
-					"1": 100,
+					"1": 128,
 					"2": false,
 					"3": false
 				}
@@ -207,18 +165,6 @@
 			},
 			"name": "GraphNode6",
 			"type": "set_material_to_node"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": 700,
-				"offset_y": -50,
-				"slots": {
-					"0": "Terrain"
-				}
-			},
-			"name": "GraphNode7",
-			"type": "inspector_spatial_material"
 		},
 		{
 			"data": {},
@@ -287,18 +233,72 @@
 		{
 			"data": {},
 			"editor": {
+				"offset_x": 700,
+				"offset_y": -50,
+				"slots": {
+					"0": "Terrain"
+				}
+			},
+			"name": "GraphNode7",
+			"type": "inspector_spatial_material"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -600,
+				"offset_y": -475,
+				"slots": {
+					"0": 6,
+					"1": 4,
+					"2": 400,
+					"3": 0.2,
+					"4": 3.5
+				}
+			},
+			"name": "GraphNode2",
+			"type": "simplex_noise"
+		},
+		{
+			"data": {},
+			"editor": {
 				"offset_x": -600,
 				"offset_y": -225,
 				"slots": {
 					"0": 3,
 					"1": 4,
-					"2": 200,
+					"2": 100,
 					"3": 0.2,
 					"4": 4
 				}
 			},
 			"name": "GraphNode10",
 			"type": "simplex_noise"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -600,
+				"offset_y": 25,
+				"slots": {
+					"0": 0,
+					"1": 4,
+					"2": 40,
+					"3": 0.25,
+					"4": 4
+				}
+			},
+			"name": "GraphNode13",
+			"type": "simplex_noise"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 1400,
+				"offset_y": -200,
+				"slots": {}
+			},
+			"name": "GraphNode",
+			"type": "final_output"
 		}
 	]
 }

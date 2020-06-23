@@ -24,7 +24,9 @@ _data = [ Vector2( 0.379518, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1.5 ), 2.8124, 0.0
 [node name="Terrain" type="Node" parent="."]
 script = ExtResource( 1 )
 template_path = "res://addons/concept_graph/examples/templates/heightmap_noise.cgraph"
-show_result_in_editor_tree = false
+auto_generate_on_load = true
+paused = false
+show_result_in_editor_tree = true
 Template/Elevation = SubResource( 1 )
 Template/Erosion = SubResource( 2 )
 Template/Hills = SubResource( 3 )
@@ -34,7 +36,7 @@ Template/Terrain = ExtResource( 4 )
 script = ExtResource( 2 )
 
 [node name="Hole" type="Spatial" parent="Terrain/Input"]
-transform = Transform( 0.642788, -0.198267, -0.739942, 0, 0.965926, -0.258819, 0.766045, 0.166366, 0.620885, 520, -22, 610 )
+transform = Transform( 0.582985, 0.227037, -0.780117, -0.270749, 0.959571, 0.0769316, 0.766045, 0.166366, 0.620885, 79.8629, -43.7945, 146.877 )
 script = ExtResource( 5 )
 size = Vector3( 180, 10, 180 )
 center = Vector3( 0, 0, 0 )
