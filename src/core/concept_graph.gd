@@ -50,7 +50,9 @@ This requires to override _get and _set as well
 """
 func _get_property_list() -> Array:
 	var res := []
-	for name in _exposed_variables.keys():
+	var vars = _exposed_variables.keys()
+	vars.sort()
+	for name in vars:
 		var dict := {
 			"name": name,
 			"type": _exposed_variables[name]["type"],
