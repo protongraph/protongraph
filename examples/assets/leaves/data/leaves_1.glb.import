@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/leaves_1.glb-cfa53e0393e49e33d06b56e4a615cf75.scn"
+path="res://.import/leaves_1.glb-bab399254dc4eb17c984e78cfd7acae7.scn"
 
 [deps]
 
-source_file="res://addons/concept_graph/examples/assets/leaves/data/leaves_1.glb"
-dest_files=[ "res://.import/leaves_1.glb-cfa53e0393e49e33d06b56e4a615cf75.scn" ]
+source_file="res://examples/assets/leaves/data/leaves_1.glb"
+dest_files=[ "res://.import/leaves_1.glb-bab399254dc4eb17c984e78cfd7acae7.scn" ]
 
 [params]
 

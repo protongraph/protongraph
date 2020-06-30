@@ -10,12 +10,12 @@
 _data = [ Vector2( 0.156626, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 1.34141, 0.0, 0, 0 ]
 
 [sub_resource type="Curve" id=2]
-min_value = 0.5
-_data = [ Vector2( 0.376404, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.488764, 0.5 ), 0.0, 0.0, 0, 0, Vector2( 0.634831, 1 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="Curve" id=3]
 max_value = 1.5
 _data = [ Vector2( 0.379518, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1.5 ), 2.8124, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=3]
+min_value = 0.5
+_data = [ Vector2( 0.376404, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.488764, 0.5 ), 0.0, 0.0, 0, 0, Vector2( 0.634831, 1 ), 0.0, 0.0, 0, 0 ]
 
 [node name="World" type="Spatial"]
 
@@ -28,8 +28,8 @@ auto_generate_on_load = true
 paused = false
 show_result_in_editor_tree = true
 Template/Elevation = SubResource( 1 )
-Template/Erosion = SubResource( 2 )
-Template/Hills = SubResource( 3 )
+Template/Hills = SubResource( 2 )
+Template/Erosion = SubResource( 3 )
 Template/Terrain = ExtResource( 4 )
 
 [node name="Input" type="Spatial" parent="Terrain"]
@@ -38,7 +38,7 @@ script = ExtResource( 2 )
 [node name="Hole" type="Spatial" parent="Terrain/Input"]
 transform = Transform( 0.582985, 0.227037, -0.780117, -0.270749, 0.959571, 0.0769316, 0.766045, 0.166366, 0.620885, 79.8629, -43.7945, 146.877 )
 script = ExtResource( 5 )
-size = Vector3( 180, 10, 180 )
+size = Vector3( 80.624, 10, 57.9548 )
 center = Vector3( 0, 0, 0 )
 
 [node name="Output" type="Spatial" parent="Terrain"]

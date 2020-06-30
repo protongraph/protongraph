@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/sprite_0084.png-b3ae0ecb5d035855af2c1138874b29ac.s3tc.stex"
-path.etc2="res://.import/sprite_0084.png-b3ae0ecb5d035855af2c1138874b29ac.etc2.stex"
+path.s3tc="res://.import/sprite_0084.png-7a51187087095800572c8e0fa5d1e6c9.s3tc.stex"
+path.etc2="res://.import/sprite_0084.png-7a51187087095800572c8e0fa5d1e6c9.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/concept_graph/examples/assets/leaves/data/sprite_0084.png"
-dest_files=[ "res://.import/sprite_0084.png-b3ae0ecb5d035855af2c1138874b29ac.s3tc.stex", "res://.import/sprite_0084.png-b3ae0ecb5d035855af2c1138874b29ac.etc2.stex" ]
+source_file="res://examples/assets/leaves/data/sprite_0084.png"
+dest_files=[ "res://.import/sprite_0084.png-7a51187087095800572c8e0fa5d1e6c9.s3tc.stex", "res://.import/sprite_0084.png-7a51187087095800572c8e0fa5d1e6c9.etc2.stex" ]
 
 [params]
 

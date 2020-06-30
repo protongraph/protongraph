@@ -1,0 +1,101 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://views/themes/dark.tres" type="Theme" id=1]
+[ext_resource path="res://views/main/main_view.gd" type="Script" id=2]
+[ext_resource path="res://views/main/tab_container.gd" type="Script" id=4]
+[ext_resource path="res://views/main/template_dialog.gd" type="Script" id=5]
+
+[node name="MainView" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+file_button = NodePath("VBoxContainer/TopBar/HBoxContainer/File")
+editor_button = NodePath("VBoxContainer/TopBar/HBoxContainer/Editor")
+message_label = NodePath("VBoxContainer/TopBar/HBoxContainer2/Message")
+tab_container = NodePath("VBoxContainer/TabContainer")
+file_dialog = NodePath("FileDialog")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 1018.0
+margin_bottom = 596.0
+custom_constants/separation = 0
+
+[node name="TopBar" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1012.0
+margin_bottom = 22.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopBar"]
+margin_right = 88.0
+margin_bottom = 22.0
+
+[node name="File" type="MenuButton" parent="VBoxContainer/TopBar/HBoxContainer"]
+margin_right = 35.0
+margin_bottom = 22.0
+text = "File"
+items = [ "New Template", null, 0, false, false, 0, 0, null, "", false, "Open Template", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Save", null, 0, false, false, 3, 0, null, "", false, "Save As", null, 0, false, false, 4, 0, null, "", false, "", null, 0, false, false, 5, 0, null, "", true, "Quit", null, 0, false, false, 6, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="Editor" type="MenuButton" parent="VBoxContainer/TopBar/HBoxContainer"]
+margin_left = 39.0
+margin_right = 88.0
+margin_bottom = 22.0
+text = "Editor"
+items = [ "Editor Settings", null, 0, false, false, 0, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TopBar"]
+margin_left = 92.0
+margin_right = 1012.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Message" type="Label" parent="VBoxContainer/TopBar/HBoxContainer2"]
+margin_left = 912.0
+margin_right = 920.0
+margin_bottom = 22.0
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 22.0
+margin_right = 1012.0
+margin_bottom = 27.0
+custom_constants/separation = 5
+
+[node name="Tabs" type="Tabs" parent="VBoxContainer"]
+margin_top = 27.0
+margin_right = 1012.0
+margin_bottom = 51.0
+size_flags_horizontal = 3
+tab_align = 0
+tab_close_display_policy = 2
+drag_to_rearrange_enabled = true
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
+margin_top = 51.0
+margin_right = 1012.0
+margin_bottom = 592.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tab_align = 0
+tabs_visible = false
+script = ExtResource( 4 )
+tabs = NodePath("../Tabs")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+margin_right = 485.0
+margin_bottom = 512.0
+window_title = "Create a new graph template"
+resizable = true
+dialog_hide_on_ok = true
+access = 2
+filters = PoolStringArray( "*.cgraph" )
+current_dir = "/home/hungryproton/Work/Games/ConceptGraph"
+current_path = "/home/hungryproton/Work/Games/ConceptGraph/"
+script = ExtResource( 5 )

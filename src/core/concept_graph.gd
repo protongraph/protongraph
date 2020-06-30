@@ -50,9 +50,7 @@ This requires to override _get and _set as well
 """
 func _get_property_list() -> Array:
 	var res := []
-	var vars = _exposed_variables.keys()
-	vars.sort()
-	for name in vars:
+	for name in _exposed_variables.keys():
 		var dict := {
 			"name": name,
 			"type": _exposed_variables[name]["type"],
@@ -123,9 +121,7 @@ func reload_template(generate: bool = true) -> void:
 	if not _template:
 		_template = ConceptGraphTemplate.new()
 		add_child(_template)
-		_template.concept_graph = self
 		_template.root = _output_root
-		_template.node_library = get_tree().root.get_node("ConceptNodeLibrary")
 		_template.connect("simulation_outdated", self, "generate")
 		_template.connect("simulation_completed", self, "_on_simulation_completed")
 

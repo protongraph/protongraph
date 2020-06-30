@@ -64,20 +64,3 @@ func get_index(i: int) -> float:
 
 func set_index(i: int, height: float) -> void:
 	data[i] = height
-
-
-func get_image() -> Image:
-
-	var color = Color()
-	var image = Image.new()
-	image.create(size.x, size.y, false, Image.FORMAT_RF)
-	image.lock()
-	
-	for x in size.x:
-		for y in size.y:
-			color.r = data[y * size.y + x]# * height_scale + height_offset
-			image.set_pixel(x, y, color)
-	
-	image.unlock()
-	
-	return image

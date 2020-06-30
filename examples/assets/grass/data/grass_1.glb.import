@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/grass_1.glb-1cf7f9fd134abe56ee1278579015f73e.scn"
+path="res://.import/grass_1.glb-a5b5ec67614577d926cadade57d5b2c0.scn"
 
 [deps]
 
-source_file="res://addons/concept_graph/examples/assets/grass/data/grass_1.glb"
-dest_files=[ "res://.import/grass_1.glb-1cf7f9fd134abe56ee1278579015f73e.scn" ]
+source_file="res://examples/assets/grass/data/grass_1.glb"
+dest_files=[ "res://.import/grass_1.glb-a5b5ec67614577d926cadade57d5b2c0.scn" ]
 
 [params]
 

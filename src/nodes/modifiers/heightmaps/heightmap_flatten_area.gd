@@ -67,7 +67,7 @@ func _generate_outputs() -> void:
 			elif operation == "Modulate":
 				height += box_level
 
-			data[i] = (height - heightmap.height_offset) / (heightmap.height_scale + 0.0001)
+			data[i] = (height - heightmap.height_offset) / heightmap.height_scale
 			i += 1
 
 	heightmap.data = data

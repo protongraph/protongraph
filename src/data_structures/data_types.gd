@@ -13,7 +13,6 @@ enum Types {
 	SCALAR,
 	STRING,
 	MATERIAL,
-	TEXTURE,
 	NOISE,
 	HEIGHTMAP,
 	CURVE_FUNC,
@@ -40,7 +39,6 @@ const BOOLEAN = Types.BOOLEAN
 const SCALAR = Types.SCALAR
 const STRING = Types.STRING
 const MATERIAL = Types.MATERIAL
-const TEXTURE = Types.TEXTURE
 const NOISE = Types.NOISE
 const HEIGHTMAP = Types.HEIGHTMAP
 const CURVE_FUNC = Types.CURVE_FUNC
@@ -68,7 +66,6 @@ const COLORS = {
 	SCALAR: Color("61d9f5"),
 	STRING: Color.gold,
 	MATERIAL: Color.darkmagenta,
-	TEXTURE: Color.turquoise,
 	NOISE: Color("b48700"),
 	HEIGHTMAP: Color("cc8f20"),
 	CURVE_FUNC: Color.dodgerblue,
@@ -175,8 +172,6 @@ static func to_variant_type(type: int) -> int:
 		CURVE_FUNC:
 			return TYPE_OBJECT
 		MATERIAL:
-			return TYPE_OBJECT
-		TEXTURE:
 			return TYPE_OBJECT
 		BOX_2D:
 			return TYPE_RECT2

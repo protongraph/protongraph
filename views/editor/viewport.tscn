@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://default_env.tres" type="Environment" id=1]
+
+[sub_resource type="World" id=1]
+environment = ExtResource( 1 )
+fallback_environment = ExtResource( 1 )
+
+[sub_resource type="CapsuleMesh" id=2]
+radius = 0.5
+
+[node name="ViewportContainer" type="ViewportContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -768.0
+margin_bottom = -472.0
+rect_min_size = Vector2( 256, 128 )
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 256, 128 )
+size_override_stretch = true
+world = SubResource( 1 )
+handle_input_locally = false
+msaa = 1
+usage = 3
+render_target_update_mode = 3
+
+[node name="Camera" type="Camera" parent="Viewport"]
+transform = Transform( 0.707107, -0.45452, 0.541675, 0, 0.766044, 0.642788, -0.707107, -0.454519, 0.541675, 2, 2, 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Viewport"]
+mesh = SubResource( 2 )
+material/0 = null

@@ -175,23 +175,6 @@ func get_output(idx: int, default := []) -> Array:
 
 
 """
-Query the parent ConceptGraph node in the editor and returns the corresponding input node if it
-exists
-"""
-func get_editor_input(name: String) -> Node:
-	var parent = get_parent()
-	if not parent:
-		return null
-	var input = parent.concept_graph.get_input(name)
-	if input == null:
-		return null
-
-	var input_copy = input.duplicate(7)
-	register_to_garbage_collection(input_copy)
-	return input_copy
-
-
-"""
 Return the variables exposed to the node inspector. Same format as get_property_list
 [ {name: , type: }, ... ]
 """
@@ -199,8 +182,8 @@ func get_exposed_variables() -> Array:
 	return []
 
 
-func get_concept_graph():
-	return get_parent().concept_graph
+func get_editor_input(_val):
+	return null
 
 
 """
@@ -706,7 +689,7 @@ func _generate_default_gui() -> void:
 
 func _create_spinbox(property_name, opts, parent, idx) -> SpinBox:
 	if not _spinbox:
-		_spinbox = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/editor/gui/spinbox.tscn")
+		_spinbox = preload("res://views/editor/spinbox/spinbox.tscn")
 	var spinbox = _spinbox.instance()
 	if parent:
 		parent.add_child(spinbox)

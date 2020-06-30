@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon_concept_graph.svg-b3ad1abacbe130e93036dfaa633b064a.stex"
+path="res://.import/icon_concept_graph.svg-ea5845d88bf7451bbe1c06f9c8bad460.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/concept_graph/icons/icon_concept_graph.svg"
-dest_files=[ "res://.import/icon_concept_graph.svg-b3ad1abacbe130e93036dfaa633b064a.stex" ]
+source_file="res://icons/icon_concept_graph.svg"
+dest_files=[ "res://.import/icon_concept_graph.svg-ea5845d88bf7451bbe1c06f9c8bad460.stex" ]
 
 [params]
 

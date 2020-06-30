@@ -4,7 +4,7 @@ extends GraphEdit
 
 """
 This GraphEdit class handles all the editor interactions, undo redo and so on.
-The addon specific logic happens in the child class ConceptGraphTemplate
+The addon specific logic happens in the child class ConceptGraphTemplate.
 """
 
 signal graph_changed
@@ -19,10 +19,12 @@ var undo_redo: UndoRedo
 var _copy_buffer := []
 var _connections_buffer := []
 var _ui_style_ready := false
-var _minimap = preload("../editor/gui/graph_minimap.tscn").instance()
+var _minimap = preload("../../views/editor/graph_minimap.tscn").instance()
 
 
 func _init() -> void:
+	undo_redo = GlobalUndoRedo.get_undo_redo()
+
 	_setup_gui()
 	ConceptGraphDataType.setup_valid_connection_types(self)
 

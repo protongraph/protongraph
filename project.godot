@@ -1,0 +1,199 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Spatial",
+"class": "ConceptBoxInput",
+"language": "GDScript",
+"path": "res://nodes/box_input.gd"
+}, {
+"base": "Node",
+"class": "ConceptGraph",
+"language": "GDScript",
+"path": "res://src/core/concept_graph.gd"
+}, {
+"base": "Node2D",
+"class": "ConceptGraph2D",
+"language": "GDScript",
+"path": "res://src/core/concept_graph_2d.gd"
+}, {
+"base": "Spatial",
+"class": "ConceptGraph3D",
+"language": "GDScript",
+"path": "res://src/core/concept_graph_3d.gd"
+}, {
+"base": "Path",
+"class": "ConceptGraphCurveInput",
+"language": "GDScript",
+"path": "res://nodes/curve_input.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphCurveUtil",
+"language": "GDScript",
+"path": "res://src/common/curve_util.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphDataType",
+"language": "GDScript",
+"path": "res://src/data_structures/data_types.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphEditorUtil",
+"language": "GDScript",
+"path": "res://src/common/editor_util.gd"
+}, {
+"base": "Control",
+"class": "ConceptGraphEditorView",
+"language": "GDScript",
+"path": "res://views/editor/editor_view.gd"
+}, {
+"base": "Object",
+"class": "ConceptGraphHeightmap",
+"language": "GDScript",
+"path": "res://src/data_structures/heightmap.gd"
+}, {
+"base": "Node",
+"class": "ConceptGraphInputManager",
+"language": "GDScript",
+"path": "res://nodes/input_manager.gd"
+}, {
+"base": "Node",
+"class": "ConceptGraphNodePool",
+"language": "GDScript",
+"path": "res://src/core/node_pool.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphNodeUtil",
+"language": "GDScript",
+"path": "res://src/common/node_util.gd"
+}, {
+"base": "Object",
+"class": "ConceptGraphNoise",
+"language": "GDScript",
+"path": "res://src/data_structures/noise.gd"
+}, {
+"base": "ConceptGraphNoise",
+"class": "ConceptGraphNoiseBlend",
+"language": "GDScript",
+"path": "res://src/data_structures/noise_blend.gd"
+}, {
+"base": "ConceptGraphNoise",
+"class": "ConceptGraphNoiseSimplex",
+"language": "GDScript",
+"path": "res://src/data_structures/noise_simplex.gd"
+}, {
+"base": "Node",
+"class": "ConceptGraphSettings",
+"language": "GDScript",
+"path": "res://src/core/project_settings.gd"
+}, {
+"base": "",
+"class": "ConceptGraphTemplate",
+"language": "GDScript",
+"path": "res://src/core/template.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphThreadPool",
+"language": "GDScript",
+"path": "res://src/core/thread_pool.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphVectorUtil",
+"language": "GDScript",
+"path": "res://src/common/vector_util.gd"
+}, {
+"base": "GraphNode",
+"class": "ConceptNode",
+"language": "GDScript",
+"path": "res://src/core/concept_node.gd"
+}, {
+"base": "Node",
+"class": "ConceptNodeLibrary",
+"language": "GDScript",
+"path": "res://src/core/node_library.gd"
+}, {
+"base": "Spatial",
+"class": "ConceptNodeVectorCurve",
+"language": "GDScript",
+"path": "res://src/data_structures/vector_curve_3d.gd"
+}, {
+"base": "Spatial",
+"class": "ConceptNodeVectorCurve2D",
+"language": "GDScript",
+"path": "res://src/data_structures/vector_curve_2d.gd"
+}, {
+"base": "Reference",
+"class": "JSONBeautifier",
+"language": "GDScript",
+"path": "res://src/thirdparty/json_beautifier/json_beautifier.gd"
+}, {
+"base": "Object",
+"class": "NodeUtils",
+"language": "GDScript",
+"path": "res://src/common/node_utils.gd"
+}, {
+"base": "Reference",
+"class": "PoolVectorUtil",
+"language": "GDScript",
+"path": "res://src/common/pool_vector_util.gd"
+} ]
+_global_script_class_icons={
+"ConceptBoxInput": "",
+"ConceptGraph": "res://icons/icon_concept_graph.svg",
+"ConceptGraph2D": "res://icons/icon_concept_graph.svg",
+"ConceptGraph3D": "res://icons/icon_concept_graph.svg",
+"ConceptGraphCurveInput": "",
+"ConceptGraphCurveUtil": "",
+"ConceptGraphDataType": "",
+"ConceptGraphEditorUtil": "",
+"ConceptGraphEditorView": "",
+"ConceptGraphHeightmap": "",
+"ConceptGraphInputManager": "",
+"ConceptGraphNodePool": "",
+"ConceptGraphNodeUtil": "",
+"ConceptGraphNoise": "",
+"ConceptGraphNoiseBlend": "",
+"ConceptGraphNoiseSimplex": "",
+"ConceptGraphSettings": "",
+"ConceptGraphTemplate": "",
+"ConceptGraphThreadPool": "",
+"ConceptGraphVectorUtil": "",
+"ConceptNode": "",
+"ConceptNodeLibrary": "",
+"ConceptNodeVectorCurve": "",
+"ConceptNodeVectorCurve2D": "",
+"JSONBeautifier": "",
+"NodeUtils": "",
+"PoolVectorUtil": ""
+}
+
+[application]
+
+config/name="ConceptGraph"
+run/main_scene="res://views/main/main_view.tscn"
+
+[autoload]
+
+GlobalUndoRedo="*res://src/common/undo_redo.gd"
+Settings="*res://src/core/project_settings.gd"
+NodeLibrary="*res://src/core/node_library.gd"
+
+[memory]
+
+limits/message_queue/max_size_kb=4096
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+quality/intended_usage/framebuffer_allocation=3
+threads/thread_model=2
+quality/filters/msaa=1
+environment/default_environment="res://default_env.tres"
+quality/subsurface_scattering/quality=0

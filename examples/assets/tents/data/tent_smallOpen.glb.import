@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/tent_smallOpen.glb-627d3db0563182803ed5ed9bacdcc47c.scn"
+path="res://.import/tent_smallOpen.glb-e4f932aa7f9c613c61f8013e81978e58.scn"
 
 [deps]
 
-source_file="res://addons/concept_graph/examples/assets/tents/data/tent_smallOpen.glb"
-dest_files=[ "res://.import/tent_smallOpen.glb-627d3db0563182803ed5ed9bacdcc47c.scn" ]
+source_file="res://examples/assets/tents/data/tent_smallOpen.glb"
+dest_files=[ "res://.import/tent_smallOpen.glb-e4f932aa7f9c613c61f8013e81978e58.scn" ]
 
 [params]
 

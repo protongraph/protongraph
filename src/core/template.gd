@@ -16,11 +16,9 @@ signal thread_completed
 signal json_ready
 
 
-var concept_graph
 var root: Spatial
 var paused := false
 var restart_generation := false
-var node_library: ConceptNodeLibrary	# Injected from the concept graph
 var multithreading_enabled := true	# Set to false to ignore the ProjectSettings and force multithreading off
 
 var _json_util = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/thirdparty/json_beautifier/json_beautifier.gd")
@@ -74,7 +72,7 @@ func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
 	if new_node.is_final_output_node():
 		_output_nodes.append(new_node)
 
-	add_child(new_node)
+	add_child(new_node, true)
 	_connect_node_signals(new_node)
 
 	if data.has("name"):
@@ -92,7 +90,7 @@ func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
 
 
 func duplicate_node(node: ConceptNode) -> GraphNode:
-	var ref = node_library.create_node(node.unique_id)
+	var ref = NodeLibrary.create_node(node.unique_id)
 	ref.restore_editor_data(node.export_editor_data())
 	ref.restore_custom_data(node.export_custom_data())
 	return ref
@@ -115,14 +113,12 @@ func update_exposed_variables() -> void:
 				v.type = ConceptGraphDataType.to_variant_type(v.type)
 				exposed_variables.append(v)
 
-	concept_graph.update_exposed_variables(exposed_variables)
-
 
 """
 Get exposed variable from the inspector
 """
 func get_value_from_inspector(name: String):
-	return concept_graph.get("Template/" + name)
+	return null
 
 
 """
@@ -162,7 +158,7 @@ func get_output() -> Array:
 Opens a cgraph file, reads its contents and recreate a node graph from there
 """
 func load_from_file(path: String, soft_load := false) -> void:
-	if not node_library or not path or path == "":
+	if not path or path == "":
 		return
 
 	_template_loaded = false
@@ -185,7 +181,7 @@ func load_from_file(path: String, soft_load := false) -> void:
 		return
 
 	# For each node found in the template file
-	var node_list = node_library.get_list()
+	var node_list = NodeLibrary.get_list()
 	for node_data in graph["nodes"]:
 		if not node_data.has("type"):
 			continue
@@ -195,13 +191,15 @@ func load_from_file(path: String, soft_load := false) -> void:
 			print("Error: Node type ", type, " could not be found.")
 			continue
 
-		# Get a graph node from the node_library and use it as a model to create a new one
+		# Get a graph node from the node library and use it as a model to create a new one
 		var node_instance = node_list[type]
-		create_node(node_instance, node_data, false)
+		var new_node = create_node(node_instance, node_data, false)
+		print("newly created node : ", new_node, " ", new_node.get_name())
 
 	for c in graph["connections"]:
 		# TODO: convert the to/from ports stored in file to actual port
 		connect_node(c["from"], c["from_port"], c["to"], c["to_port"])
+		print("Trying to get ", c["to"])
 		get_node(c["to"]).emit_signal("connection_changed")
 
 	_template_loaded = true

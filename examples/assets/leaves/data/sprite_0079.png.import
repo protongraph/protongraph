@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/sprite_0079.png-bc3e04cffba8e16c0679e903fb7aecef.stex"
+path="res://.import/sprite_0079.png-a9cc7da40323dda6d2fd7166443f01ed.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/concept_graph/examples/assets/leaves/data/sprite_0079.png"
-dest_files=[ "res://.import/sprite_0079.png-bc3e04cffba8e16c0679e903fb7aecef.stex" ]
+source_file="res://examples/assets/leaves/data/sprite_0079.png"
+dest_files=[ "res://.import/sprite_0079.png-a9cc7da40323dda6d2fd7166443f01ed.stex" ]
 
 [params]
 
