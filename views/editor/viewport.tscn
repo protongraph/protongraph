@@ -1,8 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://views/editor/viewport.gd" type="Script" id=2]
 [ext_resource path="res://views/editor/camera.gd" type="Script" id=3]
+[ext_resource path="res://icons/icon_material_preview_light_2.svg" type="Texture" id=4]
+[ext_resource path="res://icons/icon_camera.svg" type="Texture" id=5]
+[ext_resource path="res://icons/icon_material_preview_light_1.svg" type="Texture" id=6]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 0.01, 0.01, 50 )
@@ -27,8 +30,8 @@ __meta__ = {
 }
 
 [node name="DisplayOptions" type="HBoxContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 20.0
+margin_right = 1366.0
+margin_bottom = 22.0
 
 [node name="Normal" type="Button" parent="DisplayOptions"]
 visible = false
@@ -45,37 +48,40 @@ text = "Wireframe"
 
 [node name="VSeparator" type="VSeparator" parent="DisplayOptions"]
 margin_right = 15.0
-margin_bottom = 20.0
+margin_bottom = 22.0
 custom_constants/separation = 15
 
 [node name="ResetCamera" type="Button" parent="DisplayOptions"]
 margin_left = 19.0
-margin_right = 67.0
-margin_bottom = 20.0
-text = "Reset"
+margin_right = 47.0
+margin_bottom = 22.0
+hint_tooltip = "Reset the camera position and orientation to aim at the center of the scene"
+icon = ExtResource( 5 )
 
 [node name="VSeparator2" type="VSeparator" parent="DisplayOptions"]
-margin_left = 71.0
-margin_right = 86.0
-margin_bottom = 20.0
+margin_left = 51.0
+margin_right = 66.0
+margin_bottom = 22.0
 custom_constants/separation = 15
 
 [node name="LightSetup1" type="Button" parent="DisplayOptions"]
-margin_left = 90.0
-margin_right = 145.0
-margin_bottom = 20.0
-text = "Light 1"
+margin_left = 70.0
+margin_right = 98.0
+margin_bottom = 22.0
+hint_tooltip = "Light follows the camera so the result is always illuminated"
+icon = ExtResource( 6 )
 
 [node name="LightSetup2" type="Button" parent="DisplayOptions"]
-margin_left = 149.0
-margin_right = 204.0
-margin_bottom = 20.0
-text = "Light 2"
+margin_left = 102.0
+margin_right = 130.0
+margin_bottom = 22.0
+hint_tooltip = "Light is static so you can see part of the result shadowed"
+icon = ExtResource( 4 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
-margin_top = 24.0
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_top = 26.0
+margin_right = 1366.0
+margin_bottom = 768.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
@@ -89,7 +95,7 @@ static_light = NodePath("Viewport/Lighting/DirectionalLight")
 camera_light = NodePath("Viewport/Pivot/Camera/DirectionalLight")
 
 [node name="Viewport" type="Viewport" parent="ViewportContainer"]
-size = Vector2( 1024, 576 )
+size = Vector2( 1366, 742 )
 size_override_stretch = true
 handle_input_locally = false
 msaa = 1

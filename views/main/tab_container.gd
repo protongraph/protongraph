@@ -4,14 +4,17 @@ extends TabContainer
 signal tabs_cleared
 
 export var tabs: NodePath
+export var confirm_dialog: NodePath
 
 var _tabs: Tabs
+var _confirm_dialog: WindowDialog
 
 
 func _ready() -> void:
+	_confirm_dialog = get_node(confirm_dialog)
 	_tabs = get_node(tabs)
 	_tabs.connect("tab_changed", self, "_on_tab_changed")
-	_tabs.connect("tab_close", self, "_on_tab_closed")
+	_tabs.connect("tab_close", self, "_on_tab_close_request")
 	_tabs.connect("reposition_active_tab_request", self, "_on_tab_moved")
 
 	for c in get_children():
@@ -28,6 +31,31 @@ func select_tab(tab: int) -> void:
 	_tabs.current_tab = tab
 
 
+func close_tab(tab: int = -1) -> void:
+	if tab == -1:
+		tab = current_tab
+
+	var c = get_child(tab)
+	remove_child(c)
+	c.queue_free()
+	_tabs.remove_tab(tab)
+	close_confirm_dialog()
+
+	if get_child_count() == 0:
+		emit_signal("tabs_cleared")
+
+
+func save_and_close() -> void:
+	var tab = current_tab
+	var c = get_child(tab)
+	c.save_template()
+	close_tab()
+
+
+func close_confirm_dialog() -> void:
+	_confirm_dialog.visible = false
+
+
 func _on_tab_changed(tab: int) -> void:
 	set_current_tab(tab)
 
@@ -36,11 +64,9 @@ func _on_tab_moved(to_tab: int) -> void:
 	move_child(get_child(current_tab), to_tab)
 
 
-func _on_tab_closed(tab: int) -> void:
+func _on_tab_close_request(tab: int) -> void:
 	var c = get_child(tab)
-	remove_child(c)
-	c.queue_free()
-	_tabs.remove_tab(tab)
-
-	if get_child_count() == 0:
-		emit_signal("tabs_cleared")
+	if c is ConceptGraphEditorView:
+		_confirm_dialog.popup_centered()
+	else:
+		close_tab(tab)

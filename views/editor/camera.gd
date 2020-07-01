@@ -43,6 +43,7 @@ func on_input(event: InputEvent):
 func reset_camera() -> void:
 	transform.origin = Vector3.ZERO
 	rotation_degrees = Vector3(-40.0, 45.0, 0.0)
+	_camera.transform.origin.z = 3.0
 
 
 func _pan_camera(delta: float) -> void:

@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://views/main/start_tab.gd" type="Script" id=1]
 
 [sub_resource type="StyleBoxLine" id=1]
 color = Color( 1, 1, 1, 0.172549 )
@@ -6,22 +8,25 @@ grow_begin = -150.0
 grow_end = -150.0
 vertical = true
 
-[node name="StartView" type="PanelContainer"]
+[node name="Start" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+links_root = NodePath("HBoxContainer/RecentFiles/VBoxContainer/LinksRoot")
+parent = NodePath("HBoxContainer/RecentFiles/VBoxContainer")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 1017.0
-margin_bottom = 593.0
+margin_right = 1359.0
+margin_bottom = 761.0
 
 [node name="RecentFiles" type="MarginContainer" parent="HBoxContainer"]
-margin_right = 499.0
-margin_bottom = 586.0
+margin_right = 670.0
+margin_bottom = 754.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 20
@@ -32,54 +37,40 @@ custom_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/RecentFiles"]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 479.0
-margin_bottom = 566.0
+margin_right = 650.0
+margin_bottom = 734.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 10
 alignment = 1
 
 [node name="Label" type="Label" parent="HBoxContainer/RecentFiles/VBoxContainer"]
-margin_top = 230.0
-margin_right = 459.0
-margin_bottom = 244.0
+margin_top = 345.0
+margin_right = 630.0
+margin_bottom = 359.0
 text = "Recent files"
 align = 2
 
-[node name="LinkButton" type="LinkButton" parent="HBoxContainer/RecentFiles/VBoxContainer"]
-margin_left = 299.0
-margin_top = 254.0
-margin_right = 459.0
-margin_bottom = 268.0
-size_flags_horizontal = 8
-text = "/home/user/file_1.cgraph"
-
-[node name="LinkButton2" type="LinkButton" parent="HBoxContainer/RecentFiles/VBoxContainer"]
-margin_left = 236.0
-margin_top = 278.0
-margin_right = 459.0
-margin_bottom = 292.0
-size_flags_horizontal = 8
-text = "/home/user/file_952_final_2.cgraph"
-
-[node name="LinkButton3" type="LinkButton" parent="HBoxContainer/RecentFiles/VBoxContainer"]
-margin_left = 344.0
-margin_top = 302.0
-margin_right = 459.0
-margin_bottom = 316.0
-size_flags_horizontal = 8
-text = "/tmp/test2.cgraph"
+[node name="LinksRoot" type="VBoxContainer" parent="HBoxContainer/RecentFiles/VBoxContainer"]
+margin_top = 369.0
+margin_right = 630.0
+margin_bottom = 369.0
+size_flags_horizontal = 3
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
-margin_left = 503.0
-margin_right = 507.0
-margin_bottom = 586.0
+margin_left = 674.0
+margin_right = 678.0
+margin_bottom = 754.0
 custom_styles/separator = SubResource( 1 )
 
 [node name="Introduction" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 511.0
-margin_right = 1010.0
-margin_bottom = 586.0
+margin_left = 682.0
+margin_right = 1352.0
+margin_bottom = 754.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 20
@@ -90,21 +81,21 @@ custom_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Introduction"]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 479.0
-margin_bottom = 566.0
+margin_right = 650.0
+margin_bottom = 734.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 15
 alignment = 1
 
 [node name="Title" type="Label" parent="HBoxContainer/Introduction/VBoxContainer"]
-margin_top = 251.0
-margin_right = 459.0
-margin_bottom = 265.0
+margin_top = 335.0
+margin_right = 630.0
+margin_bottom = 349.0
 text = "Welcome to ConceptGraph !"
 
 [node name="Title2" type="Label" parent="HBoxContainer/Introduction/VBoxContainer"]
-margin_top = 280.0
-margin_right = 459.0
-margin_bottom = 294.0
+margin_top = 364.0
+margin_right = 630.0
+margin_bottom = 378.0
 text = "Start by creating a new template under File > Create new template"

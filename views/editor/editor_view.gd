@@ -27,22 +27,16 @@ func _ready() -> void:
 
 	_save_timer = Timer.new()
 	_save_timer.connect("timeout", self, "save_template")
-	_save_timer.one_shot = true
+	_save_timer.one_shot = false
 	_save_timer.autostart = false
 	add_child(_save_timer)
+
+	_save_timer.start(Settings.get_setting(Settings.AUTOSAVE_INTERVAL))
 
 
 func load_template(path: String) -> void:
 	_template_path = path
-	_template.paused = true # Prevent output generation while the UI is not ready
 	_template.load_from_file(path)
-
-	_template.connect("graph_changed", self, "_on_graph_changed")
-	_template.connect("popup_request", self, "_show_node_dialog")
-	#_template.connect("simulation_started", self, "_show_loading_panel")
-	_template.connect("simulation_completed", self, "_on_simulation_completed")
-
-	_template.paused = false
 
 
 func get_input(name) -> Node:
@@ -87,4 +81,7 @@ func _on_graph_changed() -> void:
 func _on_simulation_completed() -> void:
 	var result = _template.get_output()
 	_viewport.display(result)
-	print("Output: ", result)
+
+
+func _on_simulation_outdated() -> void:
+	_template.generate()

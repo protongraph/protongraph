@@ -185,6 +185,11 @@ GlobalUndoRedo="*res://src/common/undo_redo.gd"
 Settings="*res://src/core/project_settings.gd"
 NodeLibrary="*res://src/core/node_library.gd"
 
+[display]
+
+window/size/width=1366
+window/size/height=768
+
 [memory]
 
 limits/message_queue/max_size_kb=4096

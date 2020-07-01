@@ -13,6 +13,9 @@ var _message: Label
 var _tab_container: TabContainer
 var _file_dialog: FileDialog
 
+var _history_path := "res://history.json"
+var _history: Array
+
 
 func _ready() -> void:
 	# Setup file actions
@@ -35,12 +38,30 @@ func _ready() -> void:
 	_tab_container = get_node(tab_container)
 	_tab_container.connect("tabs_cleared", self, "_load_start_view")
 
+	# File history
+	_load_file_history()
+
 	# Load a default view to avoid having a blank empty tab on launch
 	_load_start_view()
 
 
+func _load_file_history() -> void:
+	var file = File.new()
+	file.open(_history_path, File.READ)
+	_history = JSON.parse(file.get_as_text()).result
+
+
+func _save_file_history() -> void:
+	var file = File.new()
+	file.open(_history_path, File.WRITE)
+	file.store_string(to_json(_history))
+	file.close()
+
+
 func _load_start_view():
 	var start_view = preload("res://views/main/start_tab.tscn").instance()
+	start_view.set_file_history(_history)
+	start_view.connect("template_requested", self, "_on_template_requested")
 	_tab_container.add_child(start_view)
 
 
@@ -94,4 +115,13 @@ func _on_template_requested(path) -> void:
 	editor.name = path.get_file().get_basename()
 	_tab_container.add_child(editor)
 	editor.load_template(path)
+
+	if _history.has(path):
+		_history.erase(path)
+
+	_history.push_front(path)
+	if _history.size() > 20:
+		_history.pop_back()
+
+	_save_file_history()
 

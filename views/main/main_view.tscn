@@ -22,12 +22,12 @@ file_dialog = NodePath("FileDialog")
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_left = 6.0
 margin_top = 4.0
-margin_right = 1018.0
-margin_bottom = 596.0
+margin_right = 1360.0
+margin_bottom = 764.0
 custom_constants/separation = 0
 
 [node name="TopBar" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1012.0
+margin_right = 1354.0
 margin_bottom = 22.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopBar"]
@@ -51,26 +51,26 @@ switch_on_hover = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TopBar"]
 margin_left = 92.0
-margin_right = 1012.0
+margin_right = 1354.0
 margin_bottom = 22.0
 size_flags_horizontal = 3
 alignment = 2
 
 [node name="Message" type="Label" parent="VBoxContainer/TopBar/HBoxContainer2"]
-margin_left = 912.0
-margin_right = 920.0
+margin_left = 1254.0
+margin_right = 1262.0
 margin_bottom = 22.0
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
 margin_top = 22.0
-margin_right = 1012.0
+margin_right = 1354.0
 margin_bottom = 27.0
 custom_constants/separation = 5
 
 [node name="Tabs" type="Tabs" parent="VBoxContainer"]
 margin_top = 27.0
-margin_right = 1012.0
+margin_right = 1354.0
 margin_bottom = 51.0
 size_flags_horizontal = 3
 tab_align = 0
@@ -79,18 +79,21 @@ drag_to_rearrange_enabled = true
 
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 margin_top = 51.0
-margin_right = 1012.0
-margin_bottom = 592.0
+margin_right = 1354.0
+margin_bottom = 760.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 tab_align = 0
 tabs_visible = false
 script = ExtResource( 4 )
 tabs = NodePath("../Tabs")
+confirm_dialog = NodePath("../../ConfirmExitDialog")
 
 [node name="FileDialog" type="FileDialog" parent="."]
-margin_right = 485.0
-margin_bottom = 512.0
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 1360.0
+margin_bottom = 764.0
 window_title = "Create a new graph template"
 resizable = true
 dialog_hide_on_ok = true
@@ -99,3 +102,76 @@ filters = PoolStringArray( "*.cgraph" )
 current_dir = "/home/hungryproton/Work/Games/ConceptGraph"
 current_path = "/home/hungryproton/Work/Games/ConceptGraph/"
 script = ExtResource( 5 )
+
+[node name="ConfirmExitDialog" type="WindowDialog" parent="."]
+visible = true
+margin_left = 538.0
+margin_top = 324.0
+margin_right = 828.0
+margin_bottom = 444.0
+rect_min_size = Vector2( 290, 120 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+window_title = "Please confirm ..."
+
+[node name="MarginContainer" type="MarginContainer" parent="ConfirmExitDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_top = 20
+custom_constants/margin_bottom = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConfirmExitDialog/MarginContainer"]
+margin_top = 20.0
+margin_right = 290.0
+margin_bottom = 100.0
+custom_constants/separation = 20
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ConfirmExitDialog/MarginContainer/VBoxContainer"]
+margin_top = 8.0
+margin_right = 290.0
+margin_bottom = 30.0
+text = "Save changes before closing the template?"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ConfirmExitDialog/MarginContainer/VBoxContainer"]
+margin_top = 50.0
+margin_right = 290.0
+margin_bottom = 72.0
+custom_constants/separation = 10
+alignment = 1
+
+[node name="Cancel" type="Button" parent="ConfirmExitDialog/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 42.0
+margin_right = 96.0
+margin_bottom = 22.0
+text = "Cancel"
+
+[node name="VSeparator" type="VSeparator" parent="ConfirmExitDialog/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 106.0
+margin_right = 126.0
+margin_bottom = 22.0
+custom_constants/separation = 20
+
+[node name="Discard" type="Button" parent="ConfirmExitDialog/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 136.0
+margin_right = 196.0
+margin_bottom = 22.0
+text = "Discard"
+
+[node name="Save" type="Button" parent="ConfirmExitDialog/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 206.0
+margin_right = 247.0
+margin_bottom = 22.0
+text = "Save"
+[connection signal="pressed" from="ConfirmExitDialog/MarginContainer/VBoxContainer/HBoxContainer/Discard" to="VBoxContainer/TabContainer" method="close_tab"]
+[connection signal="pressed" from="ConfirmExitDialog/MarginContainer/VBoxContainer/HBoxContainer/Save" to="VBoxContainer/TabContainer" method="save_and_close"]

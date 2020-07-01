@@ -161,6 +161,7 @@ func load_from_file(path: String, soft_load := false) -> void:
 	if not path or path == "":
 		return
 
+	paused = true
 	_template_loaded = false
 	if soft_load:	# Don't clear, simply refresh the graph edit UI without running the sim
 		clear_editor()
@@ -172,7 +173,7 @@ func load_from_file(path: String, soft_load := false) -> void:
 	file.open(path, File.READ)
 	var json = JSON.parse(file.get_as_text())
 	if not json or not json.result:
-		print("Failed to parse json")
+		print("Failed to parse the template file")
 		return	# Template file is either empty or not a valid Json. Ignore
 
 	# Abort if the file doesn't have node data
@@ -194,15 +195,14 @@ func load_from_file(path: String, soft_load := false) -> void:
 		# Get a graph node from the node library and use it as a model to create a new one
 		var node_instance = node_list[type]
 		var new_node = create_node(node_instance, node_data, false)
-		print("newly created node : ", new_node, " ", new_node.get_name())
 
 	for c in graph["connections"]:
 		# TODO: convert the to/from ports stored in file to actual port
 		connect_node(c["from"], c["from_port"], c["to"], c["to_port"])
-		print("Trying to get ", c["to"])
 		get_node(c["to"]).emit_signal("connection_changed")
 
 	_template_loaded = true
+	paused = false
 
 
 func save_to_file(path: String) -> void:
