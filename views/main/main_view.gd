@@ -91,6 +91,7 @@ func _on_template_requested(path) -> void:
 
 	# Tab isn't already open, create an editor view.
 	var editor = load("res://views/editor/editor_view.tscn").instance()
+	editor.name = path.get_file().get_basename()
 	_tab_container.add_child(editor)
 	editor.load_template(path)
 

@@ -7,18 +7,23 @@ extends Control
 
 signal message
 
+export var viewport: NodePath
+export var template: NodePath
+export var add_node_dialog: NodePath
 
 var _node_dialog: WindowDialog
-var _loading_indicator: HBoxContainer
 var _template: ConceptGraphTemplate
 var _save_timer: Timer
 var _last_position: Vector2
 var _template_path: String
+var _viewport: ViewportContainer
 
 
 func _ready() -> void:
-	_template = get_node("HSplitContainer/Template")
-	_node_dialog = get_node("AddNodeDialog")
+	_template = get_node(template)
+	_node_dialog = get_node(add_node_dialog)
+	_viewport = get_node(viewport)
+	_viewport.rect_min_size = Vector2(256, 128)
 
 	_save_timer = Timer.new()
 	_save_timer.connect("timeout", self, "save_template")
@@ -34,8 +39,8 @@ func load_template(path: String) -> void:
 
 	_template.connect("graph_changed", self, "_on_graph_changed")
 	_template.connect("popup_request", self, "_show_node_dialog")
-	_template.connect("simulation_started", self, "_show_loading_panel")
-	_template.connect("simulation_completed", self, "_hide_loading_panel")
+	#_template.connect("simulation_started", self, "_show_loading_panel")
+	_template.connect("simulation_completed", self, "_on_simulation_completed")
 
 	_template.paused = false
 
@@ -64,12 +69,8 @@ func _hide_node_dialog() -> void:
 	_node_dialog.visible = false
 
 
-func _show_loading_panel() -> void:
-	_loading_indicator.visible = true
-
-
-func _hide_loading_panel() -> void:
-	_loading_indicator.visible = false
+func _clear_graph():
+	_template.clear()
 
 
 func _on_create_node_request(node) -> void:
@@ -83,11 +84,7 @@ func _on_graph_changed() -> void:
 		_save_timer.start(Settings.autosave_interval)
 
 
-func _get_ref(ref):
-	if ref:
-		return ref.get_ref()
-	return null
-
-
-func _clear_graph():
-	_template.clear()
+func _on_simulation_completed() -> void:
+	var result = _template.get_output()
+	_viewport.display(result)
+	print("Output: ", result)

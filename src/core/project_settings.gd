@@ -12,7 +12,7 @@ const AUTOSAVE_INTERVAL = "autosave_interval"
 
 var _path = "res://config.json"
 var _settings = {}
-
+var _json_util = load("res://src/thirdparty/json_beautifier/json_beautifier.gd")
 
 func _ready() -> void:
 	load_config()
@@ -33,8 +33,21 @@ func update_setting(setting: String, value) -> void:
 
 
 func load_config() -> void:
-	pass
+	# Open the file and read the contents
+	var file = File.new()
+	file.open(_path, File.READ)
+	var json = JSON.parse(file.get_as_text())
+	if not json or not json.result:
+		print("Failed to parse the configuration file ", _path)
+		return
+
+	_settings = json.result
+	print("Settings : ", _settings)
 
 
 func save_config() -> void:
-	pass
+	var json = _json_util.beautify_json(to_json(_settings))
+	var file = File.new()
+	file.open(_path, File.WRITE)
+	file.store_string(json)
+	file.close()

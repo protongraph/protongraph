@@ -1,8 +1,8 @@
 {
-  enable_autosave: true,
-  autosave_interval: 300,
-  enable_multithreading: true,
-  delay_before_generation: 75,
-  inline_vector_fields: false,
-  group_by_type: false
+  "enable_autosave": true,
+  "autosave_interval": 300,
+  "enable_multithreading": true,
+  "delay_before_generation": 75,
+  "inline_vector_fields": false,
+  "group_by_type": false
 }

@@ -142,7 +142,7 @@ Actual simulation happens in _run_generation
 func generate(force_full_simulation := false) -> void:
 	if paused:
 		return
-	_timer.start(ProjectSettings.get(ConceptGraphSettings.GENERATION_DELAY) / 1000.0)
+	_timer.start(Settings.get_setting(Settings.GENERATION_DELAY) / 1000.0)
 	_clear_cache_on_next_run = _clear_cache_on_next_run or force_full_simulation
 	emit_signal("simulation_started")
 
@@ -326,7 +326,7 @@ func _beautify_json(json: String) -> String:
 
 
 func _is_multithreading_enabled() -> bool:
-	return ProjectSettings.get(ConceptGraphSettings.MULTITHREAD_ENABLED) and multithreading_enabled
+	return Settings.get_setting(Settings.MULTITHREAD_ENABLED) and multithreading_enabled
 
 
 func _on_thread_completed() -> void:
