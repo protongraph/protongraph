@@ -1,8 +1,8 @@
 [gd_resource type="NativeScript" load_steps=2 format=2]
 
 [sub_resource type="GDNativeLibrary" id=1]
-entry/Windows.64 = "res://addons/concept_graph/src/native/bin/win/libmeshoptimize.so"
-entry/X11.64 = "res://addons/concept_graph/src/native/bin/x11/libmeshoptimize.so"
+entry/Windows.64 = "res://src/native/bin/win/libmeshoptimize.dll"
+entry/X11.64 = "res://src/native/bin/x11/libmeshoptimize.so"
 dependency/Windows.64 = [  ]
 dependency/X11.64 = [  ]
 

@@ -5,7 +5,7 @@ extends ConceptNode
 Create plane mesh from transforms
 """
 
-var mesh_optimizer = preload("res://addons/concept_graph/src/native/bin/mesh_optimizer.gdns").new()
+var mesh_optimizer = preload("res://src/native/bin/mesh_optimizer.gdns").new()
 
 
 func _init() -> void:

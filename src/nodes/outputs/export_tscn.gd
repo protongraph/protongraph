@@ -13,7 +13,7 @@ var directory := Directory.new()
 
 func _init() -> void:
 	unique_id = "save_tscn_output"
-	display_name = "Save Output Scene"
+	display_name = "Export Godot Scene"
 	category = "Output"
 	description = "Saves the output as a scene file"
 

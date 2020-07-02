@@ -8,6 +8,7 @@
 [node name="MainView" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+rect_min_size = Vector2( 256, 256 )
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
@@ -104,7 +105,6 @@ current_path = "/home/hungryproton/Work/Games/ConceptGraph/"
 script = ExtResource( 5 )
 
 [node name="ConfirmExitDialog" type="WindowDialog" parent="."]
-visible = true
 margin_left = 538.0
 margin_top = 324.0
 margin_right = 828.0

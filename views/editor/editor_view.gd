@@ -37,6 +37,7 @@ func _ready() -> void:
 func load_template(path: String) -> void:
 	_template_path = path
 	_template.load_from_file(path)
+	_template.generate(true)
 
 
 func get_input(name) -> Node:
@@ -49,8 +50,8 @@ func save_template() -> void:
 	emit_signal("message", "Saving template " + _template_path)
 
 
-func regenerate() -> void:
-	_template.generate(true)
+func regenerate(clear_cache := true) -> void:
+	_template.generate(clear_cache)
 
 
 func _show_node_dialog(position: Vector2) -> void:
@@ -84,4 +85,4 @@ func _on_simulation_completed() -> void:
 
 
 func _on_simulation_outdated() -> void:
-	_template.generate()
+	_template.generate(false)

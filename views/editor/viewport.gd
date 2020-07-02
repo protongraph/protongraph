@@ -34,12 +34,8 @@ func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree() or not event is InputEventMouse:
 		return # Not a mouse event
 
-	var x_event = event.duplicate()
+	var x_event = event.duplicate() # For some reason I can't get xformed_by() to work here
 	x_event.position -= self.get_global_transform().origin
-
-	if x_event.position.x < 0 or x_event.position.y < 0:
-		return # Mouve is outside the viewport
-
 	_camera_root.on_input(x_event)
 
 

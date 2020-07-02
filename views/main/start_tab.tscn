@@ -98,4 +98,5 @@ text = "Welcome to ConceptGraph !"
 margin_top = 364.0
 margin_right = 630.0
 margin_bottom = 378.0
-text = "Start by creating a new template under File > Create new template"
+text = "Start by creating a new template under File > Create template"
+autowrap = true
