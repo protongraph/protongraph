@@ -57,8 +57,9 @@ func _clear_inspector() -> void:
 func _create_section(name: String) -> Control:
 	if name == "":
 		name = "General"
+
 	var s = preload("section.tscn").instance()
-	s.set_name(name)
+	s.set_name(name.capitalize())
 	return s
 
 

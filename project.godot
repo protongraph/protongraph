@@ -193,8 +193,8 @@ NodeLibrary="*res://src/core/node_library.gd"
 
 [display]
 
-window/size/width=1366
-window/size/height=768
+window/size/width=720
+window/size/height=720
 
 [memory]
 
