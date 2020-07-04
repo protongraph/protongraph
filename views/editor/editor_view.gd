@@ -10,6 +10,7 @@ signal message
 export var viewport: NodePath
 export var template: NodePath
 export var add_node_dialog: NodePath
+export var inspector: NodePath
 
 var _node_dialog: WindowDialog
 var _template: ConceptGraphTemplate
@@ -17,6 +18,7 @@ var _save_timer: Timer
 var _last_position: Vector2
 var _template_path: String
 var _viewport: ViewportContainer
+var _inspector: InspectorPanel
 
 
 func _ready() -> void:
@@ -24,6 +26,7 @@ func _ready() -> void:
 	_node_dialog = get_node(add_node_dialog)
 	_viewport = get_node(viewport)
 	_viewport.rect_min_size = Vector2(256, 128)
+	_inspector = get_node(inspector)
 
 	_save_timer = Timer.new()
 	_save_timer.connect("timeout", self, "save_template")
@@ -37,6 +40,7 @@ func _ready() -> void:
 func load_template(path: String) -> void:
 	_template_path = path
 	_template.load_from_file(path)
+	_template.update_exposed_variables()
 	_template.generate(true)
 
 
@@ -86,3 +90,7 @@ func _on_simulation_completed() -> void:
 
 func _on_simulation_outdated() -> void:
 	_template.generate(false)
+
+
+func _on_exposed_variables_updated(variables: Array) -> void:
+	_inspector.update_variables(variables)

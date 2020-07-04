@@ -129,6 +129,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/data_structures/vector_curve_2d.gd"
 }, {
+"base": "ScrollContainer",
+"class": "InspectorPanel",
+"language": "GDScript",
+"path": "res://views/editor/inspector/inspector.gd"
+}, {
 "base": "Reference",
 "class": "JSONBeautifier",
 "language": "GDScript",
@@ -169,6 +174,7 @@ _global_script_class_icons={
 "ConceptNodeLibrary": "",
 "ConceptNodeVectorCurve": "",
 "ConceptNodeVectorCurve2D": "",
+"InspectorPanel": "",
 "JSONBeautifier": "",
 "NodeUtils": "",
 "PoolVectorUtil": ""

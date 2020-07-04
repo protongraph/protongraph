@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://src/core/template.gd" type="Script" id=1]
-[ext_resource path="res://views/editor/inspector.tscn" type="PackedScene" id=2]
+[ext_resource path="res://views/editor/inspector/inspector.tscn" type="PackedScene" id=2]
 [ext_resource path="res://views/editor/viewport.tscn" type="PackedScene" id=3]
 [ext_resource path="res://views/editor/editor_view.gd" type="Script" id=4]
 [ext_resource path="res://views/editor/add_node_panel.tscn" type="PackedScene" id=5]
@@ -38,6 +38,7 @@ __meta__ = {
 viewport = NodePath("HSplitContainer/VSplitContainer/ViewportArea/ViewportContainer")
 template = NodePath("HSplitContainer/HBoxContainer/Template")
 add_node_dialog = NodePath("AddNodeDialog")
+inspector = NodePath("HSplitContainer/VSplitContainer/TabContainer/Inspector")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 margin_right = 1366.0
@@ -146,6 +147,7 @@ margin_right = 519.0
 margin_bottom = 407.0
 [connection signal="pressed" from="HSplitContainer/HBoxContainer/ToolShelf/Save" to="." method="save_template"]
 [connection signal="pressed" from="HSplitContainer/HBoxContainer/ToolShelf/RunGeneration" to="." method="regenerate"]
+[connection signal="exposed_variables_updated" from="HSplitContainer/HBoxContainer/Template" to="." method="_on_exposed_variables_updated"]
 [connection signal="graph_changed" from="HSplitContainer/HBoxContainer/Template" to="." method="_on_graph_changed"]
 [connection signal="popup_request" from="HSplitContainer/HBoxContainer/Template" to="." method="_show_node_dialog"]
 [connection signal="simulation_completed" from="HSplitContainer/HBoxContainer/Template" to="." method="_on_simulation_completed"]

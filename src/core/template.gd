@@ -14,6 +14,7 @@ signal simulation_outdated
 signal simulation_completed
 signal thread_completed
 signal json_ready
+signal exposed_variables_updated
 
 
 var root: Spatial
@@ -108,10 +109,8 @@ func update_exposed_variables() -> void:
 			var variables = c.get_exposed_variables()
 			if not variables:
 				continue
-			for v in variables:
-				v.name = "Template/" + v.name
-				v.type = ConceptGraphDataType.to_variant_type(v.type)
-				exposed_variables.append(v)
+			exposed_variables += variables
+	emit_signal("exposed_variables_updated", exposed_variables)
 
 
 """

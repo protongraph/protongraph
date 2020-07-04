@@ -21,7 +21,7 @@ bg_color = Color( 0.6, 0.6, 0.6, 0 )
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
-[node name="ProgressBar" type="ProgressBar"]
+[node name="SpinBox" type="ProgressBar"]
 margin_right = 95.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 95, 24 )
