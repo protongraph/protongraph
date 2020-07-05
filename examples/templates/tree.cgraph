@@ -375,7 +375,7 @@
 			"editor": {
 				"offset_x": 1900,
 				"offset_y": 180,
-				"rect_x": 578,
+				"rect_x": 577.999451,
 				"rect_y": 223.000366,
 				"slots": {}
 			},
@@ -403,7 +403,7 @@
 			"editor": {
 				"offset_x": 1740,
 				"offset_y": -120,
-				"rect_x": 469.160156,
+				"rect_x": 469.159607,
 				"rect_y": 256.880371,
 				"slots": {}
 			},
@@ -473,8 +473,8 @@
 			"editor": {
 				"offset_x": -3620,
 				"offset_y": -400,
-				"rect_x": 1479,
-				"rect_y": 784.000366,
+				"rect_x": 1537,
+				"rect_y": 959.000366,
 				"slots": {}
 			},
 			"name": "GraphNode53",
@@ -502,7 +502,9 @@
 				"offset_y": -20,
 				"slots": {
 					"0": 5,
-					"1": 1
+					"1": 1,
+					"2": "(0, 0, 0)",
+					"3": "(0, 0, 0)"
 				}
 			},
 			"name": "GraphNode17",
@@ -527,8 +529,10 @@
 				"offset_x": -1440,
 				"offset_y": -300,
 				"slots": {
+					"1": "(0, 0, 0)",
 					"2": 0,
-					"3": true
+					"3": true,
+					"4": "(0, 0, 0)"
 				}
 			},
 			"name": "GraphNode7",
@@ -540,8 +544,10 @@
 				"offset_x": -80,
 				"offset_y": -320,
 				"slots": {
+					"1": "(0, 0, 0)",
 					"2": 0,
-					"3": true
+					"3": true,
+					"4": "(0, 0, 0)"
 				}
 			},
 			"name": "GraphNode42",
@@ -594,7 +600,8 @@
 				"offset_y": -400,
 				"slots": {
 					"0": 1,
-					"1": false
+					"1": false,
+					"2": "(0, 0, 0)"
 				}
 			},
 			"name": "GraphNode31",
@@ -620,7 +627,9 @@
 				"offset_y": 180,
 				"slots": {
 					"0": 3,
-					"1": 0.1
+					"1": 0.1,
+					"2": "(0, 0, 0)",
+					"3": "(0, 0, 0)"
 				}
 			},
 			"name": "GraphNode38",
@@ -644,8 +653,10 @@
 				"offset_x": 1280,
 				"offset_y": -740,
 				"slots": {
+					"1": "(0, 0, 0)",
 					"2": 0,
-					"3": true
+					"3": true,
+					"4": "(0, 0, 0)"
 				}
 			},
 			"name": "GraphNode48",
@@ -654,35 +665,11 @@
 		{
 			"data": {},
 			"editor": {
-				"offset_x": 1560,
-				"offset_y": -580,
-				"slots": {
-					"0": 0,
-					"1": 0,
-					"2": 0
-				}
-			},
-			"name": "GraphNode58",
-			"type": "value_vector3"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": 1340,
-				"offset_y": -540,
-				"slots": {
-					"0": 3.5
-				}
-			},
-			"name": "GraphNode59",
-			"type": "value_scalar"
-		},
-		{
-			"data": {},
-			"editor": {
 				"offset_x": 1860,
 				"offset_y": -740,
-				"slots": {}
+				"slots": {
+					"2": "(0, 0, 0)"
+				}
 			},
 			"name": "GraphNode54",
 			"type": "scale_transforms_from_noise"
@@ -768,6 +755,7 @@
 					"2": 1,
 					"3": 2,
 					"4": 50,
+					"5": "(0, 0, 0)",
 					"6": 0.1
 				}
 			},
@@ -803,40 +791,12 @@
 				"offset_y": -20,
 				"slots": {
 					"3": 0.4,
-					"4": true,
-					"5": 1,
-					"6": 1
+					"4": "(1, 1)",
+					"5": true
 				}
 			},
 			"name": "GraphNode16",
 			"type": "extrude_bevel_along_path"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -3320,
-				"offset_y": 100,
-				"slots": {
-					"0": "Seed",
-					"1": 0
-				}
-			},
-			"name": "GraphNode19",
-			"type": "inspector_scalar"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -3320,
-				"offset_y": 220,
-				"slots": {
-					"0": 0,
-					"1": 0,
-					"2": 1
-				}
-			},
-			"name": "GraphNode29",
-			"type": "value_vector3"
 		},
 		{
 			"data": {},
@@ -919,7 +879,8 @@
 				"offset_y": -380,
 				"slots": {
 					"0": 5,
-					"1": false
+					"1": false,
+					"2": "(0, 0, 0)"
 				}
 			},
 			"name": "GraphNode4",
@@ -961,6 +922,7 @@
 					"2": 3,
 					"3": 3,
 					"4": 5,
+					"5": "(0, 0, 0)",
 					"6": 0.3
 				}
 			},
@@ -974,7 +936,9 @@
 				"offset_y": 180,
 				"slots": {
 					"0": 3,
-					"1": 1
+					"1": 1,
+					"2": "(0, 0, 0)",
+					"3": "(0, 0, 0)"
 				}
 			},
 			"name": "GraphNode22",
@@ -1054,9 +1018,8 @@
 				"offset_y": 180,
 				"slots": {
 					"3": 0.4,
-					"4": false,
-					"5": 1,
-					"6": 1
+					"4": "(1, 1)",
+					"5": true
 				}
 			},
 			"name": "GraphNode36",
@@ -1132,6 +1095,7 @@
 					"2": 2,
 					"3": 2,
 					"4": 50,
+					"5": "(0, 0, 0)",
 					"6": 0.4
 				}
 			},
@@ -1145,9 +1109,8 @@
 				"offset_y": 180,
 				"slots": {
 					"3": 0.6,
-					"4": true,
-					"5": 1,
-					"6": 1
+					"4": "(1, 1)",
+					"5": true
 				}
 			},
 			"name": "GraphNode26",
@@ -1163,6 +1126,7 @@
 					"2": 4,
 					"3": 6,
 					"4": 5,
+					"5": "(0, 0, 0)",
 					"6": 0.2
 				}
 			},
@@ -1222,6 +1186,59 @@
 			},
 			"name": "GraphNode5",
 			"type": "merge_meshes"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 1580,
+				"offset_y": -520,
+				"slots": {
+					"0": 0,
+					"1": 0,
+					"2": 0
+				}
+			},
+			"name": "GraphNode58",
+			"type": "value_vector3"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 1340,
+				"offset_y": -460,
+				"slots": {
+					"0": 3.5
+				}
+			},
+			"name": "GraphNode59",
+			"type": "value_scalar"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -3020,
+				"offset_y": 240,
+				"slots": {
+					"0": 0,
+					"1": 0,
+					"2": 1
+				}
+			},
+			"name": "GraphNode29",
+			"type": "value_vector3"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -3020,
+				"offset_y": 380,
+				"slots": {
+					"0": "Seed",
+					"1": 0
+				}
+			},
+			"name": "GraphNode19",
+			"type": "inspector_scalar"
 		}
 	]
 }
