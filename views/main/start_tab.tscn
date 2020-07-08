@@ -1,8 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://views/main/start_tab.gd" type="Script" id=1]
 
-[sub_resource type="StyleBoxLine" id=1]
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxLine" id=2]
 color = Color( 1, 1, 1, 0.172549 )
 grow_begin = -150.0
 grow_end = -150.0
@@ -11,6 +13,7 @@ vertical = true
 [node name="Start" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -19,14 +22,12 @@ links_root = NodePath("HBoxContainer/RecentFiles/VBoxContainer/LinksRoot")
 parent = NodePath("HBoxContainer/RecentFiles/VBoxContainer")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1359.0
-margin_bottom = 761.0
+margin_right = 1366.0
+margin_bottom = 768.0
 
 [node name="RecentFiles" type="MarginContainer" parent="HBoxContainer"]
-margin_right = 670.0
-margin_bottom = 754.0
+margin_right = 677.0
+margin_bottom = 768.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 20
@@ -37,24 +38,24 @@ custom_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/RecentFiles"]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 650.0
-margin_bottom = 734.0
+margin_right = 657.0
+margin_bottom = 748.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 10
 alignment = 1
 
 [node name="Label" type="Label" parent="HBoxContainer/RecentFiles/VBoxContainer"]
-margin_top = 345.0
-margin_right = 630.0
-margin_bottom = 359.0
+margin_top = 352.0
+margin_right = 637.0
+margin_bottom = 366.0
 text = "Recent files"
 align = 2
 
 [node name="LinksRoot" type="VBoxContainer" parent="HBoxContainer/RecentFiles/VBoxContainer"]
-margin_top = 369.0
-margin_right = 630.0
-margin_bottom = 369.0
+margin_top = 376.0
+margin_right = 637.0
+margin_bottom = 376.0
 size_flags_horizontal = 3
 custom_constants/separation = 10
 __meta__ = {
@@ -62,15 +63,15 @@ __meta__ = {
 }
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
-margin_left = 674.0
-margin_right = 678.0
-margin_bottom = 754.0
-custom_styles/separator = SubResource( 1 )
+margin_left = 681.0
+margin_right = 685.0
+margin_bottom = 768.0
+custom_styles/separator = SubResource( 2 )
 
 [node name="Introduction" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 682.0
-margin_right = 1352.0
-margin_bottom = 754.0
+margin_left = 689.0
+margin_right = 1366.0
+margin_bottom = 768.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 20
@@ -81,22 +82,22 @@ custom_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Introduction"]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 650.0
-margin_bottom = 734.0
+margin_right = 657.0
+margin_bottom = 748.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 15
 alignment = 1
 
 [node name="Title" type="Label" parent="HBoxContainer/Introduction/VBoxContainer"]
-margin_top = 335.0
-margin_right = 630.0
-margin_bottom = 349.0
+margin_top = 342.0
+margin_right = 637.0
+margin_bottom = 356.0
 text = "Welcome to ConceptGraph !"
 
 [node name="Title2" type="Label" parent="HBoxContainer/Introduction/VBoxContainer"]
-margin_top = 364.0
-margin_right = 630.0
-margin_bottom = 378.0
+margin_top = 371.0
+margin_right = 637.0
+margin_bottom = 385.0
 text = "Start by creating a new template under File > Create template"
 autowrap = true

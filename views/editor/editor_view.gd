@@ -6,8 +6,9 @@ extends Control
 """
 
 signal message
+signal template_saved
 
-export var viewport: NodePath
+export var viewport_container: NodePath
 export var template: NodePath
 export var add_node_dialog: NodePath
 export var inspector: NodePath
@@ -19,22 +20,23 @@ var _last_position: Vector2
 var _template_path: String
 var _viewport: ViewportContainer
 var _inspector: InspectorPanel
+var _saved := false
 
 
 func _ready() -> void:
 	_template = get_node(template)
 	_node_dialog = get_node(add_node_dialog)
-	_viewport = get_node(viewport)
+	_viewport = get_node(viewport_container)
 	_viewport.rect_min_size = Vector2(256, 128)
 	_inspector = get_node(inspector)
 
-	_save_timer = Timer.new()
-	_save_timer.connect("timeout", self, "save_template")
-	_save_timer.one_shot = false
-	_save_timer.autostart = false
-	add_child(_save_timer)
-
-	_save_timer.start(Settings.get_setting(Settings.AUTOSAVE_INTERVAL))
+	if Settings.get_setting("autosave"):
+		_save_timer = Timer.new()
+		_save_timer.connect("timeout", self, "save_template")
+		_save_timer.one_shot = false
+		_save_timer.autostart = false
+		add_child(_save_timer)
+		_save_timer.start(Settings.get_setting(Settings.AUTOSAVE_INTERVAL))
 
 
 func load_template(path: String) -> void:
@@ -42,6 +44,7 @@ func load_template(path: String) -> void:
 	_template.load_from_file(path)
 	_template.update_exposed_variables()
 	_template.generate(true)
+	_saved = true
 
 
 func get_input(name) -> Node:
@@ -49,13 +52,20 @@ func get_input(name) -> Node:
 
 
 func save_template() -> void:
-	print("Saving template ", _template_path)
 	_template.save_to_file(_template_path)
-	emit_signal("message", "Saving template " + _template_path)
+	yield(_template, "template_saved")
+	_saved = true
+	emit_signal("message", "Saved template " + _template_path)
+	emit_signal("template_saved")
+	print("Saved template ", _template_path)
 
 
 func regenerate(clear_cache := true) -> void:
 	_template.generate(clear_cache)
+
+
+func has_pending_changes() -> bool:
+	return not _saved
 
 
 func _show_node_dialog(position: Vector2) -> void:
@@ -78,9 +88,7 @@ func _on_create_node_request(node) -> void:
 
 
 func _on_graph_changed() -> void:
-	if Settings.get_setting("autosave"):
-		_save_timer.stop()
-		_save_timer.start(Settings.autosave_interval)
+	_saved = false
 
 
 func _on_simulation_completed() -> void:

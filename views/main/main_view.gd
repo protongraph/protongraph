@@ -76,6 +76,9 @@ func _save_template():
 
 
 func _quit() -> void:
+	if _tab_container.has_opened_templates():
+		_tab_container.close_all_tabs()
+		yield(_tab_container, "tabs_cleared")
 	get_tree().quit()
 
 

@@ -15,6 +15,7 @@ signal simulation_completed
 signal thread_completed
 signal json_ready
 signal exposed_variables_updated
+signal template_saved
 
 
 var root: Spatial
@@ -46,6 +47,11 @@ func _init() -> void:
 	_timer.autostart = false
 	_timer.connect("timeout", self, "_run_generation")
 	add_child(_timer)
+
+
+func _exit_tree() -> void:
+	if _thread and _thread.is_active():
+		_thread.wait_to_finish()
 
 
 """
@@ -239,6 +245,7 @@ func save_to_file(path: String) -> void:
 	if _save_queued:
 		_save_queued = false
 		save_to_file(path)
+	emit_signal("template_saved")
 
 
 """

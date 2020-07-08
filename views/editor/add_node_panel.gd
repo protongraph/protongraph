@@ -22,7 +22,7 @@ var _grouping_button: Button
 var _default_description: String
 var _search_text := ""
 var _group_by_type := false
-var _ready := false
+var _initialized := false
 
 
 func _ready() -> void:
@@ -36,11 +36,11 @@ func _ready() -> void:
 	_default_description = _description_label.text
 
 	_grouping_button = get_node(grouping_button)
-	_ready = true
+	_initialized = true
 
 
 func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
-	if not _ready:
+	if not _initialized:
 		return
 
 	_group_by_type = _grouping_button.pressed

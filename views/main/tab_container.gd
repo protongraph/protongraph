@@ -1,6 +1,7 @@
 extends TabContainer
 
 
+signal tab_closed
 signal tabs_cleared
 
 export var tabs: NodePath
@@ -36,24 +37,50 @@ func close_tab(tab: int = -1) -> void:
 		tab = current_tab
 
 	var c = get_child(tab)
+	if not c:
+		return
+
 	remove_child(c)
 	c.queue_free()
 	_tabs.remove_tab(tab)
 	close_confirm_dialog()
 
+	emit_signal("tab_closed")
+
 	if get_child_count() == 0:
 		emit_signal("tabs_cleared")
+
+
+func close_all_tabs(no_prompt := false) -> void:
+	if no_prompt:
+		while get_child_count() > 0:
+			close_tab(0)
+	else:
+		while get_child_count() > 0:
+			if get_child(0) is ConceptGraphEditorView:
+				_on_tab_close_request(0)
+				yield(self, "tab_closed")
+			else:
+				close_tab(0)
 
 
 func save_and_close() -> void:
 	var tab = current_tab
 	var c = get_child(tab)
 	c.save_template()
+	yield(c, "template_saved")
 	close_tab()
 
 
 func close_confirm_dialog() -> void:
 	_confirm_dialog.visible = false
+
+
+func has_opened_templates() -> bool:
+	for c in get_children():
+		if c is ConceptGraphEditorView:
+			return true
+	return false
 
 
 func _on_tab_changed(tab: int) -> void:
@@ -66,7 +93,7 @@ func _on_tab_moved(to_tab: int) -> void:
 
 func _on_tab_close_request(tab: int) -> void:
 	var c = get_child(tab)
-	if c is ConceptGraphEditorView:
+	if c is ConceptGraphEditorView and c.has_pending_changes():
 		_confirm_dialog.popup_centered()
 	else:
 		close_tab(tab)

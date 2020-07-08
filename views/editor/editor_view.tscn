@@ -8,8 +8,7 @@
 [ext_resource path="res://icons/replay.svg" type="Texture" id=6]
 [ext_resource path="res://icons/icon_save.svg" type="Texture" id=7]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
+[sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="InputEventKey" id=2]
 control = true
@@ -35,7 +34,7 @@ script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-viewport = NodePath("HSplitContainer/VSplitContainer/ViewportArea/ViewportContainer")
+viewport_container = NodePath("HSplitContainer/VSplitContainer/ViewportArea/ViewportContainer")
 template = NodePath("HSplitContainer/HBoxContainer/Template")
 add_node_dialog = NodePath("AddNodeDialog")
 inspector = NodePath("HSplitContainer/VSplitContainer/TabContainer/Inspector")
@@ -63,6 +62,7 @@ size_flags_vertical = 3
 margin_right = 28.0
 margin_bottom = 22.0
 hint_tooltip = "Save the current template on disk"
+focus_mode = 0
 shortcut = SubResource( 3 )
 icon = ExtResource( 7 )
 clip_text = true
@@ -72,6 +72,7 @@ margin_top = 26.0
 margin_right = 28.0
 margin_bottom = 48.0
 hint_tooltip = "Generates the end result of your template. This should happen automatically as you edit the graph but if it doesn't, you can click this button to force the template to regenerate its result."
+focus_mode = 0
 shortcut = SubResource( 5 )
 icon = ExtResource( 6 )
 clip_text = true
@@ -121,8 +122,7 @@ margin_bottom = 14.0
 text = "Print warning messages here"
 
 [node name="ViewportArea" parent="HSplitContainer/VSplitContainer" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
+margin_left = 0.0
 margin_top = 466.0
 margin_right = 385.0
 margin_bottom = 768.0

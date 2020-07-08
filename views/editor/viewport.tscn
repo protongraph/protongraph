@@ -7,17 +7,17 @@
 [ext_resource path="res://icons/icon_camera.svg" type="Texture" id=5]
 [ext_resource path="res://icons/icon_material_preview_light_1.svg" type="Texture" id=6]
 
-[sub_resource type="World" id=6]
+[sub_resource type="World" id=1]
 environment = ExtResource( 1 )
 
-[sub_resource type="CubeMesh" id=7]
+[sub_resource type="CubeMesh" id=2]
 size = Vector3( 0.01, 0.01, 50 )
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=3]
 flags_unshaded = true
 albedo_color = Color( 0.2, 0.2, 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=4]
 flags_unshaded = true
 albedo_color = Color( 0.2, 1, 0.2, 1 )
 
@@ -26,65 +26,51 @@ flags_unshaded = true
 albedo_color = Color( 1, 0.2, 0.2, 1 )
 
 [node name="ViewportArea" type="VBoxContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1359.0
+margin_bottom = 761.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="DisplayOptions" type="HBoxContainer" parent="."]
-margin_right = 1366.0
+margin_right = 1352.0
 margin_bottom = 22.0
-
-[node name="Normal" type="Button" parent="DisplayOptions"]
-visible = false
-margin_right = 59.0
-margin_bottom = 20.0
-text = "Normal"
-
-[node name="Wireframe" type="Button" parent="DisplayOptions"]
-visible = false
-margin_left = 63.0
-margin_right = 142.0
-margin_bottom = 20.0
-text = "Wireframe"
-
-[node name="VSeparator" type="VSeparator" parent="DisplayOptions"]
-margin_right = 15.0
-margin_bottom = 22.0
-custom_constants/separation = 15
 
 [node name="ResetCamera" type="Button" parent="DisplayOptions"]
-margin_left = 19.0
-margin_right = 47.0
+margin_right = 28.0
 margin_bottom = 22.0
 hint_tooltip = "Reset the camera position and orientation to aim at the center of the scene"
+focus_mode = 0
 icon = ExtResource( 5 )
 
 [node name="VSeparator2" type="VSeparator" parent="DisplayOptions"]
-margin_left = 51.0
-margin_right = 66.0
+margin_left = 32.0
+margin_right = 47.0
 margin_bottom = 22.0
 custom_constants/separation = 15
 
 [node name="LightSetup1" type="Button" parent="DisplayOptions"]
-margin_left = 70.0
-margin_right = 98.0
+margin_left = 51.0
+margin_right = 79.0
 margin_bottom = 22.0
 hint_tooltip = "Light follows the camera so the result is always illuminated"
+focus_mode = 0
 icon = ExtResource( 6 )
 
 [node name="LightSetup2" type="Button" parent="DisplayOptions"]
-margin_left = 102.0
-margin_right = 130.0
+margin_left = 83.0
+margin_right = 111.0
 margin_bottom = 22.0
 hint_tooltip = "Light is static so you can see part of the result shadowed"
+focus_mode = 0
 icon = ExtResource( 4 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 margin_top = 26.0
-margin_right = 1366.0
-margin_bottom = 768.0
+margin_right = 1352.0
+margin_bottom = 754.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
@@ -98,10 +84,10 @@ static_light = NodePath("Viewport/Lighting/DirectionalLight")
 camera_light = NodePath("Viewport/Pivot/Camera/DirectionalLight")
 
 [node name="Viewport" type="Viewport" parent="ViewportContainer"]
-size = Vector2( 1366, 742 )
+size = Vector2( 1352, 728 )
 size_override_stretch = true
 own_world = true
-world = SubResource( 6 )
+world = SubResource( 1 )
 handle_input_locally = false
 msaa = 1
 usage = 3
@@ -136,20 +122,18 @@ environment = ExtResource( 1 )
 [node name="TMP-Axis" type="Spatial" parent="ViewportContainer/Viewport"]
 
 [node name="Z" type="MeshInstance" parent="ViewportContainer/Viewport/TMP-Axis"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
 
 [node name="Y" type="MeshInstance" parent="ViewportContainer/Viewport/TMP-Axis"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
-mesh = SubResource( 7 )
-material/0 = SubResource( 9 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 4 )
 
 [node name="X" type="MeshInstance" parent="ViewportContainer/Viewport/TMP-Axis"]
 transform = Transform( -4.37114e-08, -4.37114e-08, 1, -1, -4.37114e-08, -4.37114e-08, 4.37114e-08, -1, -4.37114e-08, 0, 0, 0 )
-mesh = SubResource( 7 )
+mesh = SubResource( 2 )
 material/0 = SubResource( 5 )
-[connection signal="pressed" from="DisplayOptions/Normal" to="ViewportContainer" method="set_normal_display"]
-[connection signal="pressed" from="DisplayOptions/Wireframe" to="ViewportContainer" method="set_wireframe_display"]
 [connection signal="pressed" from="DisplayOptions/ResetCamera" to="ViewportContainer/Viewport/Pivot" method="reset_camera"]
 [connection signal="pressed" from="DisplayOptions/LightSetup1" to="ViewportContainer" method="enable_camera_light"]
 [connection signal="pressed" from="DisplayOptions/LightSetup2" to="ViewportContainer" method="enable_static_light"]
