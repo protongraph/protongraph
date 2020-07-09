@@ -1,12 +1,19 @@
 extends HBoxContainer
 
 
+var checkbox: CheckBox
+
+
 func init(name: String, value: bool) -> void:
-	var l = get_node("Label")
-	var c = get_node("CheckBox")
-	l.text = name
-	c.pressed = value
+	var label = get_node("Label")
+	checkbox = get_node("CheckBox")
+	label.text = name
+	checkbox.pressed = value
 
 
 func set_value(value: bool) -> void:
-	get_node("CheckBox").pressed = value
+	checkbox.pressed = value
+
+
+func get_value() -> bool:
+	return checkbox.pressed

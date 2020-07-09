@@ -146,7 +146,7 @@ func is_node_connected_to_input(node: GraphNode, idx: int) -> bool:
 
 # TMP hack because GraphEdit just love getting in my way. Update() alone won't redraw the connections
 # and there's nothing exposed to do that so we force a full redraw by moving the view just enough
-# to invalidate the previous view render.
+# to invalidate the previous view render but not enough to actually move the view
 func force_redraw() -> void:
 	scroll_offset.x += 0.001
 

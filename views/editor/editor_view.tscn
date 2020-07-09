@@ -92,6 +92,7 @@ size_flags_stretch_ratio = 1.5
 right_disconnects = true
 scroll_offset = Vector2( -504, -365 )
 script = ExtResource( 1 )
+inspector_panel = NodePath("../../Inspector")
 
 [node name="ViewportArea" parent="VBoxContainer/HSplitContainer/HSplitContainer" instance=ExtResource( 3 )]
 margin_top = 466.0

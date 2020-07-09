@@ -1,4 +1,3 @@
-tool
 class_name ConceptNode
 extends GraphNode
 
@@ -725,7 +724,7 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 		label.text = property_name
 		vbox.add_child(label)
 
-	var inline = ProjectSettings.get(ConceptGraphSettings.INLINE_VECTOR_FIELDS)
+	var inline = Settings.get_setting(ConceptGraphSettings.INLINE_VECTOR_FIELDS)
 	var vector_box
 	if inline:
 		vector_box = HBoxContainer.new()

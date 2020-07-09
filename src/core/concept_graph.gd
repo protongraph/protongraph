@@ -1,4 +1,3 @@
-tool
 class_name ConceptGraph, "../../icons/icon_concept_graph.svg"
 extends Node
 

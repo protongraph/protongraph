@@ -43,13 +43,11 @@ func _shorten_path(path: String) -> String:
 				total_size += token.length()
 
 		tokens.insert(2, "...")
-
 		var res = ""
+
 		for token in tokens:
 			res += "/" + token
-
 		return res
-
 	return path
 
 

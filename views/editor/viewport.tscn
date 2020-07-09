@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://views/editor/viewport.gd" type="Script" id=2]
@@ -6,24 +6,10 @@
 [ext_resource path="res://icons/icon_material_preview_light_2.svg" type="Texture" id=4]
 [ext_resource path="res://icons/icon_camera.svg" type="Texture" id=5]
 [ext_resource path="res://icons/icon_material_preview_light_1.svg" type="Texture" id=6]
+[ext_resource path="res://views/editor/draw_axis.gd" type="Script" id=7]
 
 [sub_resource type="World" id=1]
 environment = ExtResource( 1 )
-
-[sub_resource type="CubeMesh" id=2]
-size = Vector3( 0.01, 0.01, 50 )
-
-[sub_resource type="SpatialMaterial" id=3]
-flags_unshaded = true
-albedo_color = Color( 0.2, 0.2, 1, 1 )
-
-[sub_resource type="SpatialMaterial" id=4]
-flags_unshaded = true
-albedo_color = Color( 0.2, 1, 0.2, 1 )
-
-[sub_resource type="SpatialMaterial" id=5]
-flags_unshaded = true
-albedo_color = Color( 1, 0.2, 0.2, 1 )
 
 [node name="HSplitContainer" type="HSplitContainer"]
 margin_top = 26.0
@@ -64,6 +50,7 @@ handle_input_locally = false
 msaa = 1
 usage = 3
 render_target_update_mode = 3
+script = ExtResource( 7 )
 
 [node name="Pivot" type="Spatial" parent="ViewportContainer/Viewport"]
 transform = Transform( 0.707107, -0.45452, 0.541675, 0, 0.766044, 0.642788, -0.707107, -0.454519, 0.541675, 0, 0, 0 )
@@ -91,22 +78,6 @@ directional_shadow_mode = 1
 environment = ExtResource( 1 )
 
 [node name="Output" type="Spatial" parent="ViewportContainer/Viewport"]
-
-[node name="TMP-Axis" type="Spatial" parent="ViewportContainer/Viewport"]
-
-[node name="Z" type="MeshInstance" parent="ViewportContainer/Viewport/TMP-Axis"]
-mesh = SubResource( 2 )
-material/0 = SubResource( 3 )
-
-[node name="Y" type="MeshInstance" parent="ViewportContainer/Viewport/TMP-Axis"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
-mesh = SubResource( 2 )
-material/0 = SubResource( 4 )
-
-[node name="X" type="MeshInstance" parent="ViewportContainer/Viewport/TMP-Axis"]
-transform = Transform( -4.37114e-08, -4.37114e-08, 1, -1, -4.37114e-08, -4.37114e-08, 4.37114e-08, -1, -4.37114e-08, 0, 0, 0 )
-mesh = SubResource( 2 )
-material/0 = SubResource( 5 )
 
 [node name="MarginContainer" type="MarginContainer" parent="ViewportContainer"]
 margin_right = 40.0

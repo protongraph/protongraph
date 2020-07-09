@@ -33,15 +33,17 @@ func on_input(event: InputEvent):
 	var shift = Input.is_key_pressed(KEY_SHIFT)
 	var middle = Input.is_mouse_button_pressed(BUTTON_MIDDLE)
 
+	# We capture the mouse if the middle button was pressed INSIDE the viewport. It can then be
+	# dragged outside and still be captured as long as the middle button is pressed. Once the middle
+	# button is released, the mouse is not captured and we only process the event if the mouse is
+	# inside the viewport.
 	if not middle:
 		_captured = false
-	elif event.position.x >= 0 and event.position.y >= 0:
+	elif _is_in_viewport(event.position):
 		_captured = true
 
-	if not _captured:
-		if event.position.x < 0 or event.position.y < 0:
-			return # Not paning or orbiting and the mouse is outside the viewport, ignore input
-
+	if not _captured and not _is_in_viewport(event.position):
+		return # Not panning or orbiting and the mouse is not in the viewport. Abort
 	else: # Handle mouse wrapping if necessary
 		var new_pos: Vector2 = event.position
 		if event.position.x < 0:
@@ -112,3 +114,7 @@ func _orbit_camera(delta: float) -> void:
 		rotation.x = -PI/2
 	if rotation.x > PI/2:
 		rotation.x = PI/2
+
+
+func _is_in_viewport(vec: Vector2) -> bool:
+	return vec.x >= 0 and vec.x < _viewport.size.x and vec.y >= 0 and vec.y < _viewport.size.y

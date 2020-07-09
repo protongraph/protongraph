@@ -1,12 +1,18 @@
 extends HBoxContainer
 
 
+var spinbox
+
+
 func init(name: String, value: float):
-	var s = get_node("Spinbox")
-	s.set_label_value(name)
-	s.set_value_no_undo(value)
+	spinbox = get_node("Spinbox")
+	spinbox.set_label_value(name)
+	spinbox.set_value_no_undo(value)
 
 
 func set_value(value: float) -> void:
-	var s = get_node("Spinbox")
-	s.value = value
+	spinbox.value = value
+
+
+func get_value() -> float:
+	return spinbox.value
