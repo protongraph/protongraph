@@ -255,9 +255,11 @@ func restore_editor_data(data: Dictionary) -> void:
 						var btn: OptionButton = left.get_node("OptionButton")
 						btn.selected = btn.get_item_index(int(value))
 				ConceptGraphDataType.VECTOR2:
-					_set_vector_value(i, value)
+					if value is String:
+						_set_vector_value(i, value)
 				ConceptGraphDataType.VECTOR3:
-					_set_vector_value(i, value)
+					if value is String:
+						_set_vector_value(i, value)
 
 
 """
@@ -605,6 +607,7 @@ func _generate_default_gui() -> void:
 				ConceptGraphDataType.BOOLEAN:
 					var opts = _inputs[i]["options"]
 					var checkbox = CheckBox.new()
+					checkbox.focus_mode = Control.FOCUS_NONE
 					checkbox.name = "CheckBox"
 					checkbox.pressed = opts["value"] if opts.has("value") else false
 					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
@@ -627,6 +630,7 @@ func _generate_default_gui() -> void:
 					var opts = _inputs[i]["options"]
 					if opts.has("type") and opts["type"] == "dropdown":
 						var dropdown = OptionButton.new()
+						dropdown.focus_mode = Control.FOCUS_NONE
 						dropdown.name = "OptionButton"
 						for item in opts["items"].keys():
 							dropdown.add_item(item, opts["items"][item])
@@ -774,7 +778,7 @@ func _get_vector_value(idx: int):
 	return res
 
 
-func _set_vector_value(idx: int, value) -> void:
+func _set_vector_value(idx: int, value: String) -> void:
 	if idx >= _inputs.size():
 		return
 

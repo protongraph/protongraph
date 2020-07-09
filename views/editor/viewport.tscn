@@ -25,54 +25,26 @@ albedo_color = Color( 0.2, 1, 0.2, 1 )
 flags_unshaded = true
 albedo_color = Color( 1, 0.2, 0.2, 1 )
 
-[node name="ViewportArea" type="VBoxContainer"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1359.0
-margin_bottom = 761.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="DisplayOptions" type="HBoxContainer" parent="."]
-margin_right = 1352.0
-margin_bottom = 22.0
-
-[node name="ResetCamera" type="Button" parent="DisplayOptions"]
-margin_right = 28.0
-margin_bottom = 22.0
-hint_tooltip = "Reset the camera position and orientation to aim at the center of the scene"
-focus_mode = 0
-icon = ExtResource( 5 )
-
-[node name="VSeparator2" type="VSeparator" parent="DisplayOptions"]
-margin_left = 32.0
-margin_right = 47.0
-margin_bottom = 22.0
-custom_constants/separation = 15
-
-[node name="LightSetup1" type="Button" parent="DisplayOptions"]
-margin_left = 51.0
-margin_right = 79.0
-margin_bottom = 22.0
-hint_tooltip = "Light follows the camera so the result is always illuminated"
-focus_mode = 0
-icon = ExtResource( 6 )
-
-[node name="LightSetup2" type="Button" parent="DisplayOptions"]
-margin_left = 83.0
-margin_right = 111.0
-margin_bottom = 22.0
-hint_tooltip = "Light is static so you can see part of the result shadowed"
-focus_mode = 0
-icon = ExtResource( 4 )
-
-[node name="ViewportContainer" type="ViewportContainer" parent="."]
+[node name="HSplitContainer" type="HSplitContainer"]
 margin_top = 26.0
 margin_right = 1352.0
 margin_bottom = 754.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Tree" type="Tree" parent="."]
+margin_right = 444.0
+margin_bottom = 728.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_left = 456.0
+margin_right = 1352.0
+margin_bottom = 728.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 stretch = true
 script = ExtResource( 2 )
 __meta__ = {
@@ -84,7 +56,7 @@ static_light = NodePath("Viewport/Lighting/DirectionalLight")
 camera_light = NodePath("Viewport/Pivot/Camera/DirectionalLight")
 
 [node name="Viewport" type="Viewport" parent="ViewportContainer"]
-size = Vector2( 1352, 728 )
+size = Vector2( 896, 728 )
 size_override_stretch = true
 own_world = true
 world = SubResource( 1 )
@@ -99,6 +71,7 @@ script = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="ViewportContainer/Viewport/Pivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
+far = 1500.0
 
 [node name="DirectionalLight" type="DirectionalLight" parent="ViewportContainer/Viewport/Pivot/Camera"]
 transform = Transform( 1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0 )
@@ -134,6 +107,51 @@ material/0 = SubResource( 4 )
 transform = Transform( -4.37114e-08, -4.37114e-08, 1, -1, -4.37114e-08, -4.37114e-08, 4.37114e-08, -1, -4.37114e-08, 0, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 5 )
-[connection signal="pressed" from="DisplayOptions/ResetCamera" to="ViewportContainer/Viewport/Pivot" method="reset_camera"]
-[connection signal="pressed" from="DisplayOptions/LightSetup1" to="ViewportContainer" method="enable_camera_light"]
-[connection signal="pressed" from="DisplayOptions/LightSetup2" to="ViewportContainer" method="enable_static_light"]
+
+[node name="MarginContainer" type="MarginContainer" parent="ViewportContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="DisplayOptions" type="HBoxContainer" parent="ViewportContainer/MarginContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 115.0
+margin_bottom = 26.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="ResetCamera" type="Button" parent="ViewportContainer/MarginContainer/DisplayOptions"]
+margin_right = 28.0
+margin_bottom = 22.0
+hint_tooltip = "Reset the camera position and orientation to aim at the center of the scene"
+focus_mode = 0
+icon = ExtResource( 5 )
+
+[node name="VSeparator2" type="VSeparator" parent="ViewportContainer/MarginContainer/DisplayOptions"]
+margin_left = 32.0
+margin_right = 47.0
+margin_bottom = 22.0
+custom_constants/separation = 15
+
+[node name="LightSetup1" type="Button" parent="ViewportContainer/MarginContainer/DisplayOptions"]
+margin_left = 51.0
+margin_right = 79.0
+margin_bottom = 22.0
+hint_tooltip = "Light follows the camera so the result is always illuminated"
+focus_mode = 0
+icon = ExtResource( 6 )
+
+[node name="LightSetup2" type="Button" parent="ViewportContainer/MarginContainer/DisplayOptions"]
+margin_left = 83.0
+margin_right = 111.0
+margin_bottom = 22.0
+hint_tooltip = "Light is static so you can see part of the result shadowed"
+focus_mode = 0
+icon = ExtResource( 4 )
+[connection signal="pressed" from="ViewportContainer/MarginContainer/DisplayOptions/ResetCamera" to="ViewportContainer/Viewport/Pivot" method="reset_camera"]
+[connection signal="pressed" from="ViewportContainer/MarginContainer/DisplayOptions/LightSetup1" to="ViewportContainer" method="enable_camera_light"]
+[connection signal="pressed" from="ViewportContainer/MarginContainer/DisplayOptions/LightSetup2" to="ViewportContainer" method="enable_static_light"]

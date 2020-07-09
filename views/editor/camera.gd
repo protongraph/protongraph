@@ -98,7 +98,8 @@ func reset_camera() -> void:
 
 
 func _pan_camera(delta: float) -> void:
-	translate_object_local(Vector3(-_pan_motion.x, _pan_motion.y, 0.0) * delta * pan_speed)
+	var zoom_level = _camera.transform.origin.z * 0.25
+	translate_object_local(Vector3(-_pan_motion.x, _pan_motion.y, 0.0) * delta * pan_speed * zoom_level)
 	_pan_motion = Vector2.ZERO
 
 

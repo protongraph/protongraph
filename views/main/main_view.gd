@@ -6,18 +6,23 @@ export var editor_button: NodePath
 export var message_label: NodePath
 export var tab_container: NodePath
 export var file_dialog: NodePath
+export var black_overlay: NodePath
 
 var _file: MenuButton
 var _editor: MenuButton
 var _message: Label
 var _tab_container: TabContainer
 var _file_dialog: FileDialog
+var _overlay: Panel
 
 var _history_path := "res://history.json"
 var _history: Array
 
 
 func _ready() -> void:
+	# Prevent the application to close automatically
+	get_tree().set_auto_accept_quit(false)
+
 	# Setup file actions
 	_file = get_node(file_button)
 	var file_popup: PopupMenu = _file.get_popup()
@@ -29,6 +34,7 @@ func _ready() -> void:
 	editor_popup.connect("id_pressed", self, "_on_editor_action")
 
 	_message = get_node(message_label)
+	_overlay = get_node(black_overlay)
 
 	# File dialog behavior
 	_file_dialog = get_node(file_dialog)
@@ -43,6 +49,11 @@ func _ready() -> void:
 
 	# Load a default view to avoid having a blank empty tab on launch
 	_load_start_view()
+
+
+func _notification(event):
+	if (event == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
+		_quit()
 
 
 func _load_file_history() -> void:
@@ -128,3 +139,10 @@ func _on_template_requested(path) -> void:
 
 	_save_file_history()
 
+
+func _on_popup_about_to_show() -> void:
+	_overlay.visible = true
+
+
+func _on_popup_hidden() -> void:
+	_overlay.visible = false

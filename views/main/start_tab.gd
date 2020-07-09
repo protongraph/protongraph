@@ -25,10 +25,32 @@ func set_file_history(history: Array) -> void:
 
 	for path in history:
 		var link = LinkButton.new()
-		link.connect("pressed", self, "_on_link_pressed", [path])
-		link.text = path
+		link.text = _shorten_path(path)
 		link.size_flags_horizontal = SIZE_SHRINK_END
+		link.connect("pressed", self, "_on_link_pressed", [path])
 		_links_root.add_child(link)
+
+
+func _shorten_path(path: String) -> String:
+	if path.length() > 80:
+		var tokens = path.split("/", false)
+		var total_size = path.length()
+
+		while total_size > 80 and tokens.size() > 4:
+			tokens.remove(2)
+			total_size = tokens.size()
+			for token in tokens:
+				total_size += token.length()
+
+		tokens.insert(2, "...")
+
+		var res = ""
+		for token in tokens:
+			res += "/" + token
+
+		return res
+
+	return path
 
 
 func _on_link_pressed(path: String) -> void:

@@ -33,19 +33,23 @@ func _regenerate_inspector_ui() -> void:
 
 	for vname in _exposed_variables.keys():
 		var v = _exposed_variables[vname]
-		var s
-		if sections.has(v.section):
-			s = sections[v.section]
+		var section_control
+		var section_name = ""
+		if v.has("section"):
+			section_name = v.section
+
+		if sections.has(section_name):
+			section_control = sections[section_name]
 		else:
-			s = _create_section(v.section)
-			_root.add_child(s)
-			sections[v.section] = s
+			section_control = _create_section(section_name)
+			_root.add_child(section_control)
+			sections[section_name] = section_control
 
 		var control = _get_control_for(v)
 		if not control:
 			return
 
-		s.add_child(control)
+		section_control.add_child(control)
 
 
 func _clear_inspector() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://views/themes/dark.tres" type="Theme" id=1]
 [ext_resource path="res://views/main/main_view.gd" type="Script" id=2]
@@ -6,6 +6,13 @@
 [ext_resource path="res://views/main/template_dialog.gd" type="Script" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.627451 )
+expand_margin_left = 6.0
+expand_margin_right = 6.0
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.478431, 0.027451, 0.027451, 1 )
 corner_radius_top_left = 3
 corner_radius_top_right = 3
@@ -26,6 +33,7 @@ editor_button = NodePath("VBoxContainer/TopBar/HBoxContainer/Editor")
 message_label = NodePath("VBoxContainer/TopBar/HBoxContainer2/Message")
 tab_container = NodePath("VBoxContainer/TabContainer")
 file_dialog = NodePath("FileDialog")
+black_overlay = NodePath("BlackOverlay")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_left = 6.0
@@ -97,11 +105,26 @@ script = ExtResource( 4 )
 tabs = NodePath("../Tabs")
 confirm_dialog = NodePath("../../ConfirmExitDialog")
 
-[node name="FileDialog" type="FileDialog" parent="."]
+[node name="BlackOverlay" type="Panel" parent="."]
+visible = false
 margin_left = 6.0
 margin_top = 4.0
 margin_right = 1360.0
 margin_bottom = 764.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FileDialog" type="FileDialog" parent="."]
+visible = true
+margin_left = 383.0
+margin_top = 124.0
+margin_right = 983.0
+margin_bottom = 644.0
+rect_min_size = Vector2( 600, 520 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
 window_title = "Create a new graph template"
 resizable = true
 dialog_hide_on_ok = true
@@ -176,7 +199,7 @@ margin_left = 145.0
 margin_right = 208.0
 margin_bottom = 27.0
 focus_mode = 0
-custom_styles/hover = SubResource( 1 )
+custom_styles/hover = SubResource( 2 )
 text = "Discard"
 
 [node name="Save" type="Button" parent="ConfirmExitDialog/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -185,6 +208,10 @@ margin_right = 261.0
 margin_bottom = 27.0
 focus_mode = 0
 text = "Save"
+[connection signal="about_to_show" from="FileDialog" to="." method="_on_popup_about_to_show"]
+[connection signal="popup_hide" from="FileDialog" to="." method="_on_popup_hidden"]
+[connection signal="about_to_show" from="ConfirmExitDialog" to="." method="_on_popup_about_to_show"]
+[connection signal="popup_hide" from="ConfirmExitDialog" to="." method="_on_popup_hidden"]
 [connection signal="pressed" from="ConfirmExitDialog/MarginContainer/VBoxContainer/HBoxContainer/Cancel" to="VBoxContainer/TabContainer" method="close_confirm_dialog"]
 [connection signal="pressed" from="ConfirmExitDialog/MarginContainer/VBoxContainer/HBoxContainer/Discard" to="VBoxContainer/TabContainer" method="close_tab"]
 [connection signal="pressed" from="ConfirmExitDialog/MarginContainer/VBoxContainer/HBoxContainer/Save" to="VBoxContainer/TabContainer" method="save_and_close"]
