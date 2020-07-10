@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://src/core/template.gd" type="Script" id=1]
 [ext_resource path="res://views/editor/inspector/inspector.tscn" type="PackedScene" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://views/editor/add_node_panel.tscn" type="PackedScene" id=5]
 [ext_resource path="res://icons/replay.svg" type="Texture" id=6]
 [ext_resource path="res://icons/icon_save.svg" type="Texture" id=7]
+[ext_resource path="res://icons/progress/progress_icon.tres" type="Texture" id=8]
+[ext_resource path="res://views/editor/run_generation_button.gd" type="Script" id=9]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -65,6 +67,9 @@ focus_mode = 0
 shortcut = SubResource( 5 )
 icon = ExtResource( 6 )
 clip_text = true
+script = ExtResource( 9 )
+normal_icon = ExtResource( 6 )
+animated_icon = ExtResource( 8 )
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
 margin_left = 32.0
@@ -90,9 +95,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.5
 right_disconnects = true
-scroll_offset = Vector2( -504, -365 )
 script = ExtResource( 1 )
-inspector_panel = NodePath("../../Inspector")
+__meta__ = {
+"_edit_use_anchors_": false
+}
+inspector_panel = NodePath("../../../Inspector")
 
 [node name="ViewportArea" parent="VBoxContainer/HSplitContainer/HSplitContainer" instance=ExtResource( 3 )]
 margin_top = 466.0
@@ -117,6 +124,9 @@ margin_bottom = 407.0
 [connection signal="exposed_variables_updated" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_on_exposed_variables_updated"]
 [connection signal="graph_changed" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_on_graph_changed"]
 [connection signal="popup_request" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_show_node_dialog"]
+[connection signal="simulation_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="VBoxContainer/ToolShelf/RunGeneration" method="_on_simulation_completed"]
 [connection signal="simulation_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_on_simulation_completed"]
 [connection signal="simulation_outdated" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_on_simulation_outdated"]
+[connection signal="simulation_started" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="VBoxContainer/ToolShelf/RunGeneration" method="_on_simulation_started"]
+[connection signal="value_changed" from="VBoxContainer/HSplitContainer/Inspector" to="." method="_on_inspector_value_changed"]
 [connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]

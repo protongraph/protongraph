@@ -43,7 +43,7 @@ func _ready() -> void:
 	_line_edit.connect("text_entered", self, "_on_line_edit_changed")
 	_line_edit.connect("focus_exited", self, "_on_line_edit_changed")
 
-	set_label_value(_name)
+	set_label_text(_name)
 	_update_line_edit_value(value)
 	_update_style()
 
@@ -52,7 +52,7 @@ func get_line_edit() -> LineEdit:
 	return _line_edit
 
 
-func set_label_value(text) -> void:
+func set_label_text(text) -> void:
 	if not text:
 		return
 	_name = text
@@ -61,6 +61,10 @@ func set_label_value(text) -> void:
 	if _name_label:
 		_name_label.text = _name.capitalize()
 		_update_ui_size()
+
+
+func get_label_text() -> String:
+	return _name_label.text
 
 
 func set_value_no_undo(new_value) -> void:

@@ -94,6 +94,6 @@ func _on_tab_moved(to_tab: int) -> void:
 func _on_tab_close_request(tab: int) -> void:
 	var c = get_child(tab)
 	if c is ConceptGraphEditorView and c.has_pending_changes():
-		_confirm_dialog.popup_centered()
+		_confirm_dialog.call_deferred("popup_centered")
 	else:
 		close_tab(tab)

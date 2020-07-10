@@ -21,6 +21,7 @@ var _template_path: String
 var _viewport: ViewportContainer
 var _inspector: InspectorPanel
 var _saved := false
+var _updating_inspector := false
 
 
 func _ready() -> void:
@@ -29,6 +30,7 @@ func _ready() -> void:
 	_viewport = get_node(viewport_container)
 	_viewport.rect_min_size = Vector2(256, 128)
 	_inspector = get_node(inspector)
+
 
 	if Settings.get_setting("autosave"):
 		_save_timer = Timer.new()
@@ -101,4 +103,10 @@ func _on_simulation_outdated() -> void:
 
 
 func _on_exposed_variables_updated(variables: Array) -> void:
+	_updating_inspector = true
 	_inspector.update_variables(variables)
+	_updating_inspector = false
+
+func _on_inspector_value_changed(name: String) -> void:
+	if not _updating_inspector:
+		_template.notify_exposed_variable_change(name)

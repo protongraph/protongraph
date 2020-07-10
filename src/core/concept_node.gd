@@ -189,9 +189,10 @@ func get_editor_input(_val):
 Clears the cache and the cache of every single nodes right to this one.
 """
 func reset() -> void:
-	clear_cache()
-	for node in get_parent().get_all_right_nodes(self):
-		node.reset()
+	if _output_ready:
+		clear_cache()
+		for node in get_parent().get_all_right_nodes(self):
+			node.reset()
 
 
 func clear_cache() -> void:
@@ -696,7 +697,7 @@ func _create_spinbox(property_name, opts, parent, idx) -> SpinBox:
 	var spinbox = _spinbox.instance()
 	if parent:
 		parent.add_child(spinbox)
-	spinbox.set_label_value(property_name)
+	spinbox.set_label_text(property_name)
 	spinbox.name = "SpinBox"
 	spinbox.max_value = opts["max"] if opts.has("max") else 1000
 	spinbox.min_value = opts["min"] if opts.has("min") else 0

@@ -196,6 +196,10 @@ NodeLibrary="*res://src/core/node_library.gd"
 window/size/width=1366
 window/size/height=768
 
+[editor_plugins]
+
+enabled=PoolStringArray(  )
+
 [memory]
 
 limits/message_queue/max_size_kb=4096

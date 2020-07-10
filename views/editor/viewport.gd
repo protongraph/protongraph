@@ -1,6 +1,9 @@
 extends ViewportContainer
 
 
+signal scene_updated
+
+
 export var root: NodePath
 export var camera_root: NodePath
 export var static_light: NodePath
@@ -27,16 +30,8 @@ func display(nodes: Array) -> void:
 		c.queue_free()
 
 	for node in nodes:
-		_root.add_child(node)
-
-
-func _input(event: InputEvent) -> void:
-	if not is_visible_in_tree() or not event is InputEventMouse:
-		return # Not a mouse event
-
-	var x_event = event.duplicate() # For some reason I can't get xformed_by() to work here
-	x_event.position -= self.get_global_transform().origin
-	_camera_root.on_input(x_event)
+		_root.add_child(node, true)
+	emit_signal("scene_updated")
 
 
 func enable_static_light() -> void:

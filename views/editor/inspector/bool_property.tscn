@@ -12,16 +12,15 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="."]
 margin_top = 377.0
-margin_right = 908.0
+margin_right = 1338.0
 margin_bottom = 391.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 text = "Bool"
 
 [node name="CheckBox" type="CheckBox" parent="."]
-margin_left = 912.0
+margin_left = 1342.0
 margin_top = 372.0
 margin_right = 1366.0
 margin_bottom = 396.0
-size_flags_horizontal = 3
 size_flags_vertical = 4

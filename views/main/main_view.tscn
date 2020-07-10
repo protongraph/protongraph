@@ -1,9 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://views/themes/dark.tres" type="Theme" id=1]
 [ext_resource path="res://views/main/main_view.gd" type="Script" id=2]
+[ext_resource path="res://icons/EditorFileDialog.svg" type="Texture" id=3]
 [ext_resource path="res://views/main/tab_container.gd" type="Script" id=4]
 [ext_resource path="res://views/main/template_dialog.gd" type="Script" id=5]
+[ext_resource path="res://icons/AnimationTrackList.svg" type="Texture" id=6]
+[ext_resource path="res://icons/New.svg" type="Texture" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.627451 )
@@ -28,9 +31,7 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-file_button = NodePath("VBoxContainer/TopBar/HBoxContainer/File")
-editor_button = NodePath("VBoxContainer/TopBar/HBoxContainer/Editor")
-message_label = NodePath("VBoxContainer/TopBar/HBoxContainer2/Message")
+menu_button = NodePath("VBoxContainer/TopBar/MenuButton")
 tab_container = NodePath("VBoxContainer/TabContainer")
 file_dialog = NodePath("FileDialog")
 black_overlay = NodePath("BlackOverlay")
@@ -44,57 +45,25 @@ custom_constants/separation = 0
 
 [node name="TopBar" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1354.0
-margin_bottom = 27.0
+margin_bottom = 29.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopBar"]
-margin_right = 92.0
-margin_bottom = 27.0
+[node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
+margin_right = 28.0
+margin_bottom = 29.0
+icon = ExtResource( 6 )
+items = [ "New Template", ExtResource( 7 ), 0, false, false, 0, 0, null, "", false, "Load Template", ExtResource( 3 ), 0, false, false, 1, 0, null, "", false ]
 
-[node name="File" type="MenuButton" parent="VBoxContainer/TopBar/HBoxContainer"]
-margin_right = 35.0
-margin_bottom = 27.0
-text = "File"
-items = [ "New Template", null, 0, false, false, 0, 0, null, "", false, "Open Template", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Save", null, 0, false, false, 3, 0, null, "", false, "Save As", null, 0, false, false, 4, 0, null, "", false, "", null, 0, false, false, 5, 0, null, "", true, "Quit", null, 0, false, false, 6, 0, null, "", false ]
-switch_on_hover = true
-
-[node name="Editor" type="MenuButton" parent="VBoxContainer/TopBar/HBoxContainer"]
-margin_left = 39.0
-margin_right = 92.0
-margin_bottom = 27.0
-text = "Editor"
-items = [ "Editor Settings", null, 0, false, false, 0, 0, null, "", false ]
-switch_on_hover = true
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TopBar"]
-margin_left = 96.0
+[node name="Tabs" type="Tabs" parent="VBoxContainer/TopBar"]
+margin_left = 32.0
 margin_right = 1354.0
-margin_bottom = 27.0
-size_flags_horizontal = 3
-alignment = 2
-
-[node name="Message" type="Label" parent="VBoxContainer/TopBar/HBoxContainer2"]
-margin_left = 1250.0
-margin_right = 1258.0
-margin_bottom = 27.0
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
-modulate = Color( 1, 1, 1, 0 )
-margin_top = 27.0
-margin_right = 1354.0
-margin_bottom = 32.0
-custom_constants/separation = 5
-
-[node name="Tabs" type="Tabs" parent="VBoxContainer"]
-margin_top = 32.0
-margin_right = 1354.0
-margin_bottom = 61.0
+margin_bottom = 29.0
 size_flags_horizontal = 3
 tab_align = 0
 tab_close_display_policy = 2
 drag_to_rearrange_enabled = true
 
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
-margin_top = 61.0
+margin_top = 29.0
 margin_right = 1354.0
 margin_bottom = 760.0
 size_flags_horizontal = 3
@@ -102,7 +71,7 @@ size_flags_vertical = 3
 tab_align = 0
 tabs_visible = false
 script = ExtResource( 4 )
-tabs = NodePath("../Tabs")
+tabs = NodePath("../TopBar/Tabs")
 confirm_dialog = NodePath("../../ConfirmExitDialog")
 
 [node name="BlackOverlay" type="Panel" parent="."]

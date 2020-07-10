@@ -1,15 +1,12 @@
 extends PanelContainer
 
 
-export var file_button: NodePath
-export var editor_button: NodePath
-export var message_label: NodePath
+export var menu_button: NodePath
 export var tab_container: NodePath
 export var file_dialog: NodePath
 export var black_overlay: NodePath
 
-var _file: MenuButton
-var _editor: MenuButton
+var _menu: MenuButton
 var _message: Label
 var _tab_container: TabContainer
 var _file_dialog: FileDialog
@@ -24,16 +21,9 @@ func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 
 	# Setup file actions
-	_file = get_node(file_button)
-	var file_popup: PopupMenu = _file.get_popup()
-	file_popup.connect("id_pressed", self, "_on_file_action")
+	_menu = get_node(menu_button)
 
-	# Setup editor actions
-	_editor = get_node(editor_button)
-	var editor_popup: PopupMenu = _file.get_popup()
-	editor_popup.connect("id_pressed", self, "_on_editor_action")
 
-	_message = get_node(message_label)
 	_overlay = get_node(black_overlay)
 
 	# File dialog behavior

@@ -12,6 +12,7 @@ var _zoom: float
 var _viewport: Viewport
 var _container: ViewportContainer
 var _captured := false
+var _captured_from_outside := false
 
 
 func _ready() -> void:
@@ -27,24 +28,36 @@ func _process(delta: float) -> void:
 		_pan_camera(delta)
 
 
-func on_input(event: InputEvent):
+"""
+Handles the zoom, panning and orbiting in the viewport.
+"""
+func _input(event: InputEvent) -> void:
+	if not is_visible_in_tree() or not event is InputEventMouse:
+		return # Not a mouse event
+
 	var vx = _viewport.size.x
 	var vy = _viewport.size.y
 	var shift = Input.is_key_pressed(KEY_SHIFT)
 	var middle = Input.is_mouse_button_pressed(BUTTON_MIDDLE)
 
-	# We capture the mouse if the middle button was pressed INSIDE the viewport. It can then be
-	# dragged outside and still be captured as long as the middle button is pressed. Once the middle
-	# button is released, the mouse is not captured and we only process the event if the mouse is
-	# inside the viewport.
+	# If another part of the UI (like the graph node) starts panning and the mouse gets over
+	# the viewport, we ignore that
+	if not _captured and not _captured_from_outside and middle:
+		if _is_in_viewport(event.position):
+			_captured = true
+		else:
+			_captured_from_outside = true
+
+	# If the user release the middle button, that means nothing is currently capturing the mouse
 	if not middle:
 		_captured = false
-	elif _is_in_viewport(event.position):
-		_captured = true
+		_captured_from_outside = false
 
-	if not _captured and not _is_in_viewport(event.position):
-		return # Not panning or orbiting and the mouse is not in the viewport. Abort
-	else: # Handle mouse wrapping if necessary
+	# For when the user moves over the viewport but started pressing the middle button somewhere else
+	if _captured_from_outside:
+		return
+
+	if _captured: # Handle mouse wrapping if the mouse leaves the viewport
 		var new_pos: Vector2 = event.position
 		if event.position.x < 0:
 			new_pos.x = vx
@@ -61,7 +74,7 @@ func on_input(event: InputEvent):
 		if new_pos != event.position:
 			_viewport.warp_mouse(new_pos + _container.get_global_transform().origin)
 
-	# Handle zoom input
+	# Handle zoom input when user scrolls up or down
 	if event is InputEventMouseButton:
 		var dist = _camera.transform.origin.z
 		if event.button_index == BUTTON_WHEEL_UP:
@@ -74,7 +87,6 @@ func on_input(event: InputEvent):
 
 	# Handle panning and orbiting
 	elif event is InputEventMouseMotion:
-
 		if abs(event.relative.x) > vx:
 			event.relative.x += vx * sign(-event.relative.x)
 		if abs(event.relative.y) > vy:

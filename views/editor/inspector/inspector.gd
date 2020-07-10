@@ -2,6 +2,9 @@ extends ScrollContainer
 class_name InspectorPanel
 
 
+signal value_changed
+
+
 export var root: NodePath
 
 var _root: Control
@@ -81,6 +84,7 @@ func _regenerate_inspector_ui() -> void:
 
 		section_control.add_child(control)
 		_variables_ui[vname] = control
+		control.connect("value_changed", self, "_on_value_changed")
 
 	var keys = sections.keys()
 	keys.sort()
@@ -117,3 +121,7 @@ func _get_control_for(v):
 		return ui
 
 	return null
+
+
+func _on_value_changed(variable_name: String) -> void:
+	emit_signal("value_changed", variable_name)

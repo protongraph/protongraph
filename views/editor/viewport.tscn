@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://views/editor/viewport.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://icons/icon_camera.svg" type="Texture" id=5]
 [ext_resource path="res://icons/icon_material_preview_light_1.svg" type="Texture" id=6]
 [ext_resource path="res://views/editor/draw_axis.gd" type="Script" id=7]
+[ext_resource path="res://views/editor/runtime_tree.gd" type="Script" id=8]
 
 [sub_resource type="World" id=1]
 environment = ExtResource( 1 )
@@ -17,12 +18,18 @@ margin_right = 1352.0
 margin_bottom = 754.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Tree" type="Tree" parent="."]
 margin_right = 444.0
 margin_bottom = 728.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource( 8 )
+input = NodePath("../ViewportContainer/Viewport/Input")
+output = NodePath("../ViewportContainer/Viewport/Output")
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 margin_left = 456.0
@@ -50,6 +57,7 @@ handle_input_locally = false
 msaa = 1
 usage = 3
 render_target_update_mode = 3
+physics_object_picking = true
 script = ExtResource( 7 )
 
 [node name="Pivot" type="Spatial" parent="ViewportContainer/Viewport"]
@@ -68,7 +76,7 @@ light_specular = 0.0
 [node name="Lighting" type="Spatial" parent="ViewportContainer/Viewport"]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="ViewportContainer/Viewport/Lighting"]
-transform = Transform( -3.09086e-08, -0.707107, 0.707107, -3.09086e-08, 0.707107, 0.707107, -1, 0, -4.37114e-08, 2.00127, 0, -1.33922 )
+transform = Transform( 0.446463, -0.751037, 0.48643, 0.446463, 0.658088, 0.606293, -0.775463, -0.0535144, 0.629122, 2.00127, 0, -1.33922 )
 visible = false
 light_energy = 0.7
 light_specular = 0.0
@@ -76,6 +84,8 @@ directional_shadow_mode = 1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="ViewportContainer/Viewport/Lighting"]
 environment = ExtResource( 1 )
+
+[node name="Input" type="Spatial" parent="ViewportContainer/Viewport"]
 
 [node name="Output" type="Spatial" parent="ViewportContainer/Viewport"]
 
@@ -123,6 +133,7 @@ margin_bottom = 22.0
 hint_tooltip = "Light is static so you can see part of the result shadowed"
 focus_mode = 0
 icon = ExtResource( 4 )
+[connection signal="scene_updated" from="ViewportContainer" to="Tree" method="_update_tree"]
 [connection signal="pressed" from="ViewportContainer/MarginContainer/DisplayOptions/ResetCamera" to="ViewportContainer/Viewport/Pivot" method="reset_camera"]
 [connection signal="pressed" from="ViewportContainer/MarginContainer/DisplayOptions/LightSetup1" to="ViewportContainer" method="enable_camera_light"]
 [connection signal="pressed" from="ViewportContainer/MarginContainer/DisplayOptions/LightSetup2" to="ViewportContainer" method="enable_static_light"]

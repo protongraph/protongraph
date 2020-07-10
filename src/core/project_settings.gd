@@ -12,7 +12,7 @@ const AUTOSAVE_INTERVAL = "autosave_interval"
 
 var _path = "res://config.json"
 var _settings = {}
-var _json_util = load("res://src/thirdparty/json_beautifier/json_beautifier.gd")
+var _json_util = preload("res://src/thirdparty/json_beautifier/json_beautifier.gd")
 
 func _ready() -> void:
 	load_config()
