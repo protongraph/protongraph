@@ -99,7 +99,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-inspector_panel = NodePath("../../../Inspector")
+inspector_panel = NodePath("../../Inspector")
 
 [node name="ViewportArea" parent="VBoxContainer/HSplitContainer/HSplitContainer" instance=ExtResource( 3 )]
 margin_top = 466.0
