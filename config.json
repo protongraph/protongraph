@@ -4,5 +4,5 @@
   "enable_multithreading": true,
   "delay_before_generation": 75,
   "inline_vector_fields": false,
-  "group_by_type": false
+  "group_nodes_by_type": false
 }

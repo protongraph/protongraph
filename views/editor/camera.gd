@@ -75,7 +75,7 @@ func _input(event: InputEvent) -> void:
 			_viewport.warp_mouse(new_pos + _container.get_global_transform().origin)
 
 	# Handle zoom input when user scrolls up or down
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and _is_in_viewport(event.position):
 		var dist = _camera.transform.origin.z
 		if event.button_index == BUTTON_WHEEL_UP:
 			_camera.transform.origin.z -= 0.2 * zoom_speed * dist

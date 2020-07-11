@@ -14,16 +14,15 @@ var _overlay: Panel
 
 var _history_path := "res://history.json"
 var _history: Array
+var _start_view: WeakRef
 
 
 func _ready() -> void:
 	# Prevent the application to close automatically
 	get_tree().set_auto_accept_quit(false)
 
-	# Setup file actions
 	_menu = get_node(menu_button)
-
-
+	_menu.connect("menu_action", self, "_on_menu_action")
 	_overlay = get_node(black_overlay)
 
 	# File dialog behavior
@@ -58,12 +57,26 @@ func _save_file_history() -> void:
 	file.store_string(to_json(_history))
 	file.close()
 
+	if _start_view:
+		var ref = _start_view.get_ref()
+		if not ref:
+			_start_view = null
+			return
+		ref.set_file_history(_history)
+
 
 func _load_start_view():
 	var start_view = preload("res://views/main/start_tab.tscn").instance()
 	start_view.set_file_history(_history)
 	start_view.connect("template_requested", self, "_on_template_requested")
+	start_view.connect("menu_action", self, "_on_menu_action")
 	_tab_container.add_child(start_view)
+	_start_view = weakref(start_view)
+
+
+func _load_settings_view():
+	var settings_view = preload("res://views/main/editor_settings.tscn").instance()
+	_tab_container.add_child(settings_view)
 
 
 func _show_settings_panel():
@@ -83,17 +96,19 @@ func _quit() -> void:
 	get_tree().quit()
 
 
-func _on_file_action(id: int) -> void:
-	match id:
-		0:
+func _on_menu_action(action: String) -> void:
+	match action:
+		"new":
 			_file_dialog.create_template()
-		1:
+		"load":
 			_file_dialog.load_template()
-		3:
+		"save":
 			_save_template()
-		4:
+		"save_as":
 			_file_dialog.save_template_as()
-		6:
+		"settings":
+			_load_settings_view()
+		"quit":
 			_quit()
 
 

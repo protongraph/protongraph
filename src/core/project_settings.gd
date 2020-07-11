@@ -14,6 +14,7 @@ var _path = "res://config.json"
 var _settings = {}
 var _json_util = preload("res://src/thirdparty/json_beautifier/json_beautifier.gd")
 
+
 func _ready() -> void:
 	load_config()
 
@@ -30,6 +31,7 @@ func get_setting(setting: String):
 
 func update_setting(setting: String, value) -> void:
 	_settings[setting] = value
+	save_config()
 
 
 func load_config() -> void:

@@ -1,6 +1,7 @@
 extends PanelContainer
 
 signal template_requested
+signal menu_action
 
 
 export var links_root: NodePath
@@ -26,7 +27,6 @@ func set_file_history(history: Array) -> void:
 	for path in history:
 		var link = LinkButton.new()
 		link.text = _shorten_path(path)
-		link.size_flags_horizontal = SIZE_SHRINK_END
 		link.connect("pressed", self, "_on_link_pressed", [path])
 		_links_root.add_child(link)
 
@@ -53,3 +53,11 @@ func _shorten_path(path: String) -> String:
 
 func _on_link_pressed(path: String) -> void:
 	emit_signal("template_requested", path)
+
+
+func _on_new_template_pressed() -> void:
+	emit_signal("menu_action", "new")
+
+
+func _on_load_template_pressed() -> void:
+	emit_signal("menu_action", "load")

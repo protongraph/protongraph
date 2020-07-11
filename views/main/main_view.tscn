@@ -1,12 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://views/themes/dark.tres" type="Theme" id=1]
 [ext_resource path="res://views/main/main_view.gd" type="Script" id=2]
-[ext_resource path="res://icons/EditorFileDialog.svg" type="Texture" id=3]
+[ext_resource path="res://views/main/menu_button.gd" type="Script" id=3]
 [ext_resource path="res://views/main/tab_container.gd" type="Script" id=4]
 [ext_resource path="res://views/main/template_dialog.gd" type="Script" id=5]
-[ext_resource path="res://icons/AnimationTrackList.svg" type="Texture" id=6]
-[ext_resource path="res://icons/New.svg" type="Texture" id=7]
+[ext_resource path="res://icons/menu.svg" type="Texture" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.627451 )
@@ -51,7 +50,10 @@ margin_bottom = 29.0
 margin_right = 28.0
 margin_bottom = 29.0
 icon = ExtResource( 6 )
-items = [ "New Template", ExtResource( 7 ), 0, false, false, 0, 0, null, "", false, "Load Template", ExtResource( 3 ), 0, false, false, 1, 0, null, "", false ]
+script = ExtResource( 3 )
+__meta__ = {
+"_editor_description_": "Items are defined in the MainView script"
+}
 
 [node name="Tabs" type="Tabs" parent="VBoxContainer/TopBar"]
 margin_left = 32.0
