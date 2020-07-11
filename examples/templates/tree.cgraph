@@ -375,7 +375,7 @@
 			"editor": {
 				"offset_x": 1900,
 				"offset_y": 180,
-				"rect_x": 577.999451,
+				"rect_x": 577.999512,
 				"rect_y": 223.000366,
 				"slots": {}
 			},
@@ -403,7 +403,7 @@
 			"editor": {
 				"offset_x": 1740,
 				"offset_y": -120,
-				"rect_x": 469.159607,
+				"rect_x": 469.159668,
 				"rect_y": 256.880371,
 				"slots": {}
 			},
@@ -431,8 +431,8 @@
 			"editor": {
 				"offset_x": 320,
 				"offset_y": 100,
-				"rect_x": 1204.375977,
-				"rect_y": 363.728149,
+				"rect_x": 1215.375977,
+				"rect_y": 440.728149,
 				"slots": {}
 			},
 			"name": "GraphNode65",
@@ -473,8 +473,8 @@
 			"editor": {
 				"offset_x": -3620,
 				"offset_y": -400,
-				"rect_x": 1537,
-				"rect_y": 959.000366,
+				"rect_x": 1547,
+				"rect_y": 1069.000366,
 				"slots": {}
 			},
 			"name": "GraphNode53",
@@ -494,21 +494,6 @@
 			},
 			"name": "GraphNode3",
 			"type": "curve_sample_points_constant"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -3320,
-				"offset_y": -20,
-				"slots": {
-					"0": 5,
-					"1": 1,
-					"2": "(0, 0, 0)",
-					"3": "(0, 0, 0)"
-				}
-			},
-			"name": "GraphNode17",
-			"type": "curve_generator_polygon"
 		},
 		{
 			"data": {},
@@ -628,7 +613,7 @@
 				"slots": {
 					"0": 3,
 					"1": 0.1,
-					"2": "(0, 0, 0)",
+					"2": "(0, 0, 1)",
 					"3": "(0, 0, 0)"
 				}
 			},
@@ -731,72 +716,6 @@
 			},
 			"name": "GraphNode14",
 			"type": "inspector_scalar"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -3600,
-				"offset_y": -20,
-				"slots": {
-					"0": "Trunk radius",
-					"1": 1
-				}
-			},
-			"name": "GraphNode20",
-			"type": "inspector_scalar"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -3020,
-				"offset_y": -20,
-				"slots": {
-					"1": 0,
-					"2": 1,
-					"3": 2,
-					"4": 50,
-					"5": "(0, 0, 0)",
-					"6": 0.1
-				}
-			},
-			"name": "GraphNode18",
-			"type": "curve_midpoint_displacement"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -2680,
-				"offset_y": -20,
-				"slots": {}
-			},
-			"name": "GraphNode23",
-			"type": "curve_tesselate_exact"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -2680,
-				"offset_y": 80,
-				"slots": {
-					"0": "Trunk profile"
-				}
-			},
-			"name": "GraphNode24",
-			"type": "inspector_curve_2d"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -2400,
-				"offset_y": -20,
-				"slots": {
-					"3": 0.4,
-					"4": "(1, 1)",
-					"5": true
-				}
-			},
-			"name": "GraphNode16",
-			"type": "extrude_bevel_along_path"
 		},
 		{
 			"data": {},
@@ -1216,8 +1135,89 @@
 		{
 			"data": {},
 			"editor": {
+				"offset_x": -2400,
+				"offset_y": 40,
+				"slots": {
+					"3": 0.4,
+					"4": "(1, 1)",
+					"5": true
+				}
+			},
+			"name": "GraphNode16",
+			"type": "extrude_bevel_along_path"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -2680,
+				"offset_y": 40,
+				"slots": {}
+			},
+			"name": "GraphNode23",
+			"type": "curve_tesselate_exact"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -2680,
+				"offset_y": 140,
+				"slots": {
+					"0": "Trunk profile"
+				}
+			},
+			"name": "GraphNode24",
+			"type": "inspector_curve_2d"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -3320,
+				"offset_y": 40,
+				"slots": {
+					"0": 5,
+					"1": 1,
+					"2": "(0, 0, 0)",
+					"3": "(0, 0, 0)"
+				}
+			},
+			"name": "GraphNode17",
+			"type": "curve_generator_polygon"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -3600,
+				"offset_y": 40,
+				"slots": {
+					"0": "Trunk radius",
+					"1": 1
+				}
+			},
+			"name": "GraphNode20",
+			"type": "inspector_scalar"
+		},
+		{
+			"data": {},
+			"editor": {
 				"offset_x": -3020,
-				"offset_y": 240,
+				"offset_y": 40,
+				"slots": {
+					"1": 0,
+					"2": 1,
+					"3": 2,
+					"4": 50,
+					"5": "(0, 0, 0)",
+					"6": 0.1
+				}
+			},
+			"name": "GraphNode18",
+			"type": "curve_midpoint_displacement"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -3280,
+				"offset_y": 380,
 				"slots": {
 					"0": 0,
 					"1": 0,
@@ -1230,8 +1230,8 @@
 		{
 			"data": {},
 			"editor": {
-				"offset_x": -3020,
-				"offset_y": 380,
+				"offset_x": -3280,
+				"offset_y": 520,
 				"slots": {
 					"0": "Seed",
 					"1": 0

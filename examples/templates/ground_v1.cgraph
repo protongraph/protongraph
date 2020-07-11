@@ -8,12 +8,6 @@
 		},
 		{
 			"from": "GraphNode6",
-			"from_port": 1,
-			"to": "GraphNode4",
-			"to_port": 2
-		},
-		{
-			"from": "GraphNode6",
 			"from_port": 0,
 			"to": "GraphNode8",
 			"to_port": 0
@@ -29,12 +23,6 @@
 			"from_port": 2,
 			"to": "GraphNode4",
 			"to_port": 1
-		},
-		{
-			"from": "GraphNode7",
-			"from_port": 0,
-			"to": "GraphNode4",
-			"to_port": 3
 		},
 		{
 			"from": "GraphNode10",
@@ -131,6 +119,18 @@
 			"from_port": 0,
 			"to": "GraphNode9",
 			"to_port": 5
+		},
+		{
+			"from": "GraphNode7",
+			"from_port": 0,
+			"to": "GraphNode4",
+			"to_port": 2
+		},
+		{
+			"from": "GraphNode6",
+			"from_port": 1,
+			"to": "GraphNode4",
+			"to_port": 3
 		}
 	],
 	"nodes": [
@@ -139,22 +139,12 @@
 			"editor": {
 				"offset_x": -780,
 				"offset_y": 280,
-				"slots": {}
+				"slots": {
+					"0": "(0, 0, 0)"
+				}
 			},
 			"name": "GraphNode8",
 			"type": "break_vector"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -1160,
-				"offset_y": 380,
-				"slots": {
-					"0": "Box"
-				}
-			},
-			"name": "GraphNode5",
-			"type": "input_box"
 		},
 		{
 			"data": {},
@@ -189,6 +179,7 @@
 				"offset_x": 700,
 				"offset_y": 280,
 				"slots": {
+					"1": "(0, 0, 0)",
 					"2": false,
 					"3": false
 				}
@@ -204,7 +195,9 @@
 				"slots": {
 					"1": 0,
 					"3": false,
-					"4": false
+					"4": false,
+					"5": "(0, 0, 0)",
+					"6": false
 				}
 			},
 			"name": "GraphNode9",
@@ -217,35 +210,13 @@
 				"offset_y": 360,
 				"slots": {
 					"0": 1,
-					"1": 1
+					"1": 1,
+					"2": "(0, 0, 0)",
+					"3": "(0, 0, 0)"
 				}
 			},
 			"name": "GraphNode4",
 			"type": "curve_generator_square"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -980,
-				"offset_y": 380,
-				"slots": {}
-			},
-			"name": "GraphNode6",
-			"type": "expose_box_info"
-		},
-		{
-			"data": {},
-			"editor": {
-				"offset_x": -780,
-				"offset_y": 520,
-				"slots": {
-					"0": 0,
-					"1": 1,
-					"2": 0
-				}
-			},
-			"name": "GraphNode7",
-			"type": "value_vector3"
 		},
 		{
 			"data": {},
@@ -280,6 +251,7 @@
 					"2": 3,
 					"3": 4,
 					"4": 50,
+					"5": "(0, 0, 0)",
 					"6": 0.5
 				}
 			},
@@ -328,20 +300,6 @@
 		{
 			"data": {},
 			"editor": {
-				"offset_x": -780,
-				"offset_y": 740,
-				"slots": {
-					"0": 0,
-					"1": 0,
-					"2": 1
-				}
-			},
-			"name": "GraphNode17",
-			"type": "value_vector3"
-		},
-		{
-			"data": {},
-			"editor": {
 				"offset_x": 1300,
 				"offset_y": 380,
 				"slots": {}
@@ -364,8 +322,8 @@
 		{
 			"data": {},
 			"editor": {
-				"offset_x": 38,
-				"offset_y": 347,
+				"offset_x": 180,
+				"offset_y": 380,
 				"slots": {
 					"0": 0,
 					"1": 1,
@@ -373,6 +331,56 @@
 				}
 			},
 			"name": "GraphNode19",
+			"type": "value_vector3"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -780,
+				"offset_y": 420,
+				"slots": {
+					"0": 0,
+					"1": 1,
+					"2": 0
+				}
+			},
+			"name": "GraphNode7",
+			"type": "value_vector3"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -1020,
+				"offset_y": 520,
+				"slots": {}
+			},
+			"name": "GraphNode6",
+			"type": "expose_box_info"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -1220,
+				"offset_y": 520,
+				"slots": {
+					"0": "Box"
+				}
+			},
+			"name": "GraphNode5",
+			"type": "input_box"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -780,
+				"offset_y": 740,
+				"slots": {
+					"0": 0,
+					"1": 1,
+					"2": 0
+				}
+			},
+			"name": "GraphNode17",
 			"type": "value_vector3"
 		}
 	]

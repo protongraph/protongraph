@@ -80,7 +80,7 @@ surfaces/0 = {
 "vertex_count": 162
 }
 
-[sub_resource type="MultiMesh" id=10]
+[sub_resource type="MultiMesh" id=12]
 transform_format = 1
 instance_count = 99
 mesh = SubResource( 9 )
@@ -99,6 +99,9 @@ height = 0.1
 [node name="Tree" type="Spatial" parent="."]
 script = ExtResource( 2 )
 template_path = "res://addons/concept_graph/examples/templates/tree.cgraph"
+auto_generate_on_load = true
+paused = false
+show_result_in_editor_tree = true
 "Template/Sub branches radius" = 0.05
 Template/Seed = 0.0
 "Template/sub branches length" = 2.5
@@ -133,6 +136,9 @@ material/0 = SubResource( 8 )
 [node name="Grass" type="Spatial" parent="."]
 script = ExtResource( 2 )
 template_path = "res://addons/concept_graph/examples/templates/ground_with_grass_1.cgraph"
+auto_generate_on_load = true
+paused = false
+show_result_in_editor_tree = true
 Template/seed = 19.0
 
 [node name="Input" type="Spatial" parent="Grass"]
@@ -152,7 +158,7 @@ visible = false
 
 [node name="MultiMeshInstance" type="MultiMeshInstance" parent="Grass/Output"]
 material_override = ExtResource( 5 )
-multimesh = SubResource( 10 )
+multimesh = SubResource( 12 )
 
 [node name="Ground" type="MeshInstance" parent="."]
 mesh = SubResource( 11 )
