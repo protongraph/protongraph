@@ -22,7 +22,7 @@ func set_value(text: String) -> void:
 	line_edit.text = text
 
 
-func get_value() -> String:
+func get_value(_storage := false) -> String:
 	return line_edit.text
 
 

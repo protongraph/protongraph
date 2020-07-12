@@ -10,7 +10,7 @@ export var root: NodePath
 var _root: Control
 var _exposed_variables := {}
 var _variables_ui := {}
-var _cache = null
+var _cache := {}
 
 
 func _ready() -> void:
@@ -20,7 +20,8 @@ func _ready() -> void:
 
 func update_variables(variables: Array) -> void:
 	_exposed_variables = {}
-	if not _cache: # Don't override the values cache if it already exists
+	if _cache.empty(): # Don't override the values cache if it already exists
+		print("No cache found, saving local values")
 		_cache = get_all_values()
 
 	# Make sure there's no variables duplicates
@@ -32,7 +33,7 @@ func update_variables(variables: Array) -> void:
 	# Regenerate the UI and restore values
 	_regenerate_inspector_ui()
 	set_all_values(_cache)
-	_cache = null
+	_cache = {}
 
 
 func get_value(name):
@@ -42,21 +43,24 @@ func get_value(name):
 	return null
 
 
-func get_all_values() -> Dictionary:
+func get_all_values(storage := false) -> Dictionary:
 	var res = {}
 	for vname in _variables_ui.keys():
-		res[vname] = _variables_ui[vname].get_value()
+		res[vname] = _variables_ui[vname].get_value(storage)
 	return res
 
 
 func set_all_values(values) -> void:
 	if _variables_ui.empty():
+		print("UI not initialized, storing in cache")
 		_cache = values
+		print(_cache)
 		return # Inspector was not initialized yet, caching the values for later
 
 	for vname in values.keys():
 		vname = vname.to_lower()
 		if _variables_ui.has(vname):
+			print(values[vname])
 			_variables_ui[vname].set_value(values[vname])
 
 

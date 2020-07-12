@@ -18,7 +18,7 @@ func set_value(value: float) -> void:
 	spinbox.value = value
 
 
-func get_value() -> float:
+func get_value(_storage := false) -> float:
 	return spinbox.value
 
 

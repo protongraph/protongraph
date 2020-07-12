@@ -43,7 +43,8 @@ func get_exposed_variables() -> Array:
 		"type": ConceptGraphDataType.CURVE_FUNC,
 		"hint": PROPERTY_HINT_RESOURCE_TYPE,
 		"hint_string": "Curve",
-		"default_value": get_input(1, default),
+		"default_value": get_input_single(1, default),
+		"section": get_input_single(2, ""),
 		}]
 
 

@@ -19,7 +19,7 @@ func set_value(value: bool) -> void:
 	checkbox.pressed = value
 
 
-func get_value() -> bool:
+func get_value(_storage := false) -> bool:
 	return checkbox.pressed
 
 

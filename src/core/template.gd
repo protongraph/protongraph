@@ -252,7 +252,7 @@ func save_to_file(path: String) -> void:
 	var graph := {}
 	# TODO : Convert the connection_list to an ID connection list
 	graph["connections"] = get_connection_list()
-	graph["inspector"] = _inspector.get_all_values()
+	graph["inspector"] = _inspector.get_all_values(true)
 	graph["nodes"] = []
 
 	for c in get_children():
