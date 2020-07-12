@@ -63,6 +63,10 @@ func set_all_values(values) -> void:
 func _regenerate_inspector_ui() -> void:
 	_clear_inspector()
 
+	if _exposed_variables.empty():
+		_root.add_child(preload("no_properties.tscn").instance())
+		return
+
 	var sections = {}
 
 	for vname in _exposed_variables.keys():
@@ -80,11 +84,11 @@ func _regenerate_inspector_ui() -> void:
 
 		var control = _get_control_for(v)
 		if not control:
-			return
+			continue
 
-		section_control.add_child(control)
+		section_control.add_control(control)
 		_variables_ui[vname] = control
-		control.connect("value_changed", self, "_on_value_changed")
+		control.connect("value_changed", self, "_on_value_changed", [vname])
 
 	var keys = sections.keys()
 	keys.sort()
@@ -115,13 +119,17 @@ func _get_control_for(v):
 			ui = preload("scalar_property.tscn").instance()
 		ConceptGraphDataType.BOOLEAN:
 			ui = preload("bool_property.tscn").instance()
+		ConceptGraphDataType.CURVE_FUNC:
+			ui = preload("curve/curve_property.tscn").instance()
+		ConceptGraphDataType.STRING:
+			ui = preload("string_property.tscn").instance()
 
 	if ui:
-		ui.init(v.name, v.default_value)
+		ui.init(v.name.capitalize(), v.default_value)
 		return ui
 
 	return null
 
 
-func _on_value_changed(variable_name: String) -> void:
-	emit_signal("value_changed", variable_name)
+func _on_value_changed(vname: String) -> void:
+	emit_signal("value_changed", vname)

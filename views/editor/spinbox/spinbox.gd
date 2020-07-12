@@ -2,6 +2,7 @@ tool
 extends ProgressBar
 
 
+export var spinbox_name: String
 export var decrease_button: NodePath
 export var increase_button: NodePath
 export var name_label: NodePath
@@ -24,7 +25,6 @@ var _fg_top = preload("styles/progress_bar_fg_top.tres")
 var _fg_middle = preload("styles/progress_bar_fg_middle.tres")
 var _fg_bottom = preload("styles/progress_bar_fg_bottom.tres")
 
-var _name
 var _clicked := false
 var _acc := 0.0
 var _previous_value := 0.0
@@ -43,7 +43,7 @@ func _ready() -> void:
 	_line_edit.connect("text_entered", self, "_on_line_edit_changed")
 	_line_edit.connect("focus_exited", self, "_on_line_edit_changed")
 
-	set_label_text(_name)
+	set_label_text(spinbox_name)
 	_update_line_edit_value(value)
 	_update_style()
 
@@ -55,11 +55,10 @@ func get_line_edit() -> LineEdit:
 func set_label_text(text) -> void:
 	if not text:
 		return
-	_name = text
-	if not text is String:
-		_name = String(text)
+
+	spinbox_name = text if text is String else String(text)
 	if _name_label:
-		_name_label.text = _name.capitalize()
+		_name_label.text = spinbox_name.capitalize()
 		_update_ui_size()
 
 

@@ -189,10 +189,9 @@ func get_editor_input(_val):
 Clears the cache and the cache of every single nodes right to this one.
 """
 func reset() -> void:
-	if _output_ready:
-		clear_cache()
-		for node in get_parent().get_all_right_nodes(self):
-			node.reset()
+	clear_cache()
+	for node in get_parent().get_all_right_nodes(self):
+		node.reset()
 
 
 func clear_cache() -> void:
@@ -857,6 +856,7 @@ func _show_file_dialog(opts: Dictionary, line_edit: LineEdit) -> void:
 	_file_dialog.rect_min_size = Vector2(500, 500)
 	_file_dialog.mode = opts["mode"] if opts.has("mode") else FileDialog.MODE_SAVE_FILE
 	_file_dialog.resizable = true
+	_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
 
 	if opts.has("filters"):
 		var filters = PoolStringArray()

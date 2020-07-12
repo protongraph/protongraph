@@ -235,7 +235,11 @@ func load_from_file(path: String, soft_load := false) -> void:
 	for c in graph["connections"]:
 		# TODO: convert the to/from ports stored in file to actual port
 		connect_node(c["from"], c["from_port"], c["to"], c["to_port"])
-		get_node(c["to"]).emit_signal("connection_changed")
+		var n = get_node(c["to"])
+		if not n:
+			print("Can't find node ", c["to"])
+			continue
+		n.emit_signal("connection_changed")
 
 	if graph.has("inspector"):
 		_inspector.set_all_values(graph["inspector"])

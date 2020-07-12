@@ -24,4 +24,4 @@ func get_value() -> bool:
 
 
 func _on_pressed() -> void:
-	emit_signal("value_changed", label.text)
+	emit_signal("value_changed")

@@ -1,9 +1,9 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://views/main/start_tab.gd" type="Script" id=1]
-[ext_resource path="res://icons/new.svg" type="Texture" id=2]
+[ext_resource path="res://icons/icon_new.svg" type="Texture" id=2]
 [ext_resource path="res://views/themes/fonts/fira_sans_bold_large.tres" type="DynamicFont" id=3]
-[ext_resource path="res://icons/load.svg" type="Texture" id=4]
+[ext_resource path="res://icons/icon_load.svg" type="Texture" id=4]
 [ext_resource path="res://views/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=5]
 
 [sub_resource type="StyleBoxEmpty" id=1]

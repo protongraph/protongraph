@@ -23,4 +23,4 @@ func get_value() -> float:
 
 
 func _on_value_changed(_value) -> void:
-	emit_signal("value_changed", spinbox.get_label_text())
+	emit_signal("value_changed")

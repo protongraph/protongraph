@@ -42,13 +42,11 @@ func get_exposed_variables() -> Array:
 	if not name:
 		return []
 
-	var section: String = get_input_single(2, "")
-
 	return [{
 		"name": name,
 		"type": ConceptGraphDataType.SCALAR,
 		"default_value": get_input_single(1, 1.0),
-		"section": section,
+		"section": get_input_single(2, ""),
 		}]
 
 

@@ -37,6 +37,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+spinbox_name = "Spinbox"
 decrease_button = NodePath("SpinBoxContainer/Decrease")
 increase_button = NodePath("SpinBoxContainer/Increase")
 name_label = NodePath("SpinBoxContainer/Value/Label")

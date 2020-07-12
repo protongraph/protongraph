@@ -5,7 +5,7 @@
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0, 0, 0, 0.215686 )
+bg_color = Color( 0, 0, 0, 0.156863 )
 
 [node name="Section" type="VBoxContainer"]
 anchor_right = 1.0
@@ -18,6 +18,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+root = NodePath("MarginContainer/Root")
 
 [node name="SectionName" type="Label" parent="."]
 margin_right = 1366.0
@@ -25,3 +26,18 @@ margin_bottom = 24.0
 custom_styles/normal = SubResource( 1 )
 text = "General"
 align = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_top = 28.0
+margin_right = 1366.0
+margin_bottom = 44.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+
+[node name="Root" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 1358.0
+margin_bottom = 8.0

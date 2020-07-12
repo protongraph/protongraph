@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:export-ydpi="3072"
+   inkscape:export-xdpi="3072"
+   inkscape:export-filename="/home/hungryproton/Pictures/logo.png"
+   inkscape:version="1.0 (6e3e5246a0, 2020-05-07)"
+   sodipodi:docname="icon_concept_graph_shield.svg"
+   id="svg885"
+   version="1.1"
+   width="16"
+   viewBox="0 0 16 16"
+   height="16">
+  <metadata
+     id="metadata891">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs889" />
+  <sodipodi:namedview
+     inkscape:current-layer="svg885"
+     inkscape:window-maximized="1"
+     inkscape:window-y="0"
+     inkscape:window-x="36"
+     inkscape:cy="9.9780535"
+     inkscape:cx="2.9829103"
+     inkscape:zoom="19.11398"
+     showgrid="false"
+     id="namedview887"
+     inkscape:window-height="1052"
+     inkscape:window-width="2524"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
+  <g
+     id="g924">
+    <path
+       id="path893"
+       d="m 14.166013,1.5389828 v 9.6728282 c 0,0.48198 -0.349019,1.080299 -0.764519,1.312978 l -4.6369753,2.642577 c -0.4154993,0.23268 -1.113538,0.23268 -1.5290382,0 L 2.5985061,12.524789 C 2.1830068,12.29211 1.8339874,11.693791 1.8339874,11.211811 V 1.5389828 c 0,-0.4819794 0.3988791,-0.88085857 0.8808593,-0.88085857 H 13.268535 c 0.481979,0 0.897478,0.39887917 0.897478,0.88085857 z"
+       sodipodi:nodetypes="ssccccsssss"
+       style="stroke-width:0.1662" />
+    <path
+       d="M 5.2544513,2.8152991 A 1.0982194,1.0982194 0 0 0 4.1562319,3.9135185 1.0982194,1.0982194 0 0 0 4.7053416,4.8637529 V 8.4554792 A 1.0982194,1.0982194 0 0 0 4.1562319,9.4046153 1.0982194,1.0982194 0 0 0 5.2544513,10.502834 1.0982194,1.0982194 0 0 0 6.3526708,9.4046153 1.0982194,1.0982194 0 0 0 5.8035611,8.4543812 V 5.2390694 L 8.0471685,7.4826772 8.8236646,6.7061812 6.5800571,4.4625733 H 9.7964124 A 1.0982194,1.0982194 0 0 0 10.745549,5.0116831 1.0982194,1.0982194 0 0 0 11.843768,3.9134636 1.0982194,1.0982194 0 0 0 10.745549,2.8152442 1.0982194,1.0982194 0 0 0 9.7953142,3.3643539 H 6.2035875 A 1.0982194,1.0982194 0 0 0 5.2544513,2.8152442 Z M 10.470994,7.7572862 A 1.3727743,1.3727743 0 0 0 9.0982194,9.1300603 1.3727743,1.3727743 0 0 0 10.470994,10.502834 1.3727743,1.3727743 0 0 0 11.843768,9.1300603 1.3727743,1.3727743 0 0 0 10.470994,7.7572862 Z"
+       fill="#eba14b"
+       id="path881"
+       style="stroke-width:0.54911;fill:#ffffff" />
+  </g>
+  <circle
+     style="stroke-width:0.54911"
+     id="circle883"
+     r="0"
+     fill="#6e6e6e"
+     cy="8.410697"
+     cx="2.0982194" />
+</svg>

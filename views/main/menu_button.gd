@@ -4,10 +4,11 @@ extends MenuButton
 signal menu_action
 
 
-var _new_icon = preload("res://icons/new.svg")
-var _load_icon = preload("res://icons/load.svg")
-var _settings_icon = preload("res://icons/cog.svg")
-var _close_icon = preload("res://icons/close.svg")
+var _new_icon = preload("res://icons/icon_new.svg")
+var _load_icon = preload("res://icons/icon_load.svg")
+var _save_icon = preload("res://icons/icon_save.svg")
+var _settings_icon = preload("res://icons/icon_cog.svg")
+var _close_icon = preload("res://icons/icon_close.svg")
 
 
 func _ready() -> void:
@@ -16,7 +17,7 @@ func _ready() -> void:
 	popup.add_icon_item(_new_icon, "New Template", 0)
 	popup.add_icon_item(_load_icon, "Load Template", 1)
 	popup.add_separator()
-	popup.add_icon_item(_load_icon, "Save Template", 10)
+	popup.add_icon_item(_save_icon, "Save Template", 10)
 	popup.add_separator()
 	popup.add_icon_item(_settings_icon, "Settings", 20)
 	popup.add_separator()

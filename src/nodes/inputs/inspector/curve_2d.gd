@@ -11,6 +11,7 @@ func _init() -> void:
 
 	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})
 	set_input(1, "Default", ConceptGraphDataType.CURVE_FUNC)
+	set_input(2, "Section", ConceptGraphDataType.STRING)
 	set_output(0, "", ConceptGraphDataType.CURVE_FUNC)
 
 

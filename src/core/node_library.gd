@@ -67,7 +67,7 @@ func _find_all_nodes(path) -> void:
 		if dir.current_is_dir():
 			_find_all_nodes(path_root + file)
 			continue
-		if not file.ends_with(".gd"):
+		if not file.ends_with(".gd") and not file.ends_with(".gdc"):
 			continue
 
 		var full_path = path_root + file

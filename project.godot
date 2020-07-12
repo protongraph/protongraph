@@ -184,6 +184,12 @@ _global_script_class_icons={
 
 config/name="ConceptGraph"
 run/main_scene="res://views/main/main_view.tscn"
+boot_splash/image="res://views/themes/splash.png"
+boot_splash/fullsize=false
+boot_splash/bg_color=Color( 0.1408, 0.1456, 0.16, 1 )
+config/icon="res://icons/icon.png"
+config/auto_accept_quit=false
+config/quit_on_go_back=false
 
 [autoload]
 

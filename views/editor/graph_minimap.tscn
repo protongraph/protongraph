@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://views/editor/graph_minimap.gd" type="Script" id=1]
-[ext_resource path="res://icons/editor-minimap.png" type="Texture" id=2]
+[ext_resource path="res://icons/icon_minimap.png" type="Texture" id=2]
+
 
 [node name="Minimap" type="Panel"]
 modulate = Color( 1, 1, 1, 0.85 )

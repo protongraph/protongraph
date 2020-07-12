@@ -8,8 +8,9 @@ func _init() -> void:
 	category = "Inputs/Inspector"
 	description = "Expose a material to the inspector"
 
-	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})
+	set_input(0, "Name", ConceptGraphDataType.STRING)
 	set_input(1, "Default", ConceptGraphDataType.MATERIAL)
+	set_input(2, "Section", ConceptGraphDataType.STRING)
 	set_output(0, "", ConceptGraphDataType.MATERIAL)
 
 
@@ -38,6 +39,7 @@ func get_exposed_variables() -> Array:
 		"hint": PROPERTY_HINT_RESOURCE_TYPE,
 		"hint_string": "Material",
 		"default_value": get_input_single(1, null),
+		"section": get_input_single(2, ""),
 		}]
 
 
