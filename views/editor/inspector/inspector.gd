@@ -52,15 +52,12 @@ func get_all_values(storage := false) -> Dictionary:
 
 func set_all_values(values) -> void:
 	if _variables_ui.empty():
-		print("UI not initialized, storing in cache")
 		_cache = values
-		print(_cache)
 		return # Inspector was not initialized yet, caching the values for later
 
 	for vname in values.keys():
 		vname = vname.to_lower()
 		if _variables_ui.has(vname):
-			print(values[vname])
 			_variables_ui[vname].set_value(values[vname])
 
 
