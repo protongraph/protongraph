@@ -1,5 +1,5 @@
-tool
 extends ProgressBar
+class_name CustomSpinBox
 
 
 export var spinbox_name: String
@@ -137,6 +137,7 @@ func _on_value_gui_input(event: InputEvent) -> void:
 			else:
 				value += sign(_acc) * step
 			_acc = 0.0
+		_line_edit.text = String(value)
 
 
 func _create_undo_redo_action(new, old) -> void:

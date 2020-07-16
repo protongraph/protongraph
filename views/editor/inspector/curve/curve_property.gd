@@ -6,16 +6,28 @@ signal value_changed
 
 export var c: Curve
 export var curve_panel: NodePath
+export var min_value: NodePath
+export var max_value: NodePath
+export var bake_resolution: NodePath
+
 
 var _curve: Curve
 var _curve_panel: Control
 var _label: Label
+var _min: CustomSpinBox
+var _max: CustomSpinBox
+var _res: CustomSpinBox
 
 
-func init(name: String, value: Curve) -> void:
+func init(name: String, curve: Curve) -> void:
 	_curve_panel = get_node(curve_panel)
 	_curve_panel.connect("curve_updated", self, "_on_curve_updated")
-	_curve = value if value else Curve.new()
+
+	_min = get_node(min_value)
+	_max = get_node(max_value)
+	_res = get_node(bake_resolution)
+
+	_curve = curve if curve else Curve.new()
 	set_value(_curve)
 
 	_label = get_node("Label")
@@ -23,15 +35,26 @@ func init(name: String, value: Curve) -> void:
 	if name == "":
 		_label.visible = false
 
+	_min.connect("value_changed", self, "_on_parameter_changed", ["min"])
+	_max.connect("value_changed", self, "_on_parameter_changed", ["max"])
+	_res.connect("value_changed", self, "_on_parameter_changed", ["res"])
 
 
 func set_value(curve) -> void:
 	if curve is Curve:
 		_curve = curve
 
-	elif curve is Array:
+	elif curve is Dictionary:
 		_curve = Curve.new()
-		for p in curve:
+		_curve.set_min_value(curve.parameters["min"])
+		_curve.set_max_value(curve.parameters["max"])
+		_curve.set_bake_resolution(curve.parameters["res"])
+
+		_min.set_value_no_undo(curve.parameters["min"])
+		_max.set_value_no_undo(curve.parameters["max"])
+		_res.set_value_no_undo(curve.parameters["res"])
+
+		for p in curve.points:
 			_curve.add_point(Vector2(p.pos_x, p.pos_y), p.lt, p.rt, p.lm, p.rm)
 
 	_curve_panel.set_curve(_curve)
@@ -48,3 +71,21 @@ func get_value(storage := false):
 
 func _on_curve_updated() -> void:
 	emit_signal("value_changed")
+
+
+func _on_parameter_changed(value: float, parameter: String) -> void:
+	if not _curve:
+		return
+
+	match parameter:
+		"min":
+			if _min.value >= _max.value:
+				_min.value = _max.value - _max.step
+		"max":
+			if _max.value <= _min.value:
+				_max.value = _min.value + _min.step
+
+	_curve.set_min_value(_min.value)
+	_curve.set_max_value(_max.value)
+	_curve.set_bake_resolution(_res.value)
+	_curve_panel.update()

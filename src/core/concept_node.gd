@@ -545,10 +545,7 @@ func _generate_default_gui_style() -> void:
 
 	add_constant_override("port_offset", 12 * scale)
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
-
-	# GraphNode slots doesn't take in account the separation parameter so where you have to click and
-	# where the slot is displayed doesn't match.
-	# add_constant_override("separation", 0)
+	add_constant_override("separation", 2)
 
 
 """

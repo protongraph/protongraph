@@ -24,15 +24,16 @@ var _selected_tangent := -1 setget set_selected_tangent
 var _dragging := false
 var _hover_radius := 50.0 # Squared
 var _tangents_length := 30.0
-var _undo_data := []
+var _undo_data := {}
 
 
 func set_curve(c) -> void:
 	curve = c
 
 
-func get_curve_data() -> Array:
-	var res = []
+func get_curve_data() -> Dictionary:
+	var res = {}
+	res.points = []
 	for i in curve.get_point_count():
 		var p := {}
 		p["lm"] = curve.get_point_left_mode(i)
@@ -42,7 +43,13 @@ func get_curve_data() -> Array:
 		p["pos_y"] = pos.y
 		p["rm"] = curve.get_point_right_mode(i)
 		p["rt"] = curve.get_point_right_tangent(i)
-		res.append(p)
+		res.points.append(p)
+
+	res.parameters = {
+		"min": curve.get_min_value(),
+		"max": curve.get_max_value(),
+		"res": curve.get_bake_resolution(),
+	}
 	return res
 
 
@@ -70,14 +77,9 @@ func _gui_input(event) -> void:
 			if _selected_point != -1:
 				_dragging = true
 
-
-
 		elif _dragging and not event.pressed:
 			_dragging = false
 			# TODO Commit action
-
-
-
 
 	elif event is InputEventMouseMotion:
 		if _dragging:
