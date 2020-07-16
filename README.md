@@ -30,7 +30,12 @@ Check out [this video tutorial](https://www.youtube.com/watch?v=hLFgfyKbPoU) for
 
 For a complete list of known issues, [head over there](https://github.com/HungryProton/concept_graph/issues)
 
+#### Object was deleted while awaiting a callback
+Go to your **Project Settings** under **Memory/Limits**, increase the message queue size to 4096 at least. If the issue appears again, increase this value even higher
+
 #### General issues
+
+
 + Save files needs improvement to make them work with future versions.
 + Missing Undo/Redo support for some operations.
 + Overall performance needs to be improved.
