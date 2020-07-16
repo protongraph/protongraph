@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "heightmap_apply_noise"
 	display_name = "Apply Noise"
-	category = "Modifiers/Heightmaps/3D"
+	category = "Modifiers/Heightmaps"
 	description = "Apply noise to a heightmap"
 
 	set_input(0, "Heightmap", ConceptGraphDataType.HEIGHTMAP)

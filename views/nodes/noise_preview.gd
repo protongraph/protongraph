@@ -22,7 +22,6 @@ func _ready() -> void:
 	_container = get_node("Container")
 	_texture_rect = get_node("Container/TextureRect")
 	_size = get_node("Container/SpinBox")
-
 	_texture_rect.texture = _image_texture
 
 

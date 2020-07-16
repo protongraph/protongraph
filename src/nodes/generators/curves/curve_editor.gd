@@ -9,7 +9,7 @@ var _curve_widget: Control
 
 func _init() -> void:
 	unique_id = "function_curve_editor"
-	display_name = "Function Curve Editor"
+	display_name = "Curve Function Editor"
 	category = "Generators/Curves"
 	description = "Allows you to create and edit a mathematical curve from the graph editor"
 	resizable = true

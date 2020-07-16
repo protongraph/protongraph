@@ -4,8 +4,8 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "input_box"
-	display_name = "Input Box 3D"
-	category = "Inputs/Boxes/3D"
+	display_name = "Input Box"
+	category = "Inputs/Boxes"
 	description = "Expose one or multiple boxes from the editor to the graph"
 
 	set_input(0, "", ConceptGraphDataType.STRING, {"placeholder": "Input box"})
