@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "create_prism_primitive"
-	display_name = "Create Prism Primitive"
+	display_name = "Create Primitive (Prism)"
 	category = "Generators/Meshes"
 	description = "Creates a prism mesh"
 

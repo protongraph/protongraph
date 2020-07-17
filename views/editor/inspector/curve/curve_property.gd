@@ -21,7 +21,7 @@ var _res: CustomSpinBox
 
 func init(name: String, curve: Curve) -> void:
 	_curve_panel = get_node(curve_panel)
-	_curve_panel.connect("curve_updated", self, "_on_curve_updated")
+	Signals.safe_connect(_curve_panel, "curve_updated", self, "_on_curve_updated")
 
 	_min = get_node(min_value)
 	_max = get_node(max_value)
@@ -35,9 +35,9 @@ func init(name: String, curve: Curve) -> void:
 	if name == "":
 		_label.visible = false
 
-	_min.connect("value_changed", self, "_on_parameter_changed", ["min"])
-	_max.connect("value_changed", self, "_on_parameter_changed", ["max"])
-	_res.connect("value_changed", self, "_on_parameter_changed", ["res"])
+	Signals.safe_connect(_min, "value_changed", self, "_on_parameter_changed", ["min"])
+	Signals.safe_connect(_max, "value_changed", self, "_on_parameter_changed", ["max"])
+	Signals.safe_connect( _res, "value_changed", self, "_on_parameter_changed", ["res"])
 
 
 func set_value(curve) -> void:

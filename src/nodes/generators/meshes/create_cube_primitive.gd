@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "create_cube_primitive"
-	display_name = "Create Cube Primitive"
+	display_name = "Create Primitive (Cube)"
 	category = "Generators/Meshes"
 	description = "Creates a Cube mesh"
 

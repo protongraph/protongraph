@@ -46,14 +46,14 @@ var _proxy_nodes := {}
 
 
 func _init() -> void:
-	connect("output_ready", self, "_on_output_ready")
-	connect("thread_completed", self, "_on_thread_completed")
-	connect("node_created", self, "_on_node_created")
-	connect("node_deleted", self, "_on_node_deleted")
+	Signals.safe_connect(self, "output_ready", self, "_on_output_ready")
+	Signals.safe_connect(self, "thread_completed", self, "_on_thread_completed")
+	Signals.safe_connect(self, "node_created", self, "_on_node_created")
+	Signals.safe_connect(self, "node_deleted", self, "_on_node_deleted")
 
 	_timer.one_shot = true
 	_timer.autostart = false
-	_timer.connect("timeout", self, "_run_generation")
+	Signals.safe_connect(_timer, "timeout", self, "_run_generation")
 	add_child(_timer)
 
 
@@ -271,6 +271,18 @@ func load_from_file(path: String, soft_load := false) -> void:
 	if graph.has("inspector"):
 		_inspector.set_all_values(graph["inspector"])
 
+	if graph.has("editor"): # Everything related to how the editor looks like
+		var editor = graph["editor"]
+
+		# Restore previous scroll offset
+		if editor.has("offset_x") and editor.has("offset_y"):
+			var new_offset = Vector2(editor["offset_x"], editor["offset_y"])
+			call_deferred("set_scroll_ofs", new_offset) # Do that on next frame or be ignored
+
+		# TODO
+		# Restore previous camera position and zoom level
+		# Restore panels width and height
+
 	_template_loaded = true
 	paused = false
 	emit_signal("template_loaded")
@@ -279,8 +291,12 @@ func load_from_file(path: String, soft_load := false) -> void:
 func save_to_file(path: String) -> void:
 	var graph := {}
 	# TODO : Convert the connection_list to an ID connection list
-	graph["connections"] = get_connection_list()
+	graph["editor"] = {
+		"offset_x": scroll_offset.x,
+		"offset_y": scroll_offset.y
+	}
 	graph["inspector"] = _inspector.get_all_values(true)
+	graph["connections"] = get_connection_list()
 	graph["nodes"] = []
 
 	for c in get_children():

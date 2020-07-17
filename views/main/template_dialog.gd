@@ -10,11 +10,11 @@ var _default_file_suggestion := "new_template.cgraph"
 var _save_mode := true
 
 # TODO : Move this in a default template file instead
-var default_output_node : String = '{"connections":[],"nodes":[{"data":{},"editor":{"offset_x":100,"offset_y":20,"slots":{}},"name":"GraphNode","type":"final_output"}]}'
+var default_output_node : String = '{"editor":{"offset_x":-300, "offset_y":-200},"connections":[],"nodes":[{"data":{},"editor":{"offset_x":0,"offset_y":0,"slots":{}},"name":"GraphNode","type":"final_output"}]}'
 
 
 func _ready() -> void:
-	connect("file_selected", self, "_on_file_selected")
+	Signals.safe_connect(self, "file_selected", self, "_on_file_selected")
 
 
 func create_template() -> void:

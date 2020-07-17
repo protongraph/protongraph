@@ -14,9 +14,9 @@ var _confirm_dialog: WindowDialog
 func _ready() -> void:
 	_confirm_dialog = get_node(confirm_dialog)
 	_tabs = get_node(tabs)
-	_tabs.connect("tab_changed", self, "_on_tab_changed")
-	_tabs.connect("tab_close", self, "_on_tab_close_request")
-	_tabs.connect("reposition_active_tab_request", self, "_on_tab_moved")
+	Signals.safe_connect(_tabs, "tab_changed", self, "_on_tab_changed")
+	Signals.safe_connect(_tabs, "tab_close", self, "_on_tab_close_request")
+	Signals.safe_connect(_tabs, "reposition_active_tab_request", self, "_on_tab_moved")
 
 	for c in get_children():
 		_tabs.add_tab(c.get_name())

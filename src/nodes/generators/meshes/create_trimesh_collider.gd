@@ -19,4 +19,4 @@ func _generate_outputs() -> void:
 		output[0] = mesh
 
 	else:
-		print("Input was not MeshInstance") #TODO : print this on the error panel
+		print("Input was not a MeshInstance") #TODO : print this on the error panel

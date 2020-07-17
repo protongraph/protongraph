@@ -37,11 +37,11 @@ func _ready() -> void:
 	_name_label = get_node(name_label)
 	_line_edit = get_node(value_edit)
 
-	_increase_btn.connect("pressed", self, "_on_button_pressed", [true])
-	_decrease_btn.connect("pressed", self, "_on_button_pressed", [false])
-	connect("value_changed", self, "_update_line_edit_value")
-	_line_edit.connect("text_entered", self, "_on_line_edit_changed")
-	_line_edit.connect("focus_exited", self, "_on_line_edit_changed")
+	Signals.safe_connect(_increase_btn, "pressed", self, "_on_button_pressed", [true])
+	Signals.safe_connect(_decrease_btn, "pressed", self, "_on_button_pressed", [false])
+	Signals.safe_connect(self, "value_changed", self, "_update_line_edit_value")
+	Signals.safe_connect(_line_edit, "text_entered", self, "_on_line_edit_changed")
+	Signals.safe_connect(_line_edit, "focus_exited", self, "_on_line_edit_changed")
 
 	set_label_text(spinbox_name)
 	_update_line_edit_value(value)
@@ -127,6 +127,7 @@ func _on_value_gui_input(event: InputEvent) -> void:
 			_create_undo_redo_action(value, _previous_value)
 
 	elif event is InputEventMouseMotion and _clicked:
+		event = event as InputEventMouseMotion
 		if sign(_acc) != sign(event.relative.x):
 			_acc = 0.0
 

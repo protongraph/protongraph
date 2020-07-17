@@ -849,10 +849,10 @@ func _redraw() -> void:
 
 
 func _connect_signals() -> void:
-	connect("close_request", self, "_on_close_request")
-	connect("resize_request", self, "_on_resize_request")
-	connect("connection_changed", self, "_on_connection_changed")
-	_resize_timer.connect("timeout", self, "_on_resize_timeout")
+	Signals.safe_connect(self, "close_request", self, "_on_close_request")
+	Signals.safe_connect(self, "resize_request", self, "_on_resize_request")
+	Signals.safe_connect(self, "connection_changed", self, "_on_connection_changed")
+	Signals.safe_connect(_resize_timer, "timeout", self, "_on_resize_timeout")
 
 
 """
@@ -876,7 +876,7 @@ func _show_file_dialog(opts: Dictionary, line_edit: LineEdit) -> void:
 
 	if _file_dialog.is_connected("confirmed", self, "_on_file_selected"):
 		_file_dialog.disconnect("confirmed", self, "_on_file_selected")
-	_file_dialog.connect("confirmed", self, "_on_file_selected", [line_edit])
+	Signals.safe_connect(_file_dialog, "confirmed", self, "_on_file_selected", [line_edit])
 	_file_dialog.popup_centered()
 
 

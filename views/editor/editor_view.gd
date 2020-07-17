@@ -34,9 +34,9 @@ func _ready() -> void:
 
 	if Settings.get_setting("autosave"):
 		_save_timer = Timer.new()
-		_save_timer.connect("timeout", self, "save_template")
 		_save_timer.one_shot = false
 		_save_timer.autostart = false
+		Signals.safe_connect(_save_timer, "timeout", self, "save_template")
 		add_child(_save_timer)
 		_save_timer.start(Settings.get_setting(Settings.AUTOSAVE_INTERVAL))
 

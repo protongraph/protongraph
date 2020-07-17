@@ -3,6 +3,7 @@ extends ConceptNode
 
 
 var _proxy_in
+var _template_signals_connected := false
 
 
 func _init() -> void:
@@ -16,8 +17,10 @@ func _init() -> void:
 
 
 func _on_default_gui_ready() -> void:
-	get_parent().connect("proxy_list_updated", self, "_link_proxy")
-	get_parent().connect("template_loaded", self, "_link_proxy")
+	if not _template_signals_connected:
+		get_parent().connect("proxy_list_updated", self, "_link_proxy")
+		get_parent().connect("template_loaded", self, "_link_proxy")
+		_template_signals_connected = true
 
 
 func _generate_outputs() -> void:
@@ -39,7 +42,11 @@ func _link_proxy() -> void:
 		_proxy_in = null
 
 	var proxy_name = get_input_single(0, "")
-	_proxy_in = get_parent().get_proxy(proxy_name)
+	var template = get_parent()
+	if not template:
+		return # Not in the scene tree
+
+	_proxy_in = template.get_proxy(proxy_name)
 	_update_output_type()
 
 	if _proxy_in:

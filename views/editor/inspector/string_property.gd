@@ -15,7 +15,7 @@ func init(name: String, value: String):
 	line_edit = get_node("LineEdit")
 	line_edit.text = value
 
-	line_edit.connect("text_changed", self, "_on_text_changed")
+	Signals.safe_connect(line_edit, "text_changed", self, "_on_text_changed")
 
 
 func set_value(text: String) -> void:

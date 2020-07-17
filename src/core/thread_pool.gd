@@ -24,7 +24,7 @@ var _queue_mutex := Mutex.new()
 func _init() -> void:
 	for i in _max_threads:
 		_available_threads.append(Thread.new())
-	connect("task_completed", self, "_on_task_completed")
+	Signals.safe_connect(self, "task_completed", self, "_on_task_completed")
 
 
 """

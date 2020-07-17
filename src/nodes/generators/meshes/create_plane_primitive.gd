@@ -4,7 +4,7 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "create_plane_primitive"
-	display_name = "Create Plane Primitive"
+	display_name = "Create Primitive (Plane)"
 	category = "Generators/Meshes"
 	description = "Creates a plane mesh"
 
