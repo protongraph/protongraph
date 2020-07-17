@@ -173,6 +173,18 @@ func get_output(idx: int, default := []) -> Array:
 	return res.duplicate(true)
 
 
+func get_connected_input_type(idx) -> int:
+	var input_type = -1
+	if is_input_connected(idx):
+		var inputs: Array = get_parent().get_left_nodes(self, idx)
+		for data in inputs:
+			if input_type == -1:
+				input_type = data["node"]._outputs[data["slot"]]["type"]
+				break
+
+	return input_type
+
+
 """
 Return the variables exposed to the node inspector. Same format as get_property_list
 [ {name: , type: }, ... ]
@@ -259,6 +271,7 @@ func restore_editor_data(data: Dictionary) -> void:
 				ConceptGraphDataType.VECTOR3:
 					if value is String:
 						_set_vector_value(i, value)
+	_on_editor_data_restored()
 
 
 """
@@ -883,6 +896,8 @@ func _update_slots_types() -> void:
 				var input_type = -1
 
 				for data in inputs:
+					if not data["node"]:
+						continue
 					if input_type == -1:
 						input_type = data["node"]._outputs[data["slot"]]["type"]
 					else:
@@ -960,4 +975,8 @@ func _on_default_gui_value_changed(value, slot: int) -> void:
 
 
 func _on_default_gui_interaction(_value, _control: Control, _slot: int) -> void:
+	pass
+
+
+func _on_editor_data_restored() -> void:
 	pass

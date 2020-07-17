@@ -41,14 +41,7 @@ func refresh_list() -> void:
 	_node_search_index = Dictionary()
 	clear()
 	_nodes = Dictionary()
-
-	# Current folder path points at the root project from here so we can't feed the Directory object
-	# with a relative path. Instead we get the script path and build an absolute path from there.
-	# Writing res://addons/concept_graph/src/nodes isn't an option because the end user can rename
-	# the plugin folder.
-	var script_path = get_script().get_path()
-	var nodes_dir = script_path.replace("node_library.gd", "../nodes/")
-	_find_all_nodes(nodes_dir)
+	_find_all_nodes("res://src/nodes/")
 
 
 """
