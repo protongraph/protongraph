@@ -1,5 +1,5 @@
-#include "mesh_optimize.h"
-#include "thirdparty/meshoptimizer/src/meshoptimizer.h"
+#include "mesh_optimizer.h"
+#include "../thirdparty/meshoptimizer/src/meshoptimizer.h"
 #include <ArrayMesh.hpp>
 #include <Material.hpp>
 #include <PackedScene.hpp>
