@@ -15,6 +15,7 @@ var _overlay: Panel
 var _history_path := "res://history.json"
 var _history: Array
 var _start_view: WeakRef
+var _is_quitting := false
 
 
 func _ready() -> void:
@@ -22,16 +23,16 @@ func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 
 	_menu = get_node(menu_button)
-	_menu.connect("menu_action", self, "_on_menu_action")
+	Signals.safe_connect(_menu, "menu_action", self, "_on_menu_action")
 	_overlay = get_node(black_overlay)
 
 	# File dialog behavior
 	_file_dialog = get_node(file_dialog)
-	_file_dialog.connect("template_requested", self, "_on_template_requested")
+	Signals.safe_connect(_file_dialog, "template_requested", self, "_on_template_requested")
 
 	# Tabs behavior
 	_tab_container = get_node(tab_container)
-	_tab_container.connect("tabs_cleared", self, "_load_start_view")
+	Signals.safe_connect(_tab_container, "tabs_cleared", self, "_on_tabs_cleared")
 
 	# File history
 	_load_file_history()
@@ -90,6 +91,7 @@ func _save_template():
 
 
 func _quit() -> void:
+	_is_quitting = true
 	if _tab_container.has_opened_templates():
 		_tab_container.close_all_tabs()
 		yield(_tab_container, "tabs_cleared")
@@ -151,3 +153,10 @@ func _on_popup_about_to_show() -> void:
 
 func _on_popup_hidden() -> void:
 	_overlay.visible = false
+
+
+func _on_tabs_cleared() -> void:
+	if _is_quitting:
+		get_tree().quit()
+	else:
+		_load_start_view()

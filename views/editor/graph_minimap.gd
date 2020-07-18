@@ -42,10 +42,10 @@ func _ready() -> void:
 		minimap_button.icon = toolbar_icon
 		minimap_button.hint_tooltip = "Toggle graph minimap."
 		graph_edit.get_zoom_hbox().add_child(minimap_button)
-		minimap_button.connect("pressed", self, "_on_minimap_button_pressed")
+		Signals.safe_connect(minimap_button, "pressed", self, "_on_minimap_button_pressed")
 
-		graph_edit.connect("draw", self, "_on_graph_edit_changed")
-		graph_edit.connect("update_minimap", self, "_on_graph_edit_changed")
+		Signals.safe_connect(graph_edit, "draw", self, "_on_graph_edit_changed")
+		Signals.safe_connect(graph_edit, "update_minimap", self, "_on_graph_edit_changed")
 
 
 func _gui_input(event : InputEvent) -> void:

@@ -8,9 +8,9 @@ This node marks the end of every ConceptNodeTemplate. A template can have multip
 
 func _init() -> void:
 	unique_id = "final_output"
-	display_name = "Output 3D"
+	display_name = "Preview"
 	category = "Output"
-	description = "The final node of any template"
+	description = "Preview the 3d output in the viewport"
 
 	set_input(0, "Node", ConceptGraphDataType.NODE_3D)
 

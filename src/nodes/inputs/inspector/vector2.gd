@@ -3,13 +3,13 @@ extends ConceptNode
 
 
 func _init() -> void:
-	unique_id = "inspector_vector3"
-	display_name = "Vector Property"
+	unique_id = "inspector_vector2"
+	display_name = "Vector2 Property"
 	category = "Inputs/Inspector"
-	description = "Expose a Vector3 value to the inspector"
+	description = "Expose a Vector2 value to the inspector"
 
 	set_input(0, "Name", ConceptGraphDataType.STRING)
-	set_input(1, "Default", ConceptGraphDataType.VECTOR3)
+	set_input(1, "Default", ConceptGraphDataType.VECTOR2)
 	set_input(2, "Section", ConceptGraphDataType.STRING)
 	set_output(0, "", ConceptGraphDataType.VECTOR3)
 
@@ -23,7 +23,7 @@ func _generate_outputs() -> void:
 	var value = get_parent().get_value_from_inspector(name)
 
 	if value == null:
-		value = get_input_single(1, Vector3.ZERO)
+		value = get_input_single(1, Vector2.ZERO)
 
 	output[0] = value
 
@@ -35,8 +35,8 @@ func get_exposed_variables() -> Array:
 
 	return [{
 		"name": name,
-		"type": ConceptGraphDataType.VECTOR3,
-		"default_value": get_input(1),
+		"type": ConceptGraphDataType.VECTOR2,
+		"default_value": get_input_single(1, Vector2.ZERO),
 		"section": get_input_single(2, ""),
 		}]
 

@@ -46,8 +46,14 @@ custom_constants/separation = 0
 margin_right = 1354.0
 margin_bottom = 29.0
 
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/TopBar"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_bottom = 29.0
+custom_constants/separation = 0
+
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
-margin_right = 28.0
+margin_left = 4.0
+margin_right = 32.0
 margin_bottom = 29.0
 icon = ExtResource( 6 )
 script = ExtResource( 3 )
@@ -56,7 +62,7 @@ __meta__ = {
 }
 
 [node name="Tabs" type="Tabs" parent="VBoxContainer/TopBar"]
-margin_left = 32.0
+margin_left = 36.0
 margin_right = 1354.0
 margin_bottom = 29.0
 size_flags_horizontal = 3

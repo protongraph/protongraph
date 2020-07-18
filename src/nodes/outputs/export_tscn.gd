@@ -10,6 +10,8 @@ var last_export_path := ""
 var last_export = null
 var directory := Directory.new()
 
+var _label: Label
+
 
 func _init() -> void:
 	unique_id = "save_tscn_output"
@@ -21,7 +23,8 @@ func _init() -> void:
 		"file_dialog": {
 			"mode": FileDialog.MODE_SAVE_FILE,
 			"filters": ["*.scn", "*.tscn"]
-		}
+		},
+		"expand": false
 	}
 	set_input(0, "Path", ConceptGraphDataType.STRING, opts)
 	set_input(1, "Node", ConceptGraphDataType.NODE_3D)
@@ -32,8 +35,6 @@ func is_final_output_node() -> bool:
 
 
 func _fix_path(path: String):
-	if not path.begins_with("res://"):
-		path = "res://" + path
 	var ext = path.get_extension()
 	if ext != "tscn" and ext != "scn":
 		path += ".tscn"
@@ -108,3 +109,27 @@ func restore_custom_data(data: Dictionary) -> void:
 func reset() -> void:
 	.reset()
 	emit_signal("node_changed", self, true)
+
+
+func _on_default_gui_interaction(value, _control: Control, slot: int) -> void:
+	if slot == 0:
+		_update_preview()
+
+
+func _on_connection_changed() -> void:
+	._on_connection_changed()
+	_update_preview()
+
+
+func _update_preview() -> void:
+	if not _label:
+		_label = Label.new()
+		add_child(_label)
+
+	var text: String = get_input_single(0, "")
+
+	_label.text = "Target: "
+	if text != "":
+		_label.text += text.get_file()
+	else:
+		_label.text += "None"

@@ -17,6 +17,7 @@ var unique_id := "concept_node"
 var display_name := "ConceptNode"
 var category := "No category"
 var description := "A brief description of the node functionality"
+var ignore := false
 var node_pool: ConceptGraphNodePool # Injected from template
 var thread_pool: ConceptGraphThreadPool # Injected from template
 var output := []
@@ -649,6 +650,7 @@ func _generate_default_gui() -> void:
 						requires_full_gui_rebuild = true
 					else:
 						var line_edit = LineEdit.new()
+						line_edit.rect_min_size.x = 120
 						line_edit.name = "LineEdit"
 						line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
 						line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true

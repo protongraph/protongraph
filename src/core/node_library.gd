@@ -71,7 +71,11 @@ func _find_all_nodes(path) -> void:
 
 		var node = script.new()
 		if not node is ConceptNode:
-			return
+			continue
+
+		if node.ignore:
+			node.queue_free()
+			continue
 
 		var name = node.display_name
 		var id = node.unique_id

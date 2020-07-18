@@ -21,7 +21,6 @@ func _ready() -> void:
 func update_variables(variables: Array) -> void:
 	_exposed_variables = {}
 	if _cache.empty(): # Don't override the values cache if it already exists
-		print("No cache found, saving local values")
 		_cache = get_all_values()
 
 	# Make sure there's no variables duplicates
@@ -124,6 +123,10 @@ func _get_control_for(v):
 			ui = preload("curve/curve_property.tscn").instance()
 		ConceptGraphDataType.STRING:
 			ui = preload("string_property.tscn").instance()
+		ConceptGraphDataType.VECTOR2:
+			ui = preload("vector2_property.tscn").instance()
+		ConceptGraphDataType.VECTOR3:
+			ui = preload("vector3_property.tscn").instance()
 
 	if ui:
 		ui.init(v.name.capitalize(), v.default_value)
