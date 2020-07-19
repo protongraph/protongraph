@@ -18,8 +18,12 @@ func _init() -> void:
 
 func _on_default_gui_ready() -> void:
 	if not _template_signals_connected:
-		get_parent().connect("proxy_list_updated", self, "_link_proxy")
-		get_parent().connect("template_loaded", self, "_link_proxy")
+		var template = get_parent()
+		if not template:
+			return
+
+		Signals.safe_connect(template, "proxy_list_updated", self, "_link_proxy")
+		Signals.safe_connect(template, "template_loaded", self, "_link_proxy")
 		_template_signals_connected = true
 
 
@@ -31,7 +35,7 @@ func _generate_outputs() -> void:
 		output[0] = proxy.get_output(0)
 
 
-func _on_default_gui_interaction(value, _control: Control, slot: int) -> void:
+func _on_default_gui_interaction(_value, _control: Control, slot: int) -> void:
 	if slot == 0:
 		_link_proxy()
 

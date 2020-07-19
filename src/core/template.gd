@@ -17,6 +17,8 @@ signal exposed_variables_updated
 signal template_saved
 signal template_loaded
 signal proxy_list_updated
+signal force_import
+signal force_export
 
 
 export var inspector_panel: NodePath
@@ -115,6 +117,7 @@ func duplicate_node(node: ConceptNode) -> GraphNode:
 	ref.restore_editor_data(node.export_editor_data())
 	ref.restore_custom_data(node.export_custom_data())
 	remove_child(ref) # Remove it when we're done copying the local values
+	ref.name = node.name
 	return ref
 
 
@@ -457,3 +460,11 @@ func _on_node_changed(_node: ConceptNode, replay_simulation := false) -> void:
 	if replay_simulation:
 		emit_signal("simulation_outdated")
 	update()
+
+
+func _on_import_all() -> void:
+	emit_signal("force_import")
+
+
+func _on_export_all() -> void:
+	emit_signal("force_export")

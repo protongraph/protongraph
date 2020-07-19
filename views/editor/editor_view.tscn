@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://src/core/template.gd" type="Script" id=1]
 [ext_resource path="res://views/editor/inspector/inspector.tscn" type="PackedScene" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://icons/icon_save.svg" type="Texture" id=7]
 [ext_resource path="res://icons/progress/progress_icon.tres" type="Texture" id=8]
 [ext_resource path="res://views/editor/run_generation_button.gd" type="Script" id=9]
+[ext_resource path="res://icons/icon_export.svg" type="Texture" id=10]
+[ext_resource path="res://icons/icon_import.svg" type="Texture" id=11]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -71,6 +73,29 @@ script = ExtResource( 9 )
 normal_icon = ExtResource( 6 )
 animated_icon = ExtResource( 8 )
 
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ToolShelf"]
+margin_top = 52.0
+margin_right = 28.0
+margin_bottom = 56.0
+
+[node name="ImportAll" type="Button" parent="VBoxContainer/ToolShelf"]
+margin_top = 60.0
+margin_right = 28.0
+margin_bottom = 82.0
+hint_tooltip = "Import All
+Forces all the Import nodes to reload data from their source file."
+focus_mode = 0
+icon = ExtResource( 11 )
+
+[node name="ExportAll" type="Button" parent="VBoxContainer/ToolShelf"]
+margin_top = 86.0
+margin_right = 28.0
+margin_bottom = 108.0
+hint_tooltip = "Export All
+Forces all the export nodes to save their data to the target file."
+focus_mode = 0
+icon = ExtResource( 10 )
+
 [node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
 margin_left = 32.0
 margin_right = 1366.0
@@ -121,6 +146,8 @@ margin_right = 519.0
 margin_bottom = 407.0
 [connection signal="pressed" from="VBoxContainer/ToolShelf/Save" to="." method="save_template"]
 [connection signal="pressed" from="VBoxContainer/ToolShelf/RunGeneration" to="." method="regenerate"]
+[connection signal="pressed" from="VBoxContainer/ToolShelf/ImportAll" to="VBoxContainer/HSplitContainer/HSplitContainer/Template" method="_on_import_all"]
+[connection signal="pressed" from="VBoxContainer/ToolShelf/ExportAll" to="VBoxContainer/HSplitContainer/HSplitContainer/Template" method="_on_export_all"]
 [connection signal="exposed_variables_updated" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_on_exposed_variables_updated"]
 [connection signal="graph_changed" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_on_graph_changed"]
 [connection signal="popup_request" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_show_node_dialog"]

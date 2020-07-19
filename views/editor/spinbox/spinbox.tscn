@@ -54,6 +54,7 @@ __meta__ = {
 [node name="Decrease" type="Button" parent="SpinBoxContainer"]
 margin_right = 19.0
 margin_bottom = 24.0
+focus_mode = 0
 custom_styles/hover = ExtResource( 4 )
 custom_styles/pressed = ExtResource( 5 )
 custom_styles/focus = ExtResource( 4 )
@@ -88,6 +89,7 @@ __meta__ = {
 margin_left = 76.0
 margin_right = 95.0
 margin_bottom = 24.0
+focus_mode = 0
 custom_styles/hover = ExtResource( 3 )
 custom_styles/pressed = ExtResource( 2 )
 custom_styles/focus = ExtResource( 3 )

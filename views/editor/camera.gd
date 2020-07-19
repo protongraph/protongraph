@@ -32,7 +32,10 @@ func _process(delta: float) -> void:
 Handles the zoom, panning and orbiting in the viewport.
 """
 func _input(event: InputEvent) -> void:
-	if not is_visible_in_tree() or not event is InputEventMouse:
+	if not _is_visible_in_tree():
+		return # Another tab is opened
+
+	if not event is InputEventMouse:
 		return # Not a mouse event
 
 	var vx = _viewport.size.x
@@ -130,3 +133,16 @@ func _orbit_camera(delta: float) -> void:
 
 func _is_in_viewport(vec: Vector2) -> bool:
 	return vec.x >= 0 and vec.x < _viewport.size.x and vec.y >= 0 and vec.y < _viewport.size.y
+
+
+# Custom is_visible_on_tree because the built in one doesn't work if a spatial is parented
+# to a viewport or something else that's not a spatial.
+func _is_visible_in_tree() -> bool:
+	var s = self
+	while s:
+		var v = s.get("visible")
+		if v != null and v == false:
+			return false
+		s = s.get_parent()
+
+	return true

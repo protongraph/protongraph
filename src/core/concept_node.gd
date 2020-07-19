@@ -156,7 +156,11 @@ func get_output(idx: int, default := []) -> Array:
 		for i in res.size():
 			# TODO move the duplication in a helper function instead
 			var node = res[i]
-			var duplicate = node.duplicate(7)
+			var duplicate
+			if node is Resource:
+				duplicate = node.duplicate(true)
+			else:
+				duplicate = node.duplicate(7)
 
 			# TODO : Check if other nodes needs extra steps
 			if node is Path or node is Path2D:
@@ -961,6 +965,7 @@ func _on_connection_changed() -> void:
 
 	_update_slots_types()
 	_redraw()
+	reset()
 
 
 """

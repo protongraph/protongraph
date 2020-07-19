@@ -6,8 +6,6 @@ This node allows the user to save the input as a scene file by using ResourceSav
 """
 
 
-var last_export_path := ""
-var last_export = null
 var directory := Directory.new()
 
 var _label: Label
@@ -28,17 +26,16 @@ func _init() -> void:
 	}
 	set_input(0, "Path", ConceptGraphDataType.STRING, opts)
 	set_input(1, "Node", ConceptGraphDataType.NODE_3D)
+	set_input(2, "Auto Export", ConceptGraphDataType.BOOLEAN, {"value": false})
+
+
+func _ready() -> void:
+	Signals.safe_connect(get_parent(), "template_loaded", self, "_update_preview")
+	Signals.safe_connect(get_parent(), "force_export", self, "_force_export")
 
 
 func is_final_output_node() -> bool:
 	return true
-
-
-func _fix_path(path: String):
-	var ext = path.get_extension()
-	if ext != "tscn" and ext != "scn":
-		path += ".tscn"
-	return path
 
 
 func _set_children_owner(root: Node, node: Node):
@@ -57,53 +54,21 @@ func _save_scene(scene, path: String):
 		print("Failed to pack resource")
 		return
 
-	if last_export == null and last_export_path == "" and directory.file_exists(path):
-		# consider that the file in path is an old packaged scene
-		last_export_path = path
-		return
-	elif directory.file_exists(path):
-		# should not overwrite existing file in path
-		return
-	elif last_export != null and last_export._get_bundled_scene().hash() == packed_scene._get_bundled_scene().hash():
-		# just move the existing file
-		if directory.rename(last_export_path, path) != OK:
-			print("Failed to move file")
-			return
-		last_export_path = path
-		last_export = packed_scene
-	else:
-		# actually build and save the file
-		_remove_scene(last_export_path)
-		ResourceSaver.save(path, packed_scene)
-		last_export_path = path
-		last_export = packed_scene
+	ResourceSaver.save(path, packed_scene)
 
 
-func _remove_scene(path: String):
-	if path != "" and directory.file_exists(path):
-		directory.remove(path)
-
-
-func _generate_outputs() -> void:
+func _force_export() -> void:
 	var path: String = get_input_single(0, "")
 	var out = get_input_single(1)
 
 	if path and path != "" and out:
-		path = _fix_path(path)
 		_save_scene(out, path)
-	elif last_export_path != "":
-		_remove_scene(last_export_path)
-		last_export_path = ""
 
 
-func export_custom_data() -> Dictionary:
-	return {"last_export_path": last_export_path}
-
-
-func restore_custom_data(data: Dictionary) -> void:
-	if not data.has("last_export_path"):
-		return
-	last_export_path = data["last_export_path"]
+func _generate_outputs() -> void:
+	var auto_export: bool = get_input_single(2, false)
+	if auto_export:
+		_force_export()
 
 
 func reset() -> void:

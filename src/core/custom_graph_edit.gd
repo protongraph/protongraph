@@ -65,7 +65,7 @@ func delete_node(node) -> void:
 
 func restore_node(node) -> void:
 	_connect_node_signals(node)
-	add_child(node)
+	add_child(node, true)
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
 	emit_signal("node_created", node)
