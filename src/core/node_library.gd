@@ -33,7 +33,7 @@ func clear() -> void:
 
 func create_node(type: String) -> ConceptNode:
 	if _nodes.has(type):
-		return _nodes[type].duplicate()
+		return _nodes[type].duplicate(7)
 	return null
 
 

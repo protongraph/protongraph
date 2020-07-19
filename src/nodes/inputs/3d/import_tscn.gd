@@ -4,6 +4,7 @@ extends ConceptNode
 
 var _label: Label
 var _data
+var _template
 
 func _init() -> void:
 	unique_id = "import_tscn"
@@ -23,36 +24,41 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
 
-func _ready() -> void:
-	Signals.safe_connect(get_parent(), "template_loaded", self, "_update_preview")
-	Signals.safe_connect(get_parent(), "force_import", self, "_force_import")
+func _enter_tree() -> void:
+	_template = get_parent()
+	Signals.safe_connect(_template, "template_loaded", self, "_update_preview")
+	Signals.safe_connect(_template, "force_import", self, "_force_import")
+
+
+func _exit_tree() -> void:
+	_template.disconnect("template_loaded", self, "_update_preview")
+	_template.disconnect("force_import", self, "_force_import")
 
 
 func _generate_outputs() -> void:
 	var auto_import: bool = get_input_single(1, false)
-	#if _no_data_available():
-	#	_trigger_import(auto_import)
-	_trigger_import(true)
-	print(_data)
-	output[0] = _data
+	if auto_import or not _data:
+		_trigger_import()
+
+	if _data:
+		output[0] = _data.duplicate(7)
 
 
-func _trigger_import(no_cache := false) -> void:
+func _trigger_import() -> void:
+	if _data:
+		_data.free()
+		_data = null
+
 	var path: String = get_input_single(0, "")
-	var scene := ResourceLoader.load(path, "", no_cache)
-	print("scene : ", scene)
-	if scene.can_instance():
-		_data = scene.instance()
+	if ResourceLoader.exists(path):
+		var scene: PackedScene = ResourceLoader.load(path, "PackedScene", true)
+		if scene and scene.can_instance():
+			_data = scene.instance().duplicate(7)
 
 
 func _force_import() -> void:
-	_trigger_import(true)
+	_trigger_import()
 	reset()
-
-
-func _no_data_available() -> bool:
-	var wr = weakref(_data)
-	return not _data or not wr.get_ref()
 
 
 func _on_default_gui_interaction(_value, _control: Control, slot: int) -> void:

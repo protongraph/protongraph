@@ -45,7 +45,9 @@ func close_tab(tab: int = -1) -> void:
 	_tabs.remove_tab(tab)
 	close_confirm_dialog()
 
-	_tabs.current_tab = current_tab
+	var new_tab = _tabs.current_tab
+	if new_tab >= 0 and new_tab < get_tab_count():
+		current_tab = _tabs.current_tab
 
 	emit_signal("tab_closed")
 

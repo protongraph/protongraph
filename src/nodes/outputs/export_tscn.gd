@@ -24,8 +24,9 @@ func _init() -> void:
 		},
 		"expand": false
 	}
-	set_input(0, "Path", ConceptGraphDataType.STRING, opts)
-	set_input(1, "Node", ConceptGraphDataType.NODE_3D)
+
+	set_input(0, "Node", ConceptGraphDataType.NODE_3D)
+	set_input(1, "Path", ConceptGraphDataType.STRING, opts)
 	set_input(2, "Auto Export", ConceptGraphDataType.BOOLEAN, {"value": false})
 
 
@@ -58,11 +59,12 @@ func _save_scene(scene, path: String):
 
 
 func _force_export() -> void:
-	var path: String = get_input_single(0, "")
-	var out = get_input_single(1)
+	var path: String = get_input_single(1, "")
+	var out = get_input_single(0)
 
 	if path and path != "" and out:
 		_save_scene(out, path)
+		print("Exported ", path)
 
 
 func _generate_outputs() -> void:
@@ -91,7 +93,7 @@ func _update_preview() -> void:
 		_label = Label.new()
 		add_child(_label)
 
-	var text: String = get_input_single(0, "")
+	var text: String = get_input_single(1, "")
 
 	_label.text = "Target: "
 	if text != "":

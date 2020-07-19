@@ -19,10 +19,22 @@ func _init() -> void:
 		"expand": false,
 	}
 	set_input(0, "Node", ConceptGraphDataType.NODE_3D)
-	set_input(1, "Export path", ConceptGraphDataType.STRING, opts)
+	set_input(1, "Path", ConceptGraphDataType.STRING, opts)
+	set_input(2, "Auto Export", ConceptGraphDataType.BOOLEAN, {"value": false})
+
+
+func _ready() -> void:
+	Signals.safe_connect(get_parent(), "template_loaded", self, "_update_preview")
+	Signals.safe_connect(get_parent(), "force_export", self, "_force_export")
 
 
 func _generate_outputs() -> void:
+	var auto_export: bool = get_input_single(2, false)
+	if auto_export:
+		_force_export()
+
+
+func _force_export() -> void:
 	var node: Spatial = get_input_single(0, null)
 	var path: String = get_input_single(1, "")
 	if node and path != "":
@@ -54,7 +66,7 @@ func _update_preview() -> void:
 		_label = Label.new()
 		add_child(_label)
 
-	var text: String = get_input_single(0, "")
+	var text: String = get_input_single(1, "")
 
 	_label.text = "Target: "
 	if text != "":

@@ -4,6 +4,7 @@ extends ConceptNode
 
 var _label: Label
 var _data
+var _template
 
 
 func _init() -> void:
@@ -24,9 +25,15 @@ func _init() -> void:
 	set_output(0, "", ConceptGraphDataType.NODE_3D)
 
 
-func _ready() -> void:
-	Signals.safe_connect(get_parent(), "template_loaded", self, "_update_preview")
-	Signals.safe_connect(get_parent(), "force_import", self, "_trigger_import", [true])
+func _enter_tree() -> void:
+	_template = get_parent()
+	Signals.safe_connect(_template, "template_loaded", self, "_update_preview")
+	Signals.safe_connect(_template, "force_import", self, "_force_import")
+
+
+func _exit_tree() -> void:
+	_template.disconnect("template_loaded", self, "_update_preview")
+	_template.disconnect("force_import", self, "_force_import")
 
 
 func _generate_outputs() -> void:
@@ -34,17 +41,19 @@ func _generate_outputs() -> void:
 	if auto_import or not _data:
 		_trigger_import()
 
-	output[0] = _data
+	output[0] = _data.duplicate(7)
 
 
-func _trigger_import(reset := true) -> void:
+func _trigger_import() -> void:
 	var path: String = get_input_single(0, "")
 	var gltf = PackedSceneGLTF.new()
 	gltf.pack_gltf(path)
 	_data = gltf.instance()
 
-	if reset:
-		reset()
+
+func _force_import() -> void:
+	_trigger_import()
+	reset()
 
 
 func _on_default_gui_interaction(_value, _control: Control, slot: int) -> void:
