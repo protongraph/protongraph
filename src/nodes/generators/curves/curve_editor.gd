@@ -16,12 +16,8 @@ func _init() -> void:
 	set_output(0, "Curve", ConceptGraphDataType.CURVE_FUNC)
 
 
-func _ready() -> void:
-	_curve_widget = preload("res://views/editor/inspector/curve/curve_property.tscn").instance()
-	_curve_widget.init("", Curve.new())
-	add_child(_curve_widget)
-	connect("resize_request", self, "_on_resize")
-	update()
+func _on_default_gui_ready() -> void:
+	_create_curve_widget()
 
 
 func _generate_outputs() -> void:
@@ -33,7 +29,21 @@ func export_custom_data() -> Dictionary:
 
 
 func restore_custom_data(data: Dictionary) -> void:
+	if not _curve_widget:
+		_create_curve_widget()
 	_curve_widget.set_value(data["curve"])
+
+
+func _create_curve_widget() -> void:
+	if _curve_widget:
+		remove_child(_curve_widget)
+		_curve_widget.queue_free()
+
+	_curve_widget = preload("res://views/editor/inspector/curve/curve_property.tscn").instance()
+	_curve_widget.init("", Curve.new())
+	add_child(_curve_widget)
+	connect("resize_request", self, "_on_resize")
+	update()
 
 
 # Graphnode doesn't support childnodes with the expand flag so we fake it here
