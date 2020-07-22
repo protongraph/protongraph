@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://views/themes/dark.tres" type="Theme" id=1]
 [ext_resource path="res://views/main/main_view.gd" type="Script" id=2]
@@ -7,6 +7,10 @@
 [ext_resource path="res://views/main/template_dialog.gd" type="Script" id=5]
 [ext_resource path="res://icons/icon_menu.svg" type="Texture" id=6]
 [ext_resource path="res://views/main/confirm_exit_dialog.gd" type="Script" id=7]
+[ext_resource path="res://views/themes/styles/icon_button_normal.tres" type="StyleBox" id=8]
+[ext_resource path="res://views/themes/styles/icon_button_hover.tres" type="StyleBox" id=9]
+[ext_resource path="res://views/themes/styles/icon_button_pressed.tres" type="StyleBox" id=10]
+[ext_resource path="res://views/auto_scale.gd" type="Script" id=11]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.627451 )
@@ -49,21 +53,29 @@ margin_bottom = 29.0
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TopBar"]
 self_modulate = Color( 1, 1, 1, 0 )
+margin_right = 6.0
 margin_bottom = 29.0
-custom_constants/separation = 0
+custom_constants/separation = 6
+script = ExtResource( 11 )
+const_separation = true
 
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
-margin_left = 4.0
-margin_right = 32.0
+margin_left = 10.0
+margin_right = 34.0
 margin_bottom = 29.0
+rect_min_size = Vector2( 24, 24 )
+custom_styles/hover = ExtResource( 9 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = ExtResource( 8 )
 icon = ExtResource( 6 )
+expand_icon = true
 script = ExtResource( 3 )
 __meta__ = {
 "_editor_description_": "Items are defined in the MainView script"
 }
 
 [node name="Tabs" type="Tabs" parent="VBoxContainer/TopBar"]
-margin_left = 36.0
+margin_left = 38.0
 margin_right = 1354.0
 margin_bottom = 29.0
 size_flags_horizontal = 3

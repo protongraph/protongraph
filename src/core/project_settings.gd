@@ -26,6 +26,11 @@ var _settings = {
 }
 
 
+var _require_restart := [
+	EDITOR_SCALE
+]
+
+
 func _ready() -> void:
 	load_or_create_config()
 
@@ -41,8 +46,12 @@ func get_setting(setting: String):
 
 
 func update_setting(setting: String, value) -> void:
+	var old_value = _settings[setting]
 	_settings[setting] = value
 	save_config()
+
+	if _require_restart.has(setting): # Keep using the old value untill the user restart the application
+		_settings[setting] = old_value
 
 
 func load_or_create_config() -> void:

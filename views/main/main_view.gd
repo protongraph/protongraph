@@ -23,6 +23,7 @@ func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 
 	theme = ConceptGraphEditorUtil.get_scaled_theme(theme)
+	ConceptGraphEditorUtil.scale_all_ui_resources()
 	update()
 
 	_menu = get_node(menu_button)

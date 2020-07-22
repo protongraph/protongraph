@@ -43,9 +43,12 @@ func _ready() -> void:
 	Signals.safe_connect(_line_edit, "text_entered", self, "_on_line_edit_changed")
 	Signals.safe_connect(_line_edit, "focus_exited", self, "_on_line_edit_changed")
 
+	get_child(0).rect_min_size *= ConceptGraphEditorUtil.get_editor_scale()
+
 	set_label_text(spinbox_name)
 	_update_line_edit_value(value)
 	_update_style()
+	call_deferred("_update_ui_size")
 
 
 func get_line_edit() -> LineEdit:

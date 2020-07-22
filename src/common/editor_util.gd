@@ -82,3 +82,73 @@ static func get_scaled_theme(theme: Theme) -> Theme:
 				box.expand_margin_right *= scale
 
 	return res
+
+
+"""
+>>>> ONLY CALL THIS ONCE <<<<
+"""
+static func scale_all_ui_resources() -> void:
+	_scale_fonts()
+	_scale_spinbox_custom_stylebox()
+	_scale_common_stylebox()
+
+"""
+Scale the fonts from the font folder. Calling load takes advantage of the built in resource caching
+and allows to update all the fonts manually assigned in different scenes without going through the
+theme.
+"""
+static func _scale_fonts() -> void:
+	var scale = get_editor_scale()
+	var dir = Directory.new()
+	var path = "res://views/themes/fonts/"
+	dir.open(path)
+
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.get_extension() == "tres":
+			var resource = load(path + file_name)
+			if resource is Font:
+				resource.size *= scale
+
+		file_name = dir.get_next()
+
+
+static func _scale_spinbox_custom_stylebox() -> void:
+	var scale = get_editor_scale()
+	var dir = Directory.new()
+	var path = "res://views/editor/spinbox/styles/"
+	dir.open(path)
+
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.get_extension() == "tres":
+			var resource = load(path + file_name)
+			if resource is StyleBoxFlat:
+				resource.corner_radius_bottom_left *= scale
+				resource.corner_radius_bottom_right *= scale
+				resource.corner_radius_top_left *= scale
+				resource.corner_radius_top_right *= scale
+
+		file_name = dir.get_next()
+
+
+static func _scale_common_stylebox() -> void:
+	var scale = get_editor_scale()
+	var dir = Directory.new()
+	var path = "res://views/themes/styles/"
+	dir.open(path)
+
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.get_extension() == "tres":
+			var resource = load(path + file_name)
+			if resource is StyleBoxFlat:
+				resource.corner_radius_bottom_left *= scale
+				resource.corner_radius_bottom_right *= scale
+				resource.corner_radius_top_left *= scale
+				resource.corner_radius_top_right *= scale
+
+		file_name = dir.get_next()

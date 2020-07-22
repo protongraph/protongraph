@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://views/editor/viewport.gd" type="Script" id=2]
@@ -8,7 +8,9 @@
 [ext_resource path="res://icons/icon_material_preview_light_1.svg" type="Texture" id=6]
 [ext_resource path="res://views/editor/draw_axis.gd" type="Script" id=7]
 [ext_resource path="res://views/editor/runtime_tree.gd" type="Script" id=8]
-[ext_resource path="res://views/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=9]
+[ext_resource path="res://icons/icon_question_mark.svg" type="Texture" id=9]
+[ext_resource path="res://views/editor/common/icon_button.tscn" type="PackedScene" id=10]
+[ext_resource path="res://views/auto_scale.gd" type="Script" id=11]
 
 [sub_resource type="World" id=1]
 environment = ExtResource( 1 )
@@ -35,7 +37,7 @@ __meta__ = {
 }
 
 [node name="Tree" type="Tree" parent="."]
-margin_right = 444.0
+margin_right = 438.0
 margin_bottom = 728.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -44,7 +46,7 @@ input = NodePath("../ViewportContainer/Viewport/Input")
 output = NodePath("../ViewportContainer/Viewport/Output")
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
-margin_left = 456.0
+margin_left = 462.0
 margin_right = 1352.0
 margin_bottom = 728.0
 size_flags_horizontal = 3
@@ -62,7 +64,7 @@ camera_light = NodePath("Viewport/Pivot/Camera/DirectionalLight")
 legend = NodePath("MarginContainer/HBoxContainer/LeftColumn/Legend")
 
 [node name="Viewport" type="Viewport" parent="ViewportContainer"]
-size = Vector2( 896, 728 )
+size = Vector2( 890, 728 )
 size_override_stretch = true
 own_world = true
 world = SubResource( 1 )
@@ -113,80 +115,75 @@ custom_constants/margin_bottom = 4
 [node name="HBoxContainer" type="HBoxContainer" parent="ViewportContainer/MarginContainer"]
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 892.0
+margin_right = 886.0
 margin_bottom = 724.0
 
 [node name="LeftColumn" type="VBoxContainer" parent="ViewportContainer/MarginContainer/HBoxContainer"]
-margin_right = 442.0
+margin_right = 437.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
 custom_constants/separation = 6
 
 [node name="DisplayOptions" type="HBoxContainer" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn"]
-margin_right = 142.0
-margin_bottom = 25.0
+margin_right = 143.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 0, 32 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
+script = ExtResource( 11 )
+min_size_y = true
 
-[node name="Legend" type="Button" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions"]
-margin_right = 27.0
-margin_bottom = 25.0
-focus_mode = 0
-custom_fonts/font = ExtResource( 9 )
+[node name="Legend" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 10 )]
+margin_right = 24.0
+margin_bottom = 32.0
 toggle_mode = true
-text = " ? "
+icon = ExtResource( 9 )
 
-[node name="ResetCamera" type="Button" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions"]
-margin_left = 31.0
-margin_right = 59.0
-margin_bottom = 25.0
-hint_tooltip = "Reset the camera position and orientation to aim at the center of the scene"
-focus_mode = 0
+[node name="ResetCamera" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 10 )]
+margin_left = 32.0
+margin_right = 56.0
+margin_bottom = 32.0
 icon = ExtResource( 5 )
 
 [node name="VSeparator2" type="VSeparator" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions"]
-margin_left = 63.0
-margin_right = 78.0
-margin_bottom = 25.0
+margin_left = 64.0
+margin_right = 79.0
+margin_bottom = 32.0
 custom_constants/separation = 15
 
-[node name="LightSetup1" type="Button" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions"]
-margin_left = 82.0
-margin_right = 110.0
-margin_bottom = 25.0
-hint_tooltip = "Light follows the camera so the result is always illuminated"
-focus_mode = 0
+[node name="LightSetup1" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 10 )]
+margin_left = 87.0
+margin_right = 111.0
+margin_bottom = 32.0
 icon = ExtResource( 6 )
 
-[node name="LightSetup2" type="Button" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions"]
-margin_left = 114.0
-margin_right = 142.0
-margin_bottom = 25.0
-hint_tooltip = "Light is static so you can see part of the result shadowed"
-focus_mode = 0
+[node name="LightSetup2" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 10 )]
+margin_left = 119.0
+margin_right = 143.0
+margin_bottom = 32.0
 icon = ExtResource( 4 )
 
 [node name="Legend" type="PanelContainer" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn"]
 visible = false
-margin_top = 31.0
-margin_right = 165.0
-margin_bottom = 97.0
+margin_top = 38.0
+margin_right = 268.0
+margin_bottom = 137.0
 size_flags_horizontal = 0
 custom_styles/panel = SubResource( 2 )
 
 [node name="Label" type="Label" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/Legend"]
 margin_left = 6.0
 margin_top = 6.0
-margin_right = 159.0
-margin_bottom = 60.0
+margin_right = 262.0
+margin_bottom = 93.0
 custom_constants/line_spacing = 6
 text = "Middle Click: Orbit
 Shift + Middle Click: Pan
 Scroll Up / Down: Zoom"
 
 [node name="RightColumn" type="VBoxContainer" parent="ViewportContainer/MarginContainer/HBoxContainer"]
-margin_left = 446.0
-margin_right = 888.0
+margin_left = 445.0
+margin_right = 882.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 alignment = 2

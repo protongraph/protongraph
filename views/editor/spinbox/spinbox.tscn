@@ -53,7 +53,7 @@ __meta__ = {
 
 [node name="Decrease" type="Button" parent="SpinBoxContainer"]
 margin_right = 19.0
-margin_bottom = 24.0
+margin_bottom = 25.0
 focus_mode = 0
 custom_styles/hover = ExtResource( 4 )
 custom_styles/pressed = ExtResource( 5 )
@@ -62,9 +62,9 @@ custom_styles/normal = ExtResource( 10 )
 icon = ExtResource( 8 )
 
 [node name="Value" type="LineEdit" parent="SpinBoxContainer"]
-margin_left = 23.0
-margin_right = 72.0
-margin_bottom = 24.0
+margin_left = 27.0
+margin_right = 171.0
+margin_bottom = 25.0
 size_flags_horizontal = 3
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
@@ -86,9 +86,9 @@ __meta__ = {
 }
 
 [node name="Increase" type="Button" parent="SpinBoxContainer"]
-margin_left = 76.0
-margin_right = 95.0
-margin_bottom = 24.0
+margin_left = 179.0
+margin_right = 198.0
+margin_bottom = 25.0
 focus_mode = 0
 custom_styles/hover = ExtResource( 3 )
 custom_styles/pressed = ExtResource( 2 )

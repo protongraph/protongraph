@@ -61,6 +61,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	_inspector = get_node(inspector_panel)
+	self.snap_distance *= ConceptGraphEditorUtil.get_editor_scale()
 
 
 func _exit_tree() -> void:

@@ -595,7 +595,7 @@ func _generate_default_gui() -> void:
 	for i in slots:
 		# Create a Hbox container per slot like this -> [LabelIn, (opt), LabelOut]
 		var hbox = HBoxContainer.new()
-		hbox.rect_min_size.y = 24
+		hbox.rect_min_size.y = 24 * ConceptGraphEditorUtil.get_editor_scale()
 
 		# Make sure it appears in the editor and store along the other Hboxes
 		_hboxes.append(hbox)
@@ -749,7 +749,8 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 		vector_box = HBoxContainer.new()
 	else:
 		vector_box = VBoxContainer.new()
-		vector_box.rect_min_size.x = 120
+		vector_box.rect_min_size.x = 120 * ConceptGraphEditorUtil.get_editor_scale()
+		vector_box.rect_min_size.y = 24 * count * ConceptGraphEditorUtil.get_editor_scale()
 	vector_box.name = "Vector"
 	vector_box.add_constant_override("separation", 0)
 	vbox.add_child(vector_box)
