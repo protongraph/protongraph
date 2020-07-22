@@ -1,12 +1,13 @@
 extends PanelContainer
 
+
 export var autosave: NodePath
 export var autosave_interval: NodePath
 export var delay_before_generation: NodePath
 export var inline_vectors: NodePath
 export var multithreading: NodePath
 export var search_group_by_type: NodePath
-
+export var scale: NodePath
 
 var _autosave: CheckBox
 var _autosave_interval: SpinBox
@@ -14,6 +15,7 @@ var _delay: SpinBox
 var _inline_vectors: CheckBox
 var _mt: CheckBox
 var _search_group_type: CheckBox
+var _scale: SpinBox
 
 
 func _ready() -> void:
@@ -23,6 +25,7 @@ func _ready() -> void:
 	_inline_vectors = _setup_control(inline_vectors, Settings.INLINE_VECTOR_FIELDS, TYPE_BOOL)
 	_mt = _setup_control(multithreading, Settings.MULTITHREAD_ENABLED, TYPE_BOOL)
 	_search_group_type = _setup_control(search_group_by_type, Settings.GROUP_NODES_BY_TYPE, TYPE_BOOL)
+	_scale = _setup_control(scale, Settings.EDITOR_SCALE, TYPE_REAL)
 
 
 func _setup_control(nodepath: NodePath, setting: String, type: int) -> Control:
@@ -34,7 +37,6 @@ func _setup_control(nodepath: NodePath, setting: String, type: int) -> Control:
 		TYPE_REAL:
 			node.value = Settings.get_setting(setting)
 			node.connect("value_changed", self, "_on_setting_changed", [setting])
-
 	return node
 
 

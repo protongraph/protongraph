@@ -129,6 +129,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/data_structures/vector_curve_2d.gd"
 }, {
+"base": "ProgressBar",
+"class": "CustomSpinBox",
+"language": "GDScript",
+"path": "res://views/editor/spinbox/spinbox.gd"
+}, {
+"base": "Node",
+"class": "FontUtil",
+"language": "GDScript",
+"path": "res://src/common/font_util.gd"
+}, {
 "base": "ScrollContainer",
 "class": "InspectorPanel",
 "language": "GDScript",
@@ -144,10 +154,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/common/node_utils.gd"
 }, {
+"base": "VBoxContainer",
+"class": "NoisePreview",
+"language": "GDScript",
+"path": "res://views/nodes/noise_preview.gd"
+}, {
 "base": "Reference",
 "class": "PoolVectorUtil",
 "language": "GDScript",
 "path": "res://src/common/pool_vector_util.gd"
+}, {
+"base": "Node",
+"class": "Signals",
+"language": "GDScript",
+"path": "res://src/common/signal_util.gd"
 } ]
 _global_script_class_icons={
 "ConceptBoxInput": "",
@@ -174,10 +194,14 @@ _global_script_class_icons={
 "ConceptNodeLibrary": "",
 "ConceptNodeVectorCurve": "",
 "ConceptNodeVectorCurve2D": "",
+"CustomSpinBox": "",
+"FontUtil": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
 "NodeUtils": "",
-"PoolVectorUtil": ""
+"NoisePreview": "",
+"PoolVectorUtil": "",
+"Signals": ""
 }
 
 [application]
@@ -197,6 +221,13 @@ GlobalUndoRedo="*res://src/common/undo_redo.gd"
 Settings="*res://src/core/project_settings.gd"
 NodeLibrary="*res://src/core/node_library.gd"
 
+[debug]
+
+gdscript/warnings/unsafe_property_access=true
+gdscript/warnings/unsafe_method_access=true
+gdscript/warnings/unsafe_cast=true
+gdscript/warnings/unsafe_call_argument=true
+
 [display]
 
 window/size/width=1366
@@ -205,6 +236,23 @@ window/size/height=768
 [editor_plugins]
 
 enabled=PoolStringArray(  )
+
+[gui]
+
+theme/use_hidpi=true
+
+[input]
+
+undo={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":true,"meta":false,"command":true,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
+ ]
+}
+redo={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":true,"control":true,"meta":false,"command":true,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [memory]
 

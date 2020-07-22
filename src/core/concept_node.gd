@@ -207,8 +207,9 @@ Clears the cache and the cache of every single nodes right to this one.
 """
 func reset() -> void:
 	clear_cache()
-	for node in get_parent().get_all_right_nodes(self):
-		node.reset()
+	if get_parent():
+		for node in get_parent().get_all_right_nodes(self):
+			node.reset()
 
 
 func clear_cache() -> void:
@@ -218,14 +219,14 @@ func clear_cache() -> void:
 
 
 func export_editor_data() -> Dictionary:
-	var editor_scale = ConceptGraphEditorUtil.get_dpi_scale()
+	var editor_scale = ConceptGraphEditorUtil.get_editor_scale()
 	var data = {}
 	data["offset_x"] = offset.x / editor_scale
 	data["offset_y"] = offset.y / editor_scale
 
 	if resizable:
-		data["rect_x"] = rect_size.x
-		data["rect_y"] = rect_size.y
+		data["rect_x"] = rect_size.x / editor_scale
+		data["rect_y"] = rect_size.y / editor_scale
 
 	data["slots"] = {}
 	for i in _inputs.size():
@@ -238,14 +239,16 @@ func export_editor_data() -> Dictionary:
 
 
 func restore_editor_data(data: Dictionary) -> void:
-	var editor_scale = ConceptGraphEditorUtil.get_dpi_scale()
+	var editor_scale = ConceptGraphEditorUtil.get_editor_scale()
 	offset.x = data["offset_x"] * editor_scale
 	offset.y = data["offset_y"] * editor_scale
 
+	rect_size = Vector2.ZERO
 	if data.has("rect_x"):
-		rect_size.x = data["rect_x"]
+		rect_size.x = data["rect_x"] * editor_scale
 	if data.has("rect_y"):
-		rect_size.y = data["rect_y"]
+		rect_size.y = data["rect_y"] * editor_scale
+
 	emit_signal("resize_request", rect_size)
 
 	if has_custom_gui():
@@ -529,7 +532,7 @@ func _clear_gui() -> void:
 Based on graph node category this method will setup corresponding style and color of graph node
 """
 func _generate_default_gui_style() -> void:
-	var scale: float = ConceptGraphEditorUtil.get_dpi_scale()
+	var scale: float = ConceptGraphEditorUtil.get_editor_scale()
 
 	# Base Style
 	var style = StyleBoxFlat.new()
@@ -813,6 +816,9 @@ func _set_vector_value(idx: int, value: String) -> void:
 
 
 func _get_default_gui_value(idx: int, for_export := false):
+	if _hboxes.size() <= idx:
+		return null
+
 	var left = _hboxes[idx].get_node("Left")
 	if not left:
 		return null

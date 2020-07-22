@@ -12,8 +12,8 @@ var _tab_container: TabContainer
 var _file_dialog: FileDialog
 var _overlay: Panel
 
-var _history_path := "res://history.json"
-var _history: Array
+var _history_path := "user://history.json"
+var _history: Array = []
 var _start_view: WeakRef
 var _is_quitting := false
 
@@ -21,6 +21,9 @@ var _is_quitting := false
 func _ready() -> void:
 	# Prevent the application to close automatically
 	get_tree().set_auto_accept_quit(false)
+
+	theme = ConceptGraphEditorUtil.get_scaled_theme(theme)
+	update()
 
 	_menu = get_node(menu_button)
 	Signals.safe_connect(_menu, "menu_action", self, "_on_menu_action")
@@ -35,7 +38,7 @@ func _ready() -> void:
 	Signals.safe_connect(_tab_container, "tabs_cleared", self, "_on_tabs_cleared")
 
 	# File history
-	_load_file_history()
+	_load_of_create_file_history()
 
 	# Load a default view to avoid having a blank empty tab on launch
 	_load_start_view()
@@ -44,6 +47,17 @@ func _ready() -> void:
 func _notification(event):
 	if (event == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
 		_quit()
+
+
+func _load_of_create_file_history() -> void:
+	var dir = Directory.new()
+	dir.open("user://")
+	if dir.file_exists(_history_path):
+		print("history path exists")
+		_load_file_history()
+	else:
+		print("history doesn't exists")
+		_save_file_history()
 
 
 func _load_file_history() -> void:
@@ -68,10 +82,10 @@ func _save_file_history() -> void:
 
 func _load_start_view():
 	var start_view = preload("res://views/main/start_tab.tscn").instance()
+	_tab_container.add_child(start_view)
 	start_view.set_file_history(_history)
 	start_view.connect("template_requested", self, "_on_template_requested")
 	start_view.connect("menu_action", self, "_on_menu_action")
-	_tab_container.add_child(start_view)
 	_start_view = weakref(start_view)
 
 

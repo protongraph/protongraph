@@ -84,7 +84,7 @@ Creates a node using the provided model and add it as child which makes it visib
 from the Concept Graph Editor
 """
 func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
-	var new_node: ConceptNode = node.duplicate()
+	var new_node: ConceptNode = node.duplicate(7)
 	new_node.thread_pool = _thread_pool
 	if data.has("offset"):
 		new_node.offset = data["offset"]

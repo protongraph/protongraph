@@ -8,12 +8,14 @@ export var root: NodePath
 export var camera_root: NodePath
 export var static_light: NodePath
 export var camera_light: NodePath
+export var legend: NodePath
 
 var _viewport: Viewport
 var _root: Spatial
 var _camera_root: Spatial
 var _camera_light: Light
 var _static_light: Light
+var _legend: Control
 
 
 func _ready() -> void:
@@ -22,6 +24,7 @@ func _ready() -> void:
 	_camera_light = get_node(camera_light)
 	_static_light = get_node(static_light)
 	_viewport = get_node("Viewport")
+	_legend = get_node(legend)
 
 
 func display(nodes: Array) -> void:
@@ -50,3 +53,7 @@ func set_normal_display() -> void:
 
 func set_wireframe_display() -> void:
 	_viewport.debug_draw = Viewport.DEBUG_DRAW_WIREFRAME
+
+
+func display_legend(val) -> void:
+	_legend.visible = val

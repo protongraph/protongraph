@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://views/themes/dark.tres" type="Theme" id=1]
 [ext_resource path="res://views/main/main_view.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://views/main/tab_container.gd" type="Script" id=4]
 [ext_resource path="res://views/main/template_dialog.gd" type="Script" id=5]
 [ext_resource path="res://icons/icon_menu.svg" type="Texture" id=6]
+[ext_resource path="res://views/main/confirm_exit_dialog.gd" type="Script" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.627451 )
@@ -121,6 +122,7 @@ rect_min_size = Vector2( 310, 120 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
 window_title = "Please confirm ..."
+script = ExtResource( 7 )
 
 [node name="MarginContainer" type="MarginContainer" parent="ConfirmExitDialog"]
 anchor_right = 1.0
