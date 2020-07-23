@@ -132,7 +132,7 @@ _global_script_classes=[ {
 "base": "ProgressBar",
 "class": "CustomSpinBox",
 "language": "GDScript",
-"path": "res://views/editor/spinbox/spinbox.gd"
+"path": "res://views/editor/common/spinbox/spinbox.gd"
 }, {
 "base": "Node",
 "class": "FontUtil",

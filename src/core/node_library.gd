@@ -1,4 +1,3 @@
-tool
 class_name ConceptNodeLibrary
 extends Node
 
@@ -9,6 +8,7 @@ This script parses the node folder to retrieve a list of all the available Conce
 
 var _nodes: Dictionary
 var _node_search_index: Dictionary
+
 
 func _exit_tree() -> void:
 	clear()
@@ -32,8 +32,12 @@ func clear() -> void:
 
 
 func create_node(type: String) -> ConceptNode:
+	if not _node_search_index:
+		refresh_list()
+
 	if _nodes.has(type):
 		return _nodes[type].duplicate(7)
+
 	return null
 
 

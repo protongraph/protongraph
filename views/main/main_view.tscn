@@ -53,15 +53,15 @@ margin_bottom = 29.0
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TopBar"]
 self_modulate = Color( 1, 1, 1, 0 )
-margin_right = 6.0
+margin_right = 2.0
 margin_bottom = 29.0
-custom_constants/separation = 6
+custom_constants/separation = 2
 script = ExtResource( 11 )
 const_separation = true
 
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
-margin_left = 10.0
-margin_right = 34.0
+margin_left = 6.0
+margin_right = 30.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 24, 24 )
 custom_styles/hover = ExtResource( 9 )
@@ -75,7 +75,7 @@ __meta__ = {
 }
 
 [node name="Tabs" type="Tabs" parent="VBoxContainer/TopBar"]
-margin_left = 38.0
+margin_left = 34.0
 margin_right = 1354.0
 margin_bottom = 29.0
 size_flags_horizontal = 3

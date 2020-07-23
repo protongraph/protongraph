@@ -148,8 +148,7 @@ func _on_item_activated() -> void:
 		return
 
 	var node_id = selected.get_metadata(0)
-	var node = NodeLibrary.get_list()[node_id]
-	emit_signal("create_node", node)
+	emit_signal("create_node", node_id)
 	_hide_panel()
 
 

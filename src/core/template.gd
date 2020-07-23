@@ -84,8 +84,11 @@ func clear() -> void:
 Creates a node using the provided model and add it as child which makes it visible and editable
 from the Concept Graph Editor
 """
-func create_node(node: ConceptNode, data := {}, notify := true) -> ConceptNode:
-	var new_node: ConceptNode = node.duplicate(7)
+func create_node(type: String, data := {}, notify := true) -> ConceptNode:
+	var new_node: ConceptNode = NodeLibrary.create_node(type)
+	if not new_node:
+		return null
+
 	new_node.thread_pool = _thread_pool
 	if data.has("offset"):
 		new_node.offset = data["offset"]
@@ -249,19 +252,10 @@ func load_from_file(path: String, soft_load := false) -> void:
 		return
 
 	# For each node found in the template file
-	var node_list = NodeLibrary.get_list()
 	for node_data in graph["nodes"]:
-		if not node_data.has("type"):
-			continue
-
-		var type = node_data["type"]
-		if not node_list.has(type):
-			print("Error: Node type ", type, " could not be found.")
-			continue
-
-		# Get a graph node from the node library and use it as a model to create a new one
-		var node_instance = node_list[type]
-		var new_node = create_node(node_instance, node_data, false)
+		if node_data.has("type"):
+			var type = node_data["type"]
+			create_node(type, node_data, false)
 
 	for c in graph["connections"]:
 		# TODO: convert the to/from ports stored in file to actual port

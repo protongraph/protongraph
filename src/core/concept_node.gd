@@ -711,7 +711,7 @@ func _generate_default_gui() -> void:
 
 func _create_spinbox(property_name, opts, parent, idx) -> SpinBox:
 	if not _spinbox:
-		_spinbox = preload("res://views/editor/spinbox/spinbox.tscn")
+		_spinbox = preload("res://views/editor/common/spinbox/spinbox.tscn")
 	var spinbox = _spinbox.instance()
 	if parent:
 		parent.add_child(spinbox)

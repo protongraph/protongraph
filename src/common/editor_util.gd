@@ -117,7 +117,7 @@ static func _scale_fonts() -> void:
 static func _scale_spinbox_custom_stylebox() -> void:
 	var scale = get_editor_scale()
 	var dir = Directory.new()
-	var path = "res://views/editor/spinbox/styles/"
+	var path = "res://views/editor/common/spinbox/styles/"
 	dir.open(path)
 
 	dir.list_dir_begin()

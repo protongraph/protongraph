@@ -84,9 +84,9 @@ func _clear_graph():
 	_template.clear()
 
 
-func _on_create_node_request(node) -> void:
+func _on_create_node_request(type: String) -> void:
 	var local_pos = _last_position - _template.get_global_transform().origin + _template.scroll_offset
-	_template.create_node(node, {"offset": local_pos})
+	_template.create_node(type, {"offset": local_pos})
 
 
 func _on_graph_changed() -> void:

@@ -1,16 +1,16 @@
 [gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
-[ext_resource path="res://views/editor/viewport.gd" type="Script" id=2]
-[ext_resource path="res://views/editor/camera.gd" type="Script" id=3]
+[ext_resource path="res://icons/icon_question_mark.svg" type="Texture" id=2]
+[ext_resource path="res://views/editor/common/icon_button.tscn" type="PackedScene" id=3]
 [ext_resource path="res://icons/icon_material_preview_light_2.svg" type="Texture" id=4]
-[ext_resource path="res://icons/icon_camera.svg" type="Texture" id=5]
-[ext_resource path="res://icons/icon_material_preview_light_1.svg" type="Texture" id=6]
-[ext_resource path="res://views/editor/draw_axis.gd" type="Script" id=7]
-[ext_resource path="res://views/editor/runtime_tree.gd" type="Script" id=8]
-[ext_resource path="res://icons/icon_question_mark.svg" type="Texture" id=9]
-[ext_resource path="res://views/editor/common/icon_button.tscn" type="PackedScene" id=10]
-[ext_resource path="res://views/auto_scale.gd" type="Script" id=11]
+[ext_resource path="res://views/editor/camera.gd" type="Script" id=5]
+[ext_resource path="res://views/editor/runtime_tree.gd" type="Script" id=6]
+[ext_resource path="res://views/auto_scale.gd" type="Script" id=7]
+[ext_resource path="res://icons/icon_material_preview_light_1.svg" type="Texture" id=8]
+[ext_resource path="res://views/editor/draw_axis.gd" type="Script" id=9]
+[ext_resource path="res://icons/icon_camera.svg" type="Texture" id=10]
+[ext_resource path="res://views/editor/viewport/viewport.gd" type="Script" id=11]
 
 [sub_resource type="World" id=1]
 environment = ExtResource( 1 )
@@ -27,9 +27,8 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [node name="HSplitContainer" type="HSplitContainer"]
-margin_top = 26.0
-margin_right = 1352.0
-margin_bottom = 754.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -37,23 +36,23 @@ __meta__ = {
 }
 
 [node name="Tree" type="Tree" parent="."]
-margin_right = 438.0
-margin_bottom = 728.0
+margin_right = 443.0
+margin_bottom = 768.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( 8 )
+script = ExtResource( 6 )
 input = NodePath("../ViewportContainer/Viewport/Input")
 output = NodePath("../ViewportContainer/Viewport/Output")
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
-margin_left = 462.0
-margin_right = 1352.0
-margin_bottom = 728.0
+margin_left = 467.0
+margin_right = 1366.0
+margin_bottom = 768.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 stretch = true
-script = ExtResource( 2 )
+script = ExtResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -64,7 +63,7 @@ camera_light = NodePath("Viewport/Pivot/Camera/DirectionalLight")
 legend = NodePath("MarginContainer/HBoxContainer/LeftColumn/Legend")
 
 [node name="Viewport" type="Viewport" parent="ViewportContainer"]
-size = Vector2( 890, 728 )
+size = Vector2( 899, 768 )
 size_override_stretch = true
 own_world = true
 world = SubResource( 1 )
@@ -73,11 +72,11 @@ msaa = 2
 usage = 3
 render_target_update_mode = 3
 physics_object_picking = true
-script = ExtResource( 7 )
+script = ExtResource( 9 )
 
 [node name="Pivot" type="Spatial" parent="ViewportContainer/Viewport"]
 transform = Transform( 0.707107, -0.45452, 0.541675, 0, 0.766044, 0.642788, -0.707107, -0.454519, 0.541675, 0, 0, 0 )
-script = ExtResource( 3 )
+script = ExtResource( 5 )
 
 [node name="Camera" type="Camera" parent="ViewportContainer/Viewport/Pivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
@@ -115,52 +114,52 @@ custom_constants/margin_bottom = 4
 [node name="HBoxContainer" type="HBoxContainer" parent="ViewportContainer/MarginContainer"]
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 886.0
-margin_bottom = 724.0
+margin_right = 895.0
+margin_bottom = 764.0
 
 [node name="LeftColumn" type="VBoxContainer" parent="ViewportContainer/MarginContainer/HBoxContainer"]
-margin_right = 437.0
-margin_bottom = 720.0
+margin_right = 441.0
+margin_bottom = 760.0
 size_flags_horizontal = 3
 custom_constants/separation = 6
 
 [node name="DisplayOptions" type="HBoxContainer" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn"]
 margin_right = 143.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 0, 32 )
+margin_bottom = 29.0
+rect_min_size = Vector2( 0, 28 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
-script = ExtResource( 11 )
+script = ExtResource( 7 )
 min_size_y = true
 
-[node name="Legend" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 10 )]
+[node name="Legend" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
 margin_right = 24.0
-margin_bottom = 32.0
+margin_bottom = 29.0
 toggle_mode = true
-icon = ExtResource( 9 )
+icon = ExtResource( 2 )
 
-[node name="ResetCamera" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 10 )]
+[node name="ResetCamera" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
 margin_left = 32.0
 margin_right = 56.0
-margin_bottom = 32.0
-icon = ExtResource( 5 )
+margin_bottom = 29.0
+icon = ExtResource( 10 )
 
 [node name="VSeparator2" type="VSeparator" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions"]
 margin_left = 64.0
 margin_right = 79.0
-margin_bottom = 32.0
+margin_bottom = 29.0
 custom_constants/separation = 15
 
-[node name="LightSetup1" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 10 )]
+[node name="LightSetup1" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
 margin_left = 87.0
 margin_right = 111.0
-margin_bottom = 32.0
-icon = ExtResource( 6 )
+margin_bottom = 29.0
+icon = ExtResource( 8 )
 
-[node name="LightSetup2" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 10 )]
+[node name="LightSetup2" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
 margin_left = 119.0
 margin_right = 143.0
-margin_bottom = 32.0
+margin_bottom = 29.0
 icon = ExtResource( 4 )
 
 [node name="Legend" type="PanelContainer" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn"]
@@ -182,8 +181,8 @@ Shift + Middle Click: Pan
 Scroll Up / Down: Zoom"
 
 [node name="RightColumn" type="VBoxContainer" parent="ViewportContainer/MarginContainer/HBoxContainer"]
-margin_left = 445.0
-margin_right = 882.0
+margin_left = 449.0
+margin_right = 891.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 alignment = 2

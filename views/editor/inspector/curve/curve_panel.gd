@@ -14,6 +14,7 @@ export var font: Font
 export var text_color := Color(0.9, 0.9, 0.9)
 export var columns := 4
 export var rows := 2
+export var dynamic_row_count := true
 
 var curve: Curve
 var gt: Transform2D
@@ -25,6 +26,12 @@ var _dragging := false
 var _hover_radius := 50.0 # Squared
 var _tangents_length := 30.0
 var _undo_data := {}
+
+
+func _ready() -> void:
+	rect_min_size.y *= ConceptGraphEditorUtil.get_editor_scale()
+	update()
+	connect("resized", self, "_on_resized")
 
 
 func set_curve(c) -> void:
@@ -354,3 +361,8 @@ func set_selected_tangent(val: int) -> void:
 	if val != _selected_tangent:
 		_selected_tangent = val
 		update()
+
+
+func _on_resized() -> void:
+	if dynamic_row_count:
+		rows = round(rect_size.y / rect_min_size.y) + 1
