@@ -47,6 +47,15 @@ func _ready() -> void:
 		Signals.safe_connect(graph_edit, "draw", self, "_on_graph_edit_changed")
 		Signals.safe_connect(graph_edit, "update_minimap", self, "_on_graph_edit_changed")
 
+	# Update size based on editor scale
+	rect_min_size *= ConceptGraphEditorUtil.get_editor_scale()
+
+	# Replace the map assuming a bottom right position
+	margin_left = -rect_min_size.x
+	margin_top = -rect_min_size.y
+
+	update()
+
 
 func _gui_input(event : InputEvent) -> void:
 	if (event is InputEventMouseButton && event.button_index == BUTTON_LEFT):

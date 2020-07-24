@@ -536,7 +536,7 @@ func _generate_default_gui_style() -> void:
 
 	# Base Style
 	var style = StyleBoxFlat.new()
-	var color = Color(0.121569, 0.145098, 0.192157, 0.9)
+	var color = Color("e61f2531")
 	style.border_color = ConceptGraphDataType.to_category_color(category)
 	minimap_color = style.border_color
 	style.set_bg_color(color)
@@ -553,7 +553,7 @@ func _generate_default_gui_style() -> void:
 	var selected_style = style.duplicate()
 	selected_style.shadow_color = ConceptGraphDataType.to_category_color(category)
 	selected_style.shadow_size = 4 * scale
-	selected_style.border_color = Color(0.121569, 0.145098, 0.192157, 0.9)
+	selected_style.border_color = color
 
 	if not comment:
 		add_stylebox_override("frame", style)
@@ -567,6 +567,7 @@ func _generate_default_gui_style() -> void:
 	add_constant_override("port_offset", 12 * scale)
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
 	add_constant_override("separation", 2)
+	add_constant_override("title_offset", 21 * scale)
 
 
 """
@@ -647,6 +648,8 @@ func _generate_default_gui() -> void:
 					var opts = _inputs[i]["options"]
 					if opts.has("type") and opts["type"] == "dropdown":
 						var dropdown = OptionButton.new()
+						dropdown.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
+						dropdown.add_stylebox_override("hover", load("res://views/themes/styles/graphnode_button_hover.tres"))
 						dropdown.focus_mode = Control.FOCUS_NONE
 						dropdown.name = "OptionButton"
 						for item in opts["items"].keys():
@@ -657,6 +660,8 @@ func _generate_default_gui() -> void:
 						requires_full_gui_rebuild = true
 					else:
 						var line_edit = LineEdit.new()
+						line_edit.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
+						line_edit.add_stylebox_override("focus", load("res://views/themes/styles/graphnode_line_edit_focus.tres"))
 						line_edit.rect_min_size.x = 120
 						line_edit.name = "LineEdit"
 						line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
@@ -667,6 +672,8 @@ func _generate_default_gui() -> void:
 
 						if opts.has("file_dialog"):
 							var folder_button = Button.new()
+							folder_button.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
+							folder_button.add_stylebox_override("hover", load("res://views/themes/styles/graphnode_button_hover.tres"))
 							if not _folder_icon:
 								_folder_icon = load(ConceptGraphEditorUtil.get_plugin_root_path() + "icons/icon_folder.svg")
 							folder_button.icon = _folder_icon

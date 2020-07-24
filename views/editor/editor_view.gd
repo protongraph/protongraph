@@ -70,6 +70,10 @@ func has_pending_changes() -> bool:
 	return not _saved
 
 
+func _show_node_dialog_centered() -> void:
+	_show_node_dialog(_template.rect_size / 2.0)
+
+
 func _show_node_dialog(position: Vector2) -> void:
 	_last_position = position
 	_node_dialog.set_global_position(position)
@@ -106,6 +110,7 @@ func _on_exposed_variables_updated(variables: Array) -> void:
 	_updating_inspector = true
 	_inspector.update_variables(variables)
 	_updating_inspector = false
+
 
 func _on_inspector_value_changed(name: String) -> void:
 	if not _updating_inspector:

@@ -1,4 +1,3 @@
-tool
 class_name ConceptGraphEditorUtil
 
 
@@ -33,6 +32,15 @@ static func get_square_texture(color: Color) -> ImageTexture:
 	imageTexture.resource_name = "square " + String(color.to_rgba32())
 
 	return imageTexture
+
+
+"""
+>>>> ONLY CALL THIS ONCE <<<<
+"""
+static func scale_all_ui_resources() -> void:
+	_scale_fonts()
+	_scale_spinbox_custom_stylebox()
+	_scale_common_stylebox()
 
 
 static func get_scaled_theme(theme: Theme) -> Theme:
@@ -83,14 +91,6 @@ static func get_scaled_theme(theme: Theme) -> Theme:
 
 	return res
 
-
-"""
->>>> ONLY CALL THIS ONCE <<<<
-"""
-static func scale_all_ui_resources() -> void:
-	_scale_fonts()
-	_scale_spinbox_custom_stylebox()
-	_scale_common_stylebox()
 
 """
 Scale the fonts from the font folder. Calling load takes advantage of the built in resource caching

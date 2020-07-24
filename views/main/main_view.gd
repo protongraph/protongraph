@@ -54,10 +54,8 @@ func _load_of_create_file_history() -> void:
 	var dir = Directory.new()
 	dir.open("user://")
 	if dir.file_exists(_history_path):
-		print("history path exists")
 		_load_file_history()
 	else:
-		print("history doesn't exists")
 		_save_file_history()
 
 
