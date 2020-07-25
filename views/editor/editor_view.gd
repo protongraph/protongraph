@@ -115,3 +115,11 @@ func _on_exposed_variables_updated(variables: Array) -> void:
 func _on_inspector_value_changed(name: String) -> void:
 	if not _updating_inspector:
 		_template.notify_exposed_variable_change(name)
+
+
+func _on_input_created(node: Spatial) -> void:
+	_viewport.add_input_node(node)
+
+
+func _on_input_deleted(node: Spatial) -> void:
+	_viewport.remove_input_node(node)

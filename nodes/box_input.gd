@@ -6,14 +6,16 @@ signal input_changed
 signal property_changed
 
 
-var size := Vector3.ONE setget set_size
-var auto_center := false setget set_auto_center # TODO: implement standard AABB behavior
-var center := Vector3.ZERO setget set_center
+export var size := Vector3.ONE setget set_size
+export var center := Vector3.ZERO setget set_center
 
+var auto_center := false setget set_auto_center # TODO: implement standard AABB behavior
 
 func _ready() -> void:
-	add_user_signal('input_changed')
 	set_notify_local_transform(true)
+	mesh = CubeMesh.new()
+	mesh.size = size
+	mesh.material = load("res://nodes/default_selector.tres")
 
 
 func _notification(type: int):
@@ -34,6 +36,7 @@ func is_inside(pos: Vector3, ignore_y_axis: bool = false) -> bool:
 
 func set_size(val: Vector3) -> void:
 	size = val
+	mesh.size = size
 	_on_box_changed()
 
 

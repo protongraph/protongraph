@@ -25,6 +25,7 @@ var minimap_color
 # Set to true to force the template to recreate the whole node instead of the style only. Useful if the
 # graphnode has UI controls like OptionButtons that can't be generated properly under a spatial node.
 var requires_full_gui_rebuild := false
+var inline_vectors := false
 
 var _folder_icon
 var _multi_input_icon
@@ -68,15 +69,6 @@ func has_custom_gui() -> bool:
 
 func is_output_ready() -> bool:
 	return _output_ready
-
-
-"""
-Override this function.
-Returns true if the node should be displayed under the input section of the 3D viewport.
-Input nodes showed there can be moved and edited by the user.
-"""
-func is_input_node() -> bool:
-	return false
 
 
 """
@@ -267,27 +259,9 @@ func restore_editor_data(data: Dictionary) -> void:
 
 	for i in slots:
 		if data["slots"].has(String(i)):
-			var type = _inputs[i]["type"]
 			var value = data["slots"][String(i)]
-			var left = _hboxes[i].get_node("Left")
+			set_default_gui_value(i, value)
 
-			match type:
-				ConceptGraphDataType.BOOLEAN:
-					left.get_node("CheckBox").pressed = value
-				ConceptGraphDataType.SCALAR:
-					left.get_node("SpinBox").value = value
-				ConceptGraphDataType.STRING:
-					if left.has_node("LineEdit"):
-						left.get_node("LineEdit").text = value
-					elif left.has_node("OptionButton"):
-						var btn: OptionButton = left.get_node("OptionButton")
-						btn.selected = btn.get_item_index(int(value))
-				ConceptGraphDataType.VECTOR2:
-					if value is String:
-						_set_vector_value(i, value)
-				ConceptGraphDataType.VECTOR3:
-					if value is String:
-						_set_vector_value(i, value)
 	_on_editor_data_restored()
 
 
@@ -388,6 +362,30 @@ do with the user defined value.
 """
 func set_value_from_inspector(_name: String, _value) -> void:
 	pass
+
+
+func set_default_gui_value(slot: int, value) -> void:
+	if _hboxes.size() <= slot:
+		return
+
+	var type = _inputs[slot]["type"]
+	var left = _hboxes[slot].get_node("Left")
+
+	match type:
+		ConceptGraphDataType.BOOLEAN:
+			left.get_node("CheckBox").pressed = value
+		ConceptGraphDataType.SCALAR:
+			left.get_node("SpinBox").value = value
+		ConceptGraphDataType.STRING:
+			if left.has_node("LineEdit"):
+				left.get_node("LineEdit").text = value
+			elif left.has_node("OptionButton"):
+				var btn: OptionButton = left.get_node("OptionButton")
+				btn.selected = btn.get_item_index(int(value))
+		ConceptGraphDataType.VECTOR2:
+			_set_vector_value(slot, value)
+		ConceptGraphDataType.VECTOR3:
+			_set_vector_value(slot, value)
 
 
 func register_to_garbage_collection(resource):
@@ -759,9 +757,8 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 		label.text = property_name
 		vbox.add_child(label)
 
-	var inline = Settings.get_setting(ConceptGraphSettings.INLINE_VECTOR_FIELDS)
 	var vector_box
-	if inline:
+	if inline_vectors:
 		vector_box = HBoxContainer.new()
 	else:
 		vector_box = VBoxContainer.new()
@@ -778,7 +775,7 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 			s = _create_spinbox(vector_index, opts[vector_index], vector_box, idx)
 		else:
 			s = _create_spinbox(vector_index, opts, vector_box, idx)
-		if inline:
+		if inline_vectors:
 			s.style = 3
 		elif i == 0:
 			s.style = 0
@@ -813,23 +810,28 @@ func _get_vector_value(idx: int):
 	return res
 
 
-func _set_vector_value(idx: int, value: String) -> void:
-	if idx >= _inputs.size():
+func _set_vector_value(idx: int, value) -> void:
+	if not value or idx >= _inputs.size():
 		return
 
 	var vbox = _hboxes[idx].get_node("Left").get_node("VectorContainer")
 	if not vbox:
 		return
 
-	# String to Vector conversion
-	value = value.substr(1, value.length() - 2)
-	var tokens = value.split(',')
+	var vector
+
+	if value is String:
+		# String to Vector conversion
+		value = value.substr(1, value.length() - 2)
+		vector = value.split(',')
+	elif value is Vector3 or value is Vector2:
+		vector = value
 
 	var vector_box = vbox.get_node("Vector")
 	var count = vector_box.get_child_count()
 
 	for i in count:
-		vector_box.get_child(i).value = float(tokens[i])
+		vector_box.get_child(i).value = float(vector[i])
 
 
 func _get_default_gui_value(idx: int, for_export := false):
