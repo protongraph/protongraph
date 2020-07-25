@@ -31,7 +31,7 @@ func _process(delta: float) -> void:
 """
 Handles the zoom, panning and orbiting in the viewport.
 """
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if not _is_visible_in_tree():
 		return # Another tab is opened
 

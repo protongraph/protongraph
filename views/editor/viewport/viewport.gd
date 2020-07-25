@@ -27,6 +27,11 @@ func _ready() -> void:
 	_legend = get_node(legend)
 
 
+func _input(event: InputEvent) -> void:
+	return
+	_viewport.input(event.xformed_by(get_transform(), get_global_transform().origin))
+
+
 func display(nodes: Array) -> void:
 	for c in _root.get_children():
 		_root.remove_child(c)

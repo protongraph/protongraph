@@ -71,6 +71,15 @@ func is_output_ready() -> bool:
 
 
 """
+Override this function.
+Returns true if the node should be displayed under the input section of the 3D viewport.
+Input nodes showed there can be moved and edited by the user.
+"""
+func is_input_node() -> bool:
+	return false
+
+
+"""
 Override this function to return true if the node marks the end of a graphnode.
 """
 func is_final_output_node() -> bool:
@@ -994,10 +1003,15 @@ func _on_default_gui_value_changed(value, slot: int) -> void:
 	emit_signal("input_changed", slot, value)
 	reset()
 
-
+"""
+Override in child nodes. Called when a default gui value was modified
+"""
 func _on_default_gui_interaction(_value, _control: Control, _slot: int) -> void:
 	pass
 
 
+"""
+Override in child nodes. Called when restore_editor_data() has completed
+"""
 func _on_editor_data_restored() -> void:
 	pass

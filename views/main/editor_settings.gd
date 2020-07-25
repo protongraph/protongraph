@@ -33,7 +33,7 @@ func _setup_control(nodepath: NodePath, setting: String, type: int) -> Control:
 	match type:
 		TYPE_BOOL:
 			node.pressed = Settings.get_setting(setting)
-			node.connect("pressed", self, "_on_setting_changed", [setting])
+			node.connect("toggled", self, "_on_setting_changed", [setting])
 		TYPE_REAL:
 			node.value = Settings.get_setting(setting)
 			node.connect("value_changed", self, "_on_setting_changed", [setting])

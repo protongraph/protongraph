@@ -1,26 +1,19 @@
-tool
 class_name ConceptBoxInput
-extends Spatial
+extends MeshInstance
 
 
 signal input_changed
 signal property_changed
 
 
-export var size := Vector3.ONE setget set_size
+var size := Vector3.ONE setget set_size
 var auto_center := false setget set_auto_center # TODO: implement standard AABB behavior
-export var center := Vector3.ZERO setget set_center
+var center := Vector3.ZERO setget set_center
 
 
 func _ready() -> void:
 	add_user_signal('input_changed')
 	set_notify_local_transform(true)
-
-
-func _get_property_list() -> Array:
-	#if not auto_center:
-	#	return [{"name": "Center", "type": TYPE_VECTOR3}]
-	return []
 
 
 func _notification(type: int):
@@ -46,15 +39,12 @@ func set_size(val: Vector3) -> void:
 
 func set_auto_center(val: bool) -> void:
 	auto_center = val
-	property_list_changed_notify()
 
 
 func set_center(val: Vector3) -> void:
 	center = val
-	property_list_changed_notify()
 	_on_box_changed()
 
 
 func _on_box_changed() -> void:
 	emit_signal("input_changed", self)	# That tell the ConceptGraph to rerun the simulation
-	emit_signal("property_changed")

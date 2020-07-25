@@ -48,7 +48,6 @@ func _ready() -> void:
 	set_label_text(spinbox_name)
 	_update_line_edit_value(value)
 	_update_style()
-	call_deferred("_update_ui_size")
 
 
 func get_line_edit() -> LineEdit:
@@ -62,7 +61,6 @@ func set_label_text(text) -> void:
 	spinbox_name = text if text is String else String(text)
 	if _name_label:
 		_name_label.text = spinbox_name.capitalize()
-		_update_ui_size()
 
 
 func get_label_text() -> String:
@@ -80,11 +78,6 @@ func set_style(val) -> void:
 
 func _update_line_edit_value(value) -> void:
 	_line_edit.text = String(value)
-
-
-func _update_ui_size() -> void:
-	rect_min_size = get_child(0).rect_size
-	update()
 
 
 func _update_style() -> void:
@@ -117,7 +110,6 @@ func _on_line_edit_changed(text = "") -> void:
 	_create_undo_redo_action(float(text), value)
 	if text != String(value):
 		_line_edit.text = String(value)
-	_update_ui_size()
 
 
 func _on_value_gui_input(event: InputEvent) -> void:
