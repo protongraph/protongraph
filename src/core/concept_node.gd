@@ -905,9 +905,7 @@ func _show_file_dialog(opts: Dictionary, line_edit: LineEdit) -> void:
 			filters.append(filter)
 		_file_dialog.set_filters(filters)
 
-	if _file_dialog.is_connected("confirmed", self, "_on_file_selected"):
-		_file_dialog.disconnect("confirmed", self, "_on_file_selected")
-	Signals.safe_connect(_file_dialog, "confirmed", self, "_on_file_selected", [line_edit])
+	Signals.safe_connect(_file_dialog, "file_selected", self, "_on_file_selected", [line_edit])
 	_file_dialog.popup_centered()
 
 
@@ -952,8 +950,8 @@ func _update_slots_types() -> void:
 """
 Called from _show_file_dialog when confirming the selection
 """
-func _on_file_selected(line_edit: LineEdit) -> void:
-	line_edit.text = _file_dialog.current_path
+func _on_file_selected(path, line_edit: LineEdit) -> void:
+	line_edit.text = get_parent().get_relative_path(path)
 
 
 func _on_resize_request(new_size) -> void:

@@ -30,6 +30,7 @@ var paused := false
 var restart_generation := false
 var multithreading_enabled := true	# Set to false to ignore the ProjectSettings and force multithreading off
 
+
 var _json_util = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/thirdparty/json_beautifier/json_beautifier.gd")
 var _node_pool := ConceptGraphNodePool.new()
 var _thread_pool := ConceptGraphThreadPool.new()
@@ -48,6 +49,7 @@ var _property_nodes := {}
 var _proxy_nodes := {}
 
 var _inline_vectors: bool = Settings.get_setting(Settings.INLINE_VECTOR_FIELDS)
+var _loaded_template_path: String
 
 
 func _init() -> void:
@@ -236,6 +238,14 @@ func get_output() -> Array:
 	return _output
 
 
+func get_relative_path(path) -> String:
+	return PathUtil.get_relative_path(path, _loaded_template_path)
+
+
+func get_absolute_path(path) -> String:
+	return PathUtil.get_absolute_path(path, _loaded_template_path)
+
+
 """
 Opens a cgraph file, reads its contents and recreate a node graph from there
 """
@@ -293,6 +303,7 @@ func load_from_file(path: String, soft_load := false) -> void:
 		# Restore previous camera position and zoom level
 		# Restore panels width and height
 
+	_loaded_template_path = path
 	_template_loaded = true
 	paused = false
 	emit_signal("template_loaded")

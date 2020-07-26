@@ -41,11 +41,14 @@ func _generate_outputs() -> void:
 	if auto_import or not _data:
 		_trigger_import()
 
-	output[0] = _data.duplicate(7)
+	if _data:
+		output[0] = _data.duplicate(7)
 
 
 func _trigger_import() -> void:
+	_data = null
 	var path: String = get_input_single(0, "")
+	path = get_parent().get_absolute_path(path)
 	var gltf = PackedSceneGLTF.new()
 	gltf.pack_gltf(path)
 	_data = gltf.instance()
@@ -59,6 +62,7 @@ func _force_import() -> void:
 func _on_default_gui_interaction(_value, _control: Control, slot: int) -> void:
 	if slot == 0:
 		_update_preview()
+		_trigger_import()
 
 
 func _on_connection_changed() -> void:

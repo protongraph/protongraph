@@ -50,6 +50,7 @@ func _trigger_import() -> void:
 		_data = null
 
 	var path: String = get_input_single(0, "")
+	path = get_parent().get_absolute_path(path)
 	if ResourceLoader.exists(path):
 		var scene: PackedScene = ResourceLoader.load(path, "PackedScene", true)
 		if scene and scene.can_instance():

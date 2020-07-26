@@ -37,6 +37,7 @@ func _generate_outputs() -> void:
 func _force_export() -> void:
 	var node: Spatial = get_input_single(0, null)
 	var path: String = get_input_single(1, "")
+	path = get_parent().get_absolute_path(path)
 	if node and path != "":
 		var gltf := PackedSceneGLTF.new()
 		gltf.export_gltf(node, path)

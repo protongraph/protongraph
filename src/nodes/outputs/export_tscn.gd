@@ -59,8 +59,9 @@ func _save_scene(scene, path: String):
 
 
 func _force_export() -> void:
-	var path: String = get_input_single(1, "")
 	var out = get_input_single(0)
+	var path: String = get_input_single(1, "")
+	path = get_parent().get_absolute_path(path)
 
 	if path and path != "" and out:
 		_save_scene(out, path)
