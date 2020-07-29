@@ -36,7 +36,7 @@ this addon will be compatible with later versions.
 
 ## Quick start
 
-[Check out the wiki](https://github.com/HungryProton/concept_graph/wiki) for detailled explainations
+[Check out the wiki](https://github.com/HungryProton/concept_graph/wiki) for detailed explanations
 
 Check out the **examples folder** at the root of the addon folder for pre-made
 templates and example scences.
