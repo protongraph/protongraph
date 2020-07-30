@@ -9,25 +9,10 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Spatial",
+"base": "MeshInstance",
 "class": "ConceptBoxInput",
 "language": "GDScript",
 "path": "res://nodes/box_input.gd"
-}, {
-"base": "Node",
-"class": "ConceptGraph",
-"language": "GDScript",
-"path": "res://src/core/concept_graph.gd"
-}, {
-"base": "Node2D",
-"class": "ConceptGraph2D",
-"language": "GDScript",
-"path": "res://src/core/concept_graph_2d.gd"
-}, {
-"base": "Spatial",
-"class": "ConceptGraph3D",
-"language": "GDScript",
-"path": "res://src/core/concept_graph_3d.gd"
 }, {
 "base": "Path",
 "class": "ConceptGraphCurveInput",
@@ -58,11 +43,6 @@ _global_script_classes=[ {
 "class": "ConceptGraphHeightmap",
 "language": "GDScript",
 "path": "res://src/data_structures/heightmap.gd"
-}, {
-"base": "Node",
-"class": "ConceptGraphInputManager",
-"language": "GDScript",
-"path": "res://nodes/input_manager.gd"
 }, {
 "base": "Node",
 "class": "ConceptGraphNodePool",
@@ -160,6 +140,11 @@ _global_script_classes=[ {
 "path": "res://views/nodes/noise_preview.gd"
 }, {
 "base": "Reference",
+"class": "PathUtil",
+"language": "GDScript",
+"path": "res://src/common/path_util.gd"
+}, {
+"base": "Reference",
 "class": "PoolVectorUtil",
 "language": "GDScript",
 "path": "res://src/common/pool_vector_util.gd"
@@ -171,16 +156,12 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "ConceptBoxInput": "",
-"ConceptGraph": "res://icons/icon_concept_graph.svg",
-"ConceptGraph2D": "res://icons/icon_concept_graph.svg",
-"ConceptGraph3D": "res://icons/icon_concept_graph.svg",
 "ConceptGraphCurveInput": "",
 "ConceptGraphCurveUtil": "",
 "ConceptGraphDataType": "",
 "ConceptGraphEditorUtil": "",
 "ConceptGraphEditorView": "",
 "ConceptGraphHeightmap": "",
-"ConceptGraphInputManager": "",
 "ConceptGraphNodePool": "",
 "ConceptGraphNodeUtil": "",
 "ConceptGraphNoise": "",
@@ -200,6 +181,7 @@ _global_script_class_icons={
 "JSONBeautifier": "",
 "NodeUtils": "",
 "NoisePreview": "",
+"PathUtil": "",
 "PoolVectorUtil": "",
 "Signals": ""
 }
