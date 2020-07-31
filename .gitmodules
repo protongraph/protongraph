@@ -1,3 +1,12 @@
 [submodule "src/native/godot-cpp"]
 	path = src/native/godot-cpp
 	url = https://github.com/GodotNativeTools/godot-cpp.git
+[submodule "src/native/src/thirdparty/libigl"]
+	path = src/native/src/thirdparty/libigl
+	url = https://github.com/libigl/libigl.git
+[submodule "src/native/src/thirdparty/eigen"]
+	path = src/native/src/thirdparty/eigen
+	url = https://gitlab.com/libeigen/eigen.git
+[submodule "src/native/thirdparty/mesh_optimiser/meshoptimizer"]
+	path = src/native/thirdparty/mesh_optimiser/meshoptimizer
+	url = https://github.com/zeux/meshoptimizer
