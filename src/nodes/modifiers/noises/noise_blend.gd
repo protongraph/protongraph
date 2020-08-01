@@ -3,11 +3,8 @@ extends ConceptNode
 
 
 var _noise: ConceptGraphNoise
-var _texture_rect = TextureRect.new()
-var _image_texture = ImageTexture.new()
-var _is_preview_displayed = false
+var _preview: NoisePreview
 var _is_preview_outdated = true
-var _buffer_rect_size : Vector2
 
 
 func _init() -> void:
@@ -26,6 +23,13 @@ func _ready() -> void:
 	connect("input_changed", self, "_on_input_changed")
 
 
+func _on_default_gui_ready() -> void:
+	_preview = preload("res://views/nodes/noise_preview.tscn").instance()
+	_preview.connect("preview_requested", self, "_on_preview_requested")
+	_preview.connect("preview_hidden", self, "_on_preview_hidden")
+	add_child(_preview)
+
+
 func _generate_outputs() -> void:
 	var noise1: ConceptGraphNoise = get_input_single(0)
 	var noise2: ConceptGraphNoise = get_input_single(1)
@@ -42,37 +46,21 @@ func _generate_outputs() -> void:
 	output[0] = _noise
 
 	# Generating an image takes time so only do so if the preview panel is open
-	if _is_preview_displayed:
-		_image_texture.create_from_image(_noise.get_image(175, 175, 8))
+	if _preview.is_displayed and _is_preview_outdated:
+		_preview.create_from_noise(_noise)
 
 
 func _on_input_changed(slot: int, _value) -> void:
 	_is_preview_outdated = true
-	if _is_preview_displayed:
+	if _preview.is_displayed:
 		_generate_outputs()
 
 
-# TODO : Set noise size with the avaiable space on X axis
-func _on_default_gui_ready() -> void:
-	var button_preview := Button.new()
-	button_preview.text = "Preview"
-	button_preview.rect_min_size = Vector2(175, 0)
-	add_child(button_preview)
-	button_preview.connect("pressed", self, "_on_button_preview_pressed")
-	_texture_rect.texture = _image_texture
-	_texture_rect.rect_size = Vector2(175, 175)
-
-
-func _on_button_preview_pressed() -> void:
-	if _is_preview_displayed:
-		_is_preview_displayed = false
-		remove_child(_texture_rect)
-		rect_size = _buffer_rect_size
-	else:
-		_is_preview_displayed = true
-		_generate_outputs()
-		if _image_texture:
-			_buffer_rect_size = rect_size
-			add_child(_texture_rect)
-
+func _on_preview_requested() -> void:
+	_generate_outputs()
 	emit_signal("raise_request")
+
+
+func _on_preview_hidden() -> void:
+	rect_size = Vector2.ZERO
+	update()

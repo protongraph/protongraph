@@ -11,6 +11,7 @@ func _init() -> void:
 
 	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})
 	set_input(1, "Default", ConceptGraphDataType.CURVE_FUNC)
+	set_input(2, "Section", ConceptGraphDataType.STRING)
 	set_output(0, "", ConceptGraphDataType.CURVE_FUNC)
 
 
@@ -42,7 +43,8 @@ func get_exposed_variables() -> Array:
 		"type": ConceptGraphDataType.CURVE_FUNC,
 		"hint": PROPERTY_HINT_RESOURCE_TYPE,
 		"hint_string": "Curve",
-		"default_value": get_input(1, default),
+		"default_value": get_input_single(1, default),
+		"section": get_input_single(2, ""),
 		}]
 
 

@@ -1,0 +1,6 @@
+[submodule "src/native/godot-cpp"]
+	path = src/native/godot-cpp
+	url = https://github.com/GodotNativeTools/godot-cpp.git
+[submodule "src/native/thirdparty/mesh_optimizer/meshoptimizer"]
+	path = src/native/thirdparty/mesh_optimizer/lib/meshoptimizer
+	url = https://github.com/zeux/meshoptimizer

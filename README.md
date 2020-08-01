@@ -1,21 +1,7 @@
 # Concept Graph
 This is a node based, procedural content creation tool.
-You have a collection of nodes that you visually connect together to create a complex result. You can see it as a form
-of visual scripting, but for generating 3D models.
-
-## Important note
-This tool started as a Godot Engine addon but is currently been transitionned to be a standalone software. 
-More information here https://www.youtube.com/watch?v=RVSum5m2suU
-
-This means you will no longer need to use this from the Godot editor, but simply download and use ConceptGraph as any other tool.
-I don't have any time estimate on when it will be ready but you can join the discord server if you want to get small updates
-on the development progress : https://discord.gg/utUtB5r
-
-## Work left to do before the standalone release:
-- [ ] Import and export features (GLTF)
-- [ ] Runtime gizmos to manipulate the inputs
-- [ ] Undo/Redo support
-- [ ] Other QoL features
+You have a collection of nodes that you connect together to create a complex result. You can see it as a form
+of visual scripting, but for 3D models generation.
 
 ## Overview
 
@@ -24,53 +10,41 @@ The graph node can be as simple ...
 
 ... or as complicated as you want ![image](https://user-images.githubusercontent.com/52043844/82753149-d0791080-9dc3-11ea-8b76-035d7115ee55.png)
 
-[Video example 1](https://streamable.com/1gke2)
-
-[Video example 2](https://streamable.com/sh3dhr)
-
 ## Status
 
 This tool is still a **work in progress**. Until it hits version 1.0, it is not
 considered production ready and there's no guarantees the files generated with
 this addon will be compatible with later versions.
 
+### Important note
+
+This tool started as a Godot Engine addon but is currently been transitionned to be a standalone software.
+More information here https://www.youtube.com/watch?v=RVSum5m2suU
+
+This means you will no longer need to use this from the Godot editor, but simply download and use ConceptGraph as any other tool.
+The current release is a preview version. I expect bugs and regressions as it was not fully tested on all target platforms. OSX versions are
+known to be troublesome.
+
+
 ## Quick start
 
 [Check out the wiki](https://github.com/HungryProton/concept_graph/wiki) for detailed explanations
 
-Check out the **examples folder** at the root of the addon folder for pre-made
-templates and example scences.
 
-Check out [this video tutorial](https://www.youtube.com/watch?v=hLFgfyKbPoU) for a step by step guide on how to create your first graph
+## Known issues and roadmap
 
-### Known issues and roadmap
++ For a list of known issues, [head over the issue tracker](https://github.com/HungryProton/concept_graph/issues)
++ To track the work in progress and planned feature, [head over the project board](https://github.com/users/HungryProton/projects/1)
 
-For a complete list of known issues, [head over there](https://github.com/HungryProton/concept_graph/issues)
+The **current focus** is to get the standalone version in a working state and **add a lot of documentation**.
+Even though ConceptGraph doesn't have all of its planned features, we can't expect anyone to actually use this tool if nobody knows how to.
 
-#### Object was deleted while awaiting a callback
-+ Go to your **Project Settings** under **Memory/Limits**, increase the message queue size to 4096 at least. If the issue appears again, increase this value even higher
+## Social medias
 
-#### General issues
+Despite being a very new project, the ConceptGraph community is growing. Head over to the Discord server if you want to ask for help
+and hear about every little update or work in progress. Head over to Youtube or LBRY to access video tutorials.
 
-
-+ Save files needs improvement to make them work with future versions.
-+ Missing Undo/Redo support for some operations.
-+ Overall performance needs to be improved.
-
-#### Roadmap
-
-1. Make it work
-2. Make it user friendly
-3. Make it fast
-
-Right now my focus is on user experience and stability. I'm working on this tool
-while also using it for my own game so I can actually see what's missing and
-what part of the workflow could be improved for real world use.
-
-+ **Future plans** include
-  - More mesh operations
-  - Heightmap tools
-  - Automation
-  - Execution flow control (conditionals and loops)
-
-New ideas are welcome!
++ **Discord server:** https://discord.gg/utUtB5r
++ **Twitter:** https://twitter.com/HungryProton
++ **Youtube:** https://www.youtube.com/channel/UCN-YuzlFmOOh0A5iwiDab2w
++ **LBRY:** https://lbry.tv/@HungryProton:2

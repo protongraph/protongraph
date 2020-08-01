@@ -1,0 +1,244 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "MeshInstance",
+"class": "ConceptBoxInput",
+"language": "GDScript",
+"path": "res://nodes/box_input.gd"
+}, {
+"base": "Path",
+"class": "ConceptGraphCurveInput",
+"language": "GDScript",
+"path": "res://nodes/curve_input.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphCurveUtil",
+"language": "GDScript",
+"path": "res://src/common/curve_util.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphDataType",
+"language": "GDScript",
+"path": "res://src/data_structures/data_types.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphEditorUtil",
+"language": "GDScript",
+"path": "res://src/common/editor_util.gd"
+}, {
+"base": "Control",
+"class": "ConceptGraphEditorView",
+"language": "GDScript",
+"path": "res://views/editor/editor_view.gd"
+}, {
+"base": "Object",
+"class": "ConceptGraphHeightmap",
+"language": "GDScript",
+"path": "res://src/data_structures/heightmap.gd"
+}, {
+"base": "Node",
+"class": "ConceptGraphNodePool",
+"language": "GDScript",
+"path": "res://src/core/node_pool.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphNodeUtil",
+"language": "GDScript",
+"path": "res://src/common/node_util.gd"
+}, {
+"base": "Object",
+"class": "ConceptGraphNoise",
+"language": "GDScript",
+"path": "res://src/data_structures/noise.gd"
+}, {
+"base": "ConceptGraphNoise",
+"class": "ConceptGraphNoiseBlend",
+"language": "GDScript",
+"path": "res://src/data_structures/noise_blend.gd"
+}, {
+"base": "ConceptGraphNoise",
+"class": "ConceptGraphNoiseSimplex",
+"language": "GDScript",
+"path": "res://src/data_structures/noise_simplex.gd"
+}, {
+"base": "Node",
+"class": "ConceptGraphSettings",
+"language": "GDScript",
+"path": "res://src/core/project_settings.gd"
+}, {
+"base": "",
+"class": "ConceptGraphTemplate",
+"language": "GDScript",
+"path": "res://src/core/template.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphThreadPool",
+"language": "GDScript",
+"path": "res://src/core/thread_pool.gd"
+}, {
+"base": "Reference",
+"class": "ConceptGraphVectorUtil",
+"language": "GDScript",
+"path": "res://src/common/vector_util.gd"
+}, {
+"base": "GraphNode",
+"class": "ConceptNode",
+"language": "GDScript",
+"path": "res://src/core/concept_node.gd"
+}, {
+"base": "Node",
+"class": "ConceptNodeLibrary",
+"language": "GDScript",
+"path": "res://src/core/node_library.gd"
+}, {
+"base": "Spatial",
+"class": "ConceptNodeVectorCurve",
+"language": "GDScript",
+"path": "res://src/data_structures/vector_curve_3d.gd"
+}, {
+"base": "Spatial",
+"class": "ConceptNodeVectorCurve2D",
+"language": "GDScript",
+"path": "res://src/data_structures/vector_curve_2d.gd"
+}, {
+"base": "ProgressBar",
+"class": "CustomSpinBox",
+"language": "GDScript",
+"path": "res://views/editor/common/spinbox/spinbox.gd"
+}, {
+"base": "ScrollContainer",
+"class": "InspectorPanel",
+"language": "GDScript",
+"path": "res://views/editor/inspector/inspector.gd"
+}, {
+"base": "Reference",
+"class": "JSONBeautifier",
+"language": "GDScript",
+"path": "res://src/thirdparty/json_beautifier/json_beautifier.gd"
+}, {
+"base": "Object",
+"class": "NodeUtils",
+"language": "GDScript",
+"path": "res://src/common/node_utils.gd"
+}, {
+"base": "VBoxContainer",
+"class": "NoisePreview",
+"language": "GDScript",
+"path": "res://views/nodes/noise_preview.gd"
+}, {
+"base": "Reference",
+"class": "PathUtil",
+"language": "GDScript",
+"path": "res://src/common/path_util.gd"
+}, {
+"base": "Reference",
+"class": "PoolVectorUtil",
+"language": "GDScript",
+"path": "res://src/common/pool_vector_util.gd"
+}, {
+"base": "Node",
+"class": "Signals",
+"language": "GDScript",
+"path": "res://src/common/signal_util.gd"
+} ]
+_global_script_class_icons={
+"ConceptBoxInput": "",
+"ConceptGraphCurveInput": "",
+"ConceptGraphCurveUtil": "",
+"ConceptGraphDataType": "",
+"ConceptGraphEditorUtil": "",
+"ConceptGraphEditorView": "",
+"ConceptGraphHeightmap": "",
+"ConceptGraphNodePool": "",
+"ConceptGraphNodeUtil": "",
+"ConceptGraphNoise": "",
+"ConceptGraphNoiseBlend": "",
+"ConceptGraphNoiseSimplex": "",
+"ConceptGraphSettings": "",
+"ConceptGraphTemplate": "",
+"ConceptGraphThreadPool": "",
+"ConceptGraphVectorUtil": "",
+"ConceptNode": "",
+"ConceptNodeLibrary": "",
+"ConceptNodeVectorCurve": "",
+"ConceptNodeVectorCurve2D": "",
+"CustomSpinBox": "",
+"InspectorPanel": "",
+"JSONBeautifier": "",
+"NodeUtils": "",
+"NoisePreview": "",
+"PathUtil": "",
+"PoolVectorUtil": "",
+"Signals": ""
+}
+
+[application]
+
+config/name="ConceptGraph"
+run/main_scene="res://views/main/main_view.tscn"
+boot_splash/image="res://views/themes/splash.png"
+boot_splash/fullsize=false
+boot_splash/bg_color=Color( 0.1408, 0.1456, 0.16, 1 )
+config/icon="res://icons/icon.png"
+config/auto_accept_quit=false
+config/quit_on_go_back=false
+
+[autoload]
+
+GlobalUndoRedo="*res://src/common/undo_redo.gd"
+Settings="*res://src/core/project_settings.gd"
+NodeLibrary="*res://src/core/node_library.gd"
+
+[debug]
+
+gdscript/warnings/unsafe_property_access=true
+gdscript/warnings/unsafe_method_access=true
+gdscript/warnings/unsafe_cast=true
+gdscript/warnings/unsafe_call_argument=true
+
+[display]
+
+window/size/width=1366
+window/size/height=768
+
+[editor_plugins]
+
+enabled=PoolStringArray(  )
+
+[gui]
+
+theme/use_hidpi=true
+
+[input]
+
+undo={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":true,"meta":false,"command":true,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
+ ]
+}
+redo={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":true,"control":true,"meta":false,"command":true,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[memory]
+
+limits/message_queue/max_size_kb=8192
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+quality/intended_usage/framebuffer_allocation=3
+threads/thread_model=2
+quality/filters/msaa=1
+environment/default_environment="res://default_env.tres"
+quality/subsurface_scattering/quality=0

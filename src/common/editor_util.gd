@@ -1,38 +1,11 @@
-tool
 class_name ConceptGraphEditorUtil
 
 
-# Taken from https://github.com/Zylann/godot_heightmap_plugin/blob/master/addons/zylann.hterrain/tools/util/editor_util.gd
-static func get_dpi_scale() -> float:
-	var editor_plugin = EditorPlugin.new()
-	var editor_settings = editor_plugin.get_editor_interface().get_editor_settings()
-	editor_plugin.queue_free()
-	var display_scale = editor_settings.get("interface/editor/display_scale")
-	var custom_display_scale = editor_settings.get("interface/editor/custom_display_scale")
-	var edscale := 0.0
-
-	match display_scale:
-		0:
-			# Try applying a suitable display scale automatically
-			var screen = OS.current_screen
-			var large = OS.get_screen_dpi(screen) >= 192 and OS.get_screen_size(screen).x > 2000
-			edscale = 2.0 if large else 1.0
-		1:
-			edscale = 0.75
-		2:
-			edscale = 1.0
-		3:
-			edscale = 1.25
-		4:
-			edscale = 1.5
-		5:
-			edscale = 1.75
-		6:
-			edscale = 2.0
-		_:
-			edscale = custom_display_scale
-
-	return edscale
+static func get_editor_scale() -> float:
+	var scale = Settings.get_setting(Settings.EDITOR_SCALE)
+	if not scale:
+		scale = 100
+	return scale / 100.0
 
 
 """
@@ -59,3 +32,123 @@ static func get_square_texture(color: Color) -> ImageTexture:
 	imageTexture.resource_name = "square " + String(color.to_rgba32())
 
 	return imageTexture
+
+
+"""
+>>>> ONLY CALL THIS ONCE <<<<
+"""
+static func scale_all_ui_resources() -> void:
+	_scale_fonts()
+	_scale_spinbox_custom_stylebox()
+	_scale_common_stylebox()
+
+
+static func get_scaled_theme(theme: Theme) -> Theme:
+	var scale = get_editor_scale()
+	if scale == 1.0:
+		return theme
+
+	var res: Theme = theme.duplicate(true)
+
+	res.default_font.size *= scale
+
+	for font_name in res.get_font_list("EditorFonts"):
+		var font = res.get_font(font_name, "EditorFonts")
+		font.size *= scale
+
+	for stylebox_type in res.get_stylebox_types():
+		for font_name in res.get_font_list(stylebox_type):
+			var font = res.get_font(font_name, stylebox_type)
+			font.size *= scale
+
+		for const_name in res.get_constant_list(stylebox_type):
+			var c = res.get_constant(const_name, stylebox_type)
+			res.set_constant(const_name, stylebox_type, c * scale)
+
+		for box_name in res.get_stylebox_list(stylebox_type):
+			var box = res.get_stylebox(box_name, stylebox_type)
+
+			box.content_margin_bottom *= scale
+			box.content_margin_left *= scale
+			box.content_margin_right *= scale
+			box.content_margin_top *= scale
+
+			if box is StyleBoxFlat:
+				box.corner_radius_bottom_left *= scale
+				box.corner_radius_bottom_right *= scale
+				box.corner_radius_top_left *= scale
+				box.corner_radius_top_right *= scale
+
+				box.border_width_bottom *= scale
+				box.border_width_top *= scale
+				box.border_width_left *= scale
+				box.border_width_right *= scale
+
+				box.expand_margin_bottom *= scale
+				box.expand_margin_top *= scale
+				box.expand_margin_left *= scale
+				box.expand_margin_right *= scale
+
+	return res
+
+
+"""
+Scale the fonts from the font folder. Calling load takes advantage of the built in resource caching
+and allows to update all the fonts manually assigned in different scenes without going through the
+theme.
+"""
+static func _scale_fonts() -> void:
+	var scale = get_editor_scale()
+	var dir = Directory.new()
+	var path = "res://views/themes/fonts/"
+	dir.open(path)
+
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.get_extension() == "tres":
+			var resource = load(path + file_name)
+			if resource is Font:
+				resource.size *= scale
+
+		file_name = dir.get_next()
+
+
+static func _scale_spinbox_custom_stylebox() -> void:
+	var scale = get_editor_scale()
+	var dir = Directory.new()
+	var path = "res://views/editor/common/spinbox/styles/"
+	dir.open(path)
+
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.get_extension() == "tres":
+			var resource = load(path + file_name)
+			if resource is StyleBoxFlat:
+				resource.corner_radius_bottom_left *= scale
+				resource.corner_radius_bottom_right *= scale
+				resource.corner_radius_top_left *= scale
+				resource.corner_radius_top_right *= scale
+
+		file_name = dir.get_next()
+
+
+static func _scale_common_stylebox() -> void:
+	var scale = get_editor_scale()
+	var dir = Directory.new()
+	var path = "res://views/themes/styles/"
+	dir.open(path)
+
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.get_extension() == "tres":
+			var resource = load(path + file_name)
+			if resource is StyleBoxFlat:
+				resource.corner_radius_bottom_left *= scale
+				resource.corner_radius_bottom_right *= scale
+				resource.corner_radius_top_left *= scale
+				resource.corner_radius_top_right *= scale
+
+		file_name = dir.get_next()

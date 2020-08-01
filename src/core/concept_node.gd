@@ -1,4 +1,3 @@
-tool
 class_name ConceptNode
 extends GraphNode
 
@@ -18,6 +17,7 @@ var unique_id := "concept_node"
 var display_name := "ConceptNode"
 var category := "No category"
 var description := "A brief description of the node functionality"
+var ignore := false
 var node_pool: ConceptGraphNodePool # Injected from template
 var thread_pool: ConceptGraphThreadPool # Injected from template
 var output := []
@@ -25,6 +25,7 @@ var minimap_color
 # Set to true to force the template to recreate the whole node instead of the style only. Useful if the
 # graphnode has UI controls like OptionButtons that can't be generated properly under a spatial node.
 var requires_full_gui_rebuild := false
+var inline_vectors := false
 
 var _folder_icon
 var _multi_input_icon
@@ -156,7 +157,11 @@ func get_output(idx: int, default := []) -> Array:
 		for i in res.size():
 			# TODO move the duplication in a helper function instead
 			var node = res[i]
-			var duplicate = node.duplicate(7)
+			var duplicate
+			if node is Resource:
+				duplicate = node.duplicate(true)
+			else:
+				duplicate = node.duplicate(7)
 
 			# TODO : Check if other nodes needs extra steps
 			if node is Path or node is Path2D:
@@ -174,21 +179,16 @@ func get_output(idx: int, default := []) -> Array:
 	return res.duplicate(true)
 
 
-"""
-Query the parent ConceptGraph node in the editor and returns the corresponding input node if it
-exists
-"""
-func get_editor_input(name: String) -> Node:
-	var parent = get_parent()
-	if not parent:
-		return null
-	var input = parent.concept_graph.get_input(name)
-	if input == null:
-		return null
+func get_connected_input_type(idx) -> int:
+	var input_type = -1
+	if is_input_connected(idx):
+		var inputs: Array = get_parent().get_left_nodes(self, idx)
+		for data in inputs:
+			if input_type == -1:
+				input_type = data["node"]._outputs[data["slot"]]["type"]
+				break
 
-	var input_copy = input.duplicate(7)
-	register_to_garbage_collection(input_copy)
-	return input_copy
+	return input_type
 
 
 """
@@ -199,8 +199,8 @@ func get_exposed_variables() -> Array:
 	return []
 
 
-func get_concept_graph():
-	return get_parent().concept_graph
+func get_editor_input(_val):
+	return null
 
 
 """
@@ -208,8 +208,9 @@ Clears the cache and the cache of every single nodes right to this one.
 """
 func reset() -> void:
 	clear_cache()
-	for node in get_parent().get_all_right_nodes(self):
-		node.reset()
+	if get_parent():
+		for node in get_parent().get_all_right_nodes(self):
+			node.reset()
 
 
 func clear_cache() -> void:
@@ -219,14 +220,14 @@ func clear_cache() -> void:
 
 
 func export_editor_data() -> Dictionary:
-	var editor_scale = ConceptGraphEditorUtil.get_dpi_scale()
+	var editor_scale = ConceptGraphEditorUtil.get_editor_scale()
 	var data = {}
 	data["offset_x"] = offset.x / editor_scale
 	data["offset_y"] = offset.y / editor_scale
 
 	if resizable:
-		data["rect_x"] = rect_size.x
-		data["rect_y"] = rect_size.y
+		data["rect_x"] = rect_size.x / editor_scale
+		data["rect_y"] = rect_size.y / editor_scale
 
 	data["slots"] = {}
 	for i in _inputs.size():
@@ -239,14 +240,16 @@ func export_editor_data() -> Dictionary:
 
 
 func restore_editor_data(data: Dictionary) -> void:
-	var editor_scale = ConceptGraphEditorUtil.get_dpi_scale()
+	var editor_scale = ConceptGraphEditorUtil.get_editor_scale()
 	offset.x = data["offset_x"] * editor_scale
 	offset.y = data["offset_y"] * editor_scale
 
+	rect_size = Vector2.ZERO
 	if data.has("rect_x"):
-		rect_size.x = data["rect_x"]
+		rect_size.x = data["rect_x"] * editor_scale
 	if data.has("rect_y"):
-		rect_size.y = data["rect_y"]
+		rect_size.y = data["rect_y"] * editor_scale
+
 	emit_signal("resize_request", rect_size)
 
 	if has_custom_gui():
@@ -256,25 +259,10 @@ func restore_editor_data(data: Dictionary) -> void:
 
 	for i in slots:
 		if data["slots"].has(String(i)):
-			var type = _inputs[i]["type"]
 			var value = data["slots"][String(i)]
-			var left = _hboxes[i].get_node("Left")
+			set_default_gui_value(i, value)
 
-			match type:
-				ConceptGraphDataType.BOOLEAN:
-					left.get_node("CheckBox").pressed = value
-				ConceptGraphDataType.SCALAR:
-					left.get_node("SpinBox").value = value
-				ConceptGraphDataType.STRING:
-					if left.has_node("LineEdit"):
-						left.get_node("LineEdit").text = value
-					elif left.has_node("OptionButton"):
-						var btn: OptionButton = left.get_node("OptionButton")
-						btn.selected = btn.get_item_index(int(value))
-				ConceptGraphDataType.VECTOR2:
-					_set_vector_value(i, value)
-				ConceptGraphDataType.VECTOR3:
-					_set_vector_value(i, value)
+	_on_editor_data_restored()
 
 
 """
@@ -374,6 +362,30 @@ do with the user defined value.
 """
 func set_value_from_inspector(_name: String, _value) -> void:
 	pass
+
+
+func set_default_gui_value(slot: int, value) -> void:
+	if _hboxes.size() <= slot:
+		return
+
+	var type = _inputs[slot]["type"]
+	var left = _hboxes[slot].get_node("Left")
+
+	match type:
+		ConceptGraphDataType.BOOLEAN:
+			left.get_node("CheckBox").pressed = value
+		ConceptGraphDataType.SCALAR:
+			left.get_node("SpinBox").value = value
+		ConceptGraphDataType.STRING:
+			if left.has_node("LineEdit"):
+				left.get_node("LineEdit").text = value
+			elif left.has_node("OptionButton"):
+				var btn: OptionButton = left.get_node("OptionButton")
+				btn.selected = btn.get_item_index(int(value))
+		ConceptGraphDataType.VECTOR2:
+			_set_vector_value(slot, value)
+		ConceptGraphDataType.VECTOR3:
+			_set_vector_value(slot, value)
 
 
 func register_to_garbage_collection(resource):
@@ -527,11 +539,11 @@ func _clear_gui() -> void:
 Based on graph node category this method will setup corresponding style and color of graph node
 """
 func _generate_default_gui_style() -> void:
-	var scale: float = ConceptGraphEditorUtil.get_dpi_scale()
+	var scale: float = ConceptGraphEditorUtil.get_editor_scale()
 
 	# Base Style
 	var style = StyleBoxFlat.new()
-	var color = Color(0.121569, 0.145098, 0.192157, 0.9)
+	var color = Color("e61f2531")
 	style.border_color = ConceptGraphDataType.to_category_color(category)
 	minimap_color = style.border_color
 	style.set_bg_color(color)
@@ -548,7 +560,7 @@ func _generate_default_gui_style() -> void:
 	var selected_style = style.duplicate()
 	selected_style.shadow_color = ConceptGraphDataType.to_category_color(category)
 	selected_style.shadow_size = 4 * scale
-	selected_style.border_color = Color(0.121569, 0.145098, 0.192157, 0.9)
+	selected_style.border_color = color
 
 	if not comment:
 		add_stylebox_override("frame", style)
@@ -561,10 +573,8 @@ func _generate_default_gui_style() -> void:
 
 	add_constant_override("port_offset", 12 * scale)
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
-
-	# GraphNode slots doesn't take in account the separation parameter so where you have to click and
-	# where the slot is displayed doesn't match.
-	# add_constant_override("separation", 0)
+	add_constant_override("separation", 2)
+	add_constant_override("title_offset", 21 * scale)
 
 
 """
@@ -593,7 +603,7 @@ func _generate_default_gui() -> void:
 	for i in slots:
 		# Create a Hbox container per slot like this -> [LabelIn, (opt), LabelOut]
 		var hbox = HBoxContainer.new()
-		hbox.rect_min_size.y = 24
+		hbox.rect_min_size.y = 24 * ConceptGraphEditorUtil.get_editor_scale()
 
 		# Make sure it appears in the editor and store along the other Hboxes
 		_hboxes.append(hbox)
@@ -622,6 +632,7 @@ func _generate_default_gui() -> void:
 				ConceptGraphDataType.BOOLEAN:
 					var opts = _inputs[i]["options"]
 					var checkbox = CheckBox.new()
+					checkbox.focus_mode = Control.FOCUS_NONE
 					checkbox.name = "CheckBox"
 					checkbox.pressed = opts["value"] if opts.has("value") else false
 					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
@@ -644,6 +655,9 @@ func _generate_default_gui() -> void:
 					var opts = _inputs[i]["options"]
 					if opts.has("type") and opts["type"] == "dropdown":
 						var dropdown = OptionButton.new()
+						dropdown.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
+						dropdown.add_stylebox_override("hover", load("res://views/themes/styles/graphnode_button_hover.tres"))
+						dropdown.focus_mode = Control.FOCUS_NONE
 						dropdown.name = "OptionButton"
 						for item in opts["items"].keys():
 							dropdown.add_item(item, opts["items"][item])
@@ -653,6 +667,9 @@ func _generate_default_gui() -> void:
 						requires_full_gui_rebuild = true
 					else:
 						var line_edit = LineEdit.new()
+						line_edit.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
+						line_edit.add_stylebox_override("focus", load("res://views/themes/styles/graphnode_line_edit_focus.tres"))
+						line_edit.rect_min_size.x = 120
 						line_edit.name = "LineEdit"
 						line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
 						line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
@@ -662,6 +679,8 @@ func _generate_default_gui() -> void:
 
 						if opts.has("file_dialog"):
 							var folder_button = Button.new()
+							folder_button.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
+							folder_button.add_stylebox_override("hover", load("res://views/themes/styles/graphnode_button_hover.tres"))
 							if not _folder_icon:
 								_folder_icon = load(ConceptGraphEditorUtil.get_plugin_root_path() + "icons/icon_folder.svg")
 							folder_button.icon = _folder_icon
@@ -706,11 +725,11 @@ func _generate_default_gui() -> void:
 
 func _create_spinbox(property_name, opts, parent, idx) -> SpinBox:
 	if not _spinbox:
-		_spinbox = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/editor/gui/spinbox.tscn")
+		_spinbox = preload("res://views/editor/common/spinbox/spinbox.tscn")
 	var spinbox = _spinbox.instance()
 	if parent:
 		parent.add_child(spinbox)
-	spinbox.set_label_value(property_name)
+	spinbox.set_label_text(property_name)
 	spinbox.name = "SpinBox"
 	spinbox.max_value = opts["max"] if opts.has("max") else 1000
 	spinbox.min_value = opts["min"] if opts.has("min") else 0
@@ -738,13 +757,13 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 		label.text = property_name
 		vbox.add_child(label)
 
-	var inline = ProjectSettings.get(ConceptGraphSettings.INLINE_VECTOR_FIELDS)
 	var vector_box
-	if inline:
+	if inline_vectors:
 		vector_box = HBoxContainer.new()
 	else:
 		vector_box = VBoxContainer.new()
-		vector_box.rect_min_size.x = 120
+		vector_box.rect_min_size.x = 120 * ConceptGraphEditorUtil.get_editor_scale()
+		vector_box.rect_min_size.y = 24 * count * ConceptGraphEditorUtil.get_editor_scale()
 	vector_box.name = "Vector"
 	vector_box.add_constant_override("separation", 0)
 	vbox.add_child(vector_box)
@@ -756,7 +775,7 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 			s = _create_spinbox(vector_index, opts[vector_index], vector_box, idx)
 		else:
 			s = _create_spinbox(vector_index, opts, vector_box, idx)
-		if inline:
+		if inline_vectors:
 			s.style = 3
 		elif i == 0:
 			s.style = 0
@@ -792,25 +811,33 @@ func _get_vector_value(idx: int):
 
 
 func _set_vector_value(idx: int, value) -> void:
-	if idx >= _inputs.size():
+	if not value or idx >= _inputs.size():
 		return
 
 	var vbox = _hboxes[idx].get_node("Left").get_node("VectorContainer")
 	if not vbox:
 		return
 
-	# String to Vector conversion
-	value = value.substr(1, value.length() - 2)
-	var tokens = value.split(',')
+	var vector
+
+	if value is String:
+		# String to Vector conversion
+		value = value.substr(1, value.length() - 2)
+		vector = value.split(',')
+	elif value is Vector3 or value is Vector2:
+		vector = value
 
 	var vector_box = vbox.get_node("Vector")
 	var count = vector_box.get_child_count()
 
 	for i in count:
-		vector_box.get_child(i).value = float(tokens[i])
+		vector_box.get_child(i).value = float(vector[i])
 
 
 func _get_default_gui_value(idx: int, for_export := false):
+	if _hboxes.size() <= idx:
+		return null
+
 	var left = _hboxes[idx].get_node("Left")
 	if not left:
 		return null
@@ -853,10 +880,10 @@ func _redraw() -> void:
 
 
 func _connect_signals() -> void:
-	connect("close_request", self, "_on_close_request")
-	connect("resize_request", self, "_on_resize_request")
-	connect("connection_changed", self, "_on_connection_changed")
-	_resize_timer.connect("timeout", self, "_on_resize_timeout")
+	Signals.safe_connect(self, "close_request", self, "_on_close_request")
+	Signals.safe_connect(self, "resize_request", self, "_on_resize_request")
+	Signals.safe_connect(self, "connection_changed", self, "_on_connection_changed")
+	Signals.safe_connect(_resize_timer, "timeout", self, "_on_resize_timeout")
 
 
 """
@@ -870,6 +897,7 @@ func _show_file_dialog(opts: Dictionary, line_edit: LineEdit) -> void:
 	_file_dialog.rect_min_size = Vector2(500, 500)
 	_file_dialog.mode = opts["mode"] if opts.has("mode") else FileDialog.MODE_SAVE_FILE
 	_file_dialog.resizable = true
+	_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
 
 	if opts.has("filters"):
 		var filters = PoolStringArray()
@@ -877,9 +905,7 @@ func _show_file_dialog(opts: Dictionary, line_edit: LineEdit) -> void:
 			filters.append(filter)
 		_file_dialog.set_filters(filters)
 
-	if _file_dialog.is_connected("confirmed", self, "_on_file_selected"):
-		_file_dialog.disconnect("confirmed", self, "_on_file_selected")
-	_file_dialog.connect("confirmed", self, "_on_file_selected", [line_edit])
+	Signals.safe_connect(_file_dialog, "file_selected", self, "_on_file_selected", [line_edit])
 	_file_dialog.popup_centered()
 
 
@@ -899,6 +925,8 @@ func _update_slots_types() -> void:
 				var input_type = -1
 
 				for data in inputs:
+					if not data["node"]:
+						continue
 					if input_type == -1:
 						input_type = data["node"]._outputs[data["slot"]]["type"]
 					else:
@@ -922,8 +950,8 @@ func _update_slots_types() -> void:
 """
 Called from _show_file_dialog when confirming the selection
 """
-func _on_file_selected(line_edit: LineEdit) -> void:
-	line_edit.text = _file_dialog.current_path
+func _on_file_selected(path, line_edit: LineEdit) -> void:
+	line_edit.text = get_parent().get_relative_path(path)
 
 
 func _on_resize_request(new_size) -> void:
@@ -960,6 +988,7 @@ func _on_connection_changed() -> void:
 
 	_update_slots_types()
 	_redraw()
+	reset()
 
 
 """
@@ -974,6 +1003,15 @@ func _on_default_gui_value_changed(value, slot: int) -> void:
 	emit_signal("input_changed", slot, value)
 	reset()
 
-
+"""
+Override in child nodes. Called when a default gui value was modified
+"""
 func _on_default_gui_interaction(_value, _control: Control, _slot: int) -> void:
+	pass
+
+
+"""
+Override in child nodes. Called when restore_editor_data() has completed
+"""
+func _on_editor_data_restored() -> void:
 	pass

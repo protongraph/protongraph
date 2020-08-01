@@ -37,14 +37,14 @@ func get_point_global(x: int, y: int, ignore_y_axis: bool = false) -> Vector3:
 	var pos = Vector3.ZERO
 	var ratio_x = (mesh_size.x - 1) / (size.x - 1)
 	var ratio_y = (mesh_size.y - 1) / (size.y - 1)
-	
+
 	pos.x = x * ratio_x
 	pos.z = y * ratio_y
-	
+
 	pos.y = 0.0
 	if not ignore_y_axis:
 		pos.y = data[y * size.y + x] * height_scale + height_offset
-	
+
 	pos += transform.origin
 
 	return pos

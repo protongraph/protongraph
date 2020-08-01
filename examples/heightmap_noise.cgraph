@@ -1,0 +1,542 @@
+{
+	"connections": [
+		{
+			"from": "GraphNode9",
+			"from_port": 0,
+			"to": "GraphNode12",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode13",
+			"from_port": 0,
+			"to": "GraphNode12",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode12",
+			"from_port": 0,
+			"to": "GraphNode8",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode3",
+			"from_port": 0,
+			"to": "GraphNode8",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode10",
+			"from_port": 0,
+			"to": "GraphNode9",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode2",
+			"from_port": 0,
+			"to": "GraphNode9",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode5",
+			"from_port": 0,
+			"to": "GraphNode10",
+			"to_port": 5
+		},
+		{
+			"from": "GraphNode11",
+			"from_port": 0,
+			"to": "GraphNode13",
+			"to_port": 5
+		},
+		{
+			"from": "GraphNode4",
+			"from_port": 0,
+			"to": "GraphNode",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode7",
+			"from_port": 0,
+			"to": "GraphNode2",
+			"to_port": 5
+		},
+		{
+			"from": "GraphNode8",
+			"from_port": 0,
+			"to": "GraphNode14",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode14",
+			"from_port": 0,
+			"to": "GraphNode4",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode6",
+			"from_port": 0,
+			"to": "GraphNode14",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode15",
+			"from_port": 0,
+			"to": "GraphNode3",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode16",
+			"from_port": 0,
+			"to": "GraphNode3",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode17",
+			"from_port": 0,
+			"to": "GraphNode4",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode18",
+			"from_port": 0,
+			"to": "GraphNode2",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode19",
+			"from_port": 0,
+			"to": "GraphNode20",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode20",
+			"from_port": 0,
+			"to": "GraphNode10",
+			"to_port": 0
+		},
+		{
+			"from": "GraphNode22",
+			"from_port": 0,
+			"to": "GraphNode21",
+			"to_port": 1
+		},
+		{
+			"from": "GraphNode21",
+			"from_port": 0,
+			"to": "GraphNode13",
+			"to_port": 0
+		}
+	],
+	"editor": {
+		"offset_x": -1615.370361,
+		"offset_y": 36.825989
+	},
+	"inspector": {
+		"mesh_size": 256,
+		"seed": 1,
+		"texture_size": 256
+	},
+	"nodes": [
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 60,
+				"offset_y": -340,
+				"slots": {
+					"0": 128,
+					"1": 256,
+					"2": 150,
+					"3": 100
+				}
+			},
+			"name": "GraphNode3",
+			"type": "heightmap_generator"
+		},
+		{
+			"data": {
+				"curve": {
+					"parameters": {
+						"max": 1,
+						"min": 0,
+						"res": 100
+					},
+					"points": [
+						{
+							"lm": 0,
+							"lt": 0,
+							"pos_x": 0.120584,
+							"pos_y": 0,
+							"rm": 0,
+							"rt": 0
+						},
+						{
+							"lm": 0,
+							"lt": 2.128845,
+							"pos_x": 1,
+							"pos_y": 1,
+							"rm": 0,
+							"rt": 0
+						}
+					]
+				}
+			},
+			"editor": {
+				"offset_x": -1100,
+				"offset_y": -600,
+				"rect_x": 339,
+				"rect_y": 267,
+				"slots": {}
+			},
+			"name": "GraphNode7",
+			"type": "function_curve_editor"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 1640,
+				"offset_y": -340,
+				"slots": {}
+			},
+			"name": "GraphNode",
+			"type": "final_output"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -600,
+				"offset_y": -180,
+				"slots": {
+					"0": 3,
+					"1": 4,
+					"2": 100,
+					"3": 0.2,
+					"4": 4
+				}
+			},
+			"name": "GraphNode10",
+			"type": "simplex_noise"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -600,
+				"offset_y": 180,
+				"slots": {
+					"0": 0,
+					"1": 4,
+					"2": 40,
+					"3": 0.25,
+					"4": 4
+				}
+			},
+			"name": "GraphNode13",
+			"type": "simplex_noise"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -280,
+				"offset_y": -340,
+				"slots": {
+					"2": 0.25
+				}
+			},
+			"name": "GraphNode9",
+			"type": "blend_noises"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 60,
+				"offset_y": -20,
+				"slots": {
+					"2": 0.01
+				}
+			},
+			"name": "GraphNode12",
+			"type": "blend_noises"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 460,
+				"offset_y": -340,
+				"slots": {
+					"2": "(1, 1, 1)",
+					"3": "(0, 0, 0)"
+				}
+			},
+			"name": "GraphNode8",
+			"type": "heightmap_apply_noise"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 680,
+				"offset_y": -240,
+				"slots": {
+					"0": "Hole",
+					"1": "(56.808998, 6.675, 108.583)",
+					"2": "(0, 0, 0)",
+					"3": "(50, 1, 25)"
+				}
+			},
+			"name": "GraphNode6",
+			"type": "input_box"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 1040,
+				"offset_y": -340,
+				"slots": {
+					"2": 0
+				}
+			},
+			"name": "GraphNode14",
+			"type": "heightmap_flatten_area"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -280,
+				"offset_y": -520,
+				"slots": {
+					"0": "mesh_size",
+					"1": 256,
+					"2": ""
+				}
+			},
+			"name": "GraphNode15",
+			"type": "inspector_scalar"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -280,
+				"offset_y": -700,
+				"slots": {
+					"0": "texture_size",
+					"1": 128,
+					"2": ""
+				}
+			},
+			"name": "GraphNode16",
+			"type": "inspector_scalar"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 960,
+				"offset_y": -140,
+				"slots": {
+					"0": "texture_size",
+					"1": 128,
+					"2": ""
+				}
+			},
+			"name": "GraphNode17",
+			"type": "inspector_scalar"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": 1280,
+				"offset_y": -340,
+				"slots": {
+					"1": 128,
+					"2": true,
+					"3": false
+				}
+			},
+			"name": "GraphNode4",
+			"type": "mesh_from_heightmap"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -600,
+				"offset_y": -600,
+				"slots": {
+					"0": 6,
+					"1": 4,
+					"2": 400,
+					"3": 0.2,
+					"4": 3.5
+				}
+			},
+			"name": "GraphNode2",
+			"type": "simplex_noise"
+		},
+		{
+			"data": {
+				"curve": {
+					"parameters": {
+						"max": 1,
+						"min": 0,
+						"res": 100
+					},
+					"points": [
+						{
+							"lm": 0,
+							"lt": 0,
+							"pos_x": 0.376336,
+							"pos_y": 0,
+							"rm": 0,
+							"rt": 0
+						},
+						{
+							"lm": 0,
+							"lt": 3.217001,
+							"pos_x": 1,
+							"pos_y": 1,
+							"rm": 0,
+							"rt": 0
+						}
+					]
+				}
+			},
+			"editor": {
+				"offset_x": -1100,
+				"offset_y": -140,
+				"rect_x": 332,
+				"rect_y": 267,
+				"slots": {}
+			},
+			"name": "GraphNode5",
+			"type": "function_curve_editor"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -920,
+				"offset_y": -280,
+				"slots": {
+					"0": 3,
+					"1": 0,
+					"2": 2
+				}
+			},
+			"name": "GraphNode20",
+			"type": "math_scalar_2"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -1180,
+				"offset_y": -280,
+				"slots": {
+					"0": "seed",
+					"1": 1,
+					"2": ""
+				}
+			},
+			"name": "GraphNode19",
+			"type": "inspector_scalar"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -1000,
+				"offset_y": -740,
+				"slots": {
+					"0": "seed",
+					"1": 1,
+					"2": ""
+				}
+			},
+			"name": "GraphNode18",
+			"type": "inspector_scalar"
+		},
+		{
+			"data": {
+				"curve": {
+					"parameters": {
+						"max": 1,
+						"min": 0,
+						"res": 100
+					},
+					"points": [
+						{
+							"lm": 0,
+							"lt": 0,
+							"pos_x": 0,
+							"pos_y": 1,
+							"rm": 0,
+							"rt": 0
+						},
+						{
+							"lm": 0,
+							"lt": 0,
+							"pos_x": 0.353718,
+							"pos_y": 1,
+							"rm": 0,
+							"rt": 0
+						},
+						{
+							"lm": 0,
+							"lt": 0,
+							"pos_x": 0.491628,
+							"pos_y": 0,
+							"rm": 0,
+							"rt": 0
+						},
+						{
+							"lm": 0,
+							"lt": 0,
+							"pos_x": 0.638201,
+							"pos_y": 1,
+							"rm": 0,
+							"rt": 0
+						},
+						{
+							"lm": 0,
+							"lt": 0,
+							"pos_x": 1,
+							"pos_y": 1,
+							"rm": 0,
+							"rt": 0
+						}
+					]
+				}
+			},
+			"editor": {
+				"offset_x": -1100,
+				"offset_y": 340,
+				"rect_x": 330,
+				"rect_y": 267.000061,
+				"slots": {}
+			},
+			"name": "GraphNode11",
+			"type": "function_curve_editor"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -1180,
+				"offset_y": 200,
+				"slots": {
+					"0": "seed",
+					"1": 1,
+					"2": ""
+				}
+			},
+			"name": "GraphNode22",
+			"type": "inspector_scalar"
+		},
+		{
+			"data": {},
+			"editor": {
+				"offset_x": -920,
+				"offset_y": 200,
+				"slots": {
+					"0": 3,
+					"1": 0,
+					"2": 4
+				}
+			},
+			"name": "GraphNode21",
+			"type": "math_scalar_2"
+		}
+	]
+}

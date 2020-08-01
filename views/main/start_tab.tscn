@@ -1,0 +1,149 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://views/main/start_tab.gd" type="Script" id=1]
+[ext_resource path="res://icons/icon_new.svg" type="Texture" id=2]
+[ext_resource path="res://views/themes/fonts/fira_sans_bold_large.tres" type="DynamicFont" id=3]
+[ext_resource path="res://icons/icon_load.svg" type="Texture" id=4]
+[ext_resource path="res://views/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=5]
+[ext_resource path="res://views/auto_scale.gd" type="Script" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxLine" id=2]
+color = Color( 1, 1, 1, 0.172549 )
+grow_begin = -150.0
+grow_end = -150.0
+vertical = true
+
+[node name="Start" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+links_root = NodePath("HBoxContainer/RecentFiles/VBoxContainer/LinksRoot")
+parent = NodePath("HBoxContainer/RecentFiles/VBoxContainer")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 1366.0
+margin_bottom = 768.0
+
+[node name="Introduction" type="MarginContainer" parent="HBoxContainer"]
+margin_right = 447.0
+margin_bottom = 768.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Introduction"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 427.0
+margin_bottom = 748.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+alignment = 1
+
+[node name="Title" type="Label" parent="HBoxContainer/Introduction/VBoxContainer"]
+margin_top = 268.0
+margin_right = 407.0
+margin_bottom = 312.0
+custom_fonts/font = ExtResource( 3 )
+text = "Concept Graph"
+align = 2
+
+[node name="Version" type="Label" parent="HBoxContainer/Introduction/VBoxContainer"]
+margin_top = 312.0
+margin_right = 407.0
+margin_bottom = 337.0
+text = "Version 0.6"
+align = 2
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/Introduction/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 337.0
+margin_right = 407.0
+margin_bottom = 377.0
+custom_constants/separation = 40
+
+[node name="Buttons" type="VBoxContainer" parent="HBoxContainer/Introduction/VBoxContainer"]
+margin_left = 222.0
+margin_top = 377.0
+margin_right = 407.0
+margin_bottom = 459.0
+rect_min_size = Vector2( 140, 0 )
+size_flags_horizontal = 8
+script = ExtResource( 6 )
+min_size_x = true
+
+[node name="NewTemplate" type="Button" parent="HBoxContainer/Introduction/VBoxContainer/Buttons"]
+margin_right = 185.0
+margin_bottom = 37.0
+focus_mode = 0
+text = "New Template"
+icon = ExtResource( 2 )
+flat = true
+align = 2
+expand_icon = true
+
+[node name="LoadTemplate" type="Button" parent="HBoxContainer/Introduction/VBoxContainer/Buttons"]
+margin_top = 45.0
+margin_right = 185.0
+margin_bottom = 82.0
+focus_mode = 0
+text = "Load Template"
+icon = ExtResource( 4 )
+flat = true
+align = 2
+expand_icon = true
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+margin_left = 455.0
+margin_right = 463.0
+margin_bottom = 768.0
+custom_styles/separator = SubResource( 2 )
+
+[node name="RecentFiles" type="MarginContainer" parent="HBoxContainer"]
+margin_left = 471.0
+margin_right = 1366.0
+margin_bottom = 768.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/RecentFiles"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 875.0
+margin_bottom = 748.0
+custom_constants/separation = 10
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/RecentFiles/VBoxContainer"]
+margin_top = 349.0
+margin_right = 855.0
+margin_bottom = 368.0
+custom_fonts/font = ExtResource( 5 )
+text = "Recent files"
+
+[node name="LinksRoot" type="VBoxContainer" parent="HBoxContainer/RecentFiles/VBoxContainer"]
+margin_top = 378.0
+margin_right = 855.0
+margin_bottom = 378.0
+size_flags_horizontal = 3
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="HBoxContainer/Introduction/VBoxContainer/Buttons/NewTemplate" to="." method="_on_new_template_pressed"]
+[connection signal="pressed" from="HBoxContainer/Introduction/VBoxContainer/Buttons/LoadTemplate" to="." method="_on_load_template_pressed"]

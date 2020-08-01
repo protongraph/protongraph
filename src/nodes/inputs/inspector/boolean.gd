@@ -8,8 +8,9 @@ func _init() -> void:
 	category = "Inputs/Inspector"
 	description = "Expose a Boolean value to the inspector"
 
-	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})
-	set_input(1, "Default", ConceptGraphDataType.BOOLEAN, {"disable_slot": true})
+	set_input(0, "Name", ConceptGraphDataType.STRING)
+	set_input(1, "Default", ConceptGraphDataType.BOOLEAN)
+	set_input(2, "Section", ConceptGraphDataType.STRING)
 	set_output(0, "", ConceptGraphDataType.BOOLEAN)
 
 
@@ -36,6 +37,7 @@ func get_exposed_variables() -> Array:
 		"name": name,
 		"type": ConceptGraphDataType.BOOLEAN,
 		"default_value": get_input_single(1, false),
+		"section": get_input_single(2, "")
 		}]
 
 

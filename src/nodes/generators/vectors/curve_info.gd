@@ -10,7 +10,7 @@ var _resolution := 0.1 # TMP
 
 func _init() -> void:
 	unique_id = "expose_curve_info"
-	display_name = "Break Curve 3D"
+	display_name = "Break Curve"
 	category = "Generators/Vectors"
 	description = "Exposes the BoundingBox and the Center position of a curve"
 

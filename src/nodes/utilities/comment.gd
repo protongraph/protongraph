@@ -1,7 +1,7 @@
 tool
 extends ConceptNode
 
-var _line_edit_comment: LineEdit
+var _line_edit_comment
 
 
 func _init() -> void:

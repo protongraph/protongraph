@@ -73,10 +73,9 @@ func _generate_outputs() -> void:
 			output[0] = ceil(a)
 
 
-func _on_default_gui_interaction(_value, control, _slot):
-	if not control is OptionButton:
-		return
-	_setup_inputs()
+func _on_default_gui_interaction(_value, _control, slot):
+	if slot == 0:
+		_setup_inputs()
 
 
 func _setup_inputs() -> void:
@@ -88,4 +87,4 @@ func _setup_inputs() -> void:
 		"Abs", "Round", "Floor", "Ceil":
 			remove_input(2)
 
-	._setup_slots()
+	regenerate_default_ui()

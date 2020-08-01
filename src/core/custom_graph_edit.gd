@@ -1,10 +1,9 @@
-tool
 extends GraphEdit
 
 
 """
 This GraphEdit class handles all the editor interactions, undo redo and so on.
-The addon specific logic happens in the child class ConceptGraphTemplate
+The addon specific logic happens in the child class ConceptGraphTemplate.
 """
 
 signal graph_changed
@@ -19,22 +18,24 @@ var undo_redo: UndoRedo
 var _copy_buffer := []
 var _connections_buffer := []
 var _ui_style_ready := false
-var _minimap = preload("../editor/gui/graph_minimap.tscn").instance()
+var _minimap = preload("../../views/editor/graph_minimap.tscn").instance()
 
 
 func _init() -> void:
+	undo_redo = GlobalUndoRedo.get_undo_redo()
+
 	_setup_gui()
 	ConceptGraphDataType.setup_valid_connection_types(self)
 
-	connect("connection_request", self, "_on_connection_request")
-	connect("disconnection_request", self, "_on_disconnection_request")
-	connect("copy_nodes_request", self, "_on_copy_nodes_request")
-	connect("paste_nodes_request", self, "_on_paste_nodes_request")
-	connect("delete_nodes_request", self, "_on_delete_nodes_request")
-	connect("duplicate_nodes_request", self, "_on_duplicate_nodes_request")
-	connect("_end_node_move", self, "_on_node_changed_zero")
-	connect("node_selected", self, "_on_node_selected")
-	connect("graph_changed", self, "_on_graph_changed")
+	Signals.safe_connect(self, "connection_request", self, "_on_connection_request")
+	Signals.safe_connect(self, "disconnection_request", self, "_on_disconnection_request")
+	Signals.safe_connect(self, "copy_nodes_request", self, "_on_copy_nodes_request")
+	Signals.safe_connect(self, "paste_nodes_request", self, "_on_paste_nodes_request")
+	Signals.safe_connect(self, "delete_nodes_request", self, "_on_delete_nodes_request")
+	Signals.safe_connect(self, "duplicate_nodes_request", self, "_on_duplicate_nodes_request")
+	Signals.safe_connect(self, "_end_node_move", self, "_on_node_changed_zero")
+	Signals.safe_connect(self, "node_selected", self, "_on_node_selected")
+	Signals.safe_connect(self, "graph_changed", self, "_on_graph_changed")
 
 	_minimap.graph_edit = self
 	call_deferred("add_child", _minimap)
@@ -64,7 +65,7 @@ func delete_node(node) -> void:
 
 func restore_node(node) -> void:
 	_connect_node_signals(node)
-	add_child(node)
+	add_child(node, true)
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
 	emit_signal("node_created", node)
@@ -145,7 +146,7 @@ func is_node_connected_to_input(node: GraphNode, idx: int) -> bool:
 
 # TMP hack because GraphEdit just love getting in my way. Update() alone won't redraw the connections
 # and there's nothing exposed to do that so we force a full redraw by moving the view just enough
-# to invalidate the previous view render.
+# to invalidate the previous view render but not enough to actually move the view
 func force_redraw() -> void:
 	scroll_offset.x += 0.001
 

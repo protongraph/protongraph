@@ -19,7 +19,7 @@ func _init() -> void:
 
 func _generate_outputs() -> void:
 	var type: String = get_input_single(0, "Spatial")
-	var name: String = get_input_single(1)
+	var name:String = get_input_single(1)
 
 	if ClassDB.can_instance(type):
 		var node = ClassDB.instance(type)

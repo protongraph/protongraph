@@ -10,9 +10,9 @@ func _init() -> void:
 
 	set_input(0, "Node", ConceptGraphDataType.NODE_3D)
 	set_input(1, "Name", ConceptGraphDataType.STRING)
-
-
 	set_output(0, "", ConceptGraphDataType.NODE_3D)
+
+	mirror_slots_type(0, 0)
 
 func _generate_outputs() -> void:
 	var node:Node = get_input_single(0)

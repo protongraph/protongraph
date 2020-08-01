@@ -17,8 +17,9 @@ func _init() -> void:
 		"value": 1,
 	}
 
-	set_input(0, "Name", ConceptGraphDataType.STRING, {"disable_slot": true})
+	set_input(0, "Name", ConceptGraphDataType.STRING)
 	set_input(1, "Default", ConceptGraphDataType.SCALAR, opts)
+	set_input(2, "Section", ConceptGraphDataType.STRING)
 	set_output(0, "", ConceptGraphDataType.SCALAR)
 
 
@@ -45,9 +46,10 @@ func get_exposed_variables() -> Array:
 		"name": name,
 		"type": ConceptGraphDataType.SCALAR,
 		"default_value": get_input_single(1, 1.0),
+		"section": get_input_single(2, ""),
 		}]
 
 
 func _on_input_changed(slot: int, _value) -> void:
-	if slot == 0:
+	if slot == 0 or slot == 2:
 		get_parent().update_exposed_variables()

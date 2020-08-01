@@ -6,7 +6,7 @@ Define the constants used when setting up the GraphNodes slots type. Each of the
 have an associated color in the COLORS dictionnary.
 """
 
-
+# NEVER CHANGE THE TYPES ORDER or it will break save files
 enum Types {
 	ANY,
 	BOOLEAN,
@@ -16,22 +16,20 @@ enum Types {
 	NOISE,
 	HEIGHTMAP,
 	CURVE_FUNC,
-
 	NODE_2D,
 	BOX_2D,
 	MESH_2D,
 	CURVE_2D,
 	VECTOR_CURVE_2D,
-
 	NODE_3D,
 	BOX_3D,
 	MESH_3D,
 	CURVE_3D,
 	VECTOR_CURVE_3D,
-
 	VECTOR2,
 	VECTOR3,
 }
+
 
 # Shorthand so we don't have to type ConceptGraphDataType.Types.ANY and skip the Types part
 const ANY = Types.ANY
@@ -57,6 +55,8 @@ const VECTOR_CURVE_3D = Types.VECTOR_CURVE_3D
 
 const VECTOR2 = Types.VECTOR2
 const VECTOR3 = Types.VECTOR3
+
+
 
 
 # Slot connections colors. Share the same color as common types also used in the VisualShader editor.
