@@ -23,3 +23,5 @@ native/logs
 *.pdb
 
 .vscode
+
+tmp/
