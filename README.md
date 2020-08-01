@@ -10,11 +10,6 @@ The graph node can be as simple ...
 
 ... or as complicated as you want ![image](https://user-images.githubusercontent.com/52043844/82753149-d0791080-9dc3-11ea-8b76-035d7115ee55.png)
 
-[Video example 1](https://streamable.com/1gke2)
-
-[Video example 2](https://streamable.com/sh3dhr)
-
-
 ## Status
 
 This tool is still a **work in progress**. Until it hits version 1.0, it is not
