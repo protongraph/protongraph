@@ -1,8 +1,8 @@
 [gd_resource type="NativeScript" load_steps=2 format=2]
 
 [sub_resource type="GDNativeLibrary" id=1]
-entry/OSX.64 = "res://src/native/thirdparty/mesh_optimizer/bin/x11/libmeshoptimizer.so"
-entry/Windows.64 = "res://src/native/thirdparty/mesh_optimizer/bin/x11/libmeshoptimizer.so"
+entry/OSX.64 = "res://src/native/thirdparty/mesh_optimizer/bin/x11/libmeshoptimizer.dylib"
+entry/Windows.64 = "res://src/native/thirdparty/mesh_optimizer/bin/x11/libmeshoptimizer.dll"
 entry/X11.64 = "res://src/native/thirdparty/mesh_optimizer/bin/x11/libmeshoptimizer.so"
 dependency/OSX.64 = [  ]
 dependency/Windows.64 = [  ]
