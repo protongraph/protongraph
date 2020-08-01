@@ -31,7 +31,7 @@ var restart_generation := false
 var multithreading_enabled := true	# Set to false to ignore the ProjectSettings and force multithreading off
 
 
-var _json_util = load(ConceptGraphEditorUtil.get_plugin_root_path() + "/src/thirdparty/json_beautifier/json_beautifier.gd")
+var _json_util = preload("res://src/thirdparty/json_beautifier/json_beautifier.gd")
 var _node_pool := ConceptGraphNodePool.new()
 var _thread_pool := ConceptGraphThreadPool.new()
 var _thread: Thread
