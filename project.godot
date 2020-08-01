@@ -114,11 +114,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://views/editor/common/spinbox/spinbox.gd"
 }, {
-"base": "Node",
-"class": "FontUtil",
-"language": "GDScript",
-"path": "res://src/common/font_util.gd"
-}, {
 "base": "ScrollContainer",
 "class": "InspectorPanel",
 "language": "GDScript",
@@ -176,7 +171,6 @@ _global_script_class_icons={
 "ConceptNodeVectorCurve": "",
 "ConceptNodeVectorCurve2D": "",
 "CustomSpinBox": "",
-"FontUtil": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
 "NodeUtils": "",
