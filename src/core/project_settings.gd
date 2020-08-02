@@ -22,7 +22,7 @@ var _settings = {
 	GROUP_NODES_BY_TYPE: false,
 	AUTOSAVE_ENABLED: true,
 	AUTOSAVE_INTERVAL: 300,
-	EDITOR_SCALE: 1.0
+	EDITOR_SCALE: 100
 }
 
 
@@ -79,6 +79,11 @@ func load_config() -> void:
 	var dict = json.result
 	for key in dict.keys():
 		_settings[key] = dict[key]
+
+	# Fix because of wrong defaults set on the 0.6 release
+	if _settings[EDITOR_SCALE] < 75 or _settings[EDITOR_SCALE] > 400:
+		_settings[EDITOR_SCALE] = 100
+
 
 
 func save_config() -> void:
