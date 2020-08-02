@@ -120,7 +120,7 @@ jobs:
         run: |
           mkdir -p win/ConceptGraph-${{ github.event.inputs.version }}
           builds/server/godot_server.x11.opt.tools.64 --path concept_graph --export "windows" "../win/ConceptGraph-${{ github.event.inputs.version }}/ConceptGraph"
-          zip -r ConceptGraph-${{ github.event.inputs.version }}-windows.zip win/ConceptGraph-${{ github.event.inputs.version }}
+          zip -r ConceptGraph-${{ github.event.inputs.version }}-windows.zip win/ConceptGraph-${{ github.event.inputs.version }}.exe
 
       - name: Export OSX build
         run: |
@@ -135,7 +135,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{ github.ref }}
-            release_name: Linux Release ${{ github.event.inputs.version }}
+            release_name: ConceptGraph Release ${{ github.event.inputs.version }}
             body: ''
             draft: true
             prerelease: true
