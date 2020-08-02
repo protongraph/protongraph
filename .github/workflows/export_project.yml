@@ -39,7 +39,7 @@ jobs:
         with:
           repository: HungryProton/concept_graph
           path: concept_graph
-          ref: standalone
+          ref: master
           submodules: recursive
 
       - name: Compile GDnative libraries
@@ -119,8 +119,8 @@ jobs:
       - name: Export Windows build
         run: |
           mkdir -p win/ConceptGraph-${{ github.event.inputs.version }}
-          builds/server/godot_server.x11.opt.tools.64 --path concept_graph --export "windows" "../win/ConceptGraph-${{ github.event.inputs.version }}/ConceptGraph"
-          zip -r ConceptGraph-${{ github.event.inputs.version }}-windows.zip win/ConceptGraph-${{ github.event.inputs.version }}.exe
+          builds/server/godot_server.x11.opt.tools.64 --path concept_graph --export "windows" "../win/ConceptGraph-${{ github.event.inputs.version }}/ConceptGraph.exe"
+          zip -r ConceptGraph-${{ github.event.inputs.version }}-windows.zip win/ConceptGraph-${{ github.event.inputs.version }}
 
       - name: Export OSX build
         run: |
