@@ -128,7 +128,7 @@ static func to_category_color(category: String) -> Color:
 			return Color("4371b5")
 		"Vectors":
 			return COLORS[VECTOR2]
-		"Scalars":
+		"Numbers":
 			return COLORS[SCALAR].darkened(0.3)
 		_:
 			return Color.black

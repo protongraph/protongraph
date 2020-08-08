@@ -45,5 +45,5 @@ func get_exposed_variables() -> Array:
 
 
 func _on_input_changed(slot: int, _value) -> void:
-	if slot == 0:
+	if slot == 0 or slot == 2:
 		get_parent().update_exposed_variables()

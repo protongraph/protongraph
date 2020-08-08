@@ -4,9 +4,9 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "inspector_scalar"
-	display_name = "Scalar Property"
+	display_name = "Number Property"
 	category = "Inputs/Inspector"
-	description = "Expose a Scalar value to the inspector"
+	description = "Expose a number to the inspector"
 
 	var opts = {
 		"disable_slot": true,

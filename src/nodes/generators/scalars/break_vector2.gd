@@ -5,7 +5,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "break_vector2"
 	display_name = "Break Vector2"
-	category =  "Generators/Scalars"
+	category =  "Generators/Numbers"
 	description = "Exposes a Vector2 (x,y) components"
 
 	set_input(0, "Vector", ConceptGraphDataType.VECTOR2)

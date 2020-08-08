@@ -13,13 +13,13 @@
 [ext_resource path="res://views/editor/common/spinbox/styles/spinbox_button_right_hover.tres" type="StyleBox" id=11]
 [ext_resource path="res://views/themes/fonts/fira_sans_regular.tres" type="DynamicFont" id=12]
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.6, 0.6, 0.6, 0.156863 )
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
 [node name="SpinBox" type="ProgressBar"]
@@ -68,7 +68,7 @@ margin_right = 76.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_styles/normal = SubResource( 3 )
+custom_styles/normal = SubResource( 1 )
 custom_fonts/font = ExtResource( 12 )
 text = "A"
 valign = 1
@@ -80,8 +80,8 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
-custom_styles/focus = SubResource( 1 )
-custom_styles/normal = SubResource( 2 )
+custom_styles/focus = SubResource( 2 )
+custom_styles/normal = SubResource( 3 )
 custom_fonts/font = ExtResource( 12 )
 custom_constants/minimum_spaces = 0
 text = "50"

@@ -146,13 +146,17 @@ func update_exposed_variables() -> void:
 			var variables = c.get_exposed_variables()
 			if not variables:
 				continue
-			exposed_variables += variables
 
 			for v in variables:
+				v.name = v.name.to_lower()
+				v.section = v.section.to_lower()
+				
 				if _property_nodes.has(v.name):
 					_property_nodes[v.name].append(c)
 				else:
 					_property_nodes[v.name] = [c]
+		
+			exposed_variables += variables
 
 	emit_signal("exposed_variables_updated", exposed_variables)
 

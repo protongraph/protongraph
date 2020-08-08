@@ -41,7 +41,7 @@ script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-viewport_container = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/ViewportArea/ViewportContainer")
+viewport_container = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/Control/ViewportArea/ViewportContainer")
 template = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/Template")
 add_node_dialog = NodePath("AddNodeDialog")
 inspector = NodePath("VBoxContainer/HSplitContainer/Inspector")
@@ -109,6 +109,7 @@ margin_right = 1366.0
 margin_bottom = 768.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/autohide = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -116,9 +117,11 @@ __meta__ = {
 [node name="HSplitContainer" type="VSplitContainer" parent="VBoxContainer/HSplitContainer"]
 margin_right = 985.0
 margin_bottom = 768.0
+rect_clip_content = true
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
+custom_constants/autohide = 0
 
 [node name="Template" type="GraphEdit" parent="VBoxContainer/HSplitContainer/HSplitContainer"]
 margin_right = 985.0
@@ -134,13 +137,16 @@ __meta__ = {
 }
 inspector_panel = NodePath("../../Inspector")
 
-[node name="ViewportArea" parent="VBoxContainer/HSplitContainer/HSplitContainer" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Control" type="Control" parent="VBoxContainer/HSplitContainer/HSplitContainer"]
 margin_top = 472.0
 margin_right = 985.0
 margin_bottom = 768.0
-rect_min_size = Vector2( 256, 128 )
+size_flags_vertical = 3
+__meta__ = {
+"_editor_description_": "Hack to make it possible to completely hide the viewport when dragging the hsplit all the way down."
+}
+
+[node name="ViewportArea" parent="VBoxContainer/HSplitContainer/HSplitContainer/Control" instance=ExtResource( 3 )]
 
 [node name="Inspector" parent="VBoxContainer/HSplitContainer" instance=ExtResource( 2 )]
 anchor_right = 0.0
@@ -164,8 +170,8 @@ margin_bottom = 407.0
 [connection signal="input_created" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_on_input_created"]
 [connection signal="input_deleted" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_on_input_deleted"]
 [connection signal="popup_request" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_show_node_dialog"]
-[connection signal="simulation_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="VBoxContainer/ToolShelf/RunGeneration" method="_on_simulation_completed"]
 [connection signal="simulation_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_on_simulation_completed"]
+[connection signal="simulation_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="VBoxContainer/ToolShelf/RunGeneration" method="_on_simulation_completed"]
 [connection signal="simulation_outdated" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_on_simulation_outdated"]
 [connection signal="simulation_started" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="VBoxContainer/ToolShelf/RunGeneration" method="_on_simulation_started"]
 [connection signal="value_changed" from="VBoxContainer/HSplitContainer/Inspector" to="." method="_on_inspector_value_changed"]

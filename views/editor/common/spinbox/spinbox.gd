@@ -55,7 +55,7 @@ func get_line_edit() -> LineEdit:
 
 
 func set_label_text(text) -> void:
-	if not text:
+	if text == null:
 		return
 
 	spinbox_name = text if text is String else String(text)

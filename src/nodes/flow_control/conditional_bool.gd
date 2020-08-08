@@ -4,9 +4,9 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "conditional_bool"
-	display_name = "Conditional Boolean"
+	display_name = "Condition (Boolean)"
 	category = "Flow Control"
-	description = "Simple boolean condition, returns one of the two inputs"
+	description = "Returns one of the two inputs based on the boolean value"
 
 	set_input(0, "True", ConceptGraphDataType.ANY)
 	set_input(1, "False", ConceptGraphDataType.ANY)
