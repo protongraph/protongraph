@@ -673,6 +673,7 @@ func _generate_default_gui() -> void:
 						line_edit.name = "LineEdit"
 						line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
 						line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
+						line_edit.text = opts["text"] if opts.has("text") else ""
 						line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
 						line_edit.connect("text_changed", self, "_on_default_gui_interaction", [line_edit, i])
 						left_box.add_child(line_edit)

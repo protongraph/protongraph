@@ -9,13 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Spatial",
+"class": "BaseGizmo",
+"language": "GDScript",
+"path": "res://views/editor/viewport/gizmos/base_gizmo.gd"
+}, {
 "base": "MeshInstance",
 "class": "ConceptBoxInput",
 "language": "GDScript",
 "path": "res://nodes/box_input.gd"
 }, {
 "base": "Path",
-"class": "ConceptGraphCurveInput",
+"class": "ConceptGraphCurve",
 "language": "GDScript",
 "path": "res://nodes/curve_input.gd"
 }, {
@@ -109,6 +114,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/data_structures/vector_curve_2d.gd"
 }, {
+"base": "BaseGizmo",
+"class": "CurveGizmo",
+"language": "GDScript",
+"path": "res://views/editor/viewport/gizmos/curve_gizmo.gd"
+}, {
 "base": "ProgressBar",
 "class": "CustomSpinBox",
 "language": "GDScript",
@@ -148,10 +158,16 @@ _global_script_classes=[ {
 "class": "Signals",
 "language": "GDScript",
 "path": "res://src/common/signal_util.gd"
+}, {
+"base": "Node",
+"class": "Turtle",
+"language": "GDScript",
+"path": "res://src/nodes/generators/curves/l_system/turtle.gd"
 } ]
 _global_script_class_icons={
+"BaseGizmo": "",
 "ConceptBoxInput": "",
-"ConceptGraphCurveInput": "",
+"ConceptGraphCurve": "",
 "ConceptGraphCurveUtil": "",
 "ConceptGraphDataType": "",
 "ConceptGraphEditorUtil": "",
@@ -170,6 +186,7 @@ _global_script_class_icons={
 "ConceptNodeLibrary": "",
 "ConceptNodeVectorCurve": "",
 "ConceptNodeVectorCurve2D": "",
+"CurveGizmo": "",
 "CustomSpinBox": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
@@ -177,7 +194,8 @@ _global_script_class_icons={
 "NoisePreview": "",
 "PathUtil": "",
 "PoolVectorUtil": "",
-"Signals": ""
+"Signals": "",
+"Turtle": ""
 }
 
 [application]
@@ -208,10 +226,6 @@ gdscript/warnings/unsafe_call_argument=true
 
 window/size/width=1366
 window/size/height=768
-
-[editor_plugins]
-
-enabled=PoolStringArray(  )
 
 [gui]
 

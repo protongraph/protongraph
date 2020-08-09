@@ -10,7 +10,7 @@ var _length = 10000
 func _ready() -> void:
 	_x_axis = _create_axis(Color.red)
 	_y_axis = _create_axis(Color.green)
-	_z_axis = _create_axis(Color.blue)
+	_z_axis = _create_axis(Color.dodgerblue)
 
 	_y_axis.rotate_z(PI / 2.0)
 	_z_axis.rotate_y(PI / 2.0)

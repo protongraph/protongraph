@@ -4,6 +4,6 @@
 flags_transparent = true
 params_cull_mode = 2
 params_depth_draw_mode = 2
-albedo_color = Color( 0, 0.390625, 1, 0.588235 )
+albedo_color = Color( 1, 0, 0.176471, 0.588235 )
 metallic_specular = 0.0
 roughness = 0.0

@@ -1,18 +1,19 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://icons/icon_question_mark.svg" type="Texture" id=2]
 [ext_resource path="res://views/editor/common/icon_button.tscn" type="PackedScene" id=3]
 [ext_resource path="res://icons/icon_material_preview_light_2.svg" type="Texture" id=4]
-[ext_resource path="res://views/editor/camera.gd" type="Script" id=5]
-[ext_resource path="res://views/editor/runtime_tree.gd" type="Script" id=6]
+[ext_resource path="res://views/editor/viewport/camera.gd" type="Script" id=5]
+[ext_resource path="res://views/editor/viewport/runtime_tree.gd" type="Script" id=6]
 [ext_resource path="res://views/auto_scale.gd" type="Script" id=7]
 [ext_resource path="res://icons/icon_material_preview_light_1.svg" type="Texture" id=8]
-[ext_resource path="res://views/editor/draw_axis.gd" type="Script" id=9]
+[ext_resource path="res://views/editor/viewport/draw_axis.gd" type="Script" id=9]
 [ext_resource path="res://icons/icon_camera.svg" type="Texture" id=10]
 [ext_resource path="res://views/editor/viewport/viewport.gd" type="Script" id=11]
 [ext_resource path="res://views/editor/viewport/gizmos/move_gizmo.tscn" type="PackedScene" id=12]
 [ext_resource path="res://views/editor/viewport/gizmos_manager.gd" type="Script" id=13]
+[ext_resource path="res://views/editor/viewport/monitor_local_tree_changes.gd" type="Script" id=14]
 
 [sub_resource type="World" id=1]
 environment = ExtResource( 1 )
@@ -66,7 +67,6 @@ camera_root = NodePath("Viewport/Pivot")
 static_light = NodePath("Viewport/Lighting/DirectionalLight")
 camera_light = NodePath("Viewport/Pivot/Camera/DirectionalLight")
 legend = NodePath("MarginContainer/HBoxContainer/LeftColumn/Legend")
-gizmo_root = NodePath("Viewport/Gizmos")
 
 [node name="Viewport" type="Viewport" parent="ViewportContainer"]
 size = Vector2( 899, 768 )
@@ -106,16 +106,26 @@ directional_shadow_mode = 1
 environment = ExtResource( 1 )
 
 [node name="Input" type="Spatial" parent="ViewportContainer/Viewport"]
+script = ExtResource( 14 )
 
 [node name="Output" type="Spatial" parent="ViewportContainer/Viewport"]
+script = ExtResource( 14 )
 
-[node name="Gizmos" type="Spatial" parent="ViewportContainer/Viewport"]
+[node name="GizmosManager" type="Spatial" parent="ViewportContainer/Viewport"]
 script = ExtResource( 13 )
 camera_node = NodePath("../Pivot/Camera")
 viewport_node = NodePath("..")
+input_root = NodePath("../Input")
+output_root = NodePath("../Output")
 
-[node name="MoveGizmo" parent="ViewportContainer/Viewport/Gizmos" instance=ExtResource( 12 )]
+[node name="MoveGizmo" parent="ViewportContainer/Viewport/GizmosManager" instance=ExtResource( 12 )]
 visible = false
+arrow_x = NodePath("../../InputGizmos/MoveGizmo/Arrows/ArrowX")
+arrow_y = NodePath("../../InputGizmos/MoveGizmo/Arrows/ArrowY")
+arrow_z = NodePath("../../InputGizmos/MoveGizmo/Arrows/ArrowZ")
+quad_x = NodePath("../../InputGizmos/MoveGizmo/Quads/X")
+quad_y = NodePath("../../InputGizmos/MoveGizmo/Quads/Y")
+quad_z = NodePath("../../InputGizmos/MoveGizmo/Quads/Z")
 
 [node name="MarginContainer" type="MarginContainer" parent="ViewportContainer"]
 anchor_right = 1.0
@@ -200,8 +210,12 @@ margin_right = 891.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 alignment = 2
-[connection signal="node_selected" from="Tree" to="ViewportContainer" method="_on_node_selected"]
+[connection signal="node_selected" from="Tree" to="ViewportContainer/Viewport/GizmosManager" method="_on_node_selected"]
 [connection signal="scene_updated" from="ViewportContainer" to="Tree" method="_update_tree"]
+[connection signal="node_added" from="ViewportContainer/Viewport/Input" to="ViewportContainer/Viewport/GizmosManager" method="_on_node_added"]
+[connection signal="node_removed" from="ViewportContainer/Viewport/Input" to="ViewportContainer/Viewport/GizmosManager" method="_on_node_removed"]
+[connection signal="node_added" from="ViewportContainer/Viewport/Output" to="ViewportContainer/Viewport/GizmosManager" method="_on_node_added"]
+[connection signal="node_removed" from="ViewportContainer/Viewport/Output" to="ViewportContainer/Viewport/GizmosManager" method="_on_node_removed"]
 [connection signal="toggled" from="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions/Legend" to="ViewportContainer" method="display_legend"]
 [connection signal="pressed" from="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions/ResetCamera" to="ViewportContainer/Viewport/Pivot" method="reset_camera"]
 [connection signal="pressed" from="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn/DisplayOptions/LightSetup1" to="ViewportContainer" method="enable_camera_light"]

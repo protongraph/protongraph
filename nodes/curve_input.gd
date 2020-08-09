@@ -1,5 +1,4 @@
-tool
-class_name ConceptGraphCurveInput
+class_name ConceptGraphCurve
 extends Path
 
 

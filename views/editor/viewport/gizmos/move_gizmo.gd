@@ -1,10 +1,5 @@
-extends Spatial
+extends BaseGizmo
 
-
-signal gizmo_changed
-
-
-export var gizmo_scale := 1.0
 
 export var arrow_x: NodePath
 export var arrow_y: NodePath
@@ -12,7 +7,6 @@ export var arrow_z: NodePath
 export var quad_x: NodePath
 export var quad_y: NodePath
 export var quad_z: NodePath
-
 
 var _ax: Area
 var _ay: Area
@@ -60,7 +54,7 @@ func _process(delta: float) -> void:
 	scale = Vector3.ONE * dist * viewport_scale * gizmo_scale
 
 
-func activate(node: Spatial) -> void:
+func enable_for(node: Spatial) -> void:
 	_clear_state()
 	_selected_node = node
 	Signals.safe_connect(node, "input_changed", self, "_on_selected_node_changed")
@@ -68,7 +62,7 @@ func activate(node: Spatial) -> void:
 	visible = true
 
 
-func deactivate() -> void:
+func disable() -> void:
 	_clear_state()
 	visible = false
 
