@@ -34,7 +34,7 @@ known to be troublesome.
 ## Known issues and roadmap
 
 + For a list of known issues, [head over the issue tracker](https://github.com/HungryProton/concept_graph/issues)
-+ To track the work in progress and planned feature, [head over the project board](https://github.com/users/HungryProton/projects/1)
++ To track the work in progress and planned feature, [head over the project board](https://github.com/HungryProton/concept_graph/projects)
 
 The **current focus** is to get the standalone version in a working state and **add a lot of documentation**.
 Even though ConceptGraph doesn't have all of its planned features, we can't expect anyone to actually use this tool if nobody knows how to.
