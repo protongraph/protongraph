@@ -2,7 +2,7 @@ extends Node
 class_name Turtle
 
 
-var angle := 45.0
+var default_angle := 45.0
 var step_size := 1.0
 
 
@@ -15,7 +15,7 @@ var _turtle: Spatial
 
 class Command:
 	var name: String
-	var param_a: float
+	var args: Array
 
 
 func set_seed(custom_seed: int) -> void:
@@ -30,6 +30,9 @@ func draw(system: String) -> Array:
 		var cmd = data[0]
 		system = data[1]
 		
+		var angle = _get_parameter(cmd, 0, default_angle)
+		var size = _get_parameter(cmd, 0, step_size)
+		
 		match cmd.name:
 			"[": # Push state
 				var new_transform = Transform(_turtle.transform.basis, _turtle.transform.origin)
@@ -41,7 +44,7 @@ func draw(system: String) -> Array:
 				_new_path()
 			
 			"F": # Forward draw
-				_turtle.translate_object_local(Vector3.FORWARD * step_size)
+				_turtle.translate_object_local(Vector3.FORWARD * size)
 				_add_point_to_path()
 			
 			"+": # Turn right
@@ -79,11 +82,37 @@ func clear() -> void:
 
 func _read(system: String) -> Array:
 	var command = Command.new()
+	
+	# TODO : Make sure the first character actually belongs to the system alphabet
 	command.name = system[0]
-
+	command.args = []
 	system = system.right(1)
 
+	# Check if there's additionnal parameters
+	if system[0] == "(":
+		system = system.right(1)
+		var tokens = system.split(")")
+		var param_tokens = tokens[0].split(",")
+		
+		# Each parameters are delimited by "," with a maximum of four for each command
+		for i in param_tokens.size():
+			var param: String = param_tokens[i]
+			if not param.is_valid_float() or not param.is_valid_integer():
+				continue
+			
+			command.args.append(param.to_float())
+		
+		# Remove the parameters from the string
+		var pos = system.find(")")
+		system = system.right(pos + 1)
+	
 	return [command, system]
+
+
+func _get_parameter(cmd: Command, idx: int, default: float) -> float:
+	if cmd.args.size() > idx:
+		return cmd.args[idx]
+	return default
 
 
 func _new_path() -> void:

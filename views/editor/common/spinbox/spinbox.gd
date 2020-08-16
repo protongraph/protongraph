@@ -60,7 +60,8 @@ func set_label_text(text) -> void:
 
 	spinbox_name = text if text is String else String(text)
 	if _name_label:
-		_name_label.text = spinbox_name.capitalize()
+		_name_label.text = spinbox_name
+		rect_min_size.x = spinbox_name.length() * 8 + 60
 
 
 func get_label_text() -> String:

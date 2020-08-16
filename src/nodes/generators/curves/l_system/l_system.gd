@@ -37,7 +37,7 @@ func _generate_outputs() -> void:
 	_rng.set_seed(custom_seed)
 	_turtle.set_seed(custom_seed + 100)
 	_turtle.step_size = get_input_single(3)
-	_turtle.angle = get_input_single(4)
+	_turtle.default_angle = get_input_single(4)
 	
 	var system := _compute_final_string()
 	var curves := _turtle.draw(system)
@@ -54,7 +54,20 @@ func _compute_final_string() -> String:
 	for i in generations:
 		var current = ""
 		
+		var ignore := false
+		
 		for c in final:
+			if c == "(":
+				ignore = true
+				continue
+			
+			if c == ")":
+				ignore = false
+				continue
+			
+			if ignore:
+				continue
+			
 			if rules.has(c):
 				current += _choose_among(rules[c])
 			else:

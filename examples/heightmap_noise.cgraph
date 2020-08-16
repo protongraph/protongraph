@@ -128,8 +128,8 @@
 		}
 	],
 	"editor": {
-		"offset_x": -1615.370361,
-		"offset_y": 36.825989
+		"offset_x": 221.065186,
+		"offset_y": -193.386963
 	},
 	"inspector": {
 		"mesh_size": 256,
@@ -184,7 +184,7 @@
 				"offset_x": -1100,
 				"offset_y": -600,
 				"rect_x": 339,
-				"rect_y": 267,
+				"rect_y": 270,
 				"slots": {}
 			},
 			"name": "GraphNode7",
@@ -276,9 +276,9 @@
 				"offset_y": -240,
 				"slots": {
 					"0": "Hole",
-					"1": "(56.808998, 6.675, 108.583)",
+					"1": "(56.238998, -7.077, 57.132)",
 					"2": "(0, 0, 0)",
-					"3": "(50, 1, 25)"
+					"3": "(50, 5, 25)"
 				}
 			},
 			"name": "GraphNode6",
@@ -400,7 +400,7 @@
 				"offset_x": -1100,
 				"offset_y": -140,
 				"rect_x": 332,
-				"rect_y": 267,
+				"rect_y": 270,
 				"slots": {}
 			},
 			"name": "GraphNode5",
@@ -504,7 +504,7 @@
 				"offset_x": -1100,
 				"offset_y": 340,
 				"rect_x": 330,
-				"rect_y": 267.000061,
+				"rect_y": 270,
 				"slots": {}
 			},
 			"name": "GraphNode11",

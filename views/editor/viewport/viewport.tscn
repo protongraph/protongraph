@@ -120,12 +120,6 @@ output_root = NodePath("../Output")
 
 [node name="MoveGizmo" parent="ViewportContainer/Viewport/GizmosManager" instance=ExtResource( 12 )]
 visible = false
-arrow_x = NodePath("../../InputGizmos/MoveGizmo/Arrows/ArrowX")
-arrow_y = NodePath("../../InputGizmos/MoveGizmo/Arrows/ArrowY")
-arrow_z = NodePath("../../InputGizmos/MoveGizmo/Arrows/ArrowZ")
-quad_x = NodePath("../../InputGizmos/MoveGizmo/Quads/X")
-quad_y = NodePath("../../InputGizmos/MoveGizmo/Quads/Y")
-quad_z = NodePath("../../InputGizmos/MoveGizmo/Quads/Z")
 
 [node name="MarginContainer" type="MarginContainer" parent="ViewportContainer"]
 anchor_right = 1.0

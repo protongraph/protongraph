@@ -3,7 +3,7 @@
 [node name="Label" type="Label"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 120, 0 )
+rect_min_size = Vector2( 140, 0 )
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0.792157, 0.792157, 0.792157, 1 )
 text = "This is the Inspector panel. 

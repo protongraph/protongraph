@@ -17,6 +17,22 @@ func _init() -> void:
 	
 	set_output(0, "", ConceptGraphDataType.STRING)
 
+	enable_multiple_connections_on_slot(0)
+	
 
 func _generate_outputs() -> void:
-	output[0] = get_input(0)
+	var rules := get_input(0)
+	var a: String = String(get_input_single(1, 0.0))
+	var b: String = String(get_input_single(2, 0.0))
+	var c: String = String(get_input_single(3, 0.0))
+	var d: String = String(get_input_single(4, 0.0))
+	var e: String = String(get_input_single(5, 0.0))
+	
+	for i in rules.size():
+		rules[i] = rules[i].replace("a", a)
+		rules[i] = rules[i].replace("b", b)
+		rules[i] = rules[i].replace("c", c)
+		rules[i] = rules[i].replace("d", d)
+		rules[i] = rules[i].replace("e", e)
+	
+	output[0] = rules
