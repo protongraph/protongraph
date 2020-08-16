@@ -1,31 +1,25 @@
-tool
-class_name ConceptGraphNoise
 extends Object
+class_name ConceptGraphNoise
 
 
 var noise: Object
 var curve: Curve
 
 
-func _init():
-	pass #noise = noise_object_to_wrap
-
-
-# wrap return values in ._apply_curve()
 func get_noise_2d(x: float, y: float) -> float:
-	return 0.0 #._apply_curve(value)
+	return 0.0
 
 
 func get_noise_2dv(v: Vector2) -> float:
-	return 0.0 #._apply_curve(value)
+	return 0.0
 
 
 func get_noise_3d(x: float, y: float, z: float) -> float:
-	return 0.0 #._apply_curve(value)
+	return 0.0
 
 
 func get_noise_3dv(v: Vector3) -> float:
-	return 0.0 #._apply_curve(value)
+	return 0.0
 
 
 func get_image(width: int, height: int, scale = 1.0, offset = Vector2()) -> Image:

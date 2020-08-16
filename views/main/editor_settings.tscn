@@ -399,6 +399,8 @@ margin_top = 46.0
 margin_right = 196.0
 margin_bottom = 91.0
 size_flags_vertical = 4
+max_value = 1000.0
+allow_greater = true
 
 [node name="Description" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/DelayBeforeGeneration/VBoxContainer/HBoxContainer"]
 margin_left = 204.0

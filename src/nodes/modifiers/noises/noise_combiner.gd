@@ -7,14 +7,23 @@ var _is_preview_outdated = true
 
 
 func _init() -> void:
-	unique_id = "blend_noises"
-	display_name = "Blend Noises"
+	unique_id = "combine_noises"
+	display_name = "Combine Noises"
 	category = "Modifiers/Noises"
-	description = "Blend multiple noises together"
+	description = "Combine two noises together"
 
-	set_input(0, "Noise 1", ConceptGraphDataType.NOISE)
-	set_input(1, "Noise 2", ConceptGraphDataType.NOISE)
-	set_input(2, "Blend", ConceptGraphDataType.SCALAR, {"step": 0.01, "max": 1.0, "allow_greater": false, "value": 0.5})
+	set_input(0, "", ConceptGraphDataType.STRING, \
+	{"type": "dropdown",
+	"items": {
+		"Add": 0,
+		"Substract": 1,
+		"Multiply": 2,
+		"Divide": 3,
+		"Min": 4,
+		"Max": 5,
+		}})
+	set_input(1, "Noise 1", ConceptGraphDataType.NOISE)
+	set_input(2, "Noise 2", ConceptGraphDataType.NOISE)
 	set_output(0, "", ConceptGraphDataType.NOISE)
 
 
@@ -30,17 +39,30 @@ func _on_default_gui_ready() -> void:
 
 
 func _generate_outputs() -> void:
-	var noise1: ConceptGraphNoise = get_input_single(0)
-	var noise2: ConceptGraphNoise = get_input_single(1)
-	var blend_amount: float = get_input_single(2, 0.5)
+	var operation: String = get_input_single(0, "Add")
+	var noise1: ConceptGraphNoise = get_input_single(1)
+	var noise2: ConceptGraphNoise = get_input_single(2)
+
 	if noise1 and noise2:
-		_noise = ConceptGraphNoiseBlend.new(noise1, noise2, blend_amount)
+		match operation:
+			"Add":
+				_noise = ConceptGraphNoiseAdd.new(noise1, noise2)
+			"Substract":
+				_noise = ConceptGraphNoiseSubstract.new(noise1, noise2)
+			"Multiply":
+				_noise = ConceptGraphNoiseMultiply.new(noise1, noise2)
+			"Divide":
+				_noise = ConceptGraphNoiseDivide.new(noise1, noise2)
+			"Min":
+				_noise = ConceptGraphNoiseMin.new(noise1, noise2)
+			"Max":
+				_noise = ConceptGraphNoiseMax.new(noise1, noise2)
+	
 	elif noise1:
 		_noise = noise1
-	elif noise2:
-		_noise = noise2
+	
 	else:
-		return
+		_noise = noise2
 
 	output[0] = _noise
 
