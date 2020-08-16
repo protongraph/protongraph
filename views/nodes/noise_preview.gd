@@ -28,7 +28,7 @@ func _ready() -> void:
 func create_from_noise(noise) -> void:
 	_noise = noise
 	var s = _size.value
-	_image_texture.create_from_image(noise.get_image(s, s, 8))
+	_image_texture.create_from_image(noise.get_image(s, s))
 
 
 func _on_button_preview_pressed() -> void:

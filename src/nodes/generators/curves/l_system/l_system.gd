@@ -25,7 +25,7 @@ func _init() -> void:
 	set_input(5, "Randomize Size", ConceptGraphDataType.SCALAR)
 	set_input(6, "Randomize Angle", ConceptGraphDataType.SCALAR)
 	set_input(7, "Seed", ConceptGraphDataType.SCALAR, {"step": 1})
-	#set_input(7, "Gravity", ConceptGraphDataType.BOOLEAN)
+
 	set_output(0, "Curves", ConceptGraphDataType.CURVE_3D)
 	set_output(1, "System", ConceptGraphDataType.STRING)
 

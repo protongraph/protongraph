@@ -16,7 +16,6 @@ func _init() -> void:
 	set_input(1, "Use collision", ConceptGraphDataType.BOOLEAN)
 	set_input(2, "Wireframe", ConceptGraphDataType.BOOLEAN)
 	set_output(0, "", ConceptGraphDataType.MESH_3D)
-	ConceptGraphDataType.NODE_2D
 
 
 func _generate_outputs() -> void:

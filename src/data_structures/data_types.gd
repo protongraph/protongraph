@@ -143,10 +143,8 @@ static func setup_valid_connection_types(graph_edit: GraphEdit) -> void:
 	graph_edit.add_valid_connection_type(NODE_3D, CURVE_3D)
 	graph_edit.add_valid_connection_type(NODE_3D, VECTOR_CURVE_3D)
 
-	graph_edit.add_valid_connection_type(NODE_2D, BOX_2D)
-	graph_edit.add_valid_connection_type(NODE_2D, MESH_2D)
-	graph_edit.add_valid_connection_type(NODE_2D, CURVE_2D)
-	graph_edit.add_valid_connection_type(NODE_2D, VECTOR_CURVE_2D)
+	graph_edit.add_valid_connection_type(NODE_2D, NOISE)
+	graph_edit.add_valid_connection_type(NODE_2D, HEIGHTMAP)
 
 	# Allow everything to connect to ANY
 	for type in Types.values():
