@@ -27,4 +27,6 @@ func _init() -> void:
 	set_input(10, "Mesh", ConceptGraphDataType.MESH_3D)
 	set_input(11, "Bezier Curve", ConceptGraphDataType.CURVE_3D)
 	set_input(12, "Polygon Curve", ConceptGraphDataType.VECTOR_CURVE_3D)
+	
+	set_input(13, "Heightmap", ConceptGraphDataType.HEIGHTMAP)
 

@@ -99,6 +99,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/data_structures/noise/combiners/noise_multiply.gd"
 }, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseOverlay",
+"language": "GDScript",
+"path": "res://src/data_structures/noise/combiners/noise_overlay.gd"
+}, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseScreen",
+"language": "GDScript",
+"path": "res://src/data_structures/noise/combiners/noise_screen.gd"
+}, {
 "base": "ConceptGraphNoise",
 "class": "ConceptGraphNoiseSimplex",
 "language": "GDScript",
@@ -218,6 +228,8 @@ _global_script_class_icons={
 "ConceptGraphNoiseMax": "",
 "ConceptGraphNoiseMin": "",
 "ConceptGraphNoiseMultiply": "",
+"ConceptGraphNoiseOverlay": "",
+"ConceptGraphNoiseScreen": "",
 "ConceptGraphNoiseSimplex": "",
 "ConceptGraphNoiseSubstract": "",
 "ConceptGraphSettings": "",

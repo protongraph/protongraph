@@ -64,10 +64,11 @@ const COLORS = {
 	ANY: Color.white,
 	BOOLEAN: Color("8ca6f4"),
 	SCALAR: Color("61d9f5"),
-	STRING: Color.gold,
+	#STRING: Color.gold,
+	STRING: Color("bbd700"),
 	MATERIAL: Color.darkmagenta,
-	NOISE: Color("b48700"),
-	HEIGHTMAP: Color("cc8f20"),
+	NOISE: Color("4ce0a0"),
+	HEIGHTMAP: Color.gold,
 	CURVE_FUNC: Color.dodgerblue,
 
 	NODE_2D: Color.crimson,
@@ -103,11 +104,11 @@ static func to_category_color(category: String) -> Color:
 		"Curves":
 			return COLORS[CURVE_3D]
 		"Vector Curves":
-			return COLORS[VECTOR_CURVE_3D]
+			return COLORS[VECTOR_CURVE_3D].darkened(0.25)
 		"Debug":
 			return Color.black
-		"Heigthmaps":
-			return COLORS[HEIGHTMAP].darkened(0.5)
+		"Heightmaps":
+			return Color("c09900") #COLORS[HEIGHTMAP].darkened(0.3)
 		"Inputs":
 			return Color.steelblue
 		"Inspector":
@@ -119,9 +120,11 @@ static func to_category_color(category: String) -> Color:
 		"Nodes":
 			return Color.firebrick
 		"Noises":
-			return COLORS[NOISE]
+			return COLORS[NOISE].darkened(0.5)
 		"Output":
 			return Color.black
+		"String":
+			return COLORS[STRING].darkened(0.3)
 		"Transforms":
 			return Color.maroon
 		"Utilities":

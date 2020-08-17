@@ -21,6 +21,8 @@ func _init() -> void:
 		"Divide": 3,
 		"Min": 4,
 		"Max": 5,
+		"Screen": 6,
+		"Overlay": 7,
 		}})
 	set_input(1, "Noise 1", ConceptGraphDataType.NOISE)
 	set_input(2, "Noise 2", ConceptGraphDataType.NOISE)
@@ -57,6 +59,10 @@ func _generate_outputs() -> void:
 				_noise = ConceptGraphNoiseMin.new(noise1, noise2)
 			"Max":
 				_noise = ConceptGraphNoiseMax.new(noise1, noise2)
+			"Screen":
+				_noise = ConceptGraphNoiseScreen.new(noise1, noise2)
+			"Overlay":
+				_noise = ConceptGraphNoiseOverlay.new(noise1, noise2)
 	
 	elif noise1:
 		_noise = noise1

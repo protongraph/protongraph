@@ -8,12 +8,19 @@ func _init() -> void:
 	category = "Generators/String"
 	description = "Returns a list of strings with support for variables"
 
+	var opts = {
+		"step": 1,
+		"min": 0,
+		"max":  360,
+		"allow_lesser": true,
+		"allow_higher": true
+	}
 	set_input(0, "Rules", ConceptGraphDataType.STRING)
-	set_input(1, "a", ConceptGraphDataType.SCALAR)
-	set_input(2, "b", ConceptGraphDataType.SCALAR)
-	set_input(3, "c", ConceptGraphDataType.SCALAR)
-	set_input(4, "d", ConceptGraphDataType.SCALAR)
-	set_input(5, "e", ConceptGraphDataType.SCALAR)
+	set_input(1, "a", ConceptGraphDataType.SCALAR, opts)
+	set_input(2, "b", ConceptGraphDataType.SCALAR, opts)
+	set_input(3, "c", ConceptGraphDataType.SCALAR, opts)
+	set_input(4, "d", ConceptGraphDataType.SCALAR, opts)
+	set_input(5, "e", ConceptGraphDataType.SCALAR, opts)
 	
 	set_output(0, "", ConceptGraphDataType.STRING)
 

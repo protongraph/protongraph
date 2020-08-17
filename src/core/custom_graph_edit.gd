@@ -39,6 +39,10 @@ func _init() -> void:
 
 	_minimap.graph_edit = self
 	call_deferred("add_child", _minimap)
+	
+	var scale = ConceptGraphEditorUtil.get_editor_scale()
+	add_constant_override("port_grab_distance_vertical", 16 * scale)
+	add_constant_override("port_grab_distance_horizontal", 16 * scale)
 
 
 func clear_editor() -> void:

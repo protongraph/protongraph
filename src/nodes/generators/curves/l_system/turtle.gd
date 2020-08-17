@@ -47,12 +47,25 @@ func draw(system: String) -> Array:
 				_turtle.translate_object_local(Vector3.FORWARD * size)
 				_add_point_to_path()
 			
+			"f": # Forward no draw
+				_turtle.translate_object_local(Vector3.FORWARD * size)
+			
+			"H": # Half forward draw
+				_turtle.translate_object_local(Vector3.FORWARD * size * 0.5)
+				_add_point_to_path()
+
+			"h": # Half forward no draw
+				_turtle.translate_object_local(Vector3.FORWARD * size * 0.5)
+			
 			"+": # Turn right
 				_turtle.rotate_object_local(Vector3.UP, deg2rad(angle))
 
 			"-": # Turn left
 				_turtle.rotate_object_local(Vector3.UP, -deg2rad(angle))
-	
+			
+			"|": # Turn 180 degrees
+				_turtle.rotate_object_local(Vector3.UP, deg2rad(180))
+			
 			"&": # Pitch up
 				_turtle.rotate_object_local(Vector3.RIGHT, deg2rad(angle))
 				
@@ -64,6 +77,15 @@ func draw(system: String) -> Array:
 				
 			"/": # Roll counter clockwise
 				_turtle.rotate_object_local(Vector3.FORWARD, -deg2rad(angle))
+			
+			"*": # Roll 180 degrees
+				_turtle.rotate_object_local(Vector3.FORWARD, deg2rad(180))
+			
+			"~": # Random Pitch, Roll and Turn, default 180
+				pass
+			
+			"%": # Remove the end of the branch
+				pass
 	
 	if _path.curve.get_point_count() > 1:
 		_curves.append(_path)
