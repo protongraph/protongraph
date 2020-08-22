@@ -1,4 +1,3 @@
-tool
 class_name ConceptGraphHeightmap
 extends Object
 
@@ -64,3 +63,26 @@ func get_index(i: int) -> float:
 
 func set_index(i: int, height: float) -> void:
 	data[i] = height
+
+
+func get_image() -> Image:
+	var bytes = PoolByteArray()
+	bytes.resize(size.x * size.y * 3)
+
+	var color
+	var val = 0
+	var i = 0
+
+	for y in size.y:
+		for x in size.y:
+			val = get_point(x, y)
+			color = Color(val, val, val)
+			bytes[i]   = color.r8
+			bytes[i+1] = color.g8
+			bytes[i+2] = color.b8
+			i += 3
+
+	var img = Image.new()
+	img.create_from_data(size.x, size.y, false, Image.FORMAT_RGB8, bytes)
+
+	return img

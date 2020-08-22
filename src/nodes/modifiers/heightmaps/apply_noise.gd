@@ -35,7 +35,7 @@ func _generate_outputs() -> void:
 				data[i] += noise.get_noise_2d(
 					noise_offset.x + x * scale.x,
 					noise_offset.z + y * scale.y
-				) * noise_scale.y + noise_offset.y
+				) * 0.5 + 0.5 #* noise_scale.y + noise_offset.y
 				i += 1
 
 	heightmap.data = data

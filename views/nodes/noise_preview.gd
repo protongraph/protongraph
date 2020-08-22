@@ -25,10 +25,14 @@ func _ready() -> void:
 	_texture_rect.texture = _image_texture
 
 
-func create_from_noise(noise) -> void:
+func create_from_noise(noise: ConceptGraphNoise) -> void:
 	_noise = noise
 	var s = _size.value
 	_image_texture.create_from_image(noise.get_image(s, s))
+
+
+func create_from_heightmap(heightmap: ConceptGraphHeightmap) -> void:
+	_image_texture.create_from_image(heightmap.get_image())
 
 
 func _on_button_preview_pressed() -> void:
