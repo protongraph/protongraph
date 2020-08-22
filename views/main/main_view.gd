@@ -93,10 +93,6 @@ func _load_settings_view():
 	_tab_container.add_child(settings_view)
 
 
-func _show_settings_panel():
-	pass
-
-
 func _save_template():
 	var editor = _tab_container.get_child(_tab_container.current_tab)
 	if editor is ConceptGraphEditorView:
@@ -125,12 +121,6 @@ func _on_menu_action(action: String) -> void:
 			_load_settings_view()
 		"quit":
 			_quit()
-
-
-func _on_editor_action(id: int) -> void:
-	match id:
-		0:
-			_show_settings_panel()
 
 
 func _on_template_requested(path) -> void:

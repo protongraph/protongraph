@@ -54,14 +54,15 @@ func _compute_final_string() -> String:
 	for i in generations:
 		var current = ""
 		
+		var replaced := false
 		var ignore := false
 		
 		for c in final:
-			if c == "(":
+			if c == "(" and replaced:
 				ignore = true
 				continue
 			
-			if c == ")":
+			if c == ")" and replaced:
 				ignore = false
 				continue
 			
@@ -70,8 +71,10 @@ func _compute_final_string() -> String:
 			
 			if rules.has(c):
 				current += _choose_among(rules[c])
+				replaced = true
 			else:
 				current += c
+				replaced = false
 		
 		final = current
 

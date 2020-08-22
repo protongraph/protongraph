@@ -4,8 +4,8 @@ extends ConceptNode
 
 func _init() -> void:
 	unique_id = "curve_smooth"
-	display_name = "Smooth Vector Curve 3D"
-	category = "Modifiers/Vector Curves/3D"
+	display_name = "Smooth Vector Curve"
+	category = "Modifiers/Vector Curves"
 	description = "Smooth a vector curve. Does not create new points."
 
 	set_input(0, "Curve", ConceptGraphDataType.VECTOR_CURVE_3D)

@@ -9,7 +9,6 @@ func _init() -> void:
 	description = "Returns a list of strings with support for variables"
 
 	var opts = {
-		"step": 1,
 		"min": 0,
 		"max":  360,
 		"allow_lesser": true,

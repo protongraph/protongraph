@@ -13,14 +13,14 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="."]
-margin_top = 5.0
-margin_right = 95.0
-margin_bottom = 19.0
+margin_top = 10.0
+margin_right = 157.0
+margin_bottom = 35.0
 size_flags_horizontal = 3
 text = "Variable name"
 
 [node name="LineEdit" type="LineEdit" parent="."]
-margin_left = 99.0
-margin_right = 194.0
-margin_bottom = 24.0
+margin_left = 165.0
+margin_right = 329.0
+margin_bottom = 45.0
 size_flags_horizontal = 3

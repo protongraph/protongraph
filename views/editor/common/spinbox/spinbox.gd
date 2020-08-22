@@ -43,7 +43,9 @@ func _ready() -> void:
 	Signals.safe_connect(_line_edit, "text_entered", self, "_on_line_edit_changed")
 	Signals.safe_connect(_line_edit, "focus_exited", self, "_on_line_edit_changed")
 
-	get_child(0).rect_min_size *= ConceptGraphEditorUtil.get_editor_scale()
+	var scale = ConceptGraphEditorUtil.get_editor_scale()
+	get_child(0).rect_min_size *= scale
+	rect_min_size.y *= scale
 
 	set_label_text(spinbox_name)
 	_update_line_edit_value(value)
@@ -62,6 +64,7 @@ func set_label_text(text) -> void:
 	if _name_label:
 		_name_label.text = spinbox_name
 		rect_min_size.x = spinbox_name.length() * 8 + 60
+		rect_min_size.x *= ConceptGraphEditorUtil.get_editor_scale()
 
 
 func get_label_text() -> String:
@@ -106,9 +109,27 @@ func _on_button_pressed(increase: bool) -> void:
 
 
 func _on_line_edit_changed(text = "") -> void:
+	# For initialisation purpose
 	if text == "":
 		text = _line_edit.text
-	_create_undo_redo_action(float(text), value)
+	
+	var new_value = value
+	
+	# If the text entered is a number
+	if text.is_valid_float() or text.is_valid_integer():
+		new_value = float(text)
+		
+	else:
+		# Check if the text is an expression
+		var expression := Expression.new()
+
+		var error = expression.parse(text, [])
+		if error == OK:
+			var result = expression.execute([], null, true)
+			if not expression.has_execute_failed():
+				new_value = result
+
+	_create_undo_redo_action(new_value, value)
 	if text != String(value):
 		_line_edit.text = String(value)
 

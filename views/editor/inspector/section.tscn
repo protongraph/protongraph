@@ -22,15 +22,15 @@ root = NodePath("MarginContainer/Root")
 
 [node name="SectionName" type="Label" parent="."]
 margin_right = 1366.0
-margin_bottom = 24.0
+margin_bottom = 35.0
 custom_styles/normal = SubResource( 1 )
 text = "General"
 align = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-margin_top = 28.0
+margin_top = 43.0
 margin_right = 1366.0
-margin_bottom = 44.0
+margin_bottom = 59.0
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
 custom_constants/margin_left = 8

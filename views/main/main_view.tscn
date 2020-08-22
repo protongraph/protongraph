@@ -21,10 +21,11 @@ expand_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.478431, 0.027451, 0.027451, 1 )
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+anti_aliasing = false
 
 [node name="MainView" type="PanelContainer"]
 anchor_right = 1.0

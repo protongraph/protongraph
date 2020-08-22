@@ -18,6 +18,7 @@ func init(name: String, value: String):
 	Signals.safe_connect(line_edit, "text_changed", self, "_on_text_changed")
 
 
+
 func set_value(text: String) -> void:
 	line_edit.text = text
 

@@ -30,8 +30,8 @@ func draw(system: String) -> Array:
 		var cmd = data[0]
 		system = data[1]
 		
-		var angle = _get_parameter(cmd, 0, default_angle)
-		var size = _get_parameter(cmd, 0, step_size)
+		var angle: float = _get_parameter(cmd, 0, default_angle)
+		var size: float = _get_parameter(cmd, 0, step_size)
 		
 		match cmd.name:
 			"[": # Push state
@@ -58,10 +58,10 @@ func draw(system: String) -> Array:
 				_turtle.translate_object_local(Vector3.FORWARD * size * 0.5)
 			
 			"+": # Turn right
-				_turtle.rotate_object_local(Vector3.UP, deg2rad(angle))
+				_turtle.rotate_object_local(Vector3.UP, -deg2rad(angle))
 
 			"-": # Turn left
-				_turtle.rotate_object_local(Vector3.UP, -deg2rad(angle))
+				_turtle.rotate_object_local(Vector3.UP, deg2rad(angle))
 			
 			"|": # Turn 180 degrees
 				_turtle.rotate_object_local(Vector3.UP, deg2rad(180))
@@ -73,10 +73,10 @@ func draw(system: String) -> Array:
 				_turtle.rotate_object_local(Vector3.RIGHT, -deg2rad(angle))
 				
 			"\\": # Roll clockwise
-				_turtle.rotate_object_local(Vector3.FORWARD, deg2rad(angle))
+				_turtle.rotate_object_local(Vector3.FORWARD, -deg2rad(angle))
 				
 			"/": # Roll counter clockwise
-				_turtle.rotate_object_local(Vector3.FORWARD, -deg2rad(angle))
+				_turtle.rotate_object_local(Vector3.FORWARD, deg2rad(angle))
 			
 			"*": # Roll 180 degrees
 				_turtle.rotate_object_local(Vector3.FORWARD, deg2rad(180))
@@ -98,8 +98,8 @@ func clear() -> void:
 	_curves = []
 	_turtle = Spatial.new()
 	add_child(_turtle)
-	_turtle.look_at(Vector3.UP, Vector3.BACK)
 	_new_path()
+	_turtle.look_at(Vector3.UP, Vector3.BACK)
 
 
 func _read(system: String) -> Array:
@@ -111,7 +111,7 @@ func _read(system: String) -> Array:
 	system = system.right(1)
 
 	# Check if there's additionnal parameters
-	if system[0] == "(":
+	if system.length() > 0 and system[0] == "(":
 		system = system.right(1)
 		var tokens = system.split(")")
 		var param_tokens = tokens[0].split(",")
@@ -119,7 +119,7 @@ func _read(system: String) -> Array:
 		# Each parameters are delimited by "," with a maximum of four for each command
 		for i in param_tokens.size():
 			var param: String = param_tokens[i]
-			if not param.is_valid_float() or not param.is_valid_integer():
+			if not param.is_valid_float() and not param.is_valid_integer():
 				continue
 			
 			command.args.append(param.to_float())
@@ -134,6 +134,7 @@ func _read(system: String) -> Array:
 func _get_parameter(cmd: Command, idx: int, default: float) -> float:
 	if cmd.args.size() > idx:
 		return cmd.args[idx]
+
 	return default
 
 
