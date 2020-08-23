@@ -31,7 +31,6 @@ func _ready() -> void:
 	_viewport.rect_min_size = Vector2(256, 128)
 	_inspector = get_node(inspector)
 
-
 	if Settings.get_setting("autosave"):
 		_save_timer = Timer.new()
 		_save_timer.one_shot = false
@@ -49,10 +48,6 @@ func load_template(path: String) -> void:
 	_saved = true
 
 
-func get_input(name) -> Node:
-	return null
-
-
 func save_template() -> void:
 	_template.save_to_file(_template_path)
 	yield(_template, "template_saved")
@@ -60,6 +55,15 @@ func save_template() -> void:
 	emit_signal("message", "Saved template " + _template_path)
 	emit_signal("template_saved")
 	print("Saved template ", _template_path)
+
+
+func save_template_as(path: String) -> void:
+	_template_path = path
+	save_template()
+
+
+func get_input(name) -> Node:
+	return null
 
 
 func regenerate(clear_cache := true) -> void:

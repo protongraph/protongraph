@@ -16,6 +16,7 @@ var _history_path := "user://history.json"
 var _history: Array = []
 var _start_view: WeakRef
 var _is_quitting := false
+var _save_as := false
 
 
 func _ready() -> void:
@@ -99,6 +100,14 @@ func _save_template():
 		editor.save_template()
 
 
+func _save_template_as():
+	var editor = _tab_container.get_child(_tab_container.current_tab)
+	if editor is ConceptGraphEditorView:
+		var template_name = editor._template_path.get_file()
+		_save_as = true
+		_file_dialog.save_template_as(template_name)
+
+
 func _quit() -> void:
 	_is_quitting = true
 	if _tab_container.has_opened_templates():
@@ -116,7 +125,7 @@ func _on_menu_action(action: String) -> void:
 		"save":
 			_save_template()
 		"save_as":
-			_file_dialog.save_template_as()
+			_save_template_as()
 		"settings":
 			_load_settings_view()
 		"quit":
@@ -124,6 +133,17 @@ func _on_menu_action(action: String) -> void:
 
 
 func _on_template_requested(path) -> void:
+	if _save_as:
+		var file_name = path.get_file().get_basename()
+		var tab = _tab_container.current_tab
+		var editor = _tab_container.get_child(tab)
+		
+		editor.save_template_as(path)
+		_tab_container._tabs.set_tab_title(tab, file_name)
+		_save_as = false
+		_update_file_history(path)
+		return
+	
 	# Check if the requested template isn't already open
 	for i in _tab_container.get_child_count():
 		var c = _tab_container.get_child(i)
@@ -139,7 +159,10 @@ func _on_template_requested(path) -> void:
 	editor.name = path.get_file().get_basename()
 	_tab_container.add_child(editor)
 	editor.load_template(path)
+	_update_file_history(path)
 
+
+func _update_file_history(path) -> void:
 	if _history.has(path):
 		_history.erase(path)
 

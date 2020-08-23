@@ -265,7 +265,7 @@ margin_right = 472.0
 margin_bottom = 42.0
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0.752941, 0.752941, 0.752941, 1 )
-text = "Set to true to display each vectors components in a single row. False to display them stacked vertically."
+text = "Enable to display each vector components in a single row. Disable  to display them vertically stacked."
 autowrap = true
 
 [node name="Warning" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/InlineVectorFields/VBoxContainer/HBoxContainer/VBoxContainer"]

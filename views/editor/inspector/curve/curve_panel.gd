@@ -62,9 +62,7 @@ func get_curve_data() -> Dictionary:
 
 func _gui_input(event) -> void:
 	if event is InputEventKey:
-		print(event.scancode)
 		if _selected_point != -1 and event.scancode == KEY_DELETE:
-			print("removing ", _selected_point)
 			remove_point(_selected_point)
 
 	elif event is InputEventMouseButton:

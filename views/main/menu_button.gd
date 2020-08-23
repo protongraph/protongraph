@@ -17,7 +17,8 @@ func _ready() -> void:
 	popup.add_icon_item(_new_icon, "New Template", 0)
 	popup.add_icon_item(_load_icon, "Load Template", 1)
 	popup.add_separator()
-	popup.add_icon_item(_save_icon, "Save Template", 10)
+	popup.add_icon_item(_save_icon, "Save", 10)
+	popup.add_icon_item(_save_icon, "Save as", 11)
 	popup.add_separator()
 	popup.add_icon_item(_settings_icon, "Settings", 20)
 	popup.add_separator()
@@ -35,6 +36,8 @@ func _on_id_pressed(id) -> void:
 			emit_signal("menu_action", "load")
 		10:
 			emit_signal("menu_action", "save")
+		11:
+			emit_signal("menu_action", "save_as")
 		20:
 			emit_signal("menu_action", "settings")
 		30:
