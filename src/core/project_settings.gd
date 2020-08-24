@@ -9,6 +9,7 @@ const GROUP_NODES_BY_TYPE = "group_nodes_by_type"
 const AUTOSAVE_ENABLED = "enable_autosave"
 const AUTOSAVE_INTERVAL = "autosave_interval"
 const EDITOR_SCALE = "editor_scale"
+const TOUCHPAD_NAVIGATION = "touchpad_navigation"
 
 var _json_util = preload("res://src/thirdparty/json_beautifier/json_beautifier.gd")
 var _path = "user://config.json"
@@ -21,7 +22,8 @@ var _settings = {
 	GROUP_NODES_BY_TYPE: false,
 	AUTOSAVE_ENABLED: true,
 	AUTOSAVE_INTERVAL: 300,
-	EDITOR_SCALE: 100
+	EDITOR_SCALE: 100,
+	TOUCHPAD_NAVIGATION: false
 }
 
 
@@ -75,6 +77,8 @@ func load_config() -> void:
 		print(json.error_string, " l", json.error_line)
 		return
 
+	# Don't override the whole settings dict at once in case the settings file doesn't contain 
+	# all the settings entries. (Happens when we add new settings)
 	var dict = json.result
 	for key in dict.keys():
 		_settings[key] = dict[key]

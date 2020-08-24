@@ -78,6 +78,19 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 			item.set_metadata(0, node.unique_id)
 			var color = ConceptGraphDataType.to_category_color(node.category)
 			item.set_icon(0, ConceptGraphEditorUtil.get_square_texture(color))
+	
+	# Select the first result if the user searched a node
+	if _search_text:
+		var first_node: TreeItem = _get_first_node(root)
+		if first_node:
+			first_node.select(0)
+
+
+func _get_first_node(item: TreeItem) -> TreeItem:
+	var item_first_child = item.get_children()
+	if item_first_child:
+		return _get_first_node(item_first_child)
+	return item
 
 
 func _get_or_create_category(category: String, collapsed := true) -> TreeItem:
@@ -162,8 +175,7 @@ func _on_Search_text_changed(new_text):
 
 
 func _filter_node(node) -> bool:
-	var pattern := "*" + _search_text + "*"
-	return node.display_name.matchn(pattern) or node.category.matchn(pattern)
+	return _search_text.is_subsequence_ofi(node.display_name)
 
 
 func _sort_nodes_by_display_name(a, b):

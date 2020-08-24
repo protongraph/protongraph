@@ -28,6 +28,7 @@ enum Types {
 	VECTOR_CURVE_3D,
 	VECTOR2,
 	VECTOR3,
+	TEXTURE_2D,
 }
 
 
@@ -46,6 +47,7 @@ const BOX_2D = Types.BOX_2D
 const MESH_2D = Types.MESH_2D
 const CURVE_2D = Types.CURVE_2D
 const VECTOR_CURVE_2D = Types.VECTOR_CURVE_2D
+const TEXTURE_2D = Types.TEXTURE_2D
 
 const NODE_3D = Types.NODE_3D
 const BOX_3D = Types.BOX_3D
@@ -55,8 +57,6 @@ const VECTOR_CURVE_3D = Types.VECTOR_CURVE_3D
 
 const VECTOR2 = Types.VECTOR2
 const VECTOR3 = Types.VECTOR3
-
-
 
 
 # Slot connections colors. Share the same color as common types also used in the VisualShader editor.
@@ -76,6 +76,7 @@ const COLORS = {
 	MESH_2D: Color.chocolate,
 	CURVE_2D: Color.forestgreen,
 	VECTOR_CURVE_2D: Color.sandybrown,
+	TEXTURE_2D: Color.cadetblue,
 
 	NODE_3D: Color.crimson,
 	BOX_3D: Color.mediumvioletred,
@@ -148,6 +149,7 @@ static func setup_valid_connection_types(graph_edit: GraphEdit) -> void:
 
 	graph_edit.add_valid_connection_type(NODE_2D, NOISE)
 	graph_edit.add_valid_connection_type(NODE_2D, HEIGHTMAP)
+	graph_edit.add_valid_connection_type(NODE_2D, TEXTURE_2D)
 
 	# Allow everything to connect to ANY
 	for type in Types.values():

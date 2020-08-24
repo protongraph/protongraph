@@ -169,6 +169,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://views/editor/common/spinbox/spinbox.gd"
 }, {
+"base": "ConceptNode",
+"class": "GenericExportNode",
+"language": "GDScript",
+"path": "res://src/nodes/outputs/generic_export_node.gd"
+}, {
+"base": "ConceptNode",
+"class": "GenericImportNode",
+"language": "GDScript",
+"path": "res://src/nodes/inputs/generic_import_node.gd"
+}, {
 "base": "ScrollContainer",
 "class": "InspectorPanel",
 "language": "GDScript",
@@ -242,6 +252,8 @@ _global_script_class_icons={
 "ConceptNodeVectorCurve2D": "",
 "CurveGizmo": "",
 "CustomSpinBox": "",
+"GenericExportNode": "",
+"GenericImportNode": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
 "NodeUtils": "",
@@ -280,6 +292,10 @@ gdscript/warnings/unsafe_call_argument=true
 
 window/size/width=1366
 window/size/height=768
+
+[editor_plugins]
+
+enabled=PoolStringArray(  )
 
 [gui]
 

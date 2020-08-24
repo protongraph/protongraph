@@ -1,5 +1,6 @@
-class_name ConceptNode
 extends GraphNode
+class_name ConceptNode
+
 
 """
 The base class for every nodes you can add in the Graph editor. It provides a basic UI framework

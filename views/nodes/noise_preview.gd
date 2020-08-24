@@ -35,6 +35,10 @@ func create_from_heightmap(heightmap: ConceptGraphHeightmap) -> void:
 	_image_texture.create_from_image(heightmap.get_image())
 
 
+func create_from_image(image: Image) -> void:
+	_image_texture.create_from_image(image)
+
+
 func _on_button_preview_pressed() -> void:
 	if is_displayed:
 		_container.visible = false

@@ -32,6 +32,8 @@ func _generate_outputs() -> void:
 			_preview.create_from_noise(input)
 		elif input is ConceptGraphHeightmap:
 			_preview.create_from_heightmap(input)
+		elif input is Image:
+			_preview.create_from_image(input)
 
 
 func reset() -> void:
