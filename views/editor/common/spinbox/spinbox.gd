@@ -3,18 +3,22 @@ class_name CustomSpinBox
 
 
 export var spinbox_name: String
+export var enforce_step: bool
 export var decrease_button: NodePath
 export var increase_button: NodePath
 export var name_label: NodePath
 export var value_edit: NodePath
 export(int, "Top", "Middle", "Bottom", "Single") var style = 3 setget set_style
 
-var undo_redo: UndoRedo
-
-var _increase_btn: Button
-var _decrease_btn: Button
+var _undo_redo: UndoRedo
 var _name_label: Label
 var _line_edit: LineEdit
+var _edit_popup: PopupPanel
+
+var _clicked := false
+var _acc := 0.0
+var _previous_value := 0.0
+var _is_edited := false
 
 var _bg = preload("styles/progress_bar_bg.tres")
 var _bg_top = preload("styles/progress_bar_bg_top.tres")
@@ -25,28 +29,30 @@ var _fg_top = preload("styles/progress_bar_fg_top.tres")
 var _fg_middle = preload("styles/progress_bar_fg_middle.tres")
 var _fg_bottom = preload("styles/progress_bar_fg_bottom.tres")
 
-var _clicked := false
-var _acc := 0.0
-var _previous_value := 0.0
-
 
 func _ready() -> void:
-	undo_redo = GlobalUndoRedo.get_undo_redo()
-	_increase_btn = get_node(increase_button)
-	_decrease_btn = get_node(decrease_button)
+	_undo_redo = GlobalUndoRedo.get_undo_redo()
+	
+	# Connect the two < and > buttons clicks
+	var increase_btn = get_node(increase_button)
+	var decrease_btn = get_node(decrease_button)
+	Signals.safe_connect(increase_btn, "pressed", self, "_on_button_pressed", [true])
+	Signals.safe_connect(decrease_btn, "pressed", self, "_on_button_pressed", [false])
+	
+	# Listen to the line_edit changes to sync the progress bar value
 	_name_label = get_node(name_label)
 	_line_edit = get_node(value_edit)
-
-	Signals.safe_connect(_increase_btn, "pressed", self, "_on_button_pressed", [true])
-	Signals.safe_connect(_decrease_btn, "pressed", self, "_on_button_pressed", [false])
-	Signals.safe_connect(self, "value_changed", self, "_update_line_edit_value")
 	Signals.safe_connect(_line_edit, "text_entered", self, "_on_line_edit_changed")
 	Signals.safe_connect(_line_edit, "focus_exited", self, "_on_line_edit_changed")
 
+	Signals.safe_connect(self, "value_changed", self, "_update_line_edit_value")
+	
+	_edit_popup = get_node("EditPopup")
+	
 	var scale = ConceptGraphEditorUtil.get_editor_scale()
 	get_child(0).rect_min_size *= scale
 	rect_min_size.y *= scale
-
+	
 	set_label_text(spinbox_name)
 	_update_line_edit_value(value)
 	_update_style()
@@ -100,6 +106,29 @@ func _update_style() -> void:
 			add_stylebox_override("fg", _fg)
 
 
+func _create_undo_redo_action(new, old) -> void:
+	new = stepify(new, step)
+	if new == old:
+		return
+
+	if not _undo_redo:
+		value = new
+		return
+
+	_undo_redo.create_action("Change " + _name_label.text + " value")
+	_undo_redo.add_do_property(self, "value", new)
+	_undo_redo.add_undo_property(self, "value", old)
+	_undo_redo.commit_action()
+
+
+func _show_extra_controls() -> void:
+	var pos = get_global_transform().origin
+	pos.y -= _edit_popup.rect_size.y / 2.0 - rect_size.y / 2.0
+	pos.x -= _edit_popup.rect_size.x
+	_edit_popup.rect_position = pos
+	get_node("EditPopup").popup()
+
+
 func _on_button_pressed(increase: bool) -> void:
 	if increase:
 		_create_undo_redo_action(value + step, value)
@@ -135,7 +164,11 @@ func _on_line_edit_changed(text = "") -> void:
 
 
 func _on_value_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
+	# Another edit box is being dragged, ignore all events
+	if _is_edited:
+		return
+	
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
 		_clicked = event.pressed
 		_acc = 0.0
 		if _clicked:
@@ -149,25 +182,34 @@ func _on_value_gui_input(event: InputEvent) -> void:
 			_acc = 0.0
 
 		_acc += event.relative.x
-		if abs(_acc) >= min(max(5, 20 * step), 20):
-			if step < 1:
-				value += sign(_acc)
-			else:
-				value += sign(_acc) * step
+		if abs(_acc) >= 5 * ConceptGraphEditorUtil.get_editor_scale():
+			value += sign(_acc) * step
 			_acc = 0.0
 		_line_edit.text = String(value)
 
 
-func _create_undo_redo_action(new, old) -> void:
-	new = stepify(new, step)
-	if new == old:
-		return
+# Called when the user starts dragging the extra control
+func _on_edit_value_started() -> void:
+	_is_edited = true
+	_previous_value = value
 
-	if not undo_redo:
-		value = new
-		return
 
-	undo_redo.create_action("Change " + _name_label.text + " value")
-	undo_redo.add_do_property(self, "value", new)
-	undo_redo.add_undo_property(self, "value", old)
-	undo_redo.commit_action()
+# Called when the user stops dragging the extra control
+func _on_edit_value_ended() -> void:
+	if _is_edited:
+		_is_edited = false
+		_create_undo_redo_action(value, _previous_value)
+
+
+# Called when the value is updated from the extra controls
+func _on_edit_value(step: float) -> void:
+	if not _is_edited: # + or - button was clicked
+		_create_undo_redo_action(value + step, value)
+	else:
+		value += step
+
+
+func _on_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == BUTTON_RIGHT:
+			_show_extra_controls()

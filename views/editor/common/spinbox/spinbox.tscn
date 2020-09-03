@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://views/editor/common/spinbox/styles/progress_bar_bg.tres" type="StyleBox" id=1]
 [ext_resource path="res://views/editor/common/spinbox/styles/spinbox_button_right_pressed.tres" type="StyleBox" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://views/editor/common/spinbox/styles/spinbox_button_left_pressed.tres" type="StyleBox" id=10]
 [ext_resource path="res://views/editor/common/spinbox/styles/spinbox_button_right_hover.tres" type="StyleBox" id=11]
 [ext_resource path="res://views/themes/fonts/fira_sans_regular.tres" type="DynamicFont" id=12]
+[ext_resource path="res://views/editor/common/spinbox/edit_popup.tscn" type="PackedScene" id=13]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
@@ -47,6 +48,7 @@ value_edit = NodePath("SpinBoxContainer/Label/Value")
 [node name="SpinBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_bottom = 1.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -79,6 +81,7 @@ __meta__ = {
 [node name="Value" type="LineEdit" parent="SpinBoxContainer/Label"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 1
 size_flags_horizontal = 3
 custom_styles/focus = SubResource( 2 )
 custom_styles/normal = SubResource( 3 )
@@ -86,6 +89,7 @@ custom_fonts/font = ExtResource( 12 )
 custom_constants/minimum_spaces = 0
 text = "50"
 align = 2
+context_menu_enabled = false
 caret_blink = true
 caret_blink_speed = 0.5
 __meta__ = {
@@ -102,4 +106,11 @@ custom_styles/pressed = ExtResource( 2 )
 custom_styles/focus = ExtResource( 11 )
 custom_styles/normal = ExtResource( 8 )
 icon = ExtResource( 5 )
+
+[node name="EditPopup" parent="." instance=ExtResource( 13 )]
+visible = false
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="gui_input" from="SpinBoxContainer/Label/Value" to="." method="_on_value_gui_input"]
+[connection signal="edit_value" from="EditPopup" to="." method="_on_edit_value"]
+[connection signal="edit_value_ended" from="EditPopup" to="." method="_on_edit_value_ended"]
+[connection signal="edit_value_started" from="EditPopup" to="." method="_on_edit_value_started"]
