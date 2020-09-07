@@ -280,6 +280,7 @@ config/quit_on_go_back=false
 GlobalUndoRedo="*res://src/common/undo_redo.gd"
 Settings="*res://src/core/project_settings.gd"
 NodeLibrary="*res://src/core/node_library.gd"
+TextureUtil="*res://src/common/texture_util.gd"
 
 [debug]
 
@@ -293,13 +294,32 @@ gdscript/warnings/unsafe_call_argument=true
 window/size/width=1366
 window/size/height=768
 
-[editor_plugins]
-
-enabled=PoolStringArray(  )
-
 [gui]
 
 theme/use_hidpi=true
+
+[importer_defaults]
+
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d": true,
+"flags/anisotropic": false,
+"flags/filter": true,
+"flags/mipmaps": false,
+"flags/repeat": 0,
+"flags/srgb": 2,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/premult_alpha": false,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 4.0
+}
 
 [input]
 

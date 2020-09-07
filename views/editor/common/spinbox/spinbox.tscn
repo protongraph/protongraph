@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://views/editor/common/spinbox/styles/progress_bar_bg.tres" type="StyleBox" id=1]
 [ext_resource path="res://views/editor/common/spinbox/styles/spinbox_button_right_pressed.tres" type="StyleBox" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://views/editor/common/spinbox/styles/spinbox_button_right_hover.tres" type="StyleBox" id=11]
 [ext_resource path="res://views/themes/fonts/fira_sans_regular.tres" type="DynamicFont" id=12]
 [ext_resource path="res://views/editor/common/spinbox/edit_popup.tscn" type="PackedScene" id=13]
+[ext_resource path="res://views/auto_scale.gd" type="Script" id=14]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
@@ -55,18 +56,22 @@ __meta__ = {
 }
 
 [node name="Decrease" type="Button" parent="SpinBoxContainer"]
-margin_right = 19.0
+margin_right = 16.0
 margin_bottom = 25.0
+rect_min_size = Vector2( 16, 0 )
 focus_mode = 0
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/focus = ExtResource( 6 )
 custom_styles/normal = ExtResource( 9 )
 icon = ExtResource( 4 )
+expand_icon = true
+script = ExtResource( 14 )
+min_size_x = true
 
 [node name="Label" type="Label" parent="SpinBoxContainer"]
-margin_left = 19.0
-margin_right = 76.0
+margin_left = 16.0
+margin_right = 79.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -81,6 +86,7 @@ __meta__ = {
 [node name="Value" type="LineEdit" parent="SpinBoxContainer/Label"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = -5.0
 mouse_filter = 1
 size_flags_horizontal = 3
 custom_styles/focus = SubResource( 2 )
@@ -97,15 +103,19 @@ __meta__ = {
 }
 
 [node name="Increase" type="Button" parent="SpinBoxContainer"]
-margin_left = 76.0
+margin_left = 79.0
 margin_right = 95.0
 margin_bottom = 25.0
+rect_min_size = Vector2( 16, 0 )
 focus_mode = 0
 custom_styles/hover = ExtResource( 11 )
 custom_styles/pressed = ExtResource( 2 )
 custom_styles/focus = ExtResource( 11 )
 custom_styles/normal = ExtResource( 8 )
 icon = ExtResource( 5 )
+expand_icon = true
+script = ExtResource( 14 )
+min_size_x = true
 
 [node name="EditPopup" parent="." instance=ExtResource( 13 )]
 visible = false

@@ -8,8 +8,8 @@ func _init() -> void:
 	category = "Utilities"
 	description = "Used to organize the connections between GraphNodes"
 
-	set_input(0, "", ConceptGraphDataType.ANY)
-	set_output(0, "", ConceptGraphDataType.ANY)
+	set_input(0, "", ConceptGraphDataType.ANY, {"type_icon": false})
+	set_output(0, "", ConceptGraphDataType.ANY, {"type_icon": false})
 	mirror_slots_type(0, 0)
 
 
@@ -26,6 +26,7 @@ func _on_default_gui_ready() -> void:
 	add_stylebox_override("selectedframe", selected)
 
 	rect_size = Vector2.ZERO
+
 
 func _generate_outputs() -> void:
 	output[0] = get_input(0)

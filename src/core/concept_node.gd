@@ -23,6 +23,7 @@ var node_pool: ConceptGraphNodePool # Injected from template
 var thread_pool: ConceptGraphThreadPool # Injected from template
 var output := []
 var minimap_color
+
 # Set to true to force the template to recreate the whole node instead of the style only. Useful if the
 # graphnode has UI controls like OptionButtons that can't be generated properly under a spatial node.
 var requires_full_gui_rebuild := false
@@ -479,6 +480,22 @@ func _mirror_type_check(input_index, output_index) -> bool:
 
 
 """
+Returns true if the given output slot get its type from a mirrored input.
+False otherwise
+"""
+func _is_output_mirrored(output_index: int) -> bool:
+	if output_index >= _outputs.size():
+		return false
+	
+	for i in _inputs.size():
+		for index in _inputs[i]["mirror"]:
+			if index == output_index:
+				return true
+	
+	return false
+
+
+"""
 Based on the previous calls to set_input and set_ouput, this method will call the
 GraphNode.set_slot method accordingly with the proper parameters. This makes it easier syntax
 wise on the child node side and make it more readable.
@@ -492,7 +509,8 @@ func _setup_slots() -> void:
 		var has_output := false
 		var output_type := 0
 		var output_color := Color(0)
-		var icon = null
+		var input_icon = null
+		var output_icon = null
 
 		if _inputs.has(i):
 			has_input = true
@@ -502,17 +520,18 @@ func _setup_slots() -> void:
 			else:
 				input_type = _inputs[i]["type"]
 			input_color = ConceptGraphDataType.COLORS[input_type]
-			if _inputs[i]["multi"]:
-				icon = ConceptGraphEditorUtil.get_square_texture(input_color.lightened(0.6))
+			input_icon = TextureUtil.get_input_texture(_inputs[i]["multi"])
+		
 		if _outputs.has(i):
 			has_output = true
 			output_type = _outputs[i]["type"]
 			output_color = ConceptGraphDataType.COLORS[output_type]
+			output_icon = TextureUtil.get_output_texture()
 
 		if not has_input and not has_output and i < _hboxes.size():
 			_hboxes[i].visible = false
 
-		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color, icon)
+		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color, input_icon, output_icon)
 
 	# Remove elements generated as part of the default gui but doesn't match any slots
 	for b in _hboxes:
@@ -550,8 +569,8 @@ func _generate_default_gui_style() -> void:
 	style.set_bg_color(color)
 	style.set_border_width_all(2 * scale)
 	style.set_border_width(MARGIN_TOP, 32 * scale)
-	style.content_margin_left = 24 * scale;
-	style.content_margin_right = 24 * scale;
+	style.content_margin_left = 22 * scale;
+	style.content_margin_right = 22 * scale;
 	style.set_corner_radius_all(4 * scale)
 	style.set_expand_margin_all(4 * scale)
 	style.shadow_size = 8 * scale
@@ -576,6 +595,7 @@ func _generate_default_gui_style() -> void:
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
 	add_constant_override("separation", 2)
 	add_constant_override("title_offset", 21 * scale)
+	add_constant_override("close_offset", 21 * scale)
 
 
 """
@@ -587,6 +607,8 @@ Scalars input gets a spinbox that's hidden when something is connected to the sl
 Values stored in the spinboxes are automatically exported and restored.
 """
 func _generate_default_gui() -> void:
+	# TODO : Some refactoring would be nice
+	
 	if has_custom_gui():
 		return
 
@@ -598,11 +620,10 @@ func _generate_default_gui() -> void:
 	rect_min_size = Vector2(0.0, 0.0)
 	rect_size = Vector2(0.0, 0.0)
 	var max_output_label_length := 0
-
-	# TODO : Some refactoring would be nice
 	var slots = max(_inputs.size(), _outputs.size())
+	
 	for i in slots:
-		# Create a Hbox container per slot like this -> [LabelIn, (opt), LabelOut]
+		# Create a Hbox container per slot like this -> [Icon, LabelIn, (opt), LabelOut]
 		var hbox = HBoxContainer.new()
 		hbox.rect_min_size.y = 24 * ConceptGraphEditorUtil.get_editor_scale()
 
@@ -614,15 +635,35 @@ func _generate_default_gui() -> void:
 		left_box.name = "Left"
 		left_box.size_flags_horizontal = SIZE_EXPAND_FILL
 		hbox.add_child(left_box)
-
+		
 		# label_left holds the name of the input slot.
 		var label_left = Label.new()
-		label_left.name = "LabelLeft"
-		label_left.mouse_filter = MOUSE_FILTER_PASS
-		left_box.add_child(label_left)
+		
 
 		# If this slot has an input
 		if _inputs.has(i):
+			var show_input_icon := true
+			var opts = _inputs[i]["options"]
+			
+			if opts and opts.has("type_icon"):
+				show_input_icon = opts["type_icon"]
+	
+			var input_icon_container = CenterContainer.new()
+			var input_icon = TextureRect.new()
+			if show_input_icon:
+				input_icon.mouse_filter = Control.MOUSE_FILTER_PASS
+				input_icon_container.add_child(input_icon)
+				left_box.add_child(input_icon_container)
+	
+
+			label_left.name = "LabelLeft"
+			label_left.mouse_filter = MOUSE_FILTER_PASS
+			left_box.add_child(label_left)
+			
+			var input_type = _inputs[i]["type"]
+			input_icon.texture = TextureUtil.get_slot_icon(input_type)
+			input_icon.modulate = ConceptGraphDataType.COLORS[input_type]
+			
 			label_left.text = _inputs[i]["name"]
 			label_left.hint_tooltip = ConceptGraphDataType.Types.keys()[_inputs[i]["type"]].capitalize()
 
@@ -631,7 +672,6 @@ func _generate_default_gui() -> void:
 			# and do that automatically instead of manually setting everything one by one
 			match _inputs[i]["type"]:
 				ConceptGraphDataType.BOOLEAN:
-					var opts = _inputs[i]["options"]
 					var checkbox = CheckBox.new()
 					checkbox.focus_mode = Control.FOCUS_NONE
 					checkbox.name = "CheckBox"
@@ -641,19 +681,23 @@ func _generate_default_gui() -> void:
 					left_box.add_child(checkbox)
 
 				ConceptGraphDataType.SCALAR:
-					var opts = _inputs[i]["options"]
 					var n = _inputs[i]["name"]
+					var out_n = ""
 					_create_spinbox(n, opts, left_box, i)
 					label_left.visible = false
+					
+					if _outputs.has(i):
+						out_n = _outputs[i]["name"]
 
-					# Make sure there's enough horizontal space for the custom spinbox when the name
-					# is too large
-					var rx = n.length() * 18.0
+					# Make sure there's enough horizontal space for the custom
+					# spinbox when the name is too large
+					var char_count = n.length() + out_n.length()
+					var scale = ConceptGraphEditorUtil.get_editor_scale()
+					var rx = (char_count * 8.0 + 150.0) * scale
 					if rect_min_size.x < rx:
 						rect_min_size.x = rx
 
 				ConceptGraphDataType.STRING:
-					var opts = _inputs[i]["options"]
 					if opts.has("type") and opts["type"] == "dropdown":
 						var dropdown = OptionButton.new()
 						dropdown.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
@@ -690,15 +734,12 @@ func _generate_default_gui() -> void:
 							left_box.add_child(folder_button)
 
 				ConceptGraphDataType.VECTOR2:
-					var opts = _inputs[i]["options"]
 					label_left.visible = false
 					left_box.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 2, i))
 
 				ConceptGraphDataType.VECTOR3:
-					var opts = _inputs[i]["options"]
 					label_left.visible = false
 					left_box.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 3, i))
-
 
 		# Label right holds the output slot name. Set to expand and align_right to push the text on
 		# the right side of the node panel
@@ -709,6 +750,10 @@ func _generate_default_gui() -> void:
 		label_right.size_flags_horizontal = SIZE_FILL
 		label_right.align = Label.ALIGN_RIGHT
 		label_right.visible = false
+		
+		var output_icon_container = CenterContainer.new()
+		var output_icon = TextureRect.new()
+		output_icon_container.add_child(output_icon)
 
 		if _outputs.has(i):
 			label_right.text = _outputs[i]["name"]
@@ -717,7 +762,18 @@ func _generate_default_gui() -> void:
 			label_right.hint_tooltip = ConceptGraphDataType.Types.keys()[_outputs[i]["type"]].capitalize()
 			if label_right.text != "":
 				label_right.visible = true
+			
+			var out_opts = _outputs[i]["options"]
+			var show_output_icon := true
+			if out_opts and out_opts.has("type_icon"):
+				show_output_icon = out_opts["type_icon"]
+			
+			if show_output_icon and not _is_output_mirrored(i):
+				output_icon.texture = TextureUtil.get_slot_icon(_outputs[i]["type"])
+				output_icon.modulate = ConceptGraphDataType.COLORS[_outputs[i]["type"]]
+
 		hbox.add_child(label_right)
+		hbox.add_child(output_icon_container)
 
 	rect_min_size.x += max_output_label_length * 6.0 # TODO; tmp hack, use editor scale here and find a better layout
 	_on_connection_changed()
@@ -753,11 +809,35 @@ func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContaine
 
 	var vbox = VBoxContainer.new()
 	vbox.name = "VectorContainer"
+	
+	var label_box = HBoxContainer.new()
+
+	var show_input_icon := true
+	if opts and opts.has("type_icon"):
+		show_input_icon = opts["type_icon"]
+	
+	if show_input_icon:
+		var input_icon_container = CenterContainer.new()
+		var input_icon = TextureRect.new()
+		
+		var type = ConceptGraphDataType.VECTOR2
+		if count == 3:
+			type = ConceptGraphDataType.VECTOR3
+		
+		input_icon.texture = TextureUtil.get_slot_icon(type)
+		input_icon.modulate = ConceptGraphDataType.COLORS[type]
+		
+		input_icon_container.add_child(input_icon)
+		label_box.add_child(input_icon_container)
 
 	if property_name:
 		var label = Label.new()
 		label.text = property_name
-		vbox.add_child(label)
+		label_box.add_child(label)
+	
+	if label_box.get_child_count() != 0:
+		vbox.add_child(label_box)
+	
 
 	var vector_box
 	if inline_vectors:
@@ -971,22 +1051,37 @@ func _on_close_request() -> void:
 
 
 """
-When the nodes connections changes, this method checks for all the input slots and hides
-everything that's not a label if something is connected to the associated slot.
+When the nodes connections changes, this method checks for all the input slots 
+and hides everything that's not a label if something is connected to the
+associated slot.
+
+For types like Numbers, Strings, Vectors or Boolean, it's possible to set a
+value on the node itself, but if something is connected to the slot, it takes
+priority over the local value. Hiding the default GUI should avoid some 
+confusion by not displaying a value that's not used.
 """
 func _on_connection_changed() -> void:
-	# Hides the default gui (except for the labels) if a connection is present for the given slot
+	# Hides the default gui (except for the name) if something is connected to 
+	# the given slot
 	for i in _inputs.size():
+		var connected = is_input_connected(i)
 		var type = _inputs[i]["type"]
+		if _inputs[i].has("default_type"):
+			type = _inputs[i]["default_type"] # Mirroring is enabled
+		
 		for ui in _hboxes[i].get_node("Left").get_children():
-			if not ui is Label:
-				ui.visible = !is_input_connected(i)
-			elif ui.name == "LabelLeft":
+			# Hide the default GUI if something is connected
+			ui.visible = !connected
+			# Force the Name label and icon to always be visible
+			if ui is Label or ui is CenterContainer:
 				ui.visible = true
+
+				# Special case for numbers and vectors. The icon should be 
+				# hidden unless something is connected
 				if type == ConceptGraphDataType.SCALAR \
 					or type == ConceptGraphDataType.VECTOR2 \
 					or type == ConceptGraphDataType.VECTOR3:
-					ui.visible = is_input_connected(i)
+						ui.visible = connected
 
 	_update_slots_types()
 	_redraw()

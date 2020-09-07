@@ -4,11 +4,11 @@ extends MenuButton
 signal menu_action
 
 
-var _new_icon = preload("res://icons/icon_new.svg")
-var _load_icon = preload("res://icons/icon_load.svg")
-var _save_icon = preload("res://icons/icon_save.svg")
-var _settings_icon = preload("res://icons/icon_cog.svg")
-var _close_icon = preload("res://icons/icon_close.svg")
+var _new_icon = TextureUtil.get_texture("res://icons/icon_new.svg")
+var _load_icon = TextureUtil.get_texture("res://icons/icon_load.svg")
+var _save_icon = TextureUtil.get_texture("res://icons/icon_save.svg")
+var _settings_icon = TextureUtil.get_texture("res://icons/icon_cog.svg")
+var _close_icon = TextureUtil.get_texture("res://icons/icon_close.svg")
 
 
 func _ready() -> void:

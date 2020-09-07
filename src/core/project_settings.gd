@@ -13,6 +13,8 @@ const TOUCHPAD_NAVIGATION = "touchpad_navigation"
 
 var _json_util = preload("res://src/thirdparty/json_beautifier/json_beautifier.gd")
 var _path = "user://config.json"
+var _initialized := false
+
 
 # Default settings
 var _settings = {
@@ -41,8 +43,12 @@ func has(setting: String) -> bool:
 
 
 func get_setting(setting: String):
+	if not _initialized:
+		load_or_create_config()
+	
 	if _settings.has(setting):
 		return _settings[setting]
+	
 	return null
 
 
@@ -65,7 +71,7 @@ func load_or_create_config() -> void:
 		print(_path, " doesn't exists, creating the config file")
 		save_config()
 
-	print("Settings : ", _settings)
+	_initialized = true
 
 
 func load_config() -> void:

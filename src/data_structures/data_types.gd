@@ -7,6 +7,7 @@ have an associated color in the COLORS dictionnary.
 """
 
 # NEVER CHANGE THE TYPES ORDER or it will break save files
+# TODO : Find a way to fix that because there's obsolete types in there
 enum Types {
 	ANY,
 	BOOLEAN,
@@ -17,12 +18,12 @@ enum Types {
 	HEIGHTMAP,
 	CURVE_FUNC,
 	NODE_2D,
-	BOX_2D,
-	MESH_2D,
-	CURVE_2D,
-	VECTOR_CURVE_2D,
+	BOX_2D,	# Obsolete
+	MESH_2D, # Obsolete
+	CURVE_2D, # Obsolete
+	VECTOR_CURVE_2D, # Obsolete
 	NODE_3D,
-	BOX_3D,
+	BOX_3D, # Will become "MASK" later
 	MESH_3D,
 	CURVE_3D,
 	VECTOR_CURVE_3D,
@@ -58,34 +59,32 @@ const VECTOR_CURVE_3D = Types.VECTOR_CURVE_3D
 const VECTOR2 = Types.VECTOR2
 const VECTOR3 = Types.VECTOR3
 
+# Colors are used for slots, connections between slots and frame color
+const color_base_type = Color("3ac5e6")
+const color_vector = Color("3ac5e6")
 
-# Slot connections colors. Share the same color as common types also used in the VisualShader editor.
 const COLORS = {
 	ANY: Color.white,
-	BOOLEAN: Color("8ca6f4"),
-	SCALAR: Color("61d9f5"),
-	#STRING: Color.gold,
-	STRING: Color("bbd700"),
-	MATERIAL: Color.darkmagenta,
+
+	NODE_2D: Color("7c42ba"),
+	TEXTURE_2D: Color("6b64c6"),
+	CURVE_FUNC: Color("5d7fcf"),
+	MATERIAL: Color("5197d7"),
+
+	BOOLEAN: color_base_type,
+	SCALAR: color_base_type,
+	STRING: color_base_type,
+	VECTOR2: color_vector,
+	VECTOR3: color_vector,
+	
 	NOISE: Color("4ce0a0"),
-	HEIGHTMAP: Color.gold,
-	CURVE_FUNC: Color.dodgerblue,
-
-	NODE_2D: Color.crimson,
-	BOX_2D: Color.mediumvioletred,
-	MESH_2D: Color.chocolate,
-	CURVE_2D: Color.forestgreen,
-	VECTOR_CURVE_2D: Color.sandybrown,
-	TEXTURE_2D: Color.cadetblue,
-
-	NODE_3D: Color.crimson,
-	BOX_3D: Color.mediumvioletred,
-	MESH_3D: Color.chocolate,
-	CURVE_3D: Color.forestgreen,
-	VECTOR_CURVE_3D: Color.sandybrown,
-
-	VECTOR2: Color("7e3f97"),
-	VECTOR3: Color("d67ded"),
+	HEIGHTMAP: Color("fecf46"),
+	
+	NODE_3D: Color("e9001e"),
+	CURVE_3D: Color("f6450d"),
+	MESH_3D: Color("fb6f10"),
+	BOX_3D: Color("fc9224"), # TODO rename to MASK
+	VECTOR_CURVE_3D: Color("fdb136"),
 }
 
 
@@ -103,37 +102,37 @@ static func to_category_color(category: String) -> Color:
 		"Boxes":
 			return COLORS[BOX_3D]
 		"Curves":
-			return COLORS[CURVE_3D]
+			return COLORS[CURVE_3D].darkened(0.25)
 		"Vector Curves":
 			return COLORS[VECTOR_CURVE_3D].darkened(0.25)
 		"Debug":
 			return Color.black
 		"Heightmaps":
-			return Color("c09900") #COLORS[HEIGHTMAP].darkened(0.3)
+			return COLORS[HEIGHTMAP].darkened(0.3)
 		"Inputs":
 			return Color.steelblue
 		"Inspector":
 			return Color.teal
 		"Maths":
-			return Color.steelblue
+			return COLORS[SCALAR].darkened(0.25)
 		"Meshes":
-			return COLORS[MESH_3D]
+			return COLORS[MESH_3D].darkened(0.2)
 		"Nodes":
-			return Color.firebrick
+			return COLORS[NODE_3D].darkened(0.2)
 		"Noises":
-			return COLORS[NOISE].darkened(0.5)
+			return COLORS[NOISE].darkened(0.4)
 		"Output":
 			return Color.black
 		"String":
-			return COLORS[STRING].darkened(0.3)
+			return COLORS[STRING].darkened(0.25)
 		"Transforms":
 			return Color.maroon
 		"Utilities":
 			return Color("4371b5")
 		"Vectors":
-			return COLORS[VECTOR2]
+			return COLORS[SCALAR].darkened(0.25)
 		"Numbers":
-			return COLORS[SCALAR].darkened(0.3)
+			return COLORS[SCALAR].darkened(0.25)
 		_:
 			return Color.black
 

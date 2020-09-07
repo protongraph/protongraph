@@ -12,6 +12,8 @@ func _init() -> void:
 	set_input(1, "False", ConceptGraphDataType.ANY)
 	set_input(2, "Condition", ConceptGraphDataType.BOOLEAN, {"value": true})
 	set_output(0, "", ConceptGraphDataType.ANY)
+	
+	mirror_slots_type(0, 0)
 
 
 func _generate_outputs() -> void:

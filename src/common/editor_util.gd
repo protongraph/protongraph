@@ -2,9 +2,9 @@ class_name ConceptGraphEditorUtil
 
 
 static func get_editor_scale() -> float:
-	var scale = Settings.get_setting(Settings.EDITOR_SCALE)
+	var scale: float = Settings.get_setting(Settings.EDITOR_SCALE)
 	if not scale:
-		scale = 100
+		scale = 100.0
 	return scale / 100.0
 
 

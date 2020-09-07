@@ -13,7 +13,7 @@ func _init() -> void:
 	set_input(2, "Height Scale", ConceptGraphDataType.SCALAR, {"value":16, "step":1})
 	set_input(3, "Height Offset", ConceptGraphDataType.SCALAR, {"value":0, "step":1})
 
-	set_output(0, "Heightmap", ConceptGraphDataType.HEIGHTMAP)
+	set_output(0, "", ConceptGraphDataType.HEIGHTMAP)
 
 
 func _generate_outputs() -> void:

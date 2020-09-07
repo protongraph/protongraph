@@ -14,6 +14,8 @@ func _init() -> void:
 	set_input(3, "A", ConceptGraphDataType.SCALAR, {"allow_lesser": true})
 	set_input(4, "B", ConceptGraphDataType.SCALAR, {"allow_lesser": true})
 	set_output(0, "", ConceptGraphDataType.ANY)
+	
+	mirror_slots_type(0, 0)
 
 
 func _generate_outputs() -> void:
