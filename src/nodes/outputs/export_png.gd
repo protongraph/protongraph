@@ -9,11 +9,12 @@ func _init() -> void:
 	category = "Output"
 	description = "Save a picture to the disk"
 	
-	set_input(0, "Data", ConceptGraphDataType.TEXTURE_2D)
+	set_input(0, "Texture", ConceptGraphDataType.TEXTURE_2D)
 
 
 func _trigger_export() -> void:
 	var path: String = get_resource_path()
-	var image: Image = get_input_single(0, null)
-	if image:
+	var image = get_input_single(0, null)
+	if image and image is Image:
 		image.save_png(path)
+	
