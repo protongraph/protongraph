@@ -39,6 +39,11 @@ known to be troublesome.
 The **current focus** is to get the standalone version in a working state and **add a lot of documentation**.
 Even though ConceptGraph doesn't have all of its planned features, we can't expect anyone to actually use this tool if nobody knows how to.
 
+## Build from source
+
+If the pre-built binaries doesn't work on your system, you can export the project by following the instructions on this repository: https://github.com/HungryProton/concept_graph_environment
+
+
 ## Social medias
 
 Despite being a very new project, the ConceptGraph community is growing. Head over to the Discord server if you want to ask for help
