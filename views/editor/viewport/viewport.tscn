@@ -15,6 +15,9 @@
 [ext_resource path="res://views/editor/viewport/gizmos_manager.gd" type="Script" id=13]
 [ext_resource path="res://views/editor/viewport/monitor_local_tree_changes.gd" type="Script" id=14]
 
+
+
+
 [sub_resource type="World" id=1]
 environment = ExtResource( 1 )
 

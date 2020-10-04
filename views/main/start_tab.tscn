@@ -5,11 +5,33 @@
 [ext_resource path="res://views/themes/fonts/fira_sans_bold_large.tres" type="DynamicFont" id=3]
 [ext_resource path="res://icons/icon_load.svg" type="Texture" id=4]
 [ext_resource path="res://views/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=5]
-[ext_resource path="res://views/auto_scale.gd" type="Script" id=6]
 
-[sub_resource type="StyleBoxEmpty" id=1]
+[sub_resource type="StyleBoxEmpty" id=3]
 
-[sub_resource type="StyleBoxLine" id=2]
+[sub_resource type="GDScript" id=2]
+script/source = "extends Control
+
+
+export var min_size_x := false
+export var min_size_y := false
+export var const_separation := false
+
+
+func _ready() -> void:
+	var scale = ConceptGraphEditorUtil.get_editor_scale()
+
+	if min_size_x:
+		rect_min_size.x *= scale
+
+	if min_size_y:
+		rect_min_size.y *= scale
+
+	if const_separation:
+		var s = get_constant(\"separation\")
+		add_constant_override(\"separation\", s * scale)
+"
+
+[sub_resource type="StyleBoxLine" id=4]
 color = Color( 1, 1, 1, 0.172549 )
 grow_begin = -150.0
 grow_end = -150.0
@@ -18,7 +40,7 @@ vertical = true
 [node name="Start" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 3 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -79,7 +101,7 @@ margin_right = 407.0
 margin_bottom = 459.0
 rect_min_size = Vector2( 140, 0 )
 size_flags_horizontal = 8
-script = ExtResource( 6 )
+script = SubResource( 2 )
 min_size_x = true
 
 [node name="NewTemplate" type="Button" parent="HBoxContainer/Introduction/VBoxContainer/Buttons"]
@@ -107,7 +129,7 @@ expand_icon = true
 margin_left = 455.0
 margin_right = 463.0
 margin_bottom = 768.0
-custom_styles/separator = SubResource( 2 )
+custom_styles/separator = SubResource( 4 )
 
 [node name="RecentFiles" type="MarginContainer" parent="HBoxContainer"]
 margin_left = 471.0

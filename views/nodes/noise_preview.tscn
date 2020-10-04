@@ -4,6 +4,8 @@
 [ext_resource path="res://views/nodes/noise_preview.gd" type="Script" id=2]
 
 
+
+
 [node name="NoisePreview" type="VBoxContainer"]
 margin_right = 99.0
 margin_bottom = 20.0

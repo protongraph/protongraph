@@ -5,6 +5,8 @@
 [ext_resource path="res://views/editor/viewport/gizmos/material_green.tres" type="Material" id=3]
 [ext_resource path="res://views/editor/viewport/gizmos/move_gizmo.gd" type="Script" id=4]
 
+
+
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1, 0.02, 0.02 )
 

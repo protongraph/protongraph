@@ -6,6 +6,8 @@
 [ext_resource path="res://views/themes/styles/icon_button_hover.tres" type="StyleBox" id=4]
 [ext_resource path="res://views/editor/common/icon_button.gd" type="Script" id=5]
 
+
+
 [node name="Button" type="Button"]
 margin_right = 43.0
 margin_bottom = 55.0

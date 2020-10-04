@@ -7,13 +7,16 @@
 [ext_resource path="res://views/editor/add_node_panel.tscn" type="PackedScene" id=5]
 [ext_resource path="res://icons/icon_replay.svg" type="Texture" id=6]
 [ext_resource path="res://icons/icon_save.svg" type="Texture" id=7]
-[ext_resource path="res://views/auto_scale.gd" type="Script" id=8]
+[ext_resource path="res://common/auto_scale.gd" type="Script" id=8]
 [ext_resource path="res://views/editor/run_generation_button.gd" type="Script" id=9]
 [ext_resource path="res://icons/icon_export.svg" type="Texture" id=10]
 [ext_resource path="res://icons/icon_import.svg" type="Texture" id=11]
 [ext_resource path="res://views/editor/common/icon_button.tscn" type="PackedScene" id=12]
 [ext_resource path="res://icons/progress/progress_icon.tres" type="Texture" id=13]
 [ext_resource path="res://icons/icon_add.svg" type="Texture" id=14]
+
+
+
 
 [sub_resource type="StyleBoxEmpty" id=1]
 

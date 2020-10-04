@@ -2,6 +2,8 @@
 
 [ext_resource path="res://views/editor/inspector/inspector.gd" type="Script" id=1]
 
+
+
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.0588235 )
 

@@ -3,11 +3,33 @@
 [ext_resource path="res://views/main/editor_settings.gd" type="Script" id=1]
 [ext_resource path="res://views/themes/fonts/fira_sans_regular_small.tres" type="DynamicFont" id=2]
 [ext_resource path="res://views/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=3]
-[ext_resource path="res://views/auto_scale.gd" type="Script" id=4]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="GDScript" id=2]
+script/source = "extends Control
+
+
+export var min_size_x := false
+export var min_size_y := false
+export var const_separation := false
+
+
+func _ready() -> void:
+	var scale = ConceptGraphEditorUtil.get_editor_scale()
+
+	if min_size_x:
+		rect_min_size.x *= scale
+
+	if min_size_y:
+		rect_min_size.y *= scale
+
+	if const_separation:
+		var s = get_constant(\"separation\")
+		add_constant_override(\"separation\", s * scale)
+"
+
+[sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 8.0
 content_margin_right = 8.0
 content_margin_top = 8.0
@@ -44,7 +66,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 3
 follow_focus = true
 scroll_horizontal_enabled = false
-script = ExtResource( 4 )
+script = SubResource( 2 )
 min_size_x = true
 
 [node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
@@ -69,7 +91,7 @@ custom_constants/separation = 22
 [node name="EditorSection" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer"]
 margin_right = 544.0
 margin_bottom = 35.0
-custom_styles/normal = SubResource( 2 )
+custom_styles/normal = SubResource( 3 )
 custom_fonts/font = ExtResource( 3 )
 text = "Editor"
 
@@ -322,7 +344,7 @@ autowrap = true
 margin_top = 599.0
 margin_right = 544.0
 margin_bottom = 634.0
-custom_styles/normal = SubResource( 2 )
+custom_styles/normal = SubResource( 3 )
 custom_fonts/font = ExtResource( 3 )
 text = "Engine"
 

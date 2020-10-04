@@ -1,16 +1,18 @@
 [gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://views/themes/dark.tres" type="Theme" id=1]
-[ext_resource path="res://views/main/main_view.gd" type="Script" id=2]
-[ext_resource path="res://views/main/menu_button.gd" type="Script" id=3]
-[ext_resource path="res://views/main/tab_container.gd" type="Script" id=4]
-[ext_resource path="res://views/main/template_dialog.gd" type="Script" id=5]
-[ext_resource path="res://icons/icon_menu.svg" type="Texture" id=6]
-[ext_resource path="res://views/main/confirm_exit_dialog.gd" type="Script" id=7]
+[ext_resource path="res://common/auto_scale.gd" type="Script" id=1]
+[ext_resource path="res://views/themes/dark.tres" type="Theme" id=2]
+[ext_resource path="res://views/main/main_view.gd" type="Script" id=3]
+[ext_resource path="res://views/main/template_dialog.gd" type="Script" id=4]
+[ext_resource path="res://icons/icon_menu.svg" type="Texture" id=5]
+[ext_resource path="res://views/main/tab_container.gd" type="Script" id=6]
+[ext_resource path="res://views/themes/styles/icon_button_pressed.tres" type="StyleBox" id=7]
 [ext_resource path="res://views/themes/styles/icon_button_normal.tres" type="StyleBox" id=8]
 [ext_resource path="res://views/themes/styles/icon_button_hover.tres" type="StyleBox" id=9]
-[ext_resource path="res://views/themes/styles/icon_button_pressed.tres" type="StyleBox" id=10]
-[ext_resource path="res://views/auto_scale.gd" type="Script" id=11]
+[ext_resource path="res://views/main/confirm_exit_dialog.gd" type="Script" id=10]
+[ext_resource path="res://views/main/menu_button.gd" type="Script" id=11]
+
+
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.627451 )
@@ -31,8 +33,8 @@ anti_aliasing = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 256, 256 )
-theme = ExtResource( 1 )
-script = ExtResource( 2 )
+theme = ExtResource( 2 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -57,7 +59,7 @@ self_modulate = Color( 1, 1, 1, 0 )
 margin_right = 2.0
 margin_bottom = 29.0
 custom_constants/separation = 2
-script = ExtResource( 11 )
+script = ExtResource( 1 )
 const_separation = true
 
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
@@ -66,11 +68,11 @@ margin_right = 30.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 24, 24 )
 custom_styles/hover = ExtResource( 9 )
-custom_styles/pressed = ExtResource( 10 )
+custom_styles/pressed = ExtResource( 7 )
 custom_styles/normal = ExtResource( 8 )
-icon = ExtResource( 6 )
+icon = ExtResource( 5 )
 expand_icon = true
-script = ExtResource( 3 )
+script = ExtResource( 11 )
 __meta__ = {
 "_editor_description_": "Items are defined in the MainView script"
 }
@@ -92,7 +94,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 tab_align = 0
 tabs_visible = false
-script = ExtResource( 4 )
+script = ExtResource( 6 )
 tabs = NodePath("../TopBar/Tabs")
 confirm_dialog = NodePath("../../ConfirmExitDialog")
 
@@ -123,7 +125,7 @@ access = 2
 filters = PoolStringArray( "*.cgraph" )
 current_dir = "/home/hungryproton/Work/Games/ConceptGraph"
 current_path = "/home/hungryproton/Work/Games/ConceptGraph/"
-script = ExtResource( 5 )
+script = ExtResource( 4 )
 
 [node name="ConfirmExitDialog" type="WindowDialog" parent="."]
 visible = true
@@ -135,7 +137,7 @@ rect_min_size = Vector2( 310, 120 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
 window_title = "Please confirm ..."
-script = ExtResource( 7 )
+script = ExtResource( 10 )
 
 [node name="MarginContainer" type="MarginContainer" parent="ConfirmExitDialog"]
 anchor_right = 1.0

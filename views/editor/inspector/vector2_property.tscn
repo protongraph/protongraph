@@ -3,7 +3,6 @@
 [ext_resource path="res://views/editor/common/spinbox/spinbox.tscn" type="PackedScene" id=1]
 [ext_resource path="res://views/editor/inspector/vector2_property.gd" type="Script" id=2]
 
-
 [node name="Vector2Property" type="VBoxContainer"]
 script = ExtResource( 2 )
 __meta__ = {
