@@ -1,4 +1,3 @@
-tool
 extends Panel
 
 # Courtesy of pycbouh, original code can be found there:

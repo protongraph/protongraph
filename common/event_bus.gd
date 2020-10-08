@@ -12,7 +12,7 @@ func register_listener(object, event, function_name):
 	Signals.safe_connect(signal_manager, event, object, function_name)
 
 
-func dispatch(event, args):
+func dispatch(event, args = []):
 	if typeof(args) != TYPE_ARRAY:
 		args = [args]
 	signal_manager.call_emit_signal([event] + args)

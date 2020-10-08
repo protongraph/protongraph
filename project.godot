@@ -22,9 +22,9 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "ConceptGraphClient",
 "language": "GDScript",
-"path": "res://common/client.gd"
+"path": "res://client/client.gd"
 }, {
-"base": "Reference",
+"base": "Path",
 "class": "ConceptGraphCurveInput",
 "language": "GDScript",
 "path": "res://nodes/curve_input.gd"
@@ -48,11 +48,6 @@ _global_script_classes=[ {
 "class": "ConceptGraphSettings",
 "language": "GDScript",
 "path": "res://common/project_settings.gd"
-}, {
-"base": "Node",
-"class": "ConceptNodeLibrary",
-"language": "GDScript",
-"path": "res://common/node_library.gd"
 }, {
 "base": "ProgressBar",
 "class": "CustomSpinBox",
@@ -96,6 +91,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://thirdparty/json_beautifier/json_beautifier.gd"
 }, {
+"base": "Node",
+"class": "NodeFactory",
+"language": "GDScript",
+"path": "res://common/node_library.gd"
+}, {
 "base": "VBoxContainer",
 "class": "NoisePreview",
 "language": "GDScript",
@@ -122,16 +122,13 @@ _global_script_class_icons={
 "ConceptGraphSettings": "",
 "ConceptNodeLibrary": "",
 "ConceptNodeVectorCurve": "",
-"ConceptNodeVectorCurve2D": "",
 "CurveGizmo": "",
-"CustomSpinBox": "",
-"GenericExportNode": "",
-"GenericImportNode": "",
 "CustomSpinBox": "",
 "DictUtil": "",
 "EventBus": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
+"NodeFactory": "",
 "NoisePreview": "",
 "PathUtil": "",
 "PoolVectorUtil": "",
@@ -145,17 +142,15 @@ config/name="ConceptGraph"
 run/main_scene="res://tmp.tscn"
 boot_splash/image="res://views/themes/splash.png"
 boot_splash/fullsize=false
-boot_splash/bg_color=Color( 0.1408, 0.1456, 0.16, 1 )
+boot_splash/bg_color=Color( 0.203922, 0.243137, 0.286275, 1 )
 config/icon="res://icons/icon.png"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
 
 [autoload]
 
-GlobalUndoRedo="*res://src/common/undo_redo.gd"
-Settings="*res://src/core/project_settings.gd"
-NodeLibrary="*res://src/core/node_library.gd"
-TextureUtil="*res://src/common/texture_util.gd"
+GlobalEventBus="*res://common/event_bus.gd"
+Protocol="*res://client/protocol.gd"
 
 [debug]
 

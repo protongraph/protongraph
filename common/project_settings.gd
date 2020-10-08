@@ -11,7 +11,7 @@ const AUTOSAVE_INTERVAL = "autosave_interval"
 const EDITOR_SCALE = "editor_scale"
 const TOUCHPAD_NAVIGATION = "touchpad_navigation"
 
-var _json_util = preload("res://src/thirdparty/json_beautifier/json_beautifier.gd")
+var _json_util = preload("res://thirdparty/json_beautifier/json_beautifier.gd")
 var _path = "user://config.json"
 var _initialized := false
 
@@ -57,7 +57,7 @@ func update_setting(setting: String, value) -> void:
 	_settings[setting] = value
 	save_config()
 
-	if _require_restart.has(setting): # Keep using the old value untill the user restart the application
+	if _require_restart.has(setting): # Keep using the old value until the user restarts the application
 		_settings[setting] = old_value
 
 
@@ -92,7 +92,6 @@ func load_config() -> void:
 	# Fix because of wrong defaults set on the 0.6 release
 	if _settings[EDITOR_SCALE] < 75 or _settings[EDITOR_SCALE] > 400:
 		_settings[EDITOR_SCALE] = 100
-
 
 
 func save_config() -> void:
