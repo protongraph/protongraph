@@ -8,20 +8,8 @@ static func get_editor_scale() -> float:
 	return scale / 100.0
 
 
-"""
-Returns the path to res://addons/concept_graph, no matter how the user renamed the addon folder
-"""
-static func get_plugin_root_path() -> String:
-	var dummy = ConceptGraphNodePool.new()
-	var path = dummy.get_script().get_path()
-	dummy.queue_free()
-	return path.replace("src/core/node_pool.gd", "")
-
-
-"""
-Returns a square texture or a given color. Used in GraphNodes that accept multiple connections
-on the same slot.
-"""
+# Returns a square texture or a given color. Used in GraphNodes that accept 
+# multiple connections on the same slot.
 static func get_square_texture(color: Color) -> ImageTexture:
 	var image = Image.new()
 	image.create(10, 10, false, Image.FORMAT_RGBA8)
@@ -34,9 +22,7 @@ static func get_square_texture(color: Color) -> ImageTexture:
 	return imageTexture
 
 
-"""
->>>> ONLY CALL THIS ONCE <<<<
-"""
+# >>>> ONLY CALL THIS ONCE <<<<
 static func scale_all_ui_resources() -> void:
 	_scale_fonts()
 	_scale_spinbox_custom_stylebox()
@@ -92,15 +78,14 @@ static func get_scaled_theme(theme: Theme) -> Theme:
 	return res
 
 
-"""
-Scale the fonts from the font folder. Calling load takes advantage of the built in resource caching
-and allows to update all the fonts manually assigned in different scenes without going through the
-theme.
-"""
+# Scale the fonts from the font folder. Calling load takes advantage of the 
+# built in resource caching to get a reference to the previously loaded
+# resources. That way we can update all the fonts manually assigned in 
+# different scenes.
 static func _scale_fonts() -> void:
 	var scale = get_editor_scale()
 	var dir = Directory.new()
-	var path = "res://views/themes/fonts/"
+	var path = "res://ui/themes/fonts/"
 	dir.open(path)
 
 	dir.list_dir_begin()
@@ -117,7 +102,7 @@ static func _scale_fonts() -> void:
 static func _scale_spinbox_custom_stylebox() -> void:
 	var scale = get_editor_scale()
 	var dir = Directory.new()
-	var path = "res://views/editor/common/spinbox/styles/"
+	var path = "res://ui/views/editor/components/spinbox/styles/"
 	dir.open(path)
 
 	dir.list_dir_begin()
@@ -137,7 +122,7 @@ static func _scale_spinbox_custom_stylebox() -> void:
 static func _scale_common_stylebox() -> void:
 	var scale = get_editor_scale()
 	var dir = Directory.new()
-	var path = "res://views/themes/styles/"
+	var path = "res://ui/themes/styles/"
 	dir.open(path)
 
 	dir.list_dir_begin()

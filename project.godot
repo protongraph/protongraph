@@ -9,25 +9,10 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Spatial",
-"class": "BaseGizmo",
-"language": "GDScript",
-"path": "res://views/editor/viewport/gizmos/base_gizmo.gd"
-}, {
-"base": "MeshInstance",
-"class": "ConceptBoxInput",
-"language": "GDScript",
-"path": "res://nodes/box_input.gd"
-}, {
 "base": "Node",
 "class": "ConceptGraphClient",
 "language": "GDScript",
 "path": "res://client/client.gd"
-}, {
-"base": "Path",
-"class": "ConceptGraphCurveInput",
-"language": "GDScript",
-"path": "res://nodes/curve_input.gd"
 }, {
 "base": "Reference",
 "class": "ConceptGraphDataType",
@@ -42,7 +27,7 @@ _global_script_classes=[ {
 "base": "Control",
 "class": "ConceptGraphEditorView",
 "language": "GDScript",
-"path": "res://views/editor/editor_view.gd"
+"path": "res://ui/views/editor/editor_view.gd"
 }, {
 "base": "Node",
 "class": "ConceptGraphSettings",
@@ -52,7 +37,12 @@ _global_script_classes=[ {
 "base": "ProgressBar",
 "class": "CustomSpinBox",
 "language": "GDScript",
-"path": "res://views/editor/common/spinbox/spinbox.gd"
+"path": "res://ui/views/editor/components/spinbox/spinbox.gd"
+}, {
+"base": "TabContainer",
+"class": "CustomTabContainer",
+"language": "GDScript",
+"path": "res://ui/common/custom_tab_container.gd"
 }, {
 "base": "Object",
 "class": "DictUtil",
@@ -69,7 +59,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "EventBus",
 "language": "GDScript",
-"path": "res://common/event_bus.gd"
+"path": "res://common/event_bus/event_bus.gd"
 }, {
 "base": "ConceptNode",
 "class": "GenericExportNode",
@@ -84,7 +74,7 @@ _global_script_classes=[ {
 "base": "ScrollContainer",
 "class": "InspectorPanel",
 "language": "GDScript",
-"path": "res://views/editor/inspector/inspector.gd"
+"path": "res://ui/views/editor/components/inspector/inspector.gd"
 }, {
 "base": "Reference",
 "class": "JSONBeautifier",
@@ -99,23 +89,30 @@ _global_script_classes=[ {
 "base": "VBoxContainer",
 "class": "NoisePreview",
 "language": "GDScript",
-"path": "res://views/nodes/noise_preview.gd"
+"path": "res://ui/views/editor/components/nodes/noise_preview.gd"
 }, {
 "base": "Object",
 "class": "SignalManager",
 "language": "GDScript",
-"path": "res://common/signal_manager.gd"
+"path": "res://common/event_bus/signal_manager.gd"
 }, {
 "base": "Object",
 "class": "Signals",
 "language": "GDScript",
 "path": "res://common/signal_util.gd"
+}, {
+"base": "PanelContainer",
+"class": "UserInterfaceRoot",
+"language": "GDScript",
+"path": "res://ui/root/root.gd"
+}, {
+"base": "CustomTabContainer",
+"class": "ViewContainer",
+"language": "GDScript",
+"path": "res://ui/root/components/view_container.gd"
 } ]
 _global_script_class_icons={
-"BaseGizmo": "",
-"ConceptBoxInput": "",
 "ConceptGraphClient": "",
-"ConceptGraphCurveInput": "",
 "ConceptGraphDataType": "",
 "ConceptGraphEditorUtil": "",
 "ConceptGraphEditorView": "",
@@ -124,6 +121,7 @@ _global_script_class_icons={
 "ConceptNodeVectorCurve": "",
 "CurveGizmo": "",
 "CustomSpinBox": "",
+"CustomTabContainer": "",
 "DictUtil": "",
 "EventBus": "",
 "InspectorPanel": "",
@@ -134,22 +132,26 @@ _global_script_class_icons={
 "PoolVectorUtil": "",
 "Signals": "",
 "SignalManager": "",
+"Signals": "",
+"UserInterfaceRoot": "",
+"ViewContainer": ""
 }
 
 [application]
 
 config/name="ConceptGraph"
-run/main_scene="res://tmp.tscn"
-boot_splash/image="res://views/themes/splash.png"
+boot_splash/image="res://ui/themes/splash.png"
 boot_splash/fullsize=false
 boot_splash/bg_color=Color( 0.203922, 0.243137, 0.286275, 1 )
-config/icon="res://icons/icon.png"
+config/icon="res://ui/icons/icon.png"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
 
 [autoload]
 
-GlobalEventBus="*res://common/event_bus.gd"
+GlobalEventBus="*res://common/event_bus/event_bus.gd"
+GlobalUndoRedo="*res://common/undo_redo.gd"
+Settings="*res://common/project_settings.gd"
 Protocol="*res://client/protocol.gd"
 
 [debug]
