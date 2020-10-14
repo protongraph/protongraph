@@ -9,7 +9,6 @@
 [ext_resource path="res://ui/icons/progress/icon_progress_6.svg" type="Texture" id=7]
 [ext_resource path="res://ui/icons/progress/icon_progress_7.svg" type="Texture" id=8]
 
-
 [resource]
 flags = 4
 frames = 8

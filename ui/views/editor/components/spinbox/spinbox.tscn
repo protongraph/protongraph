@@ -3,6 +3,8 @@
 [ext_resource path="res://ui/views/editor/components/spinbox/styles/progress_bar_bg.tres" type="StyleBox" id=1]
 [ext_resource path="res://ui/views/editor/components/spinbox/styles/spinbox_button_right_pressed.tres" type="StyleBox" id=2]
 [ext_resource path="res://ui/views/editor/components/spinbox/spinbox.gd" type="Script" id=3]
+[ext_resource path="res://ui/icons/icon_decrease.svg" type="Texture" id=4]
+[ext_resource path="res://ui/icons/icon_increase.svg" type="Texture" id=5]
 [ext_resource path="res://ui/views/editor/components/spinbox/styles/spinbox_button_left_hover.tres" type="StyleBox" id=6]
 [ext_resource path="res://ui/views/editor/components/spinbox/styles/progress_bar_fg.tres" type="StyleBox" id=7]
 [ext_resource path="res://ui/views/editor/components/spinbox/styles/spinbox_button_right.tres" type="StyleBox" id=8]
@@ -10,6 +12,21 @@
 [ext_resource path="res://ui/views/editor/components/spinbox/styles/spinbox_button_left_pressed.tres" type="StyleBox" id=10]
 [ext_resource path="res://ui/views/editor/components/spinbox/styles/spinbox_button_right_hover.tres" type="StyleBox" id=11]
 [ext_resource path="res://ui/themes/fonts/fira_sans_regular.tres" type="DynamicFont" id=12]
+[ext_resource path="res://ui/views/editor/components/spinbox/edit_popup.tscn" type="PackedScene" id=13]
+[ext_resource path="res://ui/common/auto_scale.gd" type="Script" id=14]
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 [sub_resource type="StyleBoxFlat" id=1]
