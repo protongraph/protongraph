@@ -11,7 +11,7 @@ func _init() -> void:
 	category = "Output"
 	description = "Display a preview of a 2D node output"
 
-	set_input(0, "Node", ConceptGraphDataType.NODE_2D)
+	set_input(0, "2D Object", ConceptGraphDataType.NODE_2D)
 
 
 func _ready() -> void:

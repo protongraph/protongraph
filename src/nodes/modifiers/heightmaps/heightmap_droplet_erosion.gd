@@ -150,10 +150,10 @@ func _get_height_and_gradient(pos: Vector2, heightmap: ConceptGraphHeightmap) ->
 	var se = heightmap.get_point(ix + 1, iy + 1)
 	
 	# Use Bilinear interpolation to calculate the gradient and height
-	var gx = (ne - nw) * (1 - y) + (se - sw) * y;
-	var gy = (sw - nw) * (1 - x) + (se - ne) * x;
+	var gx = (ne - nw) * (1 - y) + (se - sw) * y
+	var gy = (sw - nw) * (1 - x) + (se - ne) * x
 
-	var height = nw * (1 - x) * (1 - y) + ne * x * (1 - y) + sw * (1 - x) * y + se * x * y;
+	var height = nw * (1 - x) * (1 - y) + ne * x * (1 - y) + sw * (1 - x) * y + se * x * y
 	
 	return [height, gx, gy]
 

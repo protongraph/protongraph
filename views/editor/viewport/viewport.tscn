@@ -136,7 +136,7 @@ margin_right = 895.0
 margin_bottom = 764.0
 
 [node name="LeftColumn" type="VBoxContainer" parent="ViewportContainer/MarginContainer/HBoxContainer"]
-margin_right = 441.0
+margin_right = 883.0
 margin_bottom = 760.0
 size_flags_horizontal = 3
 custom_constants/separation = 6
@@ -182,9 +182,9 @@ icon = ExtResource( 4 )
 
 [node name="Legend" type="PanelContainer" parent="ViewportContainer/MarginContainer/HBoxContainer/LeftColumn"]
 visible = false
-margin_top = 38.0
+margin_top = 35.0
 margin_right = 268.0
-margin_bottom = 137.0
+margin_bottom = 134.0
 size_flags_horizontal = 0
 custom_styles/panel = SubResource( 2 )
 
@@ -199,10 +199,9 @@ Shift + Middle Click: Pan
 Scroll Up / Down: Zoom"
 
 [node name="RightColumn" type="VBoxContainer" parent="ViewportContainer/MarginContainer/HBoxContainer"]
-margin_left = 449.0
+margin_left = 891.0
 margin_right = 891.0
-size_flags_horizontal = 3
-size_flags_vertical = 0
+margin_bottom = 760.0
 alignment = 2
 [connection signal="node_selected" from="Tree" to="ViewportContainer/Viewport/GizmosManager" method="_on_node_selected"]
 [connection signal="scene_updated" from="ViewportContainer" to="Tree" method="_update_tree"]

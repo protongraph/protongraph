@@ -4,7 +4,7 @@ extends ConceptNode
 func _init() -> void:
 	unique_id = "convert_heightmap_to_texture"
 	display_name = "Heightmap to Texture"
-	category = "Converters/Heightmap"
+	category = "Converters/Heightmaps"
 	description = "Creates a 2D texture from a heightmap object"
 
 	set_input(0, "Heightmap", ConceptGraphDataType.HEIGHTMAP)

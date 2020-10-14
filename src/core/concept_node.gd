@@ -29,7 +29,6 @@ var minimap_color
 var requires_full_gui_rebuild := false
 var inline_vectors := false
 
-var _folder_icon
 var _multi_input_icon
 var _spinbox
 
@@ -727,9 +726,7 @@ func _generate_default_gui() -> void:
 							var folder_button = Button.new()
 							folder_button.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
 							folder_button.add_stylebox_override("hover", load("res://views/themes/styles/graphnode_button_hover.tres"))
-							if not _folder_icon:
-								_folder_icon = load(ConceptGraphEditorUtil.get_plugin_root_path() + "icons/icon_folder.svg")
-							folder_button.icon = _folder_icon
+							folder_button.icon = TextureUtil.get_texture("res://icons/icon_folder.svg")
 							folder_button.connect("pressed", self, "_show_file_dialog", [opts["file_dialog"], line_edit])
 							left_box.add_child(folder_button)
 

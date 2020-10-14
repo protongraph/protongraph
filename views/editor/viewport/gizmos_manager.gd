@@ -38,7 +38,10 @@ func _on_node_added(node: Node):
 		var gizmo = CurveGizmo.new()
 		gizmo.enable_for(node)
 		add_child(gizmo)
-		_instanced_gizmos[node] = [gizmo]
+		if _instanced_gizmos.has(node):
+			_instanced_gizmos[node].append(gizmo)
+		else:
+			_instanced_gizmos[node] = [gizmo]
 
 
 func _on_node_removed(node: Node):

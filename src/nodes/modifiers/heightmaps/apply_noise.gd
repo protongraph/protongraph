@@ -39,7 +39,6 @@ func _generate_outputs() -> void:
 				i += 1
 
 	heightmap.data = data
-
 	output[0].append(heightmap)
 
 #	var gen_time = OS.get_ticks_msec() - start_time

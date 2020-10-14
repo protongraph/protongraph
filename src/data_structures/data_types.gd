@@ -105,6 +105,8 @@ static func to_category_color(category: String) -> Color:
 			return COLORS[CURVE_3D].darkened(0.25)
 		"Vector Curves":
 			return COLORS[VECTOR_CURVE_3D].darkened(0.25)
+		"Function Curves":
+			return COLORS[CURVE_FUNC]
 		"Debug":
 			return Color.black
 		"Heightmaps":

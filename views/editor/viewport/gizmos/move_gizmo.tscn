@@ -15,8 +15,8 @@ height = 0.2
 radial_segments = 14
 rings = 2
 
-[sub_resource type="BoxShape" id=3]
-extents = Vector3( 0.15, 0.15, 0.15 )
+[sub_resource type="SphereShape" id=3]
+radius = 0.2
 
 [sub_resource type="QuadMesh" id=4]
 size = Vector2( 0.4, 0.4 )
