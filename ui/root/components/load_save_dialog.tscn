@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://ui/root/template_dialog.gd" type="Script" id=1]
+[ext_resource path="res://ui/root/components/load_save_dialog.gd" type="Script" id=1]
 
 [node name="LoadSaveDialog" type="FileDialog"]
 margin_left = 383.0

@@ -2,6 +2,10 @@ extends PanelContainer
 class_name EditorSettingsView
 
 
+# TODO: Find a better way to generate this scene instead of manually
+# creating all the controls in the 2D interface.
+
+
 export var autosave: NodePath
 export var autosave_interval: NodePath
 export var delay_before_generation: NodePath

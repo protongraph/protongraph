@@ -38,7 +38,7 @@ func show_file_dialog(type) -> void:
 			_file_dialog.save_template_as()
 
 
-func _show_confirm_dialog() -> void:
+func show_confirm_dialog() -> void:
 	_show_overlay()
 	_confirm_dialog.popup_centered()
 

@@ -18,31 +18,29 @@ func _ready() -> void:
 	GlobalEventBus.register_listener(self, "save_template", "_on_save_template")
 	GlobalEventBus.register_listener(self, "save_template_as", "_on_save_template_as")
 	GlobalEventBus.register_listener(self, "open_settings", "_load_settings_view")
+	
 	Signals.safe_connect(self, "tabs_cleared", self, "_on_tabs_cleared")
+	Signals.safe_connect(_dialog_manager, "canceled", self, "_on_close_cancel")
+	Signals.safe_connect(_dialog_manager, "discard", self, "_on_close_discard")
+	Signals.safe_connect(_dialog_manager, "confirm", self, "_on_close_confirm")
 	
 	_load_start_view()
 
 
-func save_and_close() -> void:
-	_save_current_template(true)
-
-
 func save_all_and_close() -> void:
 	_is_quitting = true
-	emit_signal("ready_to_quit")
-
-
-func close_all_tabs(no_prompt := false) -> void:
-	if no_prompt:
-		while get_child_count() > 0:
+	
+	while get_child_count() > 0:
+		if not _is_quitting:
+			return
+		select_tab(0)
+		if get_child(0) is ConceptGraphEditorView:
+			_on_tab_close_request(0)
+			yield(self, "tab_closed")
+		else:
 			close_tab(0)
-	else:
-		while get_child_count() > 0:
-			if get_child(0) is ConceptGraphEditorView:
-				_on_tab_close_request(0)
-				yield(self, "tab_closed")
-			else:
-				close_tab(0)
+	
+	emit_signal("ready_to_quit")
 
 
 func _save_current_template(close := false) -> void:
@@ -76,6 +74,9 @@ func _load_settings_view():
 	add_tab(settings_view)
 
 
+func _create_template(path: String) -> void:
+	pass
+
 
 func _load_template(path: String) -> void:
 	# Check if the requested template isn't already open
@@ -90,10 +91,14 @@ func _load_template(path: String) -> void:
 			return
 
 	# Template isn't already loaded, create an editor view
-	var editor = load("res://ui/views/editor/editor_view.tscn").instance()
+	var editor: ConceptGraphEditorView = load("res://ui/views/editor/editor_view.tscn").instance()
 	editor.name = path.get_file().get_basename()
 	add_tab(editor)
 	editor.load_template(path)
+
+
+func _save_template_as(path: String) -> void:
+	pass
 
 
 func _is_view_opened(type: GDScript) -> bool:
@@ -112,7 +117,7 @@ func _on_tabs_cleared() -> void:
 
 func _on_create_template(path = null) -> void:
 	if path:
-		pass
+		_create_template(path)
 	else:
 		_dialog_manager.show_file_dialog(Constants.CREATE)
 
@@ -126,7 +131,7 @@ func _on_load_template(path = null) -> void:
 
 func _on_save_template_as(path = null) -> void:
 	if path:
-		pass
+		_save_template_as(path)
 	else:
 		_dialog_manager.show_file_dialog(Constants.SAVE_AS)
 
@@ -137,3 +142,18 @@ func _on_tab_close_request(tab: int) -> void:
 		_dialog_manager.show_confirm_dialog()
 	else:
 		._on_tab_close_request(tab)
+
+
+func _on_close_confirm() -> void:
+	_save_current_template(true)
+
+
+func _on_close_discard() -> void:
+	close_tab(current_tab)
+
+
+func _on_close_canceled() -> void:
+	if _is_quitting:
+		_is_quitting = false
+		emit_signal("tab_closed")	# Don't leave the yield pending
+		emit_signal("quit_canceled")

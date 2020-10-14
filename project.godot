@@ -97,7 +97,7 @@ _global_script_classes=[ {
 "base": "FileDialog",
 "class": "LoadSaveDialog",
 "language": "GDScript",
-"path": "res://ui/root/template_dialog.gd"
+"path": "res://ui/root/components/load_save_dialog.gd"
 }, {
 "base": "Node",
 "class": "NodeFactory",

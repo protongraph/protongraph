@@ -19,7 +19,7 @@ var _updating_inspector := false
 
 
 func _ready() -> void:
-	_template = get_node(template)
+#	_template = get_node(template)
 	_node_dialog = get_node(add_node_dialog)
 	_viewport = get_node(viewport_container)
 	_viewport.rect_min_size = Vector2(256, 128)
@@ -35,16 +35,16 @@ func _ready() -> void:
 
 
 func load_template(path: String) -> void:
-	_template_path = path
-	_template.load_from_file(path)
-	_template.update_exposed_variables()
-	_template.generate(true)
+#	_template_path = path
+#	_template.load_from_file(path)
+#	_template.update_exposed_variables()
+#	_template.generate(true)
 	_saved = true
 	GlobalEventBus.dispatch("template_loaded", path)
 
 
 func save_template() -> void:
-	_template.save_to_file(_template_path)
+#	_template.save_to_file(_template_path)
 	yield(_template, "template_saved")
 	_saved = true
 	GlobalEventBus.dispatch("message", "Saved template " + _template_path)
@@ -62,7 +62,8 @@ func get_input(name) -> Node:
 
 
 func regenerate(clear_cache := true) -> void:
-	_template.generate(clear_cache)
+#	_template.generate(clear_cache)
+	pass
 
 
 func has_pending_changes() -> bool:
@@ -84,12 +85,13 @@ func _hide_node_dialog() -> void:
 
 
 func _clear_graph():
-	_template.clear()
+#	_template.clear()
+	pass
 
 
 func _on_create_node_request(type: String) -> void:
 	var local_pos = _last_position - _template.get_global_transform().origin + _template.scroll_offset
-	_template.create_node(type, {"offset": local_pos})
+#	_template.create_node(type, {"offset": local_pos})
 
 
 func _on_graph_changed() -> void:
@@ -102,7 +104,8 @@ func _on_simulation_completed() -> void:
 
 
 func _on_simulation_outdated() -> void:
-	_template.generate(false)
+#	_template.generate(false)
+	pass
 
 
 func _on_exposed_variables_updated(variables: Array) -> void:
@@ -113,7 +116,8 @@ func _on_exposed_variables_updated(variables: Array) -> void:
 
 func _on_inspector_value_changed(name: String) -> void:
 	if not _updating_inspector:
-		_template.notify_exposed_variable_change(name)
+		pass
+#		_template.notify_exposed_variable_change(name)
 
 
 func _on_input_created(node: Spatial) -> void:
