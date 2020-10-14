@@ -75,6 +75,7 @@ tab_align = 0
 tabs_visible = false
 script = ExtResource( 2 )
 tabs = NodePath("../TopBar/Tabs")
+dialog_manager = NodePath("../../DialogManager")
 
 [node name="DialogManager" parent="." instance=ExtResource( 3 )]
 anchor_right = 0.0

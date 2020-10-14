@@ -1,17 +1,12 @@
 extends FileDialog
+class_name LoadSaveDialog
 
 
-signal template_requested
-
-const LOAD = 0
-const CREATE = 1
-const SAVE_AS = 2
-
-var _save_title := "Create a new graph template"
+var _save_title := "Create a new template"
 var _save_as_title := "Save the template as"
 var _load_title := "Load an existing template"
 var _default_file_suggestion := "new_template.cgraph"
-var _mode := LOAD
+var _mode := Constants.LOAD
 
 
 # TODO : Move this in a default template file instead
@@ -23,7 +18,7 @@ func _ready() -> void:
 
 
 func create_template() -> void:
-	_mode = CREATE
+	_mode = Constants.CREATE
 	window_title = _save_title
 	mode = FileDialog.MODE_SAVE_FILE
 	current_file = _default_file_suggestion
@@ -31,7 +26,7 @@ func create_template() -> void:
 
 
 func load_template() -> void:
-	_mode = LOAD
+	_mode = Constants.LOAD
 	window_title = _load_title
 	mode = FileDialog.MODE_OPEN_FILE
 	current_file = ""
@@ -39,7 +34,7 @@ func load_template() -> void:
 
 
 func save_template_as(opened_file := "") -> void:
-	_mode = SAVE_AS
+	_mode = Constants.SAVE_AS
 	window_title = _save_as_title
 	mode = FileDialog.MODE_SAVE_FILE
 	current_file = opened_file
@@ -47,9 +42,10 @@ func save_template_as(opened_file := "") -> void:
 
 
 func _on_file_selected(path: String) -> void:
-	if _mode == CREATE:
-		var template_file = File.new()
-		template_file.open(path, File.WRITE)
-		template_file.store_line(default_output_node)
-		template_file.close()
-	GlobalEventBus.dispatch("load_template", path)
+	match _mode:
+		Constants.CREATE:
+			GlobalEventBus.dispatch("create_template", path)
+		Constants.LOAD:
+			GlobalEventBus.dispatch("load_template", path)
+		Constants.SAVE_AS:
+			GlobalEventBus.dispatch("save_template_as", path)

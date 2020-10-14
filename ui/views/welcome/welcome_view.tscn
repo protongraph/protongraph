@@ -6,7 +6,7 @@
 [ext_resource path="res://ui/icons/icon_load.svg" type="Texture" id=4]
 [ext_resource path="res://ui/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=5]
 
-[sub_resource type="StyleBoxEmpty" id=4]
+[sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends Control
@@ -40,7 +40,7 @@ vertical = true
 [node name="Start" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = SubResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -108,6 +108,7 @@ min_size_x = true
 margin_right = 185.0
 margin_bottom = 37.0
 focus_mode = 0
+mouse_default_cursor_shape = 2
 text = "New Template"
 icon = ExtResource( 3 )
 flat = true
@@ -119,6 +120,7 @@ margin_top = 45.0
 margin_right = 185.0
 margin_bottom = 82.0
 focus_mode = 0
+mouse_default_cursor_shape = 2
 text = "Load Template"
 icon = ExtResource( 4 )
 flat = true

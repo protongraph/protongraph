@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://ui/root/components/load_save_dialog.tscn" type="PackedScene" id=3]
-[ext_resource path="res://ui/root/components/exit_dialog.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ui/root/components/confirm_dialog.tscn" type="PackedScene" id=4]
 [ext_resource path="res://ui/root/components/dialog_manager.gd" type="Script" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -29,8 +29,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ConfirmExitDialog" parent="." instance=ExtResource( 4 )]
-margin_right = 838.0
-margin_bottom = 444.0
+[node name="ConfirmDialog" parent="." instance=ExtResource( 4 )]
 
-[node name="LoadSaveDialog" parent="." instance=ExtResource( 3 )]
+[node name="FileDialog" parent="." instance=ExtResource( 3 )]

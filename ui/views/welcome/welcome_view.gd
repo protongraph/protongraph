@@ -1,4 +1,5 @@
 extends PanelContainer
+class_name WelcomeView
 
 
 export var links_root: NodePath

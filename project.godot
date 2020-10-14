@@ -39,6 +39,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://common/project_settings.gd"
 }, {
+"base": "WindowDialog",
+"class": "ConfirmDialog",
+"language": "GDScript",
+"path": "res://ui/root/components/confirm_dialog.gd"
+}, {
+"base": "Node",
+"class": "Constants",
+"language": "GDScript",
+"path": "res://common/constants.gd"
+}, {
 "base": "BaseGizmo",
 "class": "CurveGizmo",
 "language": "GDScript",
@@ -54,10 +64,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/common/custom_tab_container.gd"
 }, {
+"base": "Control",
+"class": "DialogManager",
+"language": "GDScript",
+"path": "res://ui/root/components/dialog_manager.gd"
+}, {
 "base": "Object",
 "class": "DictUtil",
 "language": "GDScript",
 "path": "res://common/dict_util.gd"
+}, {
+"base": "PanelContainer",
+"class": "EditorSettingsView",
+"language": "GDScript",
+"path": "res://ui/views/settings/editor_settings_view.gd"
 }, {
 "base": "Node",
 "class": "EventBus",
@@ -73,6 +93,11 @@ _global_script_classes=[ {
 "class": "JSONBeautifier",
 "language": "GDScript",
 "path": "res://thirdparty/json_beautifier/json_beautifier.gd"
+}, {
+"base": "FileDialog",
+"class": "LoadSaveDialog",
+"language": "GDScript",
+"path": "res://ui/root/template_dialog.gd"
 }, {
 "base": "Node",
 "class": "NodeFactory",
@@ -103,6 +128,11 @@ _global_script_classes=[ {
 "class": "ViewContainer",
 "language": "GDScript",
 "path": "res://ui/root/components/view_container.gd"
+}, {
+"base": "PanelContainer",
+"class": "WelcomeView",
+"language": "GDScript",
+"path": "res://ui/views/welcome/welcome_view.gd"
 } ]
 _global_script_class_icons={
 "BaseGizmo": "",
@@ -111,19 +141,25 @@ _global_script_class_icons={
 "ConceptGraphEditorUtil": "",
 "ConceptGraphEditorView": "",
 "ConceptGraphSettings": "",
+"ConfirmDialog": "",
+"Constants": "",
 "CurveGizmo": "",
 "CustomSpinBox": "",
 "CustomTabContainer": "",
+"DialogManager": "",
 "DictUtil": "",
+"EditorSettingsView": "",
 "EventBus": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
+"LoadSaveDialog": "",
 "NodeFactory": "",
 "NoisePreview": "",
 "SignalManager": "",
 "Signals": "",
 "UserInterfaceRoot": "",
-"ViewContainer": ""
+"ViewContainer": "",
+"WelcomeView": ""
 }
 
 [application]
@@ -142,6 +178,7 @@ config/quit_on_go_back=false
 GlobalEventBus="*res://common/event_bus/event_bus.gd"
 GlobalUndoRedo="*res://common/undo_redo.gd"
 Settings="*res://common/project_settings.gd"
+TextureUtil="*res://common/texture_util.gd"
 NodeLibrary="*res://common/node_library.gd"
 FileHistory="*res://common/file_history.gd"
 Protocol="*res://client/protocol.gd"

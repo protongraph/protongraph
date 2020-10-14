@@ -1,4 +1,5 @@
 extends PanelContainer
+class_name EditorSettingsView
 
 
 export var autosave: NodePath

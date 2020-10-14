@@ -4,11 +4,11 @@ extends MenuButton
 # here, it only sends commands.
 
 
-var _new_icon = preload("res://ui/icons/icon_new.svg")
-var _load_icon = preload("res://ui/icons/icon_load.svg")
-var _save_icon = preload("res://ui/icons/icon_save.svg")
-var _settings_icon = preload("res://ui/icons/icon_cog.svg")
-var _close_icon = preload("res://ui/icons/icon_close.svg")
+var _new_icon = TextureUtil.get_texture("res://ui/icons/icon_new.svg")
+var _load_icon = TextureUtil.get_texture("res://ui/icons/icon_load.svg")
+var _save_icon = TextureUtil.get_texture("res://ui/icons/icon_save.svg")
+var _settings_icon = TextureUtil.get_texture("res://ui/icons/icon_cog.svg")
+var _close_icon = TextureUtil.get_texture("res://ui/icons/icon_close.svg")
 
 
 func _ready() -> void:
