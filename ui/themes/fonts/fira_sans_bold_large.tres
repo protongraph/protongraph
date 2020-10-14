@@ -1,8 +1,7 @@
 [gd_resource type="DynamicFont" load_steps=2 format=2]
 
-[sub_resource type="DynamicFontData" id=1]
-font_path = "res://themes/fonts/FiraSans-Bold.ttf"
+[ext_resource path="res://ui/themes/fonts/FiraSans-Bold.ttf" type="DynamicFontData" id=1]
 
 [resource]
 size = 36
-font_data = SubResource( 1 )
+font_data = ExtResource( 1 )

@@ -1,14 +1,14 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://ui/themes/fonts/fira_sans_bold_large.tres" type="DynamicFont" id=1]
 [ext_resource path="res://ui/views/welcome/welcome_view.gd" type="Script" id=2]
 [ext_resource path="res://ui/icons/icon_new.svg" type="Texture" id=3]
 [ext_resource path="res://ui/icons/icon_load.svg" type="Texture" id=4]
+[ext_resource path="res://ui/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=5]
 
+[sub_resource type="StyleBoxEmpty" id=4]
 
-[sub_resource type="StyleBoxEmpty" id=2]
-
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=2]
 script/source = "extends Control
 
 
@@ -31,29 +31,22 @@ func _ready() -> void:
 		add_constant_override(\"separation\", s * scale)
 "
 
-[sub_resource type="StyleBoxLine" id=4]
+[sub_resource type="StyleBoxLine" id=3]
 color = Color( 1, 1, 1, 0.172549 )
 grow_begin = -150.0
 grow_end = -150.0
 vertical = true
 
-[sub_resource type="DynamicFontData" id=1]
-font_path = "res://themes/fonts/FiraSans-Bold.ttf"
-
-[sub_resource type="DynamicFont" id=5]
-size = 15
-font_data = SubResource( 1 )
-
 [node name="Start" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 4 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 links_root = NodePath("HBoxContainer/RecentFiles/VBoxContainer/LinksRoot")
-parent = NodePath("HBoxContainer/RecentFiles/VBoxContainer")
+history_panel = NodePath("HBoxContainer/RecentFiles/VBoxContainer")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 1366.0
@@ -108,7 +101,7 @@ margin_right = 407.0
 margin_bottom = 459.0
 rect_min_size = Vector2( 140, 0 )
 size_flags_horizontal = 8
-script = SubResource( 3 )
+script = SubResource( 2 )
 min_size_x = true
 
 [node name="NewTemplate" type="Button" parent="HBoxContainer/Introduction/VBoxContainer/Buttons"]
@@ -136,7 +129,7 @@ expand_icon = true
 margin_left = 455.0
 margin_right = 463.0
 margin_bottom = 768.0
-custom_styles/separator = SubResource( 4 )
+custom_styles/separator = SubResource( 3 )
 
 [node name="RecentFiles" type="MarginContainer" parent="HBoxContainer"]
 margin_left = 471.0
@@ -162,7 +155,7 @@ alignment = 1
 margin_top = 349.0
 margin_right = 855.0
 margin_bottom = 368.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = ExtResource( 5 )
 text = "Recent files"
 
 [node name="LinksRoot" type="VBoxContainer" parent="HBoxContainer/RecentFiles/VBoxContainer"]

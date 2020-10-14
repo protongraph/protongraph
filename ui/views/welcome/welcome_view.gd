@@ -1,25 +1,28 @@
 extends PanelContainer
 
-signal template_requested
-signal menu_action
-
 
 export var links_root: NodePath
-export var parent: NodePath
+export var history_panel: NodePath
 
 var _links_root: Control
-var _parent: Control
+var _history_panel: Control
 
 
-func set_file_history(history: Array) -> void:
+func _ready() -> void:
 	_links_root = get_node(links_root)
-	_parent = get_node(parent)
+	_history_panel = get_node(history_panel)
+	GlobalEventBus.register_listener(self, "file_history_changed", "_on_file_history_changed")
+	_rebuild_history_view()
 
+
+func _rebuild_history_view() -> void:
+	var history: Array = FileHistory.get_list()
+	
 	if not history or history.empty():
-		_parent.visible = false
+		_history_panel.visible = false
 		return
 
-	_parent.visible = true
+	_history_panel.visible = true
 	for c in _links_root.get_children():
 		_links_root.remove_child(c)
 		c.queue_free()
@@ -27,7 +30,7 @@ func set_file_history(history: Array) -> void:
 	for path in history:
 		var link = LinkButton.new()
 		link.text = _shorten_path(path)
-		link.connect("pressed", self, "_on_link_pressed", [path])
+		Signals.safe_connect(link, "pressed", self, "_on_link_pressed", [path])
 		_links_root.add_child(link)
 
 
@@ -51,13 +54,17 @@ func _shorten_path(path: String) -> String:
 	return path
 
 
+func _on_file_history_changed() -> void:
+	_rebuild_history_view()
+
+
 func _on_link_pressed(path: String) -> void:
-	emit_signal("template_requested", path)
+	GlobalEventBus.dispatch("load_template", path)
 
 
 func _on_new_template_pressed() -> void:
-	emit_signal("menu_action", "new")
+	GlobalEventBus.dispatch("create_template")
 
 
 func _on_load_template_pressed() -> void:
-	emit_signal("menu_action", "load")
+	GlobalEventBus.dispatch("load_template")

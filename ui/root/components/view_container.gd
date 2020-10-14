@@ -2,6 +2,10 @@ extends CustomTabContainer
 class_name ViewContainer
 
 
+signal ready_to_quit
+signal quit_canceled
+
+
 var _settings_tab := -1
 var _start_tab := -1
 
@@ -12,6 +16,8 @@ func _ready() -> void:
 	GlobalEventBus.register_listener(self, "save_template", "_on_save_template")
 	GlobalEventBus.register_listener(self, "open_settings", "_load_settings_view")
 	Signals.safe_connect(self, "tabs_cleared", self, "_on_tabs_cleared")
+	
+	_load_start_view()
 
 
 func save_and_close() -> void:
@@ -21,6 +27,7 @@ func save_and_close() -> void:
 func save_all_and_close() -> void:
 	for view in get_children():
 		pass
+	emit_signal("ready_to_quit")
 
 
 func _on_tab_close_request(tab: int) -> void:
@@ -39,7 +46,7 @@ func _on_load_template(path) -> void:
 		if not view is ConceptGraphEditorView:
 			continue
 
-		# Template already loaded, focus the existing tab
+		# If the template is already loaded, focus the existing tab
 		if view._template_path == path:
 			select_tab(i)
 			return
@@ -49,8 +56,6 @@ func _on_load_template(path) -> void:
 	editor.name = path.get_file().get_basename()
 	add_tab(editor)
 	editor.load_template(path)
-
-	GlobalEventBus.dispatch("template_loaded", path)
 
 
 func _save_current_template(close := false) -> void:
@@ -69,13 +74,19 @@ func _save_all_templates() -> void:
 
 
 func _load_start_view():
+	if _start_tab != -1:
+		return # Welcome view is already opened
 	var start_view = preload("res://ui/views/welcome/welcome_view.tscn").instance()
 	add_tab(start_view)
+	start_view = current_tab
 
 
 func _load_settings_view():
+	if _settings_tab != -1:
+		return # Settings view is already opened
 	var settings_view = preload("res://ui/views/settings/editor_settings_view.tscn").instance()
 	add_tab(settings_view)
+	_settings_tab = current_tab
 
 
 func close_all_tabs(no_prompt := false) -> void:
@@ -92,4 +103,4 @@ func close_all_tabs(no_prompt := false) -> void:
 
 
 func _on_tabs_cleared() -> void:
-	pass
+	_load_start_view()

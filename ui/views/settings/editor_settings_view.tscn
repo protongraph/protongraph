@@ -2,45 +2,23 @@
 
 [ext_resource path="res://ui/views/settings/editor_settings_view.gd" type="Script" id=1]
 [ext_resource path="res://ui/themes/fonts/fira_sans_regular_small.tres" type="DynamicFont" id=2]
+[ext_resource path="res://ui/common/auto_scale.gd" type="Script" id=3]
 
 [sub_resource type="StyleBoxEmpty" id=6]
 
-[sub_resource type="GDScript" id=7]
-script/source = "extends Control
-
-
-export var min_size_x := false
-export var min_size_y := false
-export var const_separation := false
-
-
-func _ready() -> void:
-	var scale = ConceptGraphEditorUtil.get_editor_scale()
-
-	if min_size_x:
-		rect_min_size.x *= scale
-
-	if min_size_y:
-		rect_min_size.y *= scale
-
-	if const_separation:
-		var s = get_constant(\"separation\")
-		add_constant_override(\"separation\", s * scale)
-"
-
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 8.0
 content_margin_right = 8.0
 content_margin_top = 8.0
 content_margin_bottom = 8.0
 bg_color = Color( 0, 0, 0, 0.156863 )
 
-[sub_resource type="DynamicFontData" id=1]
+[sub_resource type="DynamicFontData" id=4]
 font_path = "res://themes/fonts/FiraSans-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=5]
 size = 15
-font_data = SubResource( 1 )
+font_data = SubResource( 4 )
 
 [node name="Settings" type="PanelContainer"]
 anchor_right = 1.0
@@ -72,12 +50,13 @@ size_flags_horizontal = 4
 size_flags_vertical = 3
 follow_focus = true
 scroll_horizontal_enabled = false
-script = SubResource( 7 )
+script = ExtResource( 3 )
 min_size_x = true
+const_separation = true
 
 [node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
 margin_right = 576.0
-margin_bottom = 942.0
+margin_bottom = 789.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 16
@@ -89,43 +68,43 @@ custom_constants/margin_bottom = 16
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 560.0
-margin_bottom = 926.0
+margin_bottom = 773.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 22
 
 [node name="EditorSection" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer"]
 margin_right = 544.0
-margin_bottom = 35.0
-custom_styles/normal = SubResource( 8 )
+margin_bottom = 18.0
+custom_styles/normal = SubResource( 3 )
 custom_fonts/font = SubResource( 5 )
 text = "Editor"
 
 [node name="Editor Scale" type="MarginContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
-margin_top = 57.0
+margin_top = 40.0
 margin_right = 544.0
-margin_bottom = 170.0
+margin_bottom = 136.0
 custom_constants/margin_right = 8
 custom_constants/margin_left = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/Editor Scale"]
 margin_left = 8.0
 margin_right = 536.0
-margin_bottom = 113.0
+margin_bottom = 96.0
 custom_constants/separation = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/Editor Scale/VBoxContainer"]
 margin_right = 528.0
-margin_bottom = 19.0
+margin_bottom = 2.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 5 )
 text = "Interface Scale"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/Editor Scale/VBoxContainer"]
-margin_top = 23.0
+margin_top = 6.0
 margin_right = 528.0
-margin_bottom = 113.0
+margin_bottom = 96.0
 
 [node name="SpinBox" type="SpinBox" parent="ScrollContainer/MarginContainer/VBoxContainer/Editor Scale/VBoxContainer/HBoxContainer"]
 margin_top = 22.0
@@ -164,30 +143,30 @@ text = "New value will not be taken into account until you restart the applicati
 autowrap = true
 
 [node name="Enable Autosave" type="MarginContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
-margin_top = 192.0
+margin_top = 158.0
 margin_right = 544.0
-margin_bottom = 263.0
+margin_bottom = 212.0
 custom_constants/margin_right = 8
 custom_constants/margin_left = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/Enable Autosave"]
 margin_left = 8.0
 margin_right = 536.0
-margin_bottom = 71.0
+margin_bottom = 54.0
 custom_constants/separation = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/Enable Autosave/VBoxContainer"]
 margin_right = 528.0
-margin_bottom = 19.0
+margin_bottom = 2.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 5 )
 text = "Enable Autosave"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/Enable Autosave/VBoxContainer"]
-margin_top = 23.0
+margin_top = 6.0
 margin_right = 528.0
-margin_bottom = 71.0
+margin_bottom = 54.0
 
 [node name="CheckBox" type="CheckBox" parent="ScrollContainer/MarginContainer/VBoxContainer/Enable Autosave/VBoxContainer/HBoxContainer"]
 margin_right = 48.0
@@ -206,30 +185,30 @@ text = "Automatically save the edited templates at regular intervals."
 autowrap = true
 
 [node name="AutosaveInterval" type="MarginContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
-margin_top = 285.0
+margin_top = 234.0
 margin_right = 544.0
-margin_bottom = 353.0
+margin_bottom = 285.0
 custom_constants/margin_right = 8
 custom_constants/margin_left = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/AutosaveInterval"]
 margin_left = 8.0
 margin_right = 536.0
-margin_bottom = 68.0
+margin_bottom = 51.0
 custom_constants/separation = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/AutosaveInterval/VBoxContainer"]
 margin_right = 528.0
-margin_bottom = 19.0
+margin_bottom = 2.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 5 )
 text = "Time between saves"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/AutosaveInterval/VBoxContainer"]
-margin_top = 23.0
+margin_top = 6.0
 margin_right = 528.0
-margin_bottom = 68.0
+margin_bottom = 51.0
 
 [node name="SpinBox" type="SpinBox" parent="ScrollContainer/MarginContainer/VBoxContainer/AutosaveInterval/VBoxContainer/HBoxContainer"]
 margin_right = 196.0
@@ -252,30 +231,30 @@ text = "Save edited templates every X seconds. Only applicable when Autosave is 
 autowrap = true
 
 [node name="InlineVectorFields" type="MarginContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
-margin_top = 375.0
+margin_top = 307.0
 margin_right = 544.0
-margin_bottom = 466.0
+margin_bottom = 381.0
 custom_constants/margin_right = 8
 custom_constants/margin_left = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/InlineVectorFields"]
 margin_left = 8.0
 margin_right = 536.0
-margin_bottom = 91.0
+margin_bottom = 74.0
 custom_constants/separation = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/InlineVectorFields/VBoxContainer"]
 margin_right = 528.0
-margin_bottom = 19.0
+margin_bottom = 2.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 5 )
 text = "Inline vector fields"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/InlineVectorFields/VBoxContainer"]
-margin_top = 23.0
+margin_top = 6.0
 margin_right = 528.0
-margin_bottom = 91.0
+margin_bottom = 74.0
 
 [node name="CheckBox" type="CheckBox" parent="ScrollContainer/MarginContainer/VBoxContainer/InlineVectorFields/VBoxContainer/HBoxContainer"]
 margin_right = 48.0
@@ -306,30 +285,30 @@ text = "Close and reopen the template tab for this to take effect."
 autowrap = true
 
 [node name="GroupNodesByType" type="MarginContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
-margin_top = 488.0
+margin_top = 403.0
 margin_right = 544.0
-margin_bottom = 577.0
+margin_bottom = 475.0
 custom_constants/margin_right = 8
 custom_constants/margin_left = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/GroupNodesByType"]
 margin_left = 8.0
 margin_right = 536.0
-margin_bottom = 89.0
+margin_bottom = 72.0
 custom_constants/separation = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/GroupNodesByType/VBoxContainer"]
 margin_right = 528.0
-margin_bottom = 19.0
+margin_bottom = 2.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 5 )
 text = "Group nodes by type"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/GroupNodesByType/VBoxContainer"]
-margin_top = 23.0
+margin_top = 6.0
 margin_right = 528.0
-margin_bottom = 89.0
+margin_bottom = 72.0
 
 [node name="CheckBox" type="CheckBox" parent="ScrollContainer/MarginContainer/VBoxContainer/GroupNodesByType/VBoxContainer/HBoxContainer"]
 margin_right = 48.0
@@ -347,38 +326,38 @@ text = "In the \"Add Node\" panel, nodes are grouped by purpose by default (Gene
 autowrap = true
 
 [node name="EngineSection" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer"]
-margin_top = 599.0
+margin_top = 497.0
 margin_right = 544.0
-margin_bottom = 634.0
-custom_styles/normal = SubResource( 8 )
+margin_bottom = 515.0
+custom_styles/normal = SubResource( 3 )
 custom_fonts/font = SubResource( 5 )
 text = "Engine"
 
 [node name="EnableMultithreading" type="MarginContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
-margin_top = 656.0
+margin_top = 537.0
 margin_right = 544.0
-margin_bottom = 727.0
+margin_bottom = 591.0
 custom_constants/margin_right = 8
 custom_constants/margin_left = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/EnableMultithreading"]
 margin_left = 8.0
 margin_right = 536.0
-margin_bottom = 71.0
+margin_bottom = 54.0
 custom_constants/separation = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/EnableMultithreading/VBoxContainer"]
 margin_right = 528.0
-margin_bottom = 19.0
+margin_bottom = 2.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 5 )
 text = "Enable Multithreading"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/EnableMultithreading/VBoxContainer"]
-margin_top = 23.0
+margin_top = 6.0
 margin_right = 528.0
-margin_bottom = 71.0
+margin_bottom = 54.0
 
 [node name="CheckBox" type="CheckBox" parent="ScrollContainer/MarginContainer/VBoxContainer/EnableMultithreading/VBoxContainer/HBoxContainer"]
 margin_right = 48.0
@@ -397,30 +376,30 @@ text = "Disabling multithreading forces the whole application to run on a single
 autowrap = true
 
 [node name="DelayBeforeGeneration" type="MarginContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
-margin_top = 749.0
+margin_top = 613.0
 margin_right = 544.0
-margin_bottom = 910.0
+margin_bottom = 757.0
 custom_constants/margin_right = 8
 custom_constants/margin_left = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/DelayBeforeGeneration"]
 margin_left = 8.0
 margin_right = 536.0
-margin_bottom = 161.0
+margin_bottom = 144.0
 custom_constants/separation = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/DelayBeforeGeneration/VBoxContainer"]
 margin_right = 528.0
-margin_bottom = 19.0
+margin_bottom = 2.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 5 )
 text = "Delay before regenerating"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/DelayBeforeGeneration/VBoxContainer"]
-margin_top = 23.0
+margin_top = 6.0
 margin_right = 528.0
-margin_bottom = 161.0
+margin_bottom = 144.0
 
 [node name="SpinBox" type="SpinBox" parent="ScrollContainer/MarginContainer/VBoxContainer/DelayBeforeGeneration/VBoxContainer/HBoxContainer"]
 margin_top = 46.0

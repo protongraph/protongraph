@@ -49,3 +49,4 @@ func _on_template_loaded(path: String) -> void:
 		_history.pop_back()
 
 	_save_file_history()
+	GlobalEventBus.dispatch("file_history_changed")

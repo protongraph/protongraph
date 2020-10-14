@@ -2,8 +2,6 @@
 
 [ext_resource path="res://ui/themes/fonts/FiraSans-Bold.ttf" type="DynamicFontData" id=1]
 
-
-
 [resource]
 size = 15
 font_data = ExtResource( 1 )

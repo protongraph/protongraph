@@ -140,9 +140,10 @@ _global_script_class_icons={
 [application]
 
 config/name="ConceptGraph"
+run/main_scene="res://ui/root/root.tscn"
 boot_splash/image="res://ui/themes/splash.png"
 boot_splash/fullsize=false
-boot_splash/bg_color=Color( 0.203922, 0.243137, 0.286275, 1 )
+boot_splash/bg_color=Color( 0.1672, 0.17632, 0.19, 1 )
 config/icon="res://ui/icons/icon.png"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
@@ -152,6 +153,7 @@ config/quit_on_go_back=false
 GlobalEventBus="*res://common/event_bus/event_bus.gd"
 GlobalUndoRedo="*res://common/undo_redo.gd"
 Settings="*res://common/project_settings.gd"
+FileHistory="*res://common/file_history.gd"
 Protocol="*res://client/protocol.gd"
 
 [debug]

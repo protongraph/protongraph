@@ -40,6 +40,7 @@ func load_template(path: String) -> void:
 	_template.update_exposed_variables()
 	_template.generate(true)
 	_saved = true
+	GlobalEventBus.dispatch("template_loaded", path)
 
 
 func save_template() -> void:

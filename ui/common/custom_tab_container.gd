@@ -2,8 +2,8 @@ extends TabContainer
 class_name CustomTabContainer
 
 
-# Same thing as a regular TabContainer, but this one syncs the tabs to a 
-# remote tab bar placed elsewhere on the scene tree instead of using its own.
+# Same thing as a regular TabContainer, but this one uses a remote tab bar
+# placed elsewhere on the scene tree instead of using its own.
 
 
 signal tab_closed
@@ -42,7 +42,7 @@ func get_tab_content(tab_id: int) -> Node:
 
 
 func get_current_tab_content() -> Node:
-	return get_child(current_tab)
+	return get_tab_content(current_tab)
 
 
 func close_tab(tab: int = -1) -> void:
@@ -72,7 +72,7 @@ func _on_tab_changed(tab: int) -> void:
 
 
 func _on_tab_moved(to_tab: int) -> void:
-	move_child(get_child(current_tab), to_tab)
+	move_child(get_current_tab_content(), to_tab)
 
 
 func _on_tab_close_request(tab: int) -> void:

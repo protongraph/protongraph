@@ -1,7 +1,5 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://ui/root/template_dialog.gd" type="Script" id=1]
-[ext_resource path="res://ui/root/components/exit_dialog.gd" type="Script" id=2]
 [ext_resource path="res://ui/root/components/load_save_dialog.tscn" type="PackedScene" id=3]
 [ext_resource path="res://ui/root/components/exit_dialog.tscn" type="PackedScene" id=4]
 [ext_resource path="res://ui/root/components/dialog_manager.gd" type="Script" id=5]
@@ -16,6 +14,7 @@ expand_margin_bottom = 4.0
 [node name="DialogManager" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -30,33 +29,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ConfirmExitDialog" type="WindowDialog" parent="." instance=ExtResource( 4 )]
-margin_left = 528.0
-margin_top = 324.0
+[node name="ConfirmExitDialog" parent="." instance=ExtResource( 4 )]
 margin_right = 838.0
 margin_bottom = 444.0
-rect_min_size = Vector2( 310, 120 )
-size_flags_horizontal = 4
-size_flags_vertical = 4
-window_title = "Please confirm ..."
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="LoadSaveDialog" type="FileDialog" parent="." instance=ExtResource( 3 )]
-margin_left = 383.0
-margin_top = 124.0
-margin_right = 983.0
-margin_bottom = 644.0
-rect_min_size = Vector2( 600, 520 )
-size_flags_horizontal = 4
-size_flags_vertical = 4
-window_title = "Create a new graph template"
-resizable = true
-dialog_hide_on_ok = true
-access = 2
-filters = PoolStringArray( "*.cgraph" )
-current_dir = "/home/hungryproton/Work/Games/ConceptGraph"
-current_path = "/home/hungryproton/Work/Games/ConceptGraph/"
-script = ExtResource( 1 )
+[node name="LoadSaveDialog" parent="." instance=ExtResource( 3 )]

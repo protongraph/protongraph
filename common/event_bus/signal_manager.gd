@@ -9,7 +9,9 @@ class_name SignalManager
 #  - Start with a verb in present tense for intents (commands)
 # Alphabetically ordered
 
+# warning-ignore-all:UNUSED_SIGNAL
 signal create_template
+signal file_history_changed
 signal load_template
 signal message
 signal open_settings
@@ -25,3 +27,4 @@ signal cleanup
 
 func call_emit_signal(args):
 	callv("emit_signal", args)
+

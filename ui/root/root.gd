@@ -18,8 +18,9 @@ func _ready() -> void:
 	ConceptGraphEditorUtil.scale_all_ui_resources()
 	update()
 	
+	_view_container = get_node(view_container)
 	Signals.safe_connect(_view_container, "ready_to_quit", self, "_on_ready_to_quit")
-	Signals.safe_connect(_view_container, "quit_canceled", self, "_on_quit_cancelled")
+	Signals.safe_connect(_view_container, "quit_canceled", self, "_on_quit_canceled")
 
 
 func _notification(event):
@@ -29,6 +30,12 @@ func _notification(event):
 
 func _quit() -> void:
 	_is_quitting = true
-	_view_container.save_and_close_all()
-	yield(_view_container, "tabs_cleared")
+	_view_container.save_all_and_close()
+
+
+func _on_ready_to_quit() -> void:
 	get_tree().quit()
+
+
+func _on_quit_cancelled() -> void:
+	_is_quitting = false
