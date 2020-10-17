@@ -2,9 +2,6 @@
 
 [ext_resource path="res://ui/views/editor/components/panels/add_node_panel.gd" type="Script" id=1]
 
-
-
-
 [sub_resource type="GDScript" id=1]
 script/source = "tool
 extends CheckBox
@@ -54,44 +51,44 @@ __meta__ = {
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_right = 484.0
-margin_bottom = 24.0
+margin_bottom = 48.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Search" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 362.0
-margin_bottom = 24.0
+margin_right = 266.0
+margin_bottom = 48.0
 size_flags_horizontal = 3
 placeholder_text = "Search node"
 caret_blink = true
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 366.0
-margin_top = 5.0
-margin_right = 456.0
-margin_bottom = 19.0
+margin_left = 274.0
+margin_top = 11.0
+margin_right = 428.0
+margin_bottom = 36.0
 text = "Group by type"
 
 [node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 460.0
+margin_left = 436.0
 margin_right = 484.0
-margin_bottom = 24.0
+margin_bottom = 48.0
 pressed = true
 script = SubResource( 1 )
 
 [node name="NodeTree" type="Tree" parent="MarginContainer/VBoxContainer"]
-margin_top = 28.0
+margin_top = 56.0
 margin_right = 484.0
-margin_bottom = 260.0
+margin_bottom = 239.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 hide_root = true
 
 [node name="DescriptionText" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_top = 264.0
+margin_top = 247.0
 margin_right = 484.0
-margin_bottom = 344.0
+margin_bottom = 327.0
 rect_min_size = Vector2( 0, 80 )
 size_flags_vertical = 1
 text = "Select a node from 
@@ -100,7 +97,7 @@ valign = 1
 autowrap = true
 
 [node name="ActionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 348.0
+margin_top = 335.0
 margin_right = 484.0
 margin_bottom = 372.0
 rect_min_size = Vector2( 0, 24 )
@@ -110,21 +107,21 @@ __meta__ = {
 }
 
 [node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/ActionContainer"]
-margin_right = 54.0
-margin_bottom = 24.0
+margin_right = 95.0
+margin_bottom = 37.0
 rect_min_size = Vector2( 24, 24 )
 size_flags_horizontal = 2
 text = "Cancel"
 
 [node name="CreateButton" type="Button" parent="MarginContainer/VBoxContainer/ActionContainer"]
-margin_left = 395.0
+margin_left = 328.0
 margin_right = 484.0
-margin_bottom = 24.0
+margin_bottom = 37.0
 rect_min_size = Vector2( 24, 24 )
 disabled = true
 text = "Create node"
 [connection signal="about_to_show" from="." to="." method="_on_dialog_about_to_show"]
-[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/Search" to="." method="_on_Search_text_changed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/Search" to="." method="_on_search_text_changed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/CheckBox" to="." method="_on_grouping_type_changed"]
 [connection signal="item_activated" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_item_activated"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_item_selected"]

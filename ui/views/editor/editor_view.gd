@@ -8,7 +8,7 @@ export var add_node_dialog: NodePath
 export var inspector: NodePath
 
 var _node_dialog: WindowDialog
-var _template #: ConceptGraphTemplate
+var _template: TemplateEditor
 var _save_timer: Timer
 var _last_position: Vector2
 var _template_path: String
@@ -19,7 +19,7 @@ var _updating_inspector := false
 
 
 func _ready() -> void:
-#	_template = get_node(template)
+	_template = get_node(template)
 	_node_dialog = get_node(add_node_dialog)
 	_viewport = get_node(viewport_container)
 	_viewport.rect_min_size = Vector2(256, 128)

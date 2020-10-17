@@ -198,9 +198,9 @@ func _update_node_references() -> void:
 		return
 
 	graph_edit = (parent_node as GraphEdit)
-	var top_layer = NodeUtils.get_child_by_class(graph_edit, "GraphEditFilter")
-	graph_hscroll = NodeUtils.get_child_by_class(top_layer, "HScrollBar")
-	graph_vscroll = NodeUtils.get_child_by_class(top_layer, "VScrollBar")
+	var top_layer = NodeUtil.get_child_by_class(graph_edit, "GraphEditFilter")
+	graph_hscroll = NodeUtil.get_child_by_class(top_layer, "HScrollBar")
+	graph_vscroll = NodeUtil.get_child_by_class(top_layer, "VScrollBar")
 
 
 ### Helpers

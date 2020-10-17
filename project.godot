@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://common/project_settings.gd"
 }, {
+"base": "Reference",
+"class": "ConceptNode",
+"language": "GDScript",
+"path": "res://common/concept_node.gd"
+}, {
 "base": "WindowDialog",
 "class": "ConfirmDialog",
 "language": "GDScript",
@@ -53,6 +58,11 @@ _global_script_classes=[ {
 "class": "CurveGizmo",
 "language": "GDScript",
 "path": "res://ui/views/editor/components/viewport/gizmos/curve_gizmo.gd"
+}, {
+"base": "GraphEdit",
+"class": "CustomGraphEdit",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/custom_graph_edit.gd"
 }, {
 "base": "ProgressBar",
 "class": "CustomSpinBox",
@@ -84,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://common/event_bus/event_bus.gd"
 }, {
+"base": "GraphNode",
+"class": "GenericNodeUi",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/nodes/generic_node.gd"
+}, {
 "base": "ScrollContainer",
 "class": "InspectorPanel",
 "language": "GDScript",
@@ -99,10 +114,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/root/components/load_save_dialog.gd"
 }, {
-"base": "Node",
-"class": "NodeFactory",
+"base": "Object",
+"class": "NodeUtil",
 "language": "GDScript",
-"path": "res://common/node_library.gd"
+"path": "res://common/node_util.gd"
 }, {
 "base": "VBoxContainer",
 "class": "NoisePreview",
@@ -118,6 +133,11 @@ _global_script_classes=[ {
 "class": "Signals",
 "language": "GDScript",
 "path": "res://common/signal_util.gd"
+}, {
+"base": "CustomGraphEdit",
+"class": "TemplateEditor",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/template_editor.gd"
 }, {
 "base": "PanelContainer",
 "class": "UserInterfaceRoot",
@@ -141,22 +161,26 @@ _global_script_class_icons={
 "ConceptGraphEditorUtil": "",
 "ConceptGraphEditorView": "",
 "ConceptGraphSettings": "",
+"ConceptNode": "",
 "ConfirmDialog": "",
 "Constants": "",
 "CurveGizmo": "",
+"CustomGraphEdit": "",
 "CustomSpinBox": "",
 "CustomTabContainer": "",
 "DialogManager": "",
 "DictUtil": "",
 "EditorSettingsView": "",
 "EventBus": "",
+"GenericNodeUi": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
 "LoadSaveDialog": "",
-"NodeFactory": "",
+"NodeUtil": "",
 "NoisePreview": "",
 "SignalManager": "",
 "Signals": "",
+"TemplateEditor": "",
 "UserInterfaceRoot": "",
 "ViewContainer": "",
 "WelcomeView": ""
@@ -169,7 +193,7 @@ run/main_scene="res://ui/root/root.tscn"
 boot_splash/image="res://ui/themes/splash.png"
 boot_splash/fullsize=false
 boot_splash/bg_color=Color( 0.1672, 0.17632, 0.19, 1 )
-config/icon="res://ui/icons/icon.png"
+config/icon="res://ui/icons/icon_concept_graph_shield.svg"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
 
@@ -177,11 +201,11 @@ config/quit_on_go_back=false
 
 GlobalEventBus="*res://common/event_bus/event_bus.gd"
 GlobalUndoRedo="*res://common/undo_redo.gd"
+Protocol="*res://client/protocol.gd"
 Settings="*res://common/project_settings.gd"
 TextureUtil="*res://common/texture_util.gd"
-NodeLibrary="*res://common/node_library.gd"
+NodeFactory="*res://common/node_factory.gd"
 FileHistory="*res://common/file_history.gd"
-Protocol="*res://client/protocol.gd"
 
 [debug]
 

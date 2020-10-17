@@ -1,13 +1,12 @@
 extends WindowDialog
 
-"""
-Select and add nodes to the graph from this panel. This class doesn't actually modify the graph,
-it simply send signals to the ConceptGraphEditorView parent node.
-"""
+
+# Browse the available nodes from this panel. Once a node is selected, it sends
+# a signal caught by the template editor that handles the actual node creation.
 
 
-signal hide_panel
 signal create_node
+
 
 export var node_tree: NodePath
 export var create_button: NodePath
@@ -49,7 +48,7 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 	_node_tree.set_hide_root(true)
 
 	if nodes.empty():
-		nodes = NodeLibrary.get_list().values()
+		nodes = NodeFactory.get_available_nodes()
 		nodes.sort_custom(self, "_sort_nodes_by_display_name")
 
 	var categories := []
@@ -131,13 +130,18 @@ func _get_node_category(node) -> String:
 	return reversed
 
 
-func _sort_tree(root: TreeItem) -> void:
-	pass
-
-
 func _hide_panel() -> void:
-	#emit_signal("hide_panel")
 	visible = false
+
+
+func _filter_node(node) -> bool:
+	return _search_text.is_subsequence_ofi(node.display_name)
+
+
+func _sort_nodes_by_display_name(a, b):
+	if a.display_name < b.display_name:
+		return true
+	return false
 
 
 func _on_item_selected() -> void:
@@ -168,19 +172,9 @@ func _on_create_button_pressed() -> void:
 	_on_item_activated()
 
 
-func _on_Search_text_changed(new_text):
+func _on_search_text_changed(new_text):
 	_search_text = new_text
 	_refresh_concept_nodes_list()
-
-
-func _filter_node(node) -> bool:
-	return _search_text.is_subsequence_ofi(node.display_name)
-
-
-func _sort_nodes_by_display_name(a, b):
-	if a.display_name < b.display_name:
-		return true
-	return false
 
 
 func _on_grouping_type_changed(_pressed):

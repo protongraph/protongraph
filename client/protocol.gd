@@ -6,11 +6,9 @@ var _client: ConceptGraphClient
 
 func _ready():
 	_start_client()
-	
-	#TMP
-	var msg = JSON.print({"command": "get_node_list"})
-	print("Sending message ", msg)
-	_client.send(msg)
+
+	GlobalEventBus.register_listener(self, "generate", "_on_generate_request")
+	GlobalEventBus.register_listener(self, "request_node_list", "_on_node_list_request")
 
 
 func _start_client() -> void:
@@ -29,17 +27,31 @@ func _on_data_received(data: String) -> void:
 		return
 	
 	var msg: Dictionary = json.result
-	print("Message received : ", msg)
+	if not msg.has("type"):
+		return
+	
+	match msg["type"]:
+		"node_list":
+			_on_node_list_received(msg["data"])
+		
+		"generation_completed":
+			var path = msg["path"] if msg.has("path") else ""
+			_on_generation_completed(path)
 
 
-func _on_node_list_requested() -> void:
-	print("external process requested the node list")
-	GlobalEventBus.dispatch("node_list_requested")
+func _on_node_list_request() -> void:
+	var msg = JSON.print({"command": "get_node_list"})
+	_client.send(msg)
 
 
 func _on_node_list_received(nodes: Dictionary) -> void:
-	print("node list received: ", nodes)
+	GlobalEventBus.dispatch("node_list_received", nodes)
+
+
+func _on_generate_request(opts: Dictionary) -> void:
+	pass
 
 
 func _on_generation_completed(path := "") -> void:
 	print("Generation completed, results at ", path)
+	GlobalEventBus.dispatch("generation_completed", path)

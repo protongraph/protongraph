@@ -1,5 +1,6 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
+[ext_resource path="res://ui/views/editor/components/graph_editor/template_editor.gd" type="Script" id=1]
 [ext_resource path="res://ui/views/editor/components/inspector/inspector.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ui/views/editor/components/viewport/viewport.tscn" type="PackedScene" id=3]
 [ext_resource path="res://ui/views/editor/editor_view.gd" type="Script" id=4]
@@ -41,7 +42,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 viewport_container = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/Control/ViewportArea/ViewportContainer")
-template = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/Template")
+template = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/TemplateEditor")
 add_node_dialog = NodePath("AddNodeDialog")
 inspector = NodePath("VBoxContainer/HSplitContainer/Control/Inspector")
 
@@ -122,7 +123,7 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
 custom_constants/autohide = 0
 
-[node name="Template" type="GraphEdit" parent="VBoxContainer/HSplitContainer/HSplitContainer"]
+[node name="TemplateEditor" type="GraphEdit" parent="VBoxContainer/HSplitContainer/HSplitContainer"]
 margin_right = 985.0
 margin_bottom = 448.0
 size_flags_horizontal = 3
@@ -130,9 +131,7 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 1.5
 right_disconnects = true
 scroll_offset = Vector2( -321, -320 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource( 1 )
 
 [node name="Control" type="Control" parent="VBoxContainer/HSplitContainer/HSplitContainer"]
 margin_top = 472.0
@@ -154,14 +153,11 @@ size_flags_horizontal = 3
 [node name="Inspector" parent="VBoxContainer/HSplitContainer/Control" instance=ExtResource( 2 )]
 
 [node name="AddNodeDialog" parent="." instance=ExtResource( 5 )]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 519.0
-margin_bottom = 407.0
+margin_right = 512.0
+margin_bottom = 400.0
 [connection signal="pressed" from="VBoxContainer/ToolShelf/AddNodes" to="." method="_show_node_dialog_centered"]
 [connection signal="pressed" from="VBoxContainer/ToolShelf/Save" to="." method="save_template"]
 [connection signal="pressed" from="VBoxContainer/ToolShelf/RunGeneration" to="." method="regenerate"]
-[connection signal="pressed" from="VBoxContainer/ToolShelf/ImportAll" to="VBoxContainer/HSplitContainer/HSplitContainer/Template" method="_on_import_all"]
-[connection signal="pressed" from="VBoxContainer/ToolShelf/ExportAll" to="VBoxContainer/HSplitContainer/HSplitContainer/Template" method="_on_export_all"]
-[connection signal="popup_request" from="VBoxContainer/HSplitContainer/HSplitContainer/Template" to="." method="_show_node_dialog"]
+[connection signal="popup_request" from="VBoxContainer/HSplitContainer/HSplitContainer/TemplateEditor" to="." method="_show_node_dialog"]
 [connection signal="value_changed" from="VBoxContainer/HSplitContainer/Control/Inspector" to="." method="_on_inspector_value_changed"]
+[connection signal="create_node" from="AddNodeDialog" to="VBoxContainer/HSplitContainer/HSplitContainer/TemplateEditor" method="_on_create_node"]

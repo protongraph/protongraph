@@ -122,6 +122,7 @@ output_root = NodePath("../Output")
 visible = false
 
 [node name="MarginContainer" type="MarginContainer" parent="ViewportContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/margin_right = 4

@@ -12,17 +12,17 @@ var _is_quitting := false
 
 
 func _ready() -> void:
-	_dialog_manager = get_node(dialog_manager)
 	GlobalEventBus.register_listener(self, "create_template", "_on_create_template")
 	GlobalEventBus.register_listener(self, "load_template", "_on_load_template")
 	GlobalEventBus.register_listener(self, "save_template", "_on_save_template")
 	GlobalEventBus.register_listener(self, "save_template_as", "_on_save_template_as")
 	GlobalEventBus.register_listener(self, "open_settings", "_load_settings_view")
 	
+	_dialog_manager = get_node(dialog_manager)
 	Signals.safe_connect(self, "tabs_cleared", self, "_on_tabs_cleared")
 	Signals.safe_connect(_dialog_manager, "canceled", self, "_on_close_cancel")
-	Signals.safe_connect(_dialog_manager, "discard", self, "_on_close_discard")
-	Signals.safe_connect(_dialog_manager, "confirm", self, "_on_close_confirm")
+	Signals.safe_connect(_dialog_manager, "discarded", self, "_on_close_discard")
+	Signals.safe_connect(_dialog_manager, "confirmed", self, "_on_close_confirm")
 	
 	_load_start_view()
 
