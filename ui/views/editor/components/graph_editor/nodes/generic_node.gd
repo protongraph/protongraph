@@ -14,6 +14,7 @@ signal connection_changed
 var requires_full_gui_rebuild := false
 var inline_vectors := false
 var minimap_color: Color
+var template_path: String # Sometimes needed to get relative paths.
 
 
 var _spinbox
@@ -102,8 +103,8 @@ func get_connected_input_type(idx) -> int:
 
 
 """
-Return the variables exposed to the node inspector. Same format as get_property_list
-[ {name: , type: }, ... ]
+Return the variables exposed to the node inspector. Same format as
+get_property_list [ {name: , type: }, ... ]
 """
 func get_exposed_variables() -> Array:
 	return []
@@ -120,25 +121,9 @@ func is_input_connected(idx: int) -> bool:
 func set_default_gui_value(slot: int, value) -> void:
 	if _hboxes.size() <= slot:
 		return
-
-	var type = _inputs[slot]["type"]
-	var left = _hboxes[slot].get_node("Left")
-
-	match type:
-		ConceptGraphDataType.BOOLEAN:
-			left.get_node("CheckBox").pressed = value
-		ConceptGraphDataType.SCALAR:
-			left.get_node("SpinBox").value = value
-		ConceptGraphDataType.STRING:
-			if left.has_node("LineEdit"):
-				left.get_node("LineEdit").text = value
-			elif left.has_node("OptionButton"):
-				var btn: OptionButton = left.get_node("OptionButton")
-				btn.selected = btn.get_item_index(int(value))
-		ConceptGraphDataType.VECTOR2:
-			_set_vector_value(slot, value)
-		ConceptGraphDataType.VECTOR3:
-			_set_vector_value(slot, value)
+	
+	var component = _hboxes[slot].get_node("Input")
+	component.set_value(value)
 
 
 """
@@ -276,21 +261,16 @@ func _generate_default_gui_style() -> void:
 
 	add_constant_override("port_offset", 12 * scale)
 	var bold_font: Font = get_font("bold", "EditorFonts")
-	print("Bold font : ", bold_font)
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
 	add_constant_override("separation", 2)
 	add_constant_override("title_offset", 21 * scale)
 	add_constant_override("close_offset", 21 * scale)
 
 
-"""
-If the child node does not define a custom UI itself, this function will generate a default UI
-based on the parameters provided with set_input and set_ouput. Each slots will have a Label
-and their name attached.
-The input slots will have additional UI elements based on their type.
-Scalars input gets a spinbox that's hidden when something is connected to the slot.
-Values stored in the spinboxes are automatically exported and restored.
-"""
+# Generate a default UI based on the parameters found in _inputs and _outputs.
+# Each slot gets a GraphNodeComponent based on the data type. This component 
+# adds type specific UI, scalars get a spinbox and so on. It's also the 
+# component responsibility to display the type icon and slot name.
 func _generate_default_gui() -> void:
 	_clear_gui()
 	_generate_default_gui_style()
@@ -299,317 +279,76 @@ func _generate_default_gui() -> void:
 	show_close = true
 	rect_min_size = Vector2(0.0, 0.0)
 	rect_size = Vector2(0.0, 0.0)
-	var max_output_label_length := 0
-	var slots = max(_inputs.size(), _outputs.size())
+	var total_slots = max(_inputs.size(), _outputs.size())
 	
-	for i in slots:
-		# Create a Hbox container per slot like this -> [InputComponent, OutputComponent]
+	for i in total_slots:
+		# Create a Hbox container per slot like this
+		# -> [InputComponent, OutputComponent]
 		var hbox = HBoxContainer.new()
-		hbox.rect_min_size.y = 24 * ConceptGraphEditorUtil.get_editor_scale()
-
-		# Make sure it appears in the editor and store along the other Hboxes
+		hbox.rect_min_size.y = Constants.get_slot_height()
 		_hboxes.append(hbox)
 		add_child(hbox)
-
-		# If this slot has an input
-		if _inputs.has(i):
-
-			var opts = _inputs[i]["options"] if _inputs[i].has("options") else null
-
-			var input_type = _inputs[i]["type"]
-			
-			label_left.text = _inputs[i]["name"]
-			label_left.hint_tooltip = ConceptGraphDataType.Types.keys()[_inputs[i]["type"]].capitalize()
-
-			# Add the optional UI elements based on the data type.
-			# TODO : We could probably just check if the property exists with get_property_list
-			# and do that automatically instead of manually setting everything one by one
-			match _inputs[i]["type"]:
-				ConceptGraphDataType.BOOLEAN:
-					var checkbox = CheckBox.new()
-					checkbox.focus_mode = Control.FOCUS_NONE
-					checkbox.name = "CheckBox"
-					checkbox.pressed = opts["value"] if opts.has("value") else false
-					checkbox.connect("toggled", self, "_on_default_gui_value_changed", [i])
-					checkbox.connect("toggled", self, "_on_default_gui_interaction", [checkbox, i])
-					left_box.add_child(checkbox)
-
-				ConceptGraphDataType.SCALAR:
-					var n = _inputs[i]["name"]
-					var out_n = ""
-					_create_spinbox(n, opts, left_box, i)
-					label_left.visible = false
-					
-					if _outputs.has(i):
-						out_n = _outputs[i]["name"]
-
-					# Make sure there's enough horizontal space for the custom
-					# spinbox when the name is too large
-					var char_count = n.length() + out_n.length()
-					var scale = ConceptGraphEditorUtil.get_editor_scale()
-					var rx = (char_count * 8.0 + 150.0) * scale
-					if rect_min_size.x < rx:
-						rect_min_size.x = rx
-
-				ConceptGraphDataType.STRING:
-					if opts.has("type") and opts["type"] == "dropdown":
-						var dropdown = OptionButton.new()
-						dropdown.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
-						dropdown.add_stylebox_override("hover", load("res://views/themes/styles/graphnode_button_hover.tres"))
-						dropdown.focus_mode = Control.FOCUS_NONE
-						dropdown.name = "OptionButton"
-						for item in opts["items"].keys():
-							dropdown.add_item(item, opts["items"][item])
-						dropdown.connect("item_selected", self, "_on_default_gui_value_changed", [i])
-						dropdown.connect("item_selected", self, "_on_default_gui_interaction", [dropdown, i])
-						left_box.add_child(dropdown)
-						requires_full_gui_rebuild = true
-					else:
-						var line_edit = LineEdit.new()
-						line_edit.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
-						line_edit.add_stylebox_override("focus", load("res://views/themes/styles/graphnode_line_edit_focus.tres"))
-						line_edit.rect_min_size.x = 120
-						line_edit.name = "LineEdit"
-						line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
-						line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
-						line_edit.text = opts["text"] if opts.has("text") else ""
-						line_edit.connect("text_changed", self, "_on_default_gui_value_changed", [i])
-						line_edit.connect("text_changed", self, "_on_default_gui_interaction", [line_edit, i])
-						left_box.add_child(line_edit)
-
-						if opts.has("file_dialog"):
-							var folder_button = Button.new()
-							folder_button.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
-							folder_button.add_stylebox_override("hover", load("res://views/themes/styles/graphnode_button_hover.tres"))
-							folder_button.icon = TextureUtil.get_texture("res://ui/icons/icon_folder.svg")
-							folder_button.connect("pressed", self, "_show_file_dialog", [opts["file_dialog"], line_edit])
-							left_box.add_child(folder_button)
-
-				ConceptGraphDataType.VECTOR2:
-					label_left.visible = false
-					left_box.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 2, i))
-
-				ConceptGraphDataType.VECTOR3:
-					label_left.visible = false
-					left_box.add_child(_create_vector_default_gui(_inputs[i]["name"], opts, 3, i))
-
-		# Label right holds the output slot name. Set to expand and align_right to push the text on
-		# the right side of the node panel
-		var label_right = Label.new()
-		label_right.name = "LabelRight"
-		label_right.mouse_filter = MOUSE_FILTER_PASS
-		#label_right.size_flags_horizontal = SIZE_EXPAND_FILL
-		label_right.size_flags_horizontal = SIZE_FILL
-		label_right.align = Label.ALIGN_RIGHT
-		label_right.visible = false
 		
-		var output_icon_container = CenterContainer.new()
-		var output_icon = TextureRect.new()
-		output_icon_container.add_child(output_icon)
+		var input_component = _create_component(_inputs, i)
+		input_component.name = "Input"
+		hbox.add_child(input_component)
+		
+		var output_component = _create_component(_outputs, i)
+		output_component.name = "Output"
+		hbox.add_child(input_component)
 
-		if _outputs.has(i):
-			label_right.text = _outputs[i]["name"]
-			if label_right.text.length() > max_output_label_length:
-				max_output_label_length = label_left.text.length()
-			label_right.hint_tooltip = ConceptGraphDataType.Types.keys()[_outputs[i]["type"]].capitalize()
-			if label_right.text != "":
-				label_right.visible = true
-			
-			var out_opts = _outputs[i]["options"]
-			var show_output_icon := true
-			if out_opts and out_opts.has("type_icon"):
-				show_output_icon = out_opts["type_icon"]
-			
-			if show_output_icon and not _is_output_mirrored(i):
-				output_icon.texture = TextureUtil.get_slot_icon(_outputs[i]["type"])
-				output_icon.modulate = ConceptGraphDataType.COLORS[_outputs[i]["type"]]
-
-		hbox.add_child(label_right)
-		hbox.add_child(output_icon_container)
-
-	rect_min_size.x += max_output_label_length * 6.0 # TODO; tmp hack, use editor scale here and find a better layout
 	_on_connection_changed()
 	_redraw()
 
 
-func _create_spinbox(property_name, opts, parent, idx) -> SpinBox:
-	if not _spinbox:
-		_spinbox = preload("res://ui/views/editor/components/spinbox/spinbox.tscn")
-	var spinbox = _spinbox.instance()
-	if parent:
-		parent.add_child(spinbox)
-	spinbox.set_label_text(property_name)
-	spinbox.name = "SpinBox"
-	spinbox.max_value = opts["max"] if opts.has("max") else 1000
-	spinbox.min_value = opts["min"] if opts.has("min") else 0
-	spinbox.value = opts["value"] if opts.has("value") else 0
-	spinbox.step = opts["step"] if opts.has("step") else 0.001
-	spinbox.exp_edit = opts["exp"] if opts.has("exp") else false
-	spinbox.allow_greater = opts["allow_greater"] if opts.has("allow_greater") else true
-	spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else true
-	spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
-	spinbox.connect("value_changed", self, "_on_default_gui_value_changed", [idx])
-	spinbox.connect("value_changed", self, "_on_default_gui_interaction", [spinbox, idx])
-	return spinbox
-
-
-func _create_vector_default_gui(property_name, opts, count, idx) -> VBoxContainer:
-	var item_indexes = ["x", "y"]
-	if count == 3:
-		item_indexes.append("z")
-
-	var vbox = VBoxContainer.new()
-	vbox.name = "VectorContainer"
+func _create_component(data: Dictionary, i: int) -> GraphNodeComponent:
+	if not data.has(i):
+		return EmptyComponent.new()
 	
-	var label_box = HBoxContainer.new()
-
-	var show_input_icon := true
-	if opts and opts.has("type_icon"):
-		show_input_icon = opts["type_icon"]
-	
-	if show_input_icon:
-		var input_icon_container = CenterContainer.new()
-		var input_icon = TextureRect.new()
+	var component
+	var opts = data[i]["options"] if data[i].has("options") else {}
+	var text = data[i]["name"]
+	var type = data[i]["type"]
+			
+	match type:
+		ConceptGraphDataType.BOOLEAN:
+			component = BooleanComponent.new()
+			
+		ConceptGraphDataType.SCALAR:
+			component = ScalarComponent.new()
+			
+		ConceptGraphDataType.STRING:
+			component = StringComponent.new()
+			component.template_path = template_path
+			
+		ConceptGraphDataType.VECTOR2:
+			component = VectorComponent.new()
 		
-		var type = ConceptGraphDataType.VECTOR2
-		if count == 3:
-			type = ConceptGraphDataType.VECTOR3
-		
-		input_icon.texture = TextureUtil.get_slot_icon(type)
-		input_icon.modulate = ConceptGraphDataType.COLORS[type]
-		
-		input_icon_container.add_child(input_icon)
-		label_box.add_child(input_icon_container)
+		ConceptGraphDataType.VECTOR3:
+			component = VectorComponent.new()
 
-	if property_name:
-		var label = Label.new()
-		label.text = property_name
-		label_box.add_child(label)
-	
-	if label_box.get_child_count() != 0:
-		vbox.add_child(label_box)
-	
+		_:
+			component = GenericInputComponent.new()
 
-	var vector_box
-	if inline_vectors:
-		vector_box = HBoxContainer.new()
-	else:
-		vector_box = VBoxContainer.new()
-		vector_box.rect_min_size.x = 120 * ConceptGraphEditorUtil.get_editor_scale()
-		vector_box.rect_min_size.y = 24 * count * ConceptGraphEditorUtil.get_editor_scale()
-	vector_box.name = "Vector"
-	vector_box.add_constant_override("separation", 0)
-	vbox.add_child(vector_box)
-
-	var s
-	for i in item_indexes.size():
-		var vector_index = item_indexes[i]
-		if opts.has(vector_index):
-			s = _create_spinbox(vector_index, opts[vector_index], vector_box, idx)
-		else:
-			s = _create_spinbox(vector_index, opts, vector_box, idx)
-		if inline_vectors:
-			s.style = 3
-		elif i == 0:
-			s.style = 0
-		elif i == item_indexes.size() - 1:
-			s.style = 2
-		else:
-			s.style = 1
-
-	var separator = VSeparator.new()
-	separator.modulate = Color(0, 0, 0, 0)
-	vbox.add_child(separator)
-
-	return vbox
-
-
-func _get_vector_value(idx: int):
-	var left = _hboxes[idx].get_node("Left")
-	var vbox = left.get_node("VectorContainer")
-	if not left or not vbox:
-		return null
-
-	var vector_box = vbox.get_node("Vector")
-	var count = vector_box.get_child_count()
-	var res
-	if count == 2:
-		res = Vector2.ZERO
-	else:
-		res = Vector3.ZERO
-
-	for i in count:
-		res[i] = vector_box.get_child(i).value
-	return res
-
-
-func _set_vector_value(idx: int, value) -> void:
-	if not value or idx >= _inputs.size():
-		return
-
-	var vbox = _hboxes[idx].get_node("Left").get_node("VectorContainer")
-	if not vbox:
-		return
-
-	var vector
-
-	if value is String:
-		# String to Vector conversion
-		value = value.substr(1, value.length() - 2)
-		vector = value.split(',')
-	elif value is Vector3 or value is Vector2:
-		vector = value
-
-	var vector_box = vbox.get_node("Vector")
-	var count = vector_box.get_child_count()
-
-	for i in count:
-		vector_box.get_child(i).value = float(vector[i])
+	component.create(text, type, opts)
+	return component
 
 
 func _get_default_gui_value(idx: int, for_export := false):
 	if _hboxes.size() <= idx:
 		return null
-
-	var left = _hboxes[idx].get_node("Left")
-	if not left:
-		return null
-
-	match _inputs[idx]["type"]:
-		ConceptGraphDataType.BOOLEAN:
-			if left.has_node("CheckBox"):
-				return left.get_node("CheckBox").pressed
-		ConceptGraphDataType.SCALAR:
-			if left.has_node("SpinBox"):
-				return left.get_node("SpinBox").value
-		ConceptGraphDataType.STRING:
-			if left.has_node("LineEdit"):
-				return left.get_node("LineEdit").text
-			elif left.has_node("OptionButton"):
-				var btn = left.get_node("OptionButton")
-				if for_export:
-					return btn.get_item_id(btn.selected)
-				else:
-					return btn.get_item_text(btn.selected)
-		ConceptGraphDataType.VECTOR2:
-			return _get_vector_value(idx)
-		ConceptGraphDataType.VECTOR3:
-			return _get_vector_value(idx)
-
-	return null
+	
+	var component: GraphNodeComponent = _hboxes[idx].get_node("Input")
+	return component.get_value()
 
 
-"""
-Forces the GraphNode to redraw its gui, mostly to fix outdated connections after a resize.
-"""
+# Forces the GraphNode to redraw its gui, mostly to fix outdated connections
+# after a resize.
 func _redraw() -> void:
 	if not resizable:
 		emit_signal("resize_request", Vector2(rect_min_size.x, 0.0))
 	if get_parent():
 		get_parent().force_redraw()
-	else:
-		hide()
-		show()
 
 
 func _connect_signals() -> void:
@@ -617,29 +356,6 @@ func _connect_signals() -> void:
 	Signals.safe_connect(self, "resize_request", self, "_on_resize_request")
 	Signals.safe_connect(self, "connection_changed", self, "_on_connection_changed")
 	Signals.safe_connect(_resize_timer, "timeout", self, "_on_resize_timeout")
-
-
-"""
-Shows a FileDialog window and write the selected file path to the given line edit.
-"""
-func _show_file_dialog(opts: Dictionary, line_edit: LineEdit) -> void:
-	if not _file_dialog:
-		_file_dialog = FileDialog.new()
-		add_child(_file_dialog)
-
-	_file_dialog.rect_min_size = Vector2(500, 500)
-	_file_dialog.mode = opts["mode"] if opts.has("mode") else FileDialog.MODE_SAVE_FILE
-	_file_dialog.resizable = true
-	_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
-
-	if opts.has("filters"):
-		var filters = PoolStringArray()
-		for filter in opts["filters"]:
-			filters.append(filter)
-		_file_dialog.set_filters(filters)
-
-	Signals.safe_connect(_file_dialog, "file_selected", self, "_on_file_selected", [line_edit])
-	_file_dialog.popup_centered()
 
 
 func _update_slots_types() -> void:
@@ -680,13 +396,6 @@ func _update_slots_types() -> void:
 				node.emit_signal("connection_changed")
 
 
-"""
-Called from _show_file_dialog when confirming the selection
-"""
-func _on_file_selected(path, line_edit: LineEdit) -> void:
-	line_edit.text = get_parent().get_relative_path(path)
-
-
 func _on_resize_request(new_size) -> void:
 	rect_size = new_size
 	if resizable:
@@ -720,19 +429,9 @@ func _on_connection_changed() -> void:
 		if _inputs[i].has("default_type"):
 			type = _inputs[i]["default_type"] # Mirroring is enabled
 		
-		for ui in _hboxes[i].get_node("Left").get_children():
-			# Hide the default GUI if something is connected
-			ui.visible = !connected
-			# Force the Name label and icon to always be visible
-			if ui is Label or ui is CenterContainer:
-				ui.visible = true
+		var component = _hboxes[i].get_node("Input")
+		component.notify_connection_changed(connected)
 
-				# Special case for numbers and vectors. The icon should be 
-				# hidden unless something is connected
-				if type == ConceptGraphDataType.SCALAR \
-					or type == ConceptGraphDataType.VECTOR2 \
-					or type == ConceptGraphDataType.VECTOR3:
-						ui.visible = connected
 
 	_update_slots_types()
 	_redraw()

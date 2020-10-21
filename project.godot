@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/viewport/gizmos/base_gizmo.gd"
 }, {
+"base": "GenericInputComponent",
+"class": "BooleanComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/nodes/components/boolean.gd"
+}, {
 "base": "Node",
 "class": "ConceptGraphClient",
 "language": "GDScript",
@@ -144,6 +149,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/noise_preview.gd"
 }, {
+"base": "Reference",
+"class": "PathUtil",
+"language": "GDScript",
+"path": "res://common/path_util.gd"
+}, {
 "base": "GenericInputComponent",
 "class": "ScalarComponent",
 "language": "GDScript",
@@ -159,6 +169,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://common/signal_util.gd"
 }, {
+"base": "GenericInputComponent",
+"class": "StringComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/nodes/components/string.gd"
+}, {
 "base": "CustomGraphEdit",
 "class": "TemplateEditor",
 "language": "GDScript",
@@ -168,6 +183,11 @@ _global_script_classes=[ {
 "class": "UserInterfaceRoot",
 "language": "GDScript",
 "path": "res://ui/root/root.gd"
+}, {
+"base": "GraphNodeComponent",
+"class": "VectorComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/nodes/components/vector.gd"
 }, {
 "base": "CustomTabContainer",
 "class": "ViewContainer",
@@ -181,6 +201,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "BaseGizmo": "",
+"BooleanComponent": "",
 "ConceptGraphClient": "",
 "ConceptGraphDataType": "",
 "ConceptGraphEditorUtil": "",
@@ -207,11 +228,14 @@ _global_script_class_icons={
 "LoadSaveDialog": "",
 "NodeUtil": "",
 "NoisePreview": "",
+"PathUtil": "",
 "ScalarComponent": "",
 "SignalManager": "",
 "Signals": "",
+"StringComponent": "",
 "TemplateEditor": "",
 "UserInterfaceRoot": "",
+"VectorComponent": "",
 "ViewContainer": "",
 "WelcomeView": ""
 }

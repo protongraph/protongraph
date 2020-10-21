@@ -2,13 +2,17 @@ extends GraphNodeComponent
 class_name GenericInputComponent
 
 
-var _hbox: HBoxContainer
+var _row: HBoxContainer
 
 
-func create(label_name: String, type: int, _opts := {}):
-	.create(label_name, type)
+func create(label_name: String, type: int, opts := {}):
+	.create(label_name, type, opts)
 
-	_hbox = HBoxContainer.new()
-	_hbox.add_child(_icon)
-	_hbox.add_child(_label)
-	add_child(_hbox)
+	_row = HBoxContainer.new()
+	_row.add_child(icon_container)
+	_row.add_child(label)
+	add_child(_row)
+
+
+func add_ui(ui) -> void:
+	_row.add_child(ui)

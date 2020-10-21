@@ -8,28 +8,44 @@ class_name GraphNodeComponent
 signal value_changed
 
 
-var _label: Label
-var _icon: TextureRect
+var label: Label
+var icon: TextureRect
+var icon_container: CenterContainer
 
 
 func create(label_name: String, type: int, opts := {}):
-	if not _label:
-		_label = Label.new()
-	if not _icon:
-		_icon = TextureRect.new()
+	if not label:
+		label = Label.new()
+	if not icon:
+		icon = TextureRect.new()
+		icon_container = CenterContainer.new()
+		icon_container.add_child(icon)
 	if opts.has("show_type_icon") and not opts["show_type_icon"]:
-		_icon.visible = false
+		icon.visible = false
 	
-	_label.text = label_name
-	_label.hint_tooltip = ConceptGraphDataType.Types.keys()[type].capitalize()
-	_icon.texture = TextureUtil.get_slot_icon(type)
-	_icon.modulate = ConceptGraphDataType.COLORS[type]
-	_icon.mouse_filter = Control.MOUSE_FILTER_PASS
+	label.text = label_name
+	label.hint_tooltip = ConceptGraphDataType.get_type_name(type)
+	icon.texture = TextureUtil.get_slot_icon(type)
+	icon.modulate = ConceptGraphDataType.COLORS[type]
+	icon.mouse_filter = Control.MOUSE_FILTER_PASS
 
 
 func get_value():
 	return null
 
 
+# If the data to store on disk is different than the one used in core.
+func get_value_for_export():
+	return get_value()
+
+
 func set_value(_val) -> void:
 	pass
+
+
+func notify_connection_changed(connected: bool) -> void:
+	pass
+
+
+func _on_value_changed(value: float) -> void:
+	emit_signal("value_changed", value)

@@ -2,13 +2,16 @@ extends GraphNodeComponent
 class_name GenericOutputComponent
 
 
-var _hbox: HBoxContainer
+var _row: HBoxContainer
 
 
 func create(label_name: String, type: int, _opts := {}):
 	.create(label_name, type)
-
-	_hbox = HBoxContainer.new()
-	_hbox.add_child(_label)
-	_hbox.add_child(_icon)
-	add_child(_hbox)
+	
+	label.size_flags_horizontal = SIZE_FILL
+	label.align = Label.ALIGN_RIGHT
+	
+	_row = HBoxContainer.new()
+	_row.add_child(label)
+	_row.add_child(icon)
+	add_child(_row)

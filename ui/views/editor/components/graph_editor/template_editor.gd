@@ -2,13 +2,16 @@ extends CustomGraphEdit
 class_name TemplateEditor
 
 
+var _template_path: String
+
+
 
 func _ready():
 	pass # Replace with function body.
 
 
 func load_template(path: String) -> void:
-	pass
+	_template_path = path
 
 
 func create_node(type, data, notify := true):
@@ -16,6 +19,7 @@ func create_node(type, data, notify := true):
 	if not node:
 		return
 	
+	node.template_path = _template_path
 	node.inline_vectors = Settings.get_setting(Settings.INLINE_VECTOR_FIELDS)
 	add_child(node)
 	node.regenerate_default_ui()
