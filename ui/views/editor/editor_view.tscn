@@ -160,4 +160,4 @@ margin_bottom = 400.0
 [connection signal="pressed" from="VBoxContainer/ToolShelf/RunGeneration" to="." method="regenerate"]
 [connection signal="popup_request" from="VBoxContainer/HSplitContainer/HSplitContainer/TemplateEditor" to="." method="_show_node_dialog"]
 [connection signal="value_changed" from="VBoxContainer/HSplitContainer/Control/Inspector" to="." method="_on_inspector_value_changed"]
-[connection signal="create_node" from="AddNodeDialog" to="VBoxContainer/HSplitContainer/HSplitContainer/TemplateEditor" method="_on_create_node"]
+[connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]

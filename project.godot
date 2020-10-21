@@ -89,15 +89,35 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/settings/editor_settings_view.gd"
 }, {
+"base": "GraphNodeComponent",
+"class": "EmptyComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/nodes/components/empty.gd"
+}, {
 "base": "Node",
 "class": "EventBus",
 "language": "GDScript",
 "path": "res://common/event_bus/event_bus.gd"
 }, {
+"base": "GraphNodeComponent",
+"class": "GenericInputComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/nodes/components/generic_input.gd"
+}, {
 "base": "GraphNode",
 "class": "GenericNodeUi",
 "language": "GDScript",
 "path": "res://ui/views/editor/components/graph_editor/nodes/generic_node.gd"
+}, {
+"base": "GraphNodeComponent",
+"class": "GenericOutputComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/nodes/components/generic_output.gd"
+}, {
+"base": "MarginContainer",
+"class": "GraphNodeComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/nodes/graph_node_component.gd"
 }, {
 "base": "ScrollContainer",
 "class": "InspectorPanel",
@@ -123,6 +143,11 @@ _global_script_classes=[ {
 "class": "NoisePreview",
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/noise_preview.gd"
+}, {
+"base": "GenericInputComponent",
+"class": "ScalarComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/nodes/components/scalar.gd"
 }, {
 "base": "Object",
 "class": "SignalManager",
@@ -171,13 +196,18 @@ _global_script_class_icons={
 "DialogManager": "",
 "DictUtil": "",
 "EditorSettingsView": "",
+"EmptyComponent": "",
 "EventBus": "",
+"GenericInputComponent": "",
 "GenericNodeUi": "",
+"GenericOutputComponent": "",
+"GraphNodeComponent": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
 "LoadSaveDialog": "",
 "NodeUtil": "",
 "NoisePreview": "",
+"ScalarComponent": "",
 "SignalManager": "",
 "Signals": "",
 "TemplateEditor": "",
@@ -199,10 +229,10 @@ config/quit_on_go_back=false
 
 [autoload]
 
+Settings="*res://common/project_settings.gd"
 GlobalEventBus="*res://common/event_bus/event_bus.gd"
 GlobalUndoRedo="*res://common/undo_redo.gd"
 Protocol="*res://client/protocol.gd"
-Settings="*res://common/project_settings.gd"
 TextureUtil="*res://common/texture_util.gd"
 NodeFactory="*res://common/node_factory.gd"
 FileHistory="*res://common/file_history.gd"

@@ -19,7 +19,7 @@ func _ready() -> void:
 	popup.add_separator()
 	popup.add_icon_item(_save_icon, "Save Template", 10)
 	popup.add_icon_item(_save_icon, "Save Template As", 12)
-	popup.add_icon_item(_save_icon, "Save All Template", 14)
+	popup.add_icon_item(_save_icon, "Save All Templates", 14)
 	popup.add_separator()
 	popup.add_icon_item(_settings_icon, "Settings", 20)
 	popup.add_separator()

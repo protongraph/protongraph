@@ -127,4 +127,4 @@ text = "Create node"
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_item_selected"]
 [connection signal="nothing_selected" from="MarginContainer/VBoxContainer/NodeTree" to="." method="_on_nothing_selected"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/ActionContainer/CancelButton" to="." method="_hide_panel"]
-[connection signal="button_up" from="MarginContainer/VBoxContainer/ActionContainer/CreateButton" to="." method="_on_item_activated"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ActionContainer/CreateButton" to="." method="_on_item_activated"]

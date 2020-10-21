@@ -6,7 +6,6 @@ class_name CustomGraphEdit
 
 
 signal graph_changed
-signal connection_changed
 signal node_created
 signal node_deleted
 signal update_minimap
@@ -57,8 +56,8 @@ func duplicate_node(_node):
 
 
 func delete_node(node) -> void:
-	_disconnect_node_signals(node)
-	_disconnect_active_connections(node)
+	disconnect_node_signals(node)
+	disconnect_active_connections(node)
 	remove_child(node)
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
@@ -67,7 +66,7 @@ func delete_node(node) -> void:
 
 
 func restore_node(node) -> void:
-	_connect_node_signals(node)
+	connect_node_signals(node)
 	add_child(node, true)
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
@@ -85,6 +84,45 @@ func regenerate_graphnodes_style() -> void:
 			else:
 				child._generate_default_gui_style()
 	_ui_style_ready = true
+
+
+func connect_node_signals(node) -> void:
+	Signals.safe_connect(node, "node_changed", self, "_on_node_changed")
+	Signals.safe_connect(node, "close_request", self, "_on_delete_nodes_request", [node])
+	Signals.safe_connect(node, "dragged", self, "_on_node_dragged", [node])
+
+
+func disconnect_node_signals(node) -> void:
+	Signals.safe_disconnect(node, "node_changed", self, "_on_node_changed")
+	Signals.safe_disconnect(node, "close_request", self, "_on_delete_nodes_request")
+	Signals.safe_disconnect(node, "dragged", self, "_on_node_dragged")
+
+
+func disconnect_active_connections(node: GraphNode) -> void:
+	var name = node.get_name()
+	for c in get_connection_list():
+		var to = c["to"]
+		var from = c["from"]
+		if to == name or from == name:
+			disconnect_node(from, c["from_port"], to, c["to_port"])
+			if to != name:
+				get_node(to).emit_signal("connection_changed")
+
+
+func disconnect_input(node: GraphNode, idx: int) -> void:
+	var name = node.get_name()
+	for c in get_connection_list():
+		if c["to"] == name and c["to_port"] == idx:
+			disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
+			return
+
+
+func get_selected_nodes() -> Array:
+	var nodes = []
+	for c in get_children():
+		if c is GraphNode and c.selected:
+			nodes.append(c)
+	return nodes
 
 
 # Returns an array of GraphNodes connected to the left of the given slot, 
@@ -110,7 +148,6 @@ func get_right_nodes(node: GraphNode, slot: int) -> Array:
 	return result
 
 
-
 # Returns an array of all the GraphNodes on the left, regardless of the slot.
 func get_all_left_nodes(node) -> Array:
 	var result = []
@@ -120,7 +157,6 @@ func get_all_left_nodes(node) -> Array:
 	return result
 
 
-
 # Returns an array of all the GraphNodes on the right, regardless of the slot.
 func get_all_right_nodes(node) -> Array:
 	var result = []
@@ -128,7 +164,6 @@ func get_all_right_nodes(node) -> Array:
 		if c["from"] == node.get_name():
 			result.append(get_node(c["to"]))
 	return result
-
 
 
 # Returns true if the given node is connected to the given slot
@@ -156,45 +191,6 @@ func _setup_gui() -> void:
 	anchor_bottom = 1.0
 
 
-func _connect_node_signals(node) -> void:
-	node.connect("node_changed", self, "_on_node_changed")
-	node.connect("close_request", self, "_on_delete_nodes_request", [node])
-	node.connect("dragged", self, "_on_node_dragged", [node])
-
-
-func _disconnect_node_signals(node) -> void:
-	node.disconnect("node_changed", self, "_on_node_changed")
-	node.disconnect("close_request", self, "_on_delete_nodes_request")
-	node.disconnect("dragged", self, "_on_node_dragged")
-
-
-func _disconnect_active_connections(node: GraphNode) -> void:
-	var name = node.get_name()
-	for c in get_connection_list():
-		var to = c["to"]
-		var from = c["from"]
-		if to == name or from == name:
-			disconnect_node(from, c["from_port"], to, c["to_port"])
-			if to != name:
-				get_node(to).emit_signal("connection_changed")
-
-
-func _disconnect_input(node: GraphNode, idx: int) -> void:
-	var name = node.get_name()
-	for c in get_connection_list():
-		if c["to"] == name and c["to_port"] == idx:
-			disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
-			return
-
-
-func _get_selected_nodes() -> Array:
-	var nodes = []
-	for c in get_children():
-		if c is GraphNode and c.selected:
-			nodes.append(c)
-	return nodes
-
-
 func _on_connection_request(from_node: String, from_slot: int, to_node: String, to_slot: int) -> void:
 	# Prevent connecting the node to itself
 	if from_node == to_node:
@@ -208,7 +204,10 @@ func _on_connection_request(from_node: String, from_slot: int, to_node: String, 
 				disconnect_node(c["from"], c["from_port"], c["to"], c["to_port"])
 				break
 
-	connect_node(from_node, from_slot, to_node, to_slot)
+	var err = connect_node(from_node, from_slot, to_node, to_slot)
+	if err != OK:
+		print("Error ", err, " - Could not connect node ", from_node, ":", from_slot, " to ", to_node, ":", to_slot)
+		
 	emit_signal("graph_changed")
 	emit_signal("simulation_outdated")
 	get_node(to_node).emit_signal("connection_changed")
@@ -231,7 +230,7 @@ func _on_graph_changed() -> void:
 
 
 func _on_node_dragged(from: Vector2, to: Vector2, node: GraphNode) -> void:
-	undo_redo.create_action("Move " + node.display_name)
+	undo_redo.create_action("Move " + node.to_string())
 	undo_redo.add_do_method(node, "set_offset", to)
 	undo_redo.add_undo_method(node, "set_offset", from)
 	undo_redo.commit_action()
@@ -241,7 +240,7 @@ func _on_copy_nodes_request() -> void:
 	_copy_buffer = []
 	_connections_buffer = get_connection_list()
 
-	for node in _get_selected_nodes():
+	for node in get_selected_nodes():
 		var new_node = duplicate_node(node)
 		new_node.name = node.name	# Needed to retrieve active connections later
 		new_node.offset -= scroll_offset
@@ -288,7 +287,7 @@ func _on_paste_nodes_request() -> void:
 
 func _on_delete_nodes_request(selected = null) -> void:
 	if not selected:
-		selected = _get_selected_nodes()
+		selected = get_selected_nodes()
 	elif not selected is Array:
 		selected = [selected]
 	if selected.size() == 0:

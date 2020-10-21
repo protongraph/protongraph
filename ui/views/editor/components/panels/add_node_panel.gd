@@ -168,10 +168,6 @@ func _on_item_activated() -> void:
 	_hide_panel()
 
 
-func _on_create_button_pressed() -> void:
-	_on_item_activated()
-
-
 func _on_search_text_changed(new_text):
 	_search_text = new_text
 	_refresh_concept_nodes_list()

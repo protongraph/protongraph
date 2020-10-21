@@ -1,9 +1,9 @@
 class_name ConceptGraphDataType
 
-"""
-Define the constants used when setting up the GraphNodes slots type. Each of these values should
-have an associated color in the COLORS dictionnary.
-"""
+
+# Define the constants used when setting up the GraphNodes slots type. Each of 
+# these values should have an associated color in the COLORS dictionnary.
+
 
 # NEVER CHANGE THE TYPES ORDER or it will break save files
 # TODO : Find a way to fix that because there's obsolete types in there
@@ -181,3 +181,10 @@ static func to_variant_type(type: int) -> int:
 		BOX_3D:
 			return TYPE_AABB
 	return TYPE_NIL
+
+
+static func get_type_name(type: int) -> String:
+	var keys = Types.keys()
+	if not keys.has(type):
+		return keys[type].capitalize()
+	return ""

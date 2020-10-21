@@ -31,8 +31,8 @@ var empty_texture: ImageTexture
 
 
 func get_slot_icon(type: int, multi := false) -> Texture:
-	var path = "res://icons/icon_graph.svg" # Default icon
-	var root = "res://icons/data_types/"
+	var path = "res://ui/icons/icon_graph.svg" # Default icon
+	var root = "res://ui/icons/data_types/"
 
 	if table.has(type):
 		path = root + table[type]
@@ -78,13 +78,13 @@ static func get_square_texture(color: Color) -> ImageTexture:
 
 func get_input_texture(multi) -> Texture:
 	if multi:
-		return get_texture("res://icons/input_slot_multi.svg")
+		return get_texture("res://ui/icons/input_slot_multi.svg")
 	
-	return get_texture("res://icons/input_slot.svg")
+	return get_texture("res://ui/icons/input_slot.svg")
 
 
 func get_output_texture() -> Texture:
-	return get_texture("res://icons/output_slot.svg")
+	return get_texture("res://ui/icons/output_slot.svg")
 
 
 """

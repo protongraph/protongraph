@@ -26,7 +26,7 @@ func _on_data_received(data: String) -> void:
 		print("error ", json.error, " ", json.error_string, " at ", json.error_line)
 		return
 	
-	var msg: Dictionary = json.result
+	var msg: Dictionary = DictUtil.fix_types(json.result)
 	if not msg.has("type"):
 		return
 	
@@ -49,7 +49,14 @@ func _on_node_list_received(nodes: Dictionary) -> void:
 
 
 func _on_generate_request(opts: Dictionary) -> void:
-	pass
+	var cmd := {}
+	cmd["command"] = "generate"
+	if opts.has("path"):
+		cmd["path"] = opts["path"]
+	if opts.has("args"):
+		cmd["args"] = opts["args"] 
+	var msg = JSON.print(cmd)
+	_client.send(msg)
 
 
 func _on_generation_completed(path := "") -> void:
