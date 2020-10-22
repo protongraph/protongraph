@@ -7,6 +7,7 @@ var template_path: String
 var _line_edit: LineEdit
 var _dropdown: OptionButton
 var _file_dialog: FileDialog
+var _compact_display := false	# TODO: only show the file name in the unselected line_edit if this is true
 
 
 func create(label_name: String, type: int, opts := {}) -> void:
@@ -34,12 +35,13 @@ func create(label_name: String, type: int, opts := {}) -> void:
 		_line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
 		_line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
 		_line_edit.text = opts["text"] if opts.has("text") else ""
+		_compact_display = opts["compact_display"] if opts.has("compact_display") else false
 		Signals.safe_connect(_line_edit, "text_changed", self, "_on_value_changed")
 
 		if opts.has("file_dialog"):
 			var folder_button = Button.new()
-			folder_button.add_stylebox_override("normal", load("res://views/themes/styles/graphnode_button_normal.tres"))
-			folder_button.add_stylebox_override("hover", load("res://views/themes/styles/graphnode_button_hover.tres"))
+			folder_button.add_stylebox_override("normal", load("res://ui/themes/styles/graphnode_button_normal.tres"))
+			folder_button.add_stylebox_override("hover", load("res://ui/themes/styles/graphnode_button_hover.tres"))
 			folder_button.icon = TextureUtil.get_texture("res://ui/icons/icon_folder.svg")
 			Signals.safe_connect(folder_button, "pressed", self, "_show_file_dialog", [opts["file_dialog"]])
 			add_ui(folder_button)

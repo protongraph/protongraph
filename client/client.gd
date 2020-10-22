@@ -58,8 +58,6 @@ func _try_to_connect() -> void:
 	if error != OK:
 		print("Connection failed: ", error)
 		_retry_timer.start(_retry_delay)
-	else:
-		print("No error, connexion succeded?")
 
 
 func _on_connection_error() -> void:
@@ -84,5 +82,6 @@ func _on_connection_closed(_clean_close := false) -> void:
 func _on_data_received() -> void:
 	print("WS: Data received")
 	var packet: PoolByteArray = _ws.get_peer(1).get_packet()
+	print("Packet size: ", packet.size() / 1024.0, " kb")
 	var data = packet.get_string_from_utf8()
 	emit_signal("data_received", data)
