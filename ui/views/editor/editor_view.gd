@@ -35,16 +35,16 @@ func _ready() -> void:
 
 
 func load_template(path: String) -> void:
-#	_template_path = path
-#	_template.load_from_file(path)
+	_template_path = path
+	_template.load_from_file(path)
 #	_template.update_exposed_variables()
-#	_template.generate(true)
+	_template.generate()
 	_saved = true
 	GlobalEventBus.dispatch("template_loaded", path)
 
 
 func save_template() -> void:
-#	_template.save_to_file(_template_path)
+	_template.save_to_file(_template_path)
 	yield(_template, "template_saved")
 	_saved = true
 	GlobalEventBus.dispatch("message", "Saved template " + _template_path)

@@ -31,7 +31,7 @@ func _init() -> void:
 	Signals.safe_connect(self, "paste_nodes_request", self, "_on_paste_nodes_request")
 	Signals.safe_connect(self, "delete_nodes_request", self, "_on_delete_nodes_request")
 	Signals.safe_connect(self, "duplicate_nodes_request", self, "_on_duplicate_nodes_request")
-	Signals.safe_connect(self, "_end_node_move", self, "_on_node_changed_zero")
+	Signals.safe_connect(self, "_end_node_move", self, "_on_node_changed")
 	Signals.safe_connect(self, "node_selected", self, "_on_node_selected")
 	Signals.safe_connect(self, "graph_changed", self, "_on_graph_changed")
 
@@ -39,6 +39,7 @@ func _init() -> void:
 	call_deferred("add_child", _minimap)
 	
 	var scale = ConceptGraphEditorUtil.get_editor_scale()
+	snap_distance *= scale
 	add_constant_override("port_grab_distance_vertical", 16 * scale)
 	add_constant_override("port_grab_distance_horizontal", 16 * scale)
 

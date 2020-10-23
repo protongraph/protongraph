@@ -43,9 +43,9 @@ func create(label_name: String, type: int, opts := {}) -> void:
 		# Check if there's per attribute option when creating the spinboxes
 		var vector_index = item_indexes[i]
 		if opts.has(vector_index):
-			s = ScalarComponent.create_spinbox(label_name, opts[vector_index])
+			s = ScalarComponent.create_spinbox(vector_index, opts[vector_index])
 		else:
-			s = ScalarComponent.create_spinbox(label_name, opts)
+			s = ScalarComponent.create_spinbox(vector_index, opts)
 		_vector_box.add_child(s)
 
 		if inline:

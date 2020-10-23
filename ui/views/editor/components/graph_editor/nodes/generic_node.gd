@@ -118,6 +118,12 @@ func is_input_connected(idx: int) -> bool:
 	return parent.is_node_connected_to_input(self, idx)
 
 
+func is_multiple_connections_enabled_on_slot(idx: int) -> bool:
+	if idx >= _inputs.size():
+		return false
+	return _inputs[idx]["multi"]
+
+
 func set_default_gui_value(slot: int, value) -> void:
 	if _hboxes.size() <= slot:
 		return

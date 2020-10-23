@@ -43,5 +43,9 @@ static func format_value(value):
 	if value is float:
 		if is_equal_approx(round(value), value):
 			return int(value)
+	
+	if value is Array:
+		for i in value.size():
+			value[i] = format_value(value[i])
 
 	return value
