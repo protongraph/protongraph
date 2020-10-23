@@ -28,6 +28,8 @@ func create(label_name: String, type: int, opts := {}):
 	icon.texture = TextureUtil.get_slot_icon(type)
 	icon.modulate = ConceptGraphDataType.COLORS[type]
 	icon.mouse_filter = Control.MOUSE_FILTER_PASS
+	
+	size_flags_horizontal = SIZE_EXPAND_FILL
 
 
 func get_value():

@@ -295,46 +295,52 @@ func _generate_default_gui() -> void:
 		_hboxes.append(hbox)
 		add_child(hbox)
 		
-		var input_component = _create_component(_inputs, i)
-		input_component.name = "Input"
-		hbox.add_child(input_component)
+		var input_component = _create_component("input", i)
+		if input_component:
+			input_component.name = "Input"
+			hbox.add_child(input_component)
 		
-		var output_component = _create_component(_outputs, i)
-		output_component.name = "Output"
-		hbox.add_child(input_component)
+		var output_component = _create_component("output", i)
+		if output_component:
+			output_component.name = "Output"
+			hbox.add_child(output_component)
 
 	_on_connection_changed()
 	_redraw()
 
 
-func _create_component(data: Dictionary, i: int) -> GraphNodeComponent:
+func _create_component(source: String, i: int) -> GraphNodeComponent:
+	var data = _inputs if source == "input" else _outputs
 	if not data.has(i):
-		return EmptyComponent.new()
+		return null
 	
 	var component
 	var opts = data[i]["options"] if data[i].has("options") else {}
 	var text = data[i]["name"]
 	var type = data[i]["type"]
+	
+	if source == "input":
+		match type:
+			ConceptGraphDataType.BOOLEAN:
+				component = BooleanComponent.new()
+				
+			ConceptGraphDataType.SCALAR:
+				component = ScalarComponent.new()
+				
+			ConceptGraphDataType.STRING:
+				component = StringComponent.new()
+				component.template_path = template_path
+				
+			ConceptGraphDataType.VECTOR2:
+				component = VectorComponent.new()
 			
-	match type:
-		ConceptGraphDataType.BOOLEAN:
-			component = BooleanComponent.new()
-			
-		ConceptGraphDataType.SCALAR:
-			component = ScalarComponent.new()
-			
-		ConceptGraphDataType.STRING:
-			component = StringComponent.new()
-			component.template_path = template_path
-			
-		ConceptGraphDataType.VECTOR2:
-			component = VectorComponent.new()
-		
-		ConceptGraphDataType.VECTOR3:
-			component = VectorComponent.new()
+			ConceptGraphDataType.VECTOR3:
+				component = VectorComponent.new()
 
-		_:
-			component = GenericInputComponent.new()
+			_:
+				component = GenericInputComponent.new()
+	else:
+		component = GenericOutputComponent.new()
 
 	component.create(text, type, opts)
 	return component

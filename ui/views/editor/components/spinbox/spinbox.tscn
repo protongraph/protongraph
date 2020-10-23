@@ -15,20 +15,6 @@
 [ext_resource path="res://ui/views/editor/components/spinbox/edit_popup.tscn" type="PackedScene" id=13]
 [ext_resource path="res://ui/common/auto_scale.gd" type="Script" id=14]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
@@ -39,8 +25,8 @@ bg_color = Color( 0.6, 0.6, 0.6, 0.156863 )
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
 [node name="SpinBox" type="ProgressBar"]
-margin_right = 95.0
-margin_bottom = 24.0
+anchor_right = 1.0
+margin_bottom = 1.0
 rect_min_size = Vector2( 95, 24 )
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -63,7 +49,6 @@ value_edit = NodePath("SpinBoxContainer/Label/Value")
 [node name="SpinBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = 1.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -85,7 +70,7 @@ min_size_x = true
 
 [node name="Label" type="Label" parent="SpinBoxContainer"]
 margin_left = 16.0
-margin_right = 79.0
+margin_right = 1350.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -100,7 +85,10 @@ __meta__ = {
 [node name="Value" type="LineEdit" parent="SpinBoxContainer/Label"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -5.0
+margin_left = 0.471939
+margin_top = -0.471931
+margin_right = -4.52806
+margin_bottom = -0.471931
 mouse_filter = 1
 size_flags_horizontal = 3
 custom_styles/focus = SubResource( 2 )
@@ -117,8 +105,8 @@ __meta__ = {
 }
 
 [node name="Increase" type="Button" parent="SpinBoxContainer"]
-margin_left = 79.0
-margin_right = 95.0
+margin_left = 1350.0
+margin_right = 1366.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 16, 0 )
 focus_mode = 0

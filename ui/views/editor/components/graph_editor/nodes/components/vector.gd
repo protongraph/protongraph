@@ -15,7 +15,7 @@ func create(label_name: String, type: int, opts := {}) -> void:
 	add_child(_col)
 	
 	_label_box = HBoxContainer.new()
-	_label_box.add_child(icon)
+	_label_box.add_child(icon_container)
 	_label_box.add_child(label)
 
 	_col.add_child(_label_box)
