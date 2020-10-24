@@ -11,9 +11,7 @@ export var value_edit: NodePath
 export(int, "Top", "Middle", "Bottom", "Single") var style = 3 setget set_style
 
 var _undo_redo: UndoRedo
-var _name_label: Label
-var _line_edit: LineEdit
-var _edit_popup: PopupPanel
+
 
 var _clicked := false
 var _acc := 0.0
@@ -29,29 +27,26 @@ var _fg_top = preload("styles/progress_bar_fg_top.tres")
 var _fg_middle = preload("styles/progress_bar_fg_middle.tres")
 var _fg_bottom = preload("styles/progress_bar_fg_bottom.tres")
 
+onready var _name_label: Label = $SpinBoxContainer/Label
+onready var _line_edit: LineEdit = $SpinBoxContainer/Label/Value
+onready var _increase_button: Button = $SpinBoxContainer/Increase
+onready var _decrease_button: Button = $SpinBoxContainer/Decrease
+onready var _edit_popup: PopupPanel = $EditPopup
+
 
 func _ready() -> void:
 	_undo_redo = GlobalUndoRedo.get_undo_redo()
 	
 	# Connect the two < and > buttons clicks
-	var increase_btn = get_node(increase_button)
-	var decrease_btn = get_node(decrease_button)
-	Signals.safe_connect(increase_btn, "pressed", self, "_on_button_pressed", [true])
-	Signals.safe_connect(decrease_btn, "pressed", self, "_on_button_pressed", [false])
+	Signals.safe_connect(_increase_button, "pressed", self, "_on_button_pressed", [true])
+	Signals.safe_connect(_decrease_button, "pressed", self, "_on_button_pressed", [false])
 	
 	# Listen to the line_edit changes to sync the progress bar value
 	_name_label = get_node(name_label)
 	_line_edit = get_node(value_edit)
 	Signals.safe_connect(_line_edit, "text_entered", self, "_on_line_edit_changed")
 	Signals.safe_connect(_line_edit, "focus_exited", self, "_on_line_edit_changed")
-
 	Signals.safe_connect(self, "value_changed", self, "_update_line_edit_value")
-	
-	_edit_popup = get_node("EditPopup")
-	
-	var scale = ConceptGraphEditorUtil.get_editor_scale()
-	get_child(0).rect_min_size *= scale
-	rect_min_size.y *= scale
 	
 	set_label_text(spinbox_name)
 	_update_line_edit_value(value)
@@ -71,8 +66,6 @@ func set_label_text(text) -> void:
 		_name_label.text = spinbox_name
 		rect_min_size.x = spinbox_name.length() * 8 + 80
 		rect_min_size.x *= ConceptGraphEditorUtil.get_editor_scale()
-		
-
 
 
 func get_label_text() -> String:
@@ -128,7 +121,7 @@ func _show_extra_controls() -> void:
 	pos.y -= _edit_popup.rect_size.y / 2.0 - rect_size.y / 2.0
 	pos.x -= _edit_popup.rect_size.x
 	_edit_popup.rect_position = pos
-	get_node("EditPopup").popup()
+	_edit_popup.popup()
 
 
 func _on_button_pressed(increase: bool) -> void:
@@ -150,10 +143,8 @@ func _on_line_edit_changed(text = "") -> void:
 	if text.is_valid_float() or text.is_valid_integer():
 		new_value = float(text)
 		
-	else:
-		# Check if the text is an expression
+	else:	# Check if the text is an expression
 		var expression := Expression.new()
-
 		var error = expression.parse(text, [])
 		if error == OK:
 			var result = expression.execute([], null, true)
@@ -165,11 +156,11 @@ func _on_line_edit_changed(text = "") -> void:
 		_line_edit.text = String(value)
 
 
-func _on_value_gui_input(event: InputEvent) -> void:
+func _on_value_gui_input(event) -> void:
 	# Another edit box is being dragged, ignore all events
 	if _is_edited:
 		return
-	
+
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
 		_clicked = event.pressed
 		_acc = 0.0
@@ -179,7 +170,6 @@ func _on_value_gui_input(event: InputEvent) -> void:
 			_create_undo_redo_action(value, _previous_value)
 
 	elif event is InputEventMouseMotion and _clicked:
-		event = event as InputEventMouseMotion
 		if sign(_acc) != sign(event.relative.x):
 			_acc = 0.0
 

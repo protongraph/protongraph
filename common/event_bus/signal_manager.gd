@@ -18,6 +18,7 @@ signal message
 signal node_list_received
 signal open_settings
 signal quit
+signal remove_from_file_history
 signal request_node_list
 signal save_all_templates
 signal save_template_as

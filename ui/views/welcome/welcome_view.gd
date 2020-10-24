@@ -5,6 +5,7 @@ class_name WelcomeView
 export var links_root: NodePath
 export var history_panel: NodePath
 
+var _file_entry = preload("res://ui/views/welcome/file_entry.tscn")
 var _links_root: Control
 var _history_panel: Control
 
@@ -12,7 +13,7 @@ var _history_panel: Control
 func _ready() -> void:
 	_links_root = get_node(links_root)
 	_history_panel = get_node(history_panel)
-	GlobalEventBus.register_listener(self, "file_history_changed", "_on_file_history_changed")
+	GlobalEventBus.register_listener(self, "file_history_changed", "_rebuild_history_view")
 	_rebuild_history_view()
 
 
@@ -29,38 +30,9 @@ func _rebuild_history_view() -> void:
 		c.queue_free()
 
 	for path in history:
-		var link = LinkButton.new()
-		link.text = _shorten_path(path)
-		Signals.safe_connect(link, "pressed", self, "_on_link_pressed", [path])
+		var link: HistoryFileEntry = _file_entry.instance()
 		_links_root.add_child(link)
-
-
-func _shorten_path(path: String) -> String:
-	if path.length() > 80:
-		var tokens = path.split("/", false)
-		var total_size = path.length()
-
-		while total_size > 80 and tokens.size() > 4:
-			tokens.remove(2)
-			total_size = tokens.size()
-			for token in tokens:
-				total_size += token.length()
-
-		tokens.insert(2, "...")
-		var res = ""
-
-		for token in tokens:
-			res += "/" + token
-		return res
-	return path
-
-
-func _on_file_history_changed() -> void:
-	_rebuild_history_view()
-
-
-func _on_link_pressed(path: String) -> void:
-	GlobalEventBus.dispatch("load_template", path)
+		link.set_path(path)
 
 
 func _on_new_template_pressed() -> void:

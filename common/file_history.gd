@@ -9,6 +9,7 @@ var _initialized := false
 func _ready():
 	_load_or_create_file_history()
 	GlobalEventBus.register_listener(self, "template_loaded", "_on_template_loaded")
+	GlobalEventBus.register_listener(self, "remove_from_file_history", "_on_remove_from_history")
 
 
 func get_list() -> Array:
@@ -50,3 +51,10 @@ func _on_template_loaded(path: String) -> void:
 
 	_save_file_history()
 	GlobalEventBus.dispatch("file_history_changed")
+
+
+func _on_remove_from_history(path: String) -> void:
+	print("remove ", path, " from history")
+	if _history.has(path):
+		_history.erase(path)
+		GlobalEventBus.dispatch("file_history_changed")

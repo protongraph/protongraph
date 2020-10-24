@@ -47,8 +47,8 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-links_root = NodePath("HBoxContainer/RecentFiles/VBoxContainer/LinksRoot")
-history_panel = NodePath("HBoxContainer/RecentFiles/VBoxContainer")
+links_root = NodePath("HBoxContainer/ScrollContainer/RecentFiles/VBoxContainer/LinksRoot")
+history_panel = NodePath("HBoxContainer/ScrollContainer/RecentFiles/VBoxContainer")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 1366.0
@@ -152,9 +152,16 @@ margin_right = 463.0
 margin_bottom = 768.0
 custom_styles/separator = SubResource( 3 )
 
-[node name="RecentFiles" type="MarginContainer" parent="HBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
 margin_left = 471.0
 margin_right = 1366.0
+margin_bottom = 768.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+scroll_horizontal_enabled = false
+
+[node name="RecentFiles" type="MarginContainer" parent="HBoxContainer/ScrollContainer"]
+margin_right = 895.0
 margin_bottom = 768.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -164,7 +171,7 @@ custom_constants/margin_top = 20
 custom_constants/margin_left = 20
 custom_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/RecentFiles"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ScrollContainer/RecentFiles"]
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 875.0
@@ -172,14 +179,14 @@ margin_bottom = 748.0
 custom_constants/separation = 10
 alignment = 1
 
-[node name="Label" type="Label" parent="HBoxContainer/RecentFiles/VBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer/ScrollContainer/RecentFiles/VBoxContainer"]
 margin_top = 349.0
 margin_right = 855.0
 margin_bottom = 368.0
 custom_fonts/font = ExtResource( 5 )
 text = "Recent files"
 
-[node name="LinksRoot" type="VBoxContainer" parent="HBoxContainer/RecentFiles/VBoxContainer"]
+[node name="LinksRoot" type="VBoxContainer" parent="HBoxContainer/ScrollContainer/RecentFiles/VBoxContainer"]
 margin_top = 378.0
 margin_right = 855.0
 margin_bottom = 378.0

@@ -94,11 +94,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/settings/editor_settings_view.gd"
 }, {
-"base": "GraphNodeComponent",
-"class": "EmptyComponent",
-"language": "GDScript",
-"path": "res://ui/views/editor/components/graph_editor/nodes/components/empty.gd"
-}, {
 "base": "Node",
 "class": "EventBus",
 "language": "GDScript",
@@ -123,6 +118,11 @@ _global_script_classes=[ {
 "class": "GraphNodeComponent",
 "language": "GDScript",
 "path": "res://ui/views/editor/components/graph_editor/nodes/graph_node_component.gd"
+}, {
+"base": "Button",
+"class": "HistoryFileEntry",
+"language": "GDScript",
+"path": "res://ui/views/welcome/file_entry.gd"
 }, {
 "base": "ScrollContainer",
 "class": "InspectorPanel",
@@ -217,12 +217,12 @@ _global_script_class_icons={
 "DialogManager": "",
 "DictUtil": "",
 "EditorSettingsView": "",
-"EmptyComponent": "",
 "EventBus": "",
 "GenericInputComponent": "",
 "GenericNodeUi": "",
 "GenericOutputComponent": "",
 "GraphNodeComponent": "",
+"HistoryFileEntry": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
 "LoadSaveDialog": "",
