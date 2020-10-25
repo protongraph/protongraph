@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://ui/views/editor/components/graph_editor/template_editor.gd" type="Script" id=1]
 [ext_resource path="res://ui/views/editor/components/inspector/inspector.tscn" type="PackedScene" id=2]
@@ -9,8 +9,6 @@
 [ext_resource path="res://ui/icons/icon_save.svg" type="Texture" id=7]
 [ext_resource path="res://ui/common/auto_scale.gd" type="Script" id=8]
 [ext_resource path="res://ui/views/editor/components/icon_button/animated_icon_button.gd" type="Script" id=9]
-[ext_resource path="res://ui/icons/icon_export.svg" type="Texture" id=10]
-[ext_resource path="res://ui/icons/icon_import.svg" type="Texture" id=11]
 [ext_resource path="res://ui/views/editor/components/icon_button/icon_button.tscn" type="PackedScene" id=12]
 [ext_resource path="res://ui/icons/progress/progress_icon.tres" type="Texture" id=13]
 [ext_resource path="res://ui/icons/icon_add.svg" type="Texture" id=14]
@@ -81,27 +79,6 @@ icon = ExtResource( 6 )
 script = ExtResource( 9 )
 normal_icon = ExtResource( 6 )
 animated_icon = ExtResource( 13 )
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ToolShelf"]
-margin_top = 111.0
-margin_right = 28.0
-margin_bottom = 119.0
-
-[node name="ImportAll" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
-margin_top = 127.0
-margin_right = 28.0
-margin_bottom = 156.0
-hint_tooltip = "Import All.
-Request all the Import nodes to fetch their resources from disk again."
-icon = ExtResource( 11 )
-
-[node name="ExportAll" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
-margin_top = 164.0
-margin_right = 28.0
-margin_bottom = 193.0
-hint_tooltip = "Export All.
-Request all the export node to save their results on disk."
-icon = ExtResource( 10 )
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
 margin_left = 36.0

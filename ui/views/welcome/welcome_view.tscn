@@ -90,6 +90,8 @@ size_flags_vertical = 4
 texture = ExtResource( 6 )
 expand = true
 script = ExtResource( 7 )
+min_size_x = true
+min_size_y = true
 
 [node name="Title" type="Label" parent="HBoxContainer/Introduction/VBoxContainer/HBoxContainer"]
 margin_left = 164.0

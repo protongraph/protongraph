@@ -54,7 +54,7 @@ func _on_template_loaded(path: String) -> void:
 
 
 func _on_remove_from_history(path: String) -> void:
-	print("remove ", path, " from history")
 	if _history.has(path):
 		_history.erase(path)
+		_save_file_history()
 		GlobalEventBus.dispatch("file_history_changed")

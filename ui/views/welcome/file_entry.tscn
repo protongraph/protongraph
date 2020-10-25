@@ -55,7 +55,9 @@ visible = false
 margin_left = 1334.0
 margin_right = 1358.0
 margin_bottom = 29.0
+hint_tooltip = "Remove from the file history."
 icon = ExtResource( 5 )
+flat = true
 
 [node name="Path" type="Label" parent="MarginContainer/VBoxContainer"]
 modulate = Color( 1, 1, 1, 0.627451 )

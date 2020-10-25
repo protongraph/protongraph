@@ -75,7 +75,12 @@ func _load_settings_view():
 
 
 func _create_template(path: String) -> void:
-	pass
+	var default_content : String = '{"editor":{"offset_x":-300, "offset_y":-200},"connections":[],"nodes":[{"data":{},"editor":{"offset_x":0,"offset_y":0,"slots":{}},"name":"GraphNode","type":"final_output"}]}'
+	var template_file = File.new()
+	template_file.open(path, File.WRITE)
+	template_file.store_line(default_content)
+	template_file.close()
+	_load_template(path)
 
 
 func _load_template(path: String) -> void:
