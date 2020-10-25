@@ -1,4 +1,3 @@
-extends Object
 class_name Signals
 
 

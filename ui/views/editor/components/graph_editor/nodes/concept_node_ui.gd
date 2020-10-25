@@ -1,5 +1,5 @@
 extends GraphNode
-class_name GenericNodeUi
+class_name ConceptNodeUi
 
 
 signal delete_node
@@ -16,20 +16,27 @@ var inline_vectors := false
 var minimap_color: Color
 var template_path: String # Sometimes needed to get relative paths.
 
+var unique_id: String
+var display_name: String
+var category: String
+var description: String
 
 var _spinbox
-var _node: ConceptNode
-var _inputs := {}
-var _outputs := {}
 var _hboxes := []
 var _resize_timer := Timer.new()
 var _file_dialog: FileDialog
 var _initialized := false	# True when all enter_tree initialization is done
+var _inputs := {}
+var _outputs := {}
+var _is_valid := false
 
 
 func _enter_tree() -> void:
 	if _initialized:
 		return
+
+	_generate_default_gui()
+	_setup_slots()
 
 	_resize_timer.one_shot = true
 	_resize_timer.autostart = false
@@ -37,12 +44,6 @@ func _enter_tree() -> void:
 
 	_connect_signals()
 	_initialized = true
-
-
-func create_from(node: ConceptNode) -> void:
-	_node = node
-	_inputs = node.inputs.duplicate(true)
-	_outputs = node.outputs.duplicate(true)
 
 
 func export_editor_data() -> Dictionary:
@@ -110,6 +111,10 @@ func get_exposed_variables() -> Array:
 	return []
 
 
+func is_valid() -> bool:
+	return _is_valid
+
+
 func is_input_connected(idx: int) -> bool:
 	var parent = get_parent()
 	if not parent:
@@ -142,6 +147,16 @@ func regenerate_default_ui():
 	_generate_default_gui()
 	restore_editor_data(editor_data)
 	_setup_slots()
+
+
+# Override and make it return true if your node should be instanced from a
+# scene directly.
+# Scene should have the same name as the script and use a ".tscn" extension.
+# When using a custom gui, you lose access to the default gui. You have to
+# define slots and undo redo yourself but you have complete control over the
+# node appearance and behavior.
+func has_custom_gui() -> bool:
+	return false
 
 
 """
@@ -238,7 +253,7 @@ func _generate_default_gui_style() -> void:
 	# Base Style
 	var style = StyleBoxFlat.new()
 	var color = Color("e61f2531")
-	style.border_color = ConceptGraphDataType.to_category_color(_node.category)
+	style.border_color = ConceptGraphDataType.to_category_color(category)
 	minimap_color = style.border_color
 	style.set_bg_color(color)
 	style.set_border_width_all(2 * scale)
@@ -252,7 +267,7 @@ func _generate_default_gui_style() -> void:
 
 	# Selected Style
 	var selected_style = style.duplicate()
-	selected_style.shadow_color = ConceptGraphDataType.to_category_color(_node.category)
+	selected_style.shadow_color = ConceptGraphDataType.to_category_color(category)
 	selected_style.shadow_size = 4 * scale
 	selected_style.border_color = color
 
@@ -281,7 +296,7 @@ func _generate_default_gui() -> void:
 	_clear_gui()
 	_generate_default_gui_style()
 
-	title = _node.display_name
+	title = display_name
 	show_close = true
 	rect_min_size = Vector2(0.0, 0.0)
 	rect_size = Vector2(0.0, 0.0)

@@ -19,35 +19,130 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/graph_editor/nodes/components/boolean.gd"
 }, {
+"base": "MeshInstance",
+"class": "ConceptBoxInput",
+"language": "GDScript",
+"path": "res://common/custom_types/box_input.gd"
+}, {
 "base": "Node",
 "class": "ConceptGraphClient",
 "language": "GDScript",
 "path": "res://client/client.gd"
 }, {
+"base": "Path",
+"class": "ConceptGraphCurve",
+"language": "GDScript",
+"path": "res://common/custom_types/curve_input.gd"
+}, {
 "base": "Reference",
 "class": "ConceptGraphDataType",
 "language": "GDScript",
-"path": "res://common/data_types.gd"
+"path": "res://common/static/data_types.gd"
 }, {
 "base": "Reference",
 "class": "ConceptGraphEditorUtil",
 "language": "GDScript",
-"path": "res://common/editor_util.gd"
+"path": "res://common/static/editor_util.gd"
 }, {
 "base": "Control",
 "class": "ConceptGraphEditorView",
 "language": "GDScript",
 "path": "res://ui/views/editor/editor_view.gd"
 }, {
+"base": "Object",
+"class": "ConceptGraphHeightmap",
+"language": "GDScript",
+"path": "res://common/custom_types/heightmap.gd"
+}, {
+"base": "Object",
+"class": "ConceptGraphNoise",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/noise.gd"
+}, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseAdd",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_add.gd"
+}, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseBlend",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/noise_blend.gd"
+}, {
+"base": "ConceptGraphNoise",
+"class": "ConceptGraphNoiseCombiner",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_combiner.gd"
+}, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseDivide",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_divide.gd"
+}, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseMax",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_max.gd"
+}, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseMin",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_min.gd"
+}, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseMultiply",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_multiply.gd"
+}, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseOverlay",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_overlay.gd"
+}, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseScreen",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_screen.gd"
+}, {
+"base": "ConceptGraphNoise",
+"class": "ConceptGraphNoiseSimplex",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/noise_simplex.gd"
+}, {
+"base": "ConceptGraphNoiseCombiner",
+"class": "ConceptGraphNoiseSubstract",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_substract.gd"
+}, {
 "base": "Node",
 "class": "ConceptGraphSettings",
 "language": "GDScript",
-"path": "res://common/project_settings.gd"
+"path": "res://common/autoloads/project_settings.gd"
 }, {
-"base": "Reference",
+"base": "ConceptNodeUi",
 "class": "ConceptNode",
 "language": "GDScript",
-"path": "res://common/concept_node.gd"
+"path": "res://core/concept_node.gd"
+}, {
+"base": "Node",
+"class": "ConceptNodeLibrary",
+"language": "GDScript",
+"path": "res://core/node_library.gd"
+}, {
+"base": "GraphNode",
+"class": "ConceptNodeUi",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/graph_editor/nodes/concept_node_ui.gd"
+}, {
+"base": "Spatial",
+"class": "ConceptNodeVectorCurve",
+"language": "GDScript",
+"path": "res://common/custom_types/vector_curve_3d.gd"
+}, {
+"base": "Spatial",
+"class": "ConceptNodeVectorCurve2D",
+"language": "GDScript",
+"path": "res://common/custom_types/vector_curve_2d.gd"
 }, {
 "base": "WindowDialog",
 "class": "ConfirmDialog",
@@ -57,7 +152,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Constants",
 "language": "GDScript",
-"path": "res://common/constants.gd"
+"path": "res://common/static/constants.gd"
 }, {
 "base": "BaseGizmo",
 "class": "CurveGizmo",
@@ -87,7 +182,7 @@ _global_script_classes=[ {
 "base": "Object",
 "class": "DictUtil",
 "language": "GDScript",
-"path": "res://common/dict_util.gd"
+"path": "res://common/static/dict_util.gd"
 }, {
 "base": "PanelContainer",
 "class": "EditorSettingsView",
@@ -97,17 +192,22 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "EventBus",
 "language": "GDScript",
-"path": "res://common/event_bus/event_bus.gd"
+"path": "res://common/autoloads/event_bus.gd"
+}, {
+"base": "ConceptNode",
+"class": "GenericExportNode",
+"language": "GDScript",
+"path": "res://nodes/outputs/generic_export_node.gd"
+}, {
+"base": "ConceptNode",
+"class": "GenericImportNode",
+"language": "GDScript",
+"path": "res://nodes/inputs/generic_import_node.gd"
 }, {
 "base": "GraphNodeComponent",
 "class": "GenericInputComponent",
 "language": "GDScript",
 "path": "res://ui/views/editor/components/graph_editor/nodes/components/generic_input.gd"
-}, {
-"base": "GraphNode",
-"class": "GenericNodeUi",
-"language": "GDScript",
-"path": "res://ui/views/editor/components/graph_editor/nodes/generic_node.gd"
 }, {
 "base": "GraphNodeComponent",
 "class": "GenericOutputComponent",
@@ -139,10 +239,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/root/components/load_save_dialog.gd"
 }, {
+"base": "Node",
+"class": "NodePool",
+"language": "GDScript",
+"path": "res://core/node_pool.gd"
+}, {
 "base": "Object",
 "class": "NodeUtil",
 "language": "GDScript",
-"path": "res://common/node_util.gd"
+"path": "res://common/static/node_util.gd"
 }, {
 "base": "VBoxContainer",
 "class": "NoisePreview",
@@ -152,7 +257,7 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "PathUtil",
 "language": "GDScript",
-"path": "res://common/path_util.gd"
+"path": "res://common/static/path_util.gd"
 }, {
 "base": "GenericInputComponent",
 "class": "ScalarComponent",
@@ -162,12 +267,12 @@ _global_script_classes=[ {
 "base": "Object",
 "class": "SignalManager",
 "language": "GDScript",
-"path": "res://common/event_bus/signal_manager.gd"
+"path": "res://common/signal_manager.gd"
 }, {
-"base": "Object",
+"base": "Reference",
 "class": "Signals",
 "language": "GDScript",
-"path": "res://common/signal_util.gd"
+"path": "res://common/static/signal_util.gd"
 }, {
 "base": "GenericInputComponent",
 "class": "StringComponent",
@@ -175,9 +280,19 @@ _global_script_classes=[ {
 "path": "res://ui/views/editor/components/graph_editor/nodes/components/string.gd"
 }, {
 "base": "CustomGraphEdit",
-"class": "TemplateEditor",
+"class": "Template",
 "language": "GDScript",
-"path": "res://ui/views/editor/components/graph_editor/template_editor.gd"
+"path": "res://core/template.gd"
+}, {
+"base": "Reference",
+"class": "ThreadPool",
+"language": "GDScript",
+"path": "res://core/thread_pool.gd"
+}, {
+"base": "Node",
+"class": "Turtle",
+"language": "GDScript",
+"path": "res://nodes/generators/curves/l_system/turtle.gd"
 }, {
 "base": "PanelContainer",
 "class": "UserInterfaceRoot",
@@ -202,12 +317,31 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "BaseGizmo": "",
 "BooleanComponent": "",
+"ConceptBoxInput": "",
 "ConceptGraphClient": "",
+"ConceptGraphCurve": "",
 "ConceptGraphDataType": "",
 "ConceptGraphEditorUtil": "",
 "ConceptGraphEditorView": "",
+"ConceptGraphHeightmap": "",
+"ConceptGraphNoise": "",
+"ConceptGraphNoiseAdd": "",
+"ConceptGraphNoiseBlend": "",
+"ConceptGraphNoiseCombiner": "",
+"ConceptGraphNoiseDivide": "",
+"ConceptGraphNoiseMax": "",
+"ConceptGraphNoiseMin": "",
+"ConceptGraphNoiseMultiply": "",
+"ConceptGraphNoiseOverlay": "",
+"ConceptGraphNoiseScreen": "",
+"ConceptGraphNoiseSimplex": "",
+"ConceptGraphNoiseSubstract": "",
 "ConceptGraphSettings": "",
 "ConceptNode": "",
+"ConceptNodeLibrary": "",
+"ConceptNodeUi": "",
+"ConceptNodeVectorCurve": "",
+"ConceptNodeVectorCurve2D": "",
 "ConfirmDialog": "",
 "Constants": "",
 "CurveGizmo": "",
@@ -218,14 +352,16 @@ _global_script_class_icons={
 "DictUtil": "",
 "EditorSettingsView": "",
 "EventBus": "",
+"GenericExportNode": "",
+"GenericImportNode": "",
 "GenericInputComponent": "",
-"GenericNodeUi": "",
 "GenericOutputComponent": "",
 "GraphNodeComponent": "",
 "HistoryFileEntry": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
 "LoadSaveDialog": "",
+"NodePool": "",
 "NodeUtil": "",
 "NoisePreview": "",
 "PathUtil": "",
@@ -233,7 +369,9 @@ _global_script_class_icons={
 "SignalManager": "",
 "Signals": "",
 "StringComponent": "",
-"TemplateEditor": "",
+"Template": "",
+"ThreadPool": "",
+"Turtle": "",
 "UserInterfaceRoot": "",
 "VectorComponent": "",
 "ViewContainer": "",
@@ -253,13 +391,13 @@ config/quit_on_go_back=false
 
 [autoload]
 
-Settings="*res://common/project_settings.gd"
-GlobalEventBus="*res://common/event_bus/event_bus.gd"
-GlobalUndoRedo="*res://common/undo_redo.gd"
+Settings="*res://common/autoloads/project_settings.gd"
+GlobalEventBus="*res://common/autoloads/event_bus.gd"
+GlobalUndoRedo="*res://common/autoloads/undo_redo.gd"
 Protocol="*res://client/protocol.gd"
-TextureUtil="*res://common/texture_util.gd"
-NodeFactory="*res://common/node_factory.gd"
-FileHistory="*res://common/file_history.gd"
+TextureUtil="*res://common/autoloads/texture_util.gd"
+NodeFactory="*res://common/autoloads/node_factory.gd"
+FileHistory="*res://common/autoloads/file_history.gd"
 
 [debug]
 
