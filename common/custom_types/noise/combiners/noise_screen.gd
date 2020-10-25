@@ -1,8 +1,8 @@
-extends ConceptGraphNoiseCombiner
-class_name ConceptGraphNoiseScreen
+extends NoiseCombiner
+class_name NoiseScreen
 
 
-func _init(noise1: ConceptGraphNoise = null, noise2: ConceptGraphNoise = null):
+func _init(noise1: Noise = null, noise2: Noise = null):
 	._init(noise1, noise2)
 
 

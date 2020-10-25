@@ -74,6 +74,7 @@ text = "Group by type"
 margin_left = 436.0
 margin_right = 484.0
 margin_bottom = 48.0
+focus_mode = 0
 pressed = true
 script = SubResource( 1 )
 

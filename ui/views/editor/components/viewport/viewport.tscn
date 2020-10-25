@@ -1,6 +1,6 @@
 [gd_scene load_steps=17 format=2]
 
-[ext_resource path="res://default_env.tres" type="Environment" id=1]
+[ext_resource path="res://ui/views/editor/components/viewport/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://ui/icons/icon_question_mark.svg" type="Texture" id=2]
 [ext_resource path="res://ui/views/editor/components/icon_button/icon_button.tscn" type="PackedScene" id=3]
 [ext_resource path="res://ui/icons/icon_material_preview_light_2.svg" type="Texture" id=4]
@@ -14,6 +14,7 @@
 [ext_resource path="res://ui/views/editor/components/viewport/gizmos/move_gizmo.tscn" type="PackedScene" id=12]
 [ext_resource path="res://ui/views/editor/components/viewport/gizmos_manager.gd" type="Script" id=13]
 [ext_resource path="res://ui/views/editor/components/viewport/monitor_local_tree_changes.gd" type="Script" id=14]
+
 
 [sub_resource type="World" id=1]
 environment = ExtResource( 1 )

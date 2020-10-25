@@ -14,8 +14,8 @@ func _ready() -> void:
 	GlobalEventBus.register_listener(self, "quit", "_quit")
 	
 	# Scale the theme according to the editor scale (for high dpi screens)
-	theme = ConceptGraphEditorUtil.get_scaled_theme(theme)
-	ConceptGraphEditorUtil.scale_all_ui_resources()
+	theme = EditorUtil.get_scaled_theme(theme)
+	EditorUtil.scale_all_ui_resources()
 	update()
 	
 	_view_container = get_node(view_container)

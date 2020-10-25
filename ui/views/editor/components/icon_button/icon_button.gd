@@ -10,7 +10,7 @@ func _ready() -> void:
 	_button = get_parent()
 	_texture_rect = get_child(0)
 
-	var scaled_margin = margin * ConceptGraphEditorUtil.get_editor_scale()
+	var scaled_margin = margin * EditorUtil.get_editor_scale()
 
 	add_constant_override("margin_bottom", scaled_margin)
 	add_constant_override("margin_top", scaled_margin)

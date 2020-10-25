@@ -1,8 +1,8 @@
 extends Object
-class_name ConceptGraphNoise
+class_name Noise
 
 
-var noise: Object
+var noise: Noise
 var curve: Curve
 
 

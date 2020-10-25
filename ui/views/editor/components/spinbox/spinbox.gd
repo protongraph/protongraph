@@ -65,7 +65,7 @@ func set_label_text(text) -> void:
 	if _name_label:
 		_name_label.text = spinbox_name
 		rect_min_size.x = spinbox_name.length() * 8 + 80
-		rect_min_size.x *= ConceptGraphEditorUtil.get_editor_scale()
+		rect_min_size.x *= EditorUtil.get_editor_scale()
 
 
 func get_label_text() -> String:
@@ -174,7 +174,7 @@ func _on_value_gui_input(event) -> void:
 			_acc = 0.0
 
 		_acc += event.relative.x
-		if abs(_acc) >= 5 * ConceptGraphEditorUtil.get_editor_scale():
+		if abs(_acc) >= 5 * EditorUtil.get_editor_scale():
 			value += sign(_acc) * step
 			_acc = 0.0
 		_line_edit.text = String(value)

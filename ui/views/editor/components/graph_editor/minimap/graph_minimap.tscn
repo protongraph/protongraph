@@ -3,9 +3,6 @@
 [ext_resource path="res://ui/views/editor/components/graph_editor/minimap/graph_minimap.gd" type="Script" id=1]
 [ext_resource path="res://ui/icons/icon_minimap.png" type="Texture" id=2]
 
-
-
-
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.0666667, 0.0666667, 0.0666667, 0.686275 )
 corner_radius_top_left = 4

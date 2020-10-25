@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://ui/themes/fonts/fira_sans_bold_large.tres" type="DynamicFont" id=1]
 [ext_resource path="res://ui/views/welcome/welcome_view.gd" type="Script" id=2]
@@ -9,29 +9,6 @@
 [ext_resource path="res://ui/common/auto_scale.gd" type="Script" id=7]
 
 [sub_resource type="StyleBoxEmpty" id=1]
-
-[sub_resource type="GDScript" id=2]
-script/source = "extends Control
-
-
-export var min_size_x := false
-export var min_size_y := false
-export var const_separation := false
-
-
-func _ready() -> void:
-	var scale = ConceptGraphEditorUtil.get_editor_scale()
-
-	if min_size_x:
-		rect_min_size.x *= scale
-
-	if min_size_y:
-		rect_min_size.y *= scale
-
-	if const_separation:
-		var s = get_constant(\"separation\")
-		add_constant_override(\"separation\", s * scale)
-"
 
 [sub_resource type="StyleBoxLine" id=3]
 color = Color( 1, 1, 1, 0.172549 )
@@ -122,8 +99,10 @@ margin_right = 407.0
 margin_bottom = 459.0
 rect_min_size = Vector2( 140, 0 )
 size_flags_horizontal = 8
-script = SubResource( 2 )
+script = ExtResource( 7 )
 min_size_x = true
+min_size_y = true
+const_separation = true
 
 [node name="NewTemplate" type="Button" parent="HBoxContainer/Introduction/VBoxContainer/Buttons"]
 margin_right = 185.0

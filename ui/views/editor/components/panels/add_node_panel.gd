@@ -1,6 +1,5 @@
 extends WindowDialog
 
-
 # Browse the available nodes from this panel. Once a node is selected, it sends
 # a signal caught by the template editor that handles the actual node creation.
 
@@ -74,8 +73,8 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 			item.set_text(0, node.display_name)
 			item.set_tooltip(0, node.description)
 			item.set_metadata(0, node.unique_id)
-			var color = ConceptGraphDataType.to_category_color(node.category)
-			item.set_icon(0, ConceptGraphEditorUtil.get_square_texture(color))
+			var color = DataType.to_category_color(node.category)
+			item.set_icon(0, EditorUtil.get_square_texture(color))
 	
 	# Select the first result if the user searched a node
 	if _search_text:

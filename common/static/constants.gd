@@ -8,8 +8,8 @@ const SAVE_AS = 2
 
 
 static func get_slot_height() -> float:
-	return 24 * ConceptGraphEditorUtil.get_editor_scale()
+	return 24 * EditorUtil.get_editor_scale()
 
 
 static func get_vector_width() -> float:
-	return 120 * ConceptGraphEditorUtil.get_editor_scale()
+	return 120 * EditorUtil.get_editor_scale()

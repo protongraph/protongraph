@@ -1,4 +1,4 @@
-class_name ConceptGraphEditorUtil
+class_name EditorUtil
 
 
 static func get_editor_scale() -> float:

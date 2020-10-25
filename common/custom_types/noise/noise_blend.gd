@@ -1,5 +1,5 @@
-extends ConceptGraphNoiseCombiner
-class_name ConceptGraphNoiseBlend
+extends NoiseCombiner
+class_name NoiseBlend
 
 
 var blend_amount: float = 0.5 setget set_blend_amount
@@ -9,7 +9,7 @@ func set_blend_amount(amount) -> void:
 	blend_amount = clamp(amount, 0.0, 1.0)
 
 
-func _init(noise1: ConceptGraphNoise = null, noise2: ConceptGraphNoise = null, amount := 0.0):
+func _init(noise1: Noise = null, noise2: Noise = null, amount := 0.0):
 	._init(noise1, noise2)
 	set_blend_amount(amount)
 

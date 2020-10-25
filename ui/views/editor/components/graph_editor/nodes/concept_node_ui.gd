@@ -16,7 +16,6 @@ var inline_vectors := false
 var minimap_color: Color
 var template_path: String # Sometimes needed to get relative paths.
 
-var unique_id: String
 var display_name: String
 var category: String
 var description: String
@@ -46,8 +45,47 @@ func _enter_tree() -> void:
 	_initialized = true
 
 
+# TODO: Call order should define the display order, idx should only be useful
+# for save files.
+func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void:
+	_inputs[idx] = {
+		"name": name,
+		"type": type,
+		"options": opts,
+		"mirror": [],
+		"driver": -1,
+		"linked": [],
+		"multi": false
+	}
+
+
+func set_output(idx: int, name: String, type: int, opts: Dictionary = {}) -> void:
+	_outputs[idx] = {
+		"name": name,
+		"type": type,
+		"options": opts
+	}
+
+
+func remove_input(idx: int) -> bool:
+	if not _inputs.erase(idx):
+		return false
+
+	if is_input_connected(idx):
+		get_parent()._disconnect_input(self, idx)
+
+	return true
+
+
+# Allows multiple connections on the same input slot.
+func enable_multiple_connections_on_slot(idx: int) -> void:
+	if idx >= _inputs.size():
+		return
+	_inputs[idx]["multi"] = true
+
+
 func export_editor_data() -> Dictionary:
-	var editor_scale = ConceptGraphEditorUtil.get_editor_scale()
+	var editor_scale = EditorUtil.get_editor_scale()
 	var data = {}
 	data["offset_x"] = offset.x / editor_scale
 	data["offset_y"] = offset.y / editor_scale
@@ -67,7 +105,7 @@ func export_editor_data() -> Dictionary:
 
 
 func restore_editor_data(data: Dictionary) -> void:
-	var editor_scale = ConceptGraphEditorUtil.get_editor_scale()
+	var editor_scale = EditorUtil.get_editor_scale()
 	offset.x = data["offset_x"] * editor_scale
 	offset.y = data["offset_y"] * editor_scale
 
@@ -85,6 +123,28 @@ func restore_editor_data(data: Dictionary) -> void:
 		if data["slots"].has(String(i)):
 			var value = data["slots"][String(i)]
 			set_default_gui_value(i, value)
+
+
+# Automatically change the output data type to mirror the type of what's
+# connected to the input slot
+func mirror_slots_type(input_index, output_index) -> void:
+	if not _mirror_type_check(input_index, output_index):
+		return
+
+	_inputs[input_index]["mirror"].append(output_index)
+	_inputs[input_index]["default_type"] = _inputs[input_index]["type"]
+	_update_slots_types()
+
+
+func cancel_type_mirroring(input_index, output_index) -> void:
+	if not _mirror_type_check(input_index, output_index):
+		return
+
+	_inputs[input_index]["mirror"].erase(output_index)
+	_update_slots_types()
+
+
+
 
 
 func get_inputs_count() -> int:
@@ -172,6 +232,30 @@ func _get_connected_inputs() -> Array:
 
 
 """
+Override this if you're using a custom GUI to change input slots default behavior. This returns
+the local input data for the given slot
+"""
+func _get_input(_index: int) -> Array:
+	return []
+
+
+"""
+Used in mirror_slot_types and cancel_slot_types. Prints a warning if the provided slot is out of
+bounds.
+"""
+func _mirror_type_check(input_index, output_index) -> bool:
+	if input_index >= _inputs.size():
+		print("Error: invalid input index (", input_index, ") passed to ", display_name)
+		return false
+
+	if output_index >= _outputs.size():
+		print("Error: invalid output index (", input_index, ") passed to ", display_name)
+		return false
+
+	return true
+
+
+"""
 Returns true if the given output slot get its type from a mirrored input.
 False otherwise
 """
@@ -211,13 +295,13 @@ func _setup_slots() -> void:
 				input_type = _inputs[driver]["type"]
 			else:
 				input_type = _inputs[i]["type"]
-			input_color = ConceptGraphDataType.COLORS[input_type]
+			input_color = DataType.COLORS[input_type]
 			input_icon = TextureUtil.get_input_texture(_inputs[i]["multi"])
 		
 		if _outputs.has(i):
 			has_output = true
 			output_type = _outputs[i]["type"]
-			output_color = ConceptGraphDataType.COLORS[output_type]
+			output_color = DataType.COLORS[output_type]
 			output_icon = TextureUtil.get_output_texture()
 
 		if not has_input and not has_output and i < _hboxes.size():
@@ -248,12 +332,12 @@ func _clear_gui() -> void:
 
 
 func _generate_default_gui_style() -> void:
-	var scale: float = ConceptGraphEditorUtil.get_editor_scale()
+	var scale: float = EditorUtil.get_editor_scale()
 
 	# Base Style
 	var style = StyleBoxFlat.new()
 	var color = Color("e61f2531")
-	style.border_color = ConceptGraphDataType.to_category_color(category)
+	style.border_color = DataType.to_category_color(category)
 	minimap_color = style.border_color
 	style.set_bg_color(color)
 	style.set_border_width_all(2 * scale)
@@ -267,7 +351,7 @@ func _generate_default_gui_style() -> void:
 
 	# Selected Style
 	var selected_style = style.duplicate()
-	selected_style.shadow_color = ConceptGraphDataType.to_category_color(category)
+	selected_style.shadow_color = DataType.to_category_color(category)
 	selected_style.shadow_size = 4 * scale
 	selected_style.border_color = color
 
@@ -336,20 +420,20 @@ func _create_component(source: String, i: int) -> GraphNodeComponent:
 	
 	if source == "input":
 		match type:
-			ConceptGraphDataType.BOOLEAN:
+			DataType.BOOLEAN:
 				component = BooleanComponent.new()
 				
-			ConceptGraphDataType.SCALAR:
+			DataType.SCALAR:
 				component = ScalarComponent.new()
 				
-			ConceptGraphDataType.STRING:
+			DataType.STRING:
 				component = StringComponent.new()
 				component.template_path = template_path
 				
-			ConceptGraphDataType.VECTOR2:
+			DataType.VECTOR2:
 				component = VectorComponent.new()
 			
-			ConceptGraphDataType.VECTOR3:
+			DataType.VECTOR3:
 				component = VectorComponent.new()
 
 			_:

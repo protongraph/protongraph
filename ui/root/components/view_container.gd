@@ -34,7 +34,7 @@ func save_all_and_close() -> void:
 		if not _is_quitting:
 			return
 		select_tab(0)
-		if get_child(0) is ConceptGraphEditorView:
+		if get_child(0) is EditorView:
 			_on_tab_close_request(0)
 			yield(self, "tab_closed")
 		else:
@@ -45,7 +45,7 @@ func save_all_and_close() -> void:
 
 func _save_current_template(close := false) -> void:
 	var view = get_current_tab_content()
-	if not view is ConceptGraphEditorView:
+	if not view is EditorView:
 		return
 	
 	view.save_template()
@@ -56,7 +56,7 @@ func _save_current_template(close := false) -> void:
 
 func _save_all_templates() -> void:
 	for view in get_children():
-		if view is ConceptGraphEditorView:
+		if view is EditorView:
 			view.save_template()
 
 
@@ -87,7 +87,7 @@ func _load_template(path: String) -> void:
 	# Check if the requested template isn't already open
 	for i in get_child_count():
 		var view = get_child(i)
-		if not view is ConceptGraphEditorView:
+		if not view is EditorView:
 			continue
 
 		# If the template is already loaded, focus the existing tab
@@ -96,7 +96,7 @@ func _load_template(path: String) -> void:
 			return
 
 	# Template isn't already loaded, create an editor view
-	var editor: ConceptGraphEditorView = load("res://ui/views/editor/editor_view.tscn").instance()
+	var editor: EditorView = load("res://ui/views/editor/editor_view.tscn").instance()
 	editor.name = path.get_file().get_basename()
 	add_tab(editor)
 	editor.load_template(path)
@@ -143,7 +143,7 @@ func _on_save_template_as(path = null) -> void:
 
 func _on_tab_close_request(tab: int) -> void:
 	var view = get_tab_content(tab)
-	if view is ConceptGraphEditorView and view.has_pending_changes():
+	if view is EditorView and view.has_pending_changes():
 		_dialog_manager.show_confirm_dialog()
 	else:
 		._on_tab_close_request(tab)

@@ -1,4 +1,4 @@
-class_name ConceptGraphDataType
+class_name DataType
 
 
 # Define the constants used when setting up the GraphNodes slots type. Each of 
@@ -32,7 +32,7 @@ enum Types {
 }
 
 
-# Shorthand so we don't have to type ConceptGraphDataType.Types.ANY and skip the Types part
+# Shorthand so we don't have to type DataType.Types.ANY and skip the Types part
 const ANY = Types.ANY
 const BOOLEAN = Types.BOOLEAN
 const SCALAR = Types.SCALAR

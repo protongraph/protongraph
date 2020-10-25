@@ -1,11 +1,11 @@
-extends ConceptGraphNoise
-class_name ConceptGraphNoiseCombiner
+extends Noise
+class_name NoiseCombiner
 
 
-var second_noise: ConceptGraphNoise
+var second_noise: Noise
 
 
-func _init(noise1: ConceptGraphNoise = null, noise2: ConceptGraphNoise = null):
+func _init(noise1: Noise = null, noise2: Noise = null):
 	noise = noise1
 	second_noise = noise2
 

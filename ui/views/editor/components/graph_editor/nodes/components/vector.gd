@@ -32,7 +32,7 @@ func create(label_name: String, type: int, opts := {}) -> void:
 	_col.add_child(_vector_box)
 
 	var item_indexes = ["x", "y"]
-	if type == ConceptGraphDataType.VECTOR3:
+	if type == DataType.VECTOR3:
 		item_indexes.append("z")
 		_count = 3
 		

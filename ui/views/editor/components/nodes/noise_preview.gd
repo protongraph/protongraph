@@ -25,7 +25,7 @@ func _ready() -> void:
 	_texture_rect.texture = _image_texture
 
 
-func create_from_noise(noise: ConceptGraphNoise) -> void:
+func create_from_noise(noise: Noise) -> void:
 	_noise = noise
 	var s = _size.value
 	_image_texture.create_from_image(noise.get_image(s, s))

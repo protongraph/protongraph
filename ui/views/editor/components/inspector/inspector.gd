@@ -115,17 +115,17 @@ func _create_section(name: String) -> Control:
 func _get_control_for(v):
 	var ui
 	match v.type:
-		ConceptGraphDataType.SCALAR:
+		DataType.SCALAR:
 			ui = preload("scalar_property.tscn").instance()
-		ConceptGraphDataType.BOOLEAN:
+		DataType.BOOLEAN:
 			ui = preload("bool_property.tscn").instance()
-		ConceptGraphDataType.CURVE_FUNC:
+		DataType.CURVE_FUNC:
 			ui = preload("curve/curve_property.tscn").instance()
-		ConceptGraphDataType.STRING:
+		DataType.STRING:
 			ui = preload("string_property.tscn").instance()
-		ConceptGraphDataType.VECTOR2:
+		DataType.VECTOR2:
 			ui = preload("vector2_property.tscn").instance()
-		ConceptGraphDataType.VECTOR3:
+		DataType.VECTOR3:
 			ui = preload("vector3_property.tscn").instance()
 
 	if ui:

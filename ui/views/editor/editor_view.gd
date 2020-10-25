@@ -1,5 +1,5 @@
 extends Control
-class_name ConceptGraphEditorView
+class_name EditorView
 
 
 export var viewport_container: NodePath
@@ -8,7 +8,7 @@ export var add_node_dialog: NodePath
 export var inspector: NodePath
 
 var _node_dialog: WindowDialog
-var _template: TemplateEditor
+var _template: Template
 var _save_timer: Timer
 var _last_position: Vector2
 var _template_path: String
@@ -24,6 +24,7 @@ func _ready() -> void:
 	_viewport = get_node(viewport_container)
 	_viewport.rect_min_size = Vector2(256, 128)
 	_inspector = get_node(inspector)
+	_template.inspector = _inspector
 
 	if Settings.get_setting("autosave"):
 		_save_timer = Timer.new()
@@ -62,8 +63,7 @@ func get_input(name) -> Node:
 
 
 func regenerate(clear_cache := true) -> void:
-#	_template.generate(clear_cache)
-	pass
+	_template.generate(clear_cache)
 
 
 func has_pending_changes() -> bool:
@@ -85,8 +85,7 @@ func _hide_node_dialog() -> void:
 
 
 func _clear_graph():
-#	_template.clear()
-	pass
+	_template.clear()
 
 
 func _on_create_node_request(type: String) -> void:
@@ -104,8 +103,7 @@ func _on_simulation_completed() -> void:
 
 
 func _on_simulation_outdated() -> void:
-#	_template.generate(false)
-	pass
+	_template.generate(false)
 
 
 func _on_exposed_variables_updated(variables: Array) -> void:
@@ -116,8 +114,7 @@ func _on_exposed_variables_updated(variables: Array) -> void:
 
 func _on_inspector_value_changed(name: String) -> void:
 	if not _updating_inspector:
-		pass
-#		_template.notify_exposed_variable_change(name)
+		_template.notify_exposed_variable_change(name)
 
 
 func _on_input_created(node: Spatial) -> void:

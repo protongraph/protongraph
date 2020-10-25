@@ -5,7 +5,7 @@ export var min_size_x := false
 export var min_size_y := false
 export var const_separation := false
 
-onready var scale = ConceptGraphEditorUtil.get_editor_scale()
+onready var scale = EditorUtil.get_editor_scale()
 
 
 func _ready() -> void:

@@ -16,7 +16,7 @@ onready var _confirm: Button = $MarginContainer/VBoxContainer/HBoxContainer/Conf
 
 
 func _ready() -> void:
-	rect_min_size *= ConceptGraphEditorUtil.get_editor_scale()
+	rect_min_size *= EditorUtil.get_editor_scale()
 	Signals.safe_connect(self, "popup_hide", self, "_on_cancel")
 	Signals.safe_connect(_cancel, "pressed", self, "_on_cancel")
 	Signals.safe_connect(_discard, "pressed", self, "_on_discard")

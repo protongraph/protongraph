@@ -29,7 +29,7 @@ var _undo_data := {}
 
 
 func _ready() -> void:
-	rect_min_size.y *= ConceptGraphEditorUtil.get_editor_scale()
+	rect_min_size.y *= EditorUtil.get_editor_scale()
 	update()
 	connect("resized", self, "_on_resized")
 

@@ -32,7 +32,7 @@ func _on_gui_input(event: InputEvent) -> void:
 			_acc = 0.0
 
 		_acc += event.relative.x
-		if abs(_acc) >= 5 * ConceptGraphEditorUtil.get_editor_scale():
+		if abs(_acc) >= 5 * EditorUtil.get_editor_scale():
 			emit_signal("edit_value", sign(_acc) * step)
 			_acc = 0.0
 

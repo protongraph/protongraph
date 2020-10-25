@@ -3,24 +3,24 @@ extends Node
 
 var cache := {}
 var table := {
-	ConceptGraphDataType.ANY: "icon_any.svg",
-	ConceptGraphDataType.BOOLEAN: "icon_bool.svg",
-	ConceptGraphDataType.BOX_3D: "icon_selector_box.svg",
-	ConceptGraphDataType.CURVE_2D: "icon_bezier.svg",
-	ConceptGraphDataType.CURVE_3D: "icon_bezier.svg",
-	ConceptGraphDataType.CURVE_FUNC: "icon_func_curve.svg",
-	ConceptGraphDataType.HEIGHTMAP: "icon_heightmap.svg",
-	ConceptGraphDataType.MATERIAL: "icon_material.svg",
-	ConceptGraphDataType.MESH_3D: "icon_mesh.svg",
-	ConceptGraphDataType.NODE_2D: "icon_node_2d.svg",
-	ConceptGraphDataType.NODE_3D: "icon_node_3d.svg",
-	ConceptGraphDataType.NOISE: "icon_noise.svg",
-	ConceptGraphDataType.SCALAR: "icon_float.svg",
-	ConceptGraphDataType.STRING: "icon_string.svg",
-	ConceptGraphDataType.TEXTURE_2D: "icon_texture.svg",
-	ConceptGraphDataType.VECTOR2: "icon_vector2.svg",
-	ConceptGraphDataType.VECTOR3: "icon_vector3.svg",
-	ConceptGraphDataType.VECTOR_CURVE_3D: "icon_vector_curve.svg",
+	DataType.ANY: "icon_any.svg",
+	DataType.BOOLEAN: "icon_bool.svg",
+	DataType.BOX_3D: "icon_selector_box.svg",
+	DataType.CURVE_2D: "icon_bezier.svg",
+	DataType.CURVE_3D: "icon_bezier.svg",
+	DataType.CURVE_FUNC: "icon_func_curve.svg",
+	DataType.HEIGHTMAP: "icon_heightmap.svg",
+	DataType.MATERIAL: "icon_material.svg",
+	DataType.MESH_3D: "icon_mesh.svg",
+	DataType.NODE_2D: "icon_node_2d.svg",
+	DataType.NODE_3D: "icon_node_3d.svg",
+	DataType.NOISE: "icon_noise.svg",
+	DataType.SCALAR: "icon_float.svg",
+	DataType.STRING: "icon_string.svg",
+	DataType.TEXTURE_2D: "icon_texture.svg",
+	DataType.VECTOR2: "icon_vector2.svg",
+	DataType.VECTOR3: "icon_vector3.svg",
+	DataType.VECTOR_CURVE_3D: "icon_vector_curve.svg",
 }
 
 """
@@ -49,7 +49,7 @@ func get_texture(path) -> Texture:
 		print(path, " is not a texture")
 		return null
 	
-	var scale = ConceptGraphEditorUtil.get_editor_scale() / 4.0
+	var scale = EditorUtil.get_editor_scale() / 4.0
 	if scale != 1.0:
 		var image: Image = texture.get_data()
 		image.resize(round(texture.get_width() * scale), round(texture.get_height() * scale))

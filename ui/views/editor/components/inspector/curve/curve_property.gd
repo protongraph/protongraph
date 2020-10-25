@@ -27,7 +27,7 @@ func init(name: String, curve: Curve) -> void:
 	_max = get_node(max_value)
 	_res = get_node(bake_resolution)
 	
-	var scale = ConceptGraphEditorUtil.get_editor_scale()
+	var scale = EditorUtil.get_editor_scale()
 	_min.rect_min_size.y *= scale
 	_max.rect_min_size.y *= scale
 	_res.rect_min_size.y *= scale

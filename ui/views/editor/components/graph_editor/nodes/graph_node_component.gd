@@ -24,9 +24,9 @@ func create(label_name: String, type: int, opts := {}):
 		icon.visible = false
 	
 	label.text = label_name
-	label.hint_tooltip = ConceptGraphDataType.get_type_name(type)
+	label.hint_tooltip = DataType.get_type_name(type)
 	icon.texture = TextureUtil.get_slot_icon(type)
-	icon.modulate = ConceptGraphDataType.COLORS[type]
+	icon.modulate = DataType.COLORS[type]
 	icon.mouse_filter = Control.MOUSE_FILTER_PASS
 	
 	size_flags_horizontal = SIZE_EXPAND_FILL

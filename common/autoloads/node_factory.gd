@@ -1,8 +1,8 @@
 extends Node
 
-"""
-This script parses the node folder to retrieve a list of all the available ConceptNodes
-"""
+
+# This script parses the node folder to retrieve a list of all the
+# available ConceptNodes.
 
 
 var _nodes: Dictionary
@@ -13,10 +13,10 @@ func _exit_tree() -> void:
 	clear()
 
 
-func get_list() -> Dictionary:
+func get_available_nodes() -> Array:
 	if not _nodes:
 		refresh_list()
-	return _nodes
+	return _nodes.values()
 
 
 func get_index_list() -> Dictionary:
@@ -30,7 +30,7 @@ func clear() -> void:
 		node.queue_free()
 
 
-func create_node(type: String) -> ConceptNode:
+func create(type: String) -> ConceptNode:
 	if not _node_search_index:
 		refresh_list()
 
@@ -44,12 +44,11 @@ func refresh_list() -> void:
 	_node_search_index = Dictionary()
 	clear()
 	_nodes = Dictionary()
-	_find_all_nodes("res://src/nodes/")
+	_find_all_nodes("res://nodes/")
 
 
-"""
-Recursively search all the scripts that inherits from ConceptNode and store them in the dictionnary
-"""
+# Recursively search all the scripts that inherits from ConceptNode and store
+# them in the dictionnary
 func _find_all_nodes(path) -> void:
 	var dir = Directory.new()
 	dir.open(path)
@@ -94,6 +93,8 @@ func _find_all_nodes(path) -> void:
 		if _nodes.has(id):
 			print("Warning: Node ", name, " has duplicate id ", full_path)
 		else:
+			node.name = id
 			_nodes[id] = node
 			_node_search_index[node.display_name] = id
+	
 	dir.list_dir_end()

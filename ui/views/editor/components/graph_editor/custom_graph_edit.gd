@@ -23,7 +23,7 @@ func _init() -> void:
 	undo_redo = GlobalUndoRedo.get_undo_redo()
 
 	_setup_gui()
-	ConceptGraphDataType.setup_valid_connection_types(self)
+	DataType.setup_valid_connection_types(self)
 
 	Signals.safe_connect(self, "connection_request", self, "_on_connection_request")
 	Signals.safe_connect(self, "disconnection_request", self, "_on_disconnection_request")
@@ -38,7 +38,7 @@ func _init() -> void:
 	_minimap.graph_edit = self
 	call_deferred("add_child", _minimap)
 	
-	var scale = ConceptGraphEditorUtil.get_editor_scale()
+	var scale = EditorUtil.get_editor_scale()
 	snap_distance *= scale
 	add_constant_override("port_grab_distance_vertical", 16 * scale)
 	add_constant_override("port_grab_distance_horizontal", 16 * scale)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://ui/views/editor/components/graph_editor/template_editor.gd" type="Script" id=1]
+[ext_resource path="res://core/template.gd" type="Script" id=1]
 [ext_resource path="res://ui/views/editor/components/inspector/inspector.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ui/views/editor/components/viewport/viewport.tscn" type="PackedScene" id=3]
 [ext_resource path="res://ui/views/editor/editor_view.gd" type="Script" id=4]
@@ -136,5 +136,6 @@ margin_bottom = 400.0
 [connection signal="pressed" from="VBoxContainer/ToolShelf/Save" to="." method="save_template"]
 [connection signal="pressed" from="VBoxContainer/ToolShelf/RunGeneration" to="." method="regenerate"]
 [connection signal="popup_request" from="VBoxContainer/HSplitContainer/HSplitContainer/TemplateEditor" to="." method="_show_node_dialog"]
+[connection signal="simulation_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/TemplateEditor" to="." method="_on_simulation_completed"]
 [connection signal="value_changed" from="VBoxContainer/HSplitContainer/Control/Inspector" to="." method="_on_inspector_value_changed"]
 [connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]
