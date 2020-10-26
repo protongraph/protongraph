@@ -34,12 +34,13 @@ shortcut = SubResource( 4 )
 [node name="GraphEditorView" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-viewport_container = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/Control/ViewportArea/ViewportContainer")
+viewport_container = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/Control/Viewport")
 template = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/TemplateEditor")
 add_node_dialog = NodePath("AddNodeDialog")
 inspector = NodePath("VBoxContainer/HSplitContainer/Control/Inspector")
@@ -84,6 +85,7 @@ animated_icon = ExtResource( 13 )
 margin_left = 36.0
 margin_right = 1366.0
 margin_bottom = 768.0
+mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/autohide = 0
@@ -95,6 +97,7 @@ __meta__ = {
 margin_right = 985.0
 margin_bottom = 768.0
 rect_clip_content = true
+mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
@@ -114,12 +117,13 @@ script = ExtResource( 1 )
 margin_top = 472.0
 margin_right = 985.0
 margin_bottom = 768.0
+mouse_filter = 2
 size_flags_vertical = 3
 __meta__ = {
 "_editor_description_": "Hack to make it possible to completely hide the viewport when dragging the hsplit all the way down."
 }
 
-[node name="ViewportArea" parent="VBoxContainer/HSplitContainer/HSplitContainer/Control" instance=ExtResource( 3 )]
+[node name="Viewport" parent="VBoxContainer/HSplitContainer/HSplitContainer/Control" instance=ExtResource( 3 )]
 
 [node name="Control" type="Control" parent="VBoxContainer/HSplitContainer"]
 margin_left = 1009.0

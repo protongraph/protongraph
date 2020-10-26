@@ -12,7 +12,7 @@ var _template: Template
 var _save_timer: Timer
 var _last_position: Vector2
 var _template_path: String
-var _viewport: ViewportContainer
+var _viewport: EditorViewport
 var _inspector: InspectorPanel
 var _saved := false
 var _updating_inspector := false
@@ -22,7 +22,6 @@ func _ready() -> void:
 	_template = get_node(template)
 	_node_dialog = get_node(add_node_dialog)
 	_viewport = get_node(viewport_container)
-	_viewport.rect_min_size = Vector2(256, 128)
 	_inspector = get_node(inspector)
 	_template.inspector = _inspector
 

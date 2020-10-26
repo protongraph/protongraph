@@ -1,4 +1,4 @@
-extends Viewport
+extends Spatial
 
 
 var _x_axis: MeshInstance
@@ -14,13 +14,6 @@ func _ready() -> void:
 
 	_y_axis.rotate_z(PI / 2.0)
 	_z_axis.rotate_y(PI / 2.0)
-
-
-func _input(event) -> void:
-	# Treat input events as unhandled input, otherwise _unhandled_input will never be called on
-	# objects in this viewport. Since object picking is handled in the unhandled_input by the engine
-	# this allows the runtime 3D gizmos to work.
-	unhandled_input(event)
 
 
 func _create_axis(color: Color) -> MeshInstance:

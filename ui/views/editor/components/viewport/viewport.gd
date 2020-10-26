@@ -1,33 +1,17 @@
-extends ViewportContainer
+extends Control
+class_name EditorViewport
 
 
 signal scene_updated
 
 
-export var input_root: NodePath
-export var output_root: NodePath
-export var camera_root: NodePath
-export var static_light: NodePath
-export var camera_light: NodePath
-export var legend: NodePath
-
-var _viewport: Viewport
-var _input_root: Spatial
-var _output_root: Spatial
-var _camera_root: Spatial
-var _camera_light: Light
-var _static_light: Light
-var _legend: Control
-
-
-func _ready() -> void:
-	_output_root = get_node(output_root)
-	_input_root = get_node(input_root)
-	_camera_root = get_node(camera_root)
-	_camera_light = get_node(camera_light)
-	_static_light = get_node(static_light)
-	_viewport = get_node("Viewport")
-	_legend = get_node(legend)
+onready var _viewport: Viewport = $MarginContainer/ViewportContainer/Viewport
+onready var _input_root: Spatial = $MarginContainer/ViewportContainer/Viewport/Input
+onready var _output_root: Spatial = $MarginContainer/ViewportContainer/Viewport/Output
+onready var _camera_root: Spatial = $MarginContainer/ViewportContainer/Viewport/Pivot
+onready var _camera_light: Light = $MarginContainer/ViewportContainer/Viewport/Pivot/Camera/DirectionalLight
+onready var _static_light: Light = $MarginContainer/ViewportContainer/Viewport/Lighting/DirectionalLight
+onready var _legend: Control = $MarginContainer/ViewportUI/HBoxContainer/LeftColumn/Legend
 
 
 func add_input_node(node: Spatial) -> void:

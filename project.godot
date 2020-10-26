@@ -124,6 +124,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/editor_view.gd"
 }, {
+"base": "Control",
+"class": "EditorViewport",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/viewport/viewport.gd"
+}, {
 "base": "Node",
 "class": "EventBus",
 "language": "GDScript",
@@ -343,6 +348,7 @@ _global_script_class_icons={
 "EditorSettingsView": "",
 "EditorUtil": "",
 "EditorView": "",
+"EditorViewport": "",
 "EventBus": "",
 "GenericExportNode": "",
 "GenericImportNode": "",
