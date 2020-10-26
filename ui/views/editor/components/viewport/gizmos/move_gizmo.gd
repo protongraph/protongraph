@@ -1,20 +1,6 @@
 extends BaseGizmo
 
 
-export var arrow_x: NodePath
-export var arrow_y: NodePath
-export var arrow_z: NodePath
-export var quad_x: NodePath
-export var quad_y: NodePath
-export var quad_z: NodePath
-
-var _ax: Area
-var _ay: Area
-var _az: Area
-var _qx: Area
-var _qy: Area
-var _qz: Area
-
 var _is_dragging := false
 var _selected_axis := -1
 var _selected_plane := -1
@@ -23,20 +9,18 @@ var _click_position
 var _initial_position
 var _camera
 
+onready var _ax: Area = $Arrows/ArrowX
+onready var _ay: Area = $Arrows/ArrowY
+onready var _az: Area = $Arrows/ArrowZ
+onready var _qx: Area = $Quads/X
+onready var _qy: Area = $Quads/Y
+onready var _qz: Area = $Quads/Z
+
 
 func _ready() -> void:
-	_ax = get_node(arrow_x)
-	_ay = get_node(arrow_y)
-	_az = get_node(arrow_z)
-
-	_qx = get_node(quad_x)
-	_qy = get_node(quad_y)
-	_qz = get_node(quad_z)
-
 	Signals.safe_connect(_ax, "input_event", self, "_on_input_event", [0])
 	Signals.safe_connect(_ay, "input_event", self, "_on_input_event", [1])
 	Signals.safe_connect(_az, "input_event", self, "_on_input_event", [2])
-
 	Signals.safe_connect(_qx, "input_event", self, "_on_input_event", [3])
 	Signals.safe_connect(_qy, "input_event", self, "_on_input_event", [4])
 	Signals.safe_connect(_qz, "input_event", self, "_on_input_event", [5])
@@ -74,6 +58,7 @@ func _clear_state() -> void:
 
 
 func _on_input_event(camera: Node, event: InputEvent, click_position: Vector3, _click_normal: Vector3, _shape_idx: int, handle_idx: int):
+	print("On input event")
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			_is_dragging = true

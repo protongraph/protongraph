@@ -17,7 +17,7 @@ func _ready():
 	_label.text = String(step)
 
 
-func _on_gui_input(event: InputEvent) -> void:
+func _on_gui_input(event) -> void:
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
 		_clicked = event.pressed
 		_acc = 0.0
@@ -27,7 +27,6 @@ func _on_gui_input(event: InputEvent) -> void:
 			emit_signal("edit_value_ended")
 
 	elif event is InputEventMouseMotion and _clicked:
-		event = event as InputEventMouseMotion
 		if sign(_acc) != sign(event.relative.x):
 			_acc = 0.0
 

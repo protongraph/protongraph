@@ -1,0 +1,475 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/WAT/assets/icon_add.png" type="Texture" id=1]
+[ext_resource path="res://addons/WAT/ui/results/ResultsForest.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/WAT/assets/play.svg" type="Texture" id=8]
+[ext_resource path="res://addons/WAT/assets/kofi.png" type="Texture" id=9]
+
+[sub_resource type="GDScript" id=1]
+script/source = "tool
+extends PanelContainer
+
+enum RESULTS { EXPAND_ALL, COLLAPSE_ALL, EXPAND_FAILURES }
+enum RUN { ALL, DIRECTORY, SCRIPT, TAGGED, METHOD, RERUN_FAILURES }
+const NOTHING_SELECTED: int = -1
+const filesystem = preload(\"res://addons/WAT/system/filesystem.gd\")
+const TestRunner: String = \"res://addons/WAT/core/test_runner/TestRunner.tscn\"
+onready var GUI: VBoxContainer = $GUI
+onready var Interact: HBoxContainer = $GUI/Interact
+onready var Summary: Label = $GUI/Summary
+onready var Results: TabContainer = $GUI/Results
+onready var Run: HBoxContainer = $GUI/Interact/Run
+onready var Select: HBoxContainer = $GUI/Interact/Select
+onready var ViewMenu: PopupMenu = $GUI/Interact/View.get_popup()
+onready var QuickStart: Button = $GUI/Interact/Run/QuickStart
+onready var Menu: PopupMenu = $GUI/Interact/Run/Menu.get_popup()
+onready var DirectorySelector: OptionButton = $GUI/Interact/Select/Directory
+onready var ScriptSelector: OptionButton = $GUI/Interact/Select/Script
+onready var TagSelector: OptionButton = $GUI/Interact/Select/Tag
+onready var Repeater: SpinBox = $GUI/Interact/Repeat
+onready var HiddenBorder: Separator = $GUI/HiddenBorder
+onready var MethodSelector: OptionButton = $GUI/Method
+onready var More: Button = $GUI/Interact/More
+var execute = preload(\"res://addons/WAT/core/test_runner/execute.gd\").new()
+
+func _on_view_pressed(id: int) -> void:
+	match id:
+		RESULTS.EXPAND_ALL:
+			Results.expand_all()
+		RESULTS.COLLAPSE_ALL:
+			Results.collapse_all()
+		RESULTS.EXPAND_FAILURES:
+			Results.expand_failures()
+
+func _ready() -> void:
+	set_process(false)
+	More.connect(\"pressed\", self, \"_show_more\")
+	_link($GUI/Links/Issue, \"https://github.com/CodeDarigan/WAT/issues/new\")
+	_link($GUI/Links/RequestDocs, \"https://github.com/CodeDarigan/WATDocs/issues/new\")
+	_link($GUI/Links/OnlineDocs, \"https://wat.readthedocs.io/en/latest/index.html\")
+	_link($GUI/Links/Support, \"https://www.ko-fi.com/alexanddraw\")
+	Menu.clear()
+	Menu.add_item(\"Run All Tests\")
+	Menu.add_item(\"Run Selected Directory\")
+	Menu.add_item(\"Run Selected Script\")
+	Menu.add_item(\"Run Tagged\")
+	Menu.add_item(\"Run Method\")
+	Menu.add_item(\"Rerun Failures\")
+	ViewMenu.clear()
+	ViewMenu.add_item(\"Expand All Results\")
+	ViewMenu.add_item(\"Collapse All Results\")
+	ViewMenu.add_item(\"Expand All Failures\")
+	QuickStart.connect(\"pressed\", self, \"_on_run_pressed\", [RUN.ALL])
+	Menu.connect(\"id_pressed\", self, \"_on_run_pressed\")
+	ViewMenu.connect(\"id_pressed\", $GUI/Results, \"_on_view_pressed\")
+	DirectorySelector.clear()
+	ScriptSelector.clear()
+	TagSelector.clear()
+	DirectorySelector.add_item(\"Select Directory\")
+	ScriptSelector.add_item(\"Select Script\")
+	TagSelector.add_item(\"Select Tag\")
+	DirectorySelector.connect(\"pressed\", self, \"_on_directory_selector_pressed\")
+	ScriptSelector.connect(\"pressed\", self, \"_on_script_selector_pressed\")
+	TagSelector.connect(\"pressed\", self, \"_on_tag_selector_pressed\")
+	MethodSelector.connect(\"pressed\", self, \"_on_method_selector_pressed\")
+	ScriptSelector.get_popup().hide()
+	TagSelector.get_popup().hide()
+	
+func _show_more() -> void:
+	MethodSelector.visible = not MethodSelector.visible
+	HiddenBorder.visible = MethodSelector.visible
+	
+func _on_method_selector_pressed() -> void:
+	MethodSelector.clear()
+	var path: String = ScriptSelector.get_item_text(ScriptSelector.selected)
+	if not path.ends_with(\".gd\"):
+		MethodSelector.add_item(\"Please Select A Script First\")
+		return
+	var script = load(path)
+	for method in script.get_script_method_list():
+		if method.name.begins_with(\"test\"):
+			MethodSelector.add_item(method.name)
+
+func _on_run_pressed(option: int) -> void:
+	set_process(true)
+	ProjectSettings.set(\"WAT/TestStrategy\", {})
+	ProjectSettings.save()
+	match option:
+		RUN.ALL:
+			var strat = strategy()
+			strat[\"strategy\"] = \"RunAll\"
+			strat[\"repeat\"] = Repeater.value as int
+			ProjectSettings.set(\"WAT/TestStrategy\", strat)
+			_run()
+		RUN.DIRECTORY:
+			var strat = strategy()
+			strat[\"strategy\"] = \"RunDirectory\"
+			strat[\"directory\"] = selected(DirectorySelector)
+			strat[\"repeat\"] = Repeater.value as int
+			ProjectSettings.set(\"WAT/TestStrategy\", strat)
+			_run()
+		RUN.SCRIPT:
+			var strat = strategy()
+			strat[\"strategy\"] = \"RunScript\"
+			strat[\"script\"] = selected(ScriptSelector)
+			strat[\"repeat\"] = Repeater.value as int
+			ProjectSettings.set(\"WAT/TestStrategy\", strat)
+			_run()
+		RUN.TAGGED:
+			var strat = strategy()
+			strat[\"strategy\"] = \"RunTag\"
+			strat[\"tag\"] = selected(TagSelector)
+			strat[\"repeat\"] = Repeater.value as int
+			ProjectSettings.set(\"WAT/TestStrategy\", strat)
+			_run()
+		RUN.METHOD:
+			var strat = strategy()
+			strat[\"strategy\"] = \"RunMethod\"
+			strat[\"script\"] = selected(ScriptSelector)
+			strat[\"method\"] = selected(MethodSelector)
+			strat[\"repeat\"] = Repeater.value as int
+			ProjectSettings.set(\"WAT/TestStrategy\", strat)
+			_run()
+		RUN.RERUN_FAILURES:
+			var strat = strategy()
+			strat[\"strategy\"] = \"RerunFailures\"
+			strat[\"repeat\"] = Repeater.value as int
+			ProjectSettings.set(\"WAT/TestStrategy\", strat)
+			_run()
+			
+func strategy() -> Dictionary:
+	return ProjectSettings.get_setting(\"WAT/TestStrategy\")
+
+func _run() -> void:
+	start_time()
+	Results.clear()
+	execute.run(TestRunner)
+	EditorPlugin.new().make_bottom_panel_item_visible(self)
+	
+func _process(delta):
+	if WAT.Results.exist():
+		var results = WAT.Results.withdraw()
+		summarize(results)
+		Results.display(results)
+		set_process(false)
+
+func selected(selector: OptionButton) -> String:
+	if selector.selected == NOTHING_SELECTED:
+		push_warning(\"Nothing Selected\")
+	return selector.get_item_text(selector.selected)
+
+func _on_directory_selector_pressed() -> void:
+	DirectorySelector.clear()
+	DirectorySelector.add_item(ProjectSettings.get_setting(\"WAT/Test_Directory\"))
+	for directory in filesystem.directories():
+		DirectorySelector.add_item(directory)
+		
+func _on_script_selector_pressed() -> void:
+	ScriptSelector.clear()
+	for script in filesystem.scripts():
+		if script.ends_with(\".gd\"):
+			if load(script).get(\"TEST\") != null:
+				ScriptSelector.add_item(script)
+			if load(script).get(\"IS_WAT_SUITE\"):
+				ScriptSelector.add_item(script)
+				
+func _on_tag_selector_pressed() -> void:
+	TagSelector.clear()
+	for tag in ProjectSettings.get_setting(\"WAT/Tags\"):
+		TagSelector.add_item(tag)
+
+func _link(button: Button, link: String):
+	button.connect(\"pressed\", OS, \"shell_open\", [link], CONNECT_DEFERRED)
+	
+func test_directory() -> String:
+	return ProjectSettings.get_setting(\"WAT/Test_Directory\")
+	
+func set_run_path(path: String) -> void:
+	ProjectSettings.set(\"WAT/ActiveRunPath\", path)
+
+const SUMMARY: String = \\
+\"Time Taken: {t} | Ran {r} Tests | {p} Tests Passed | {f} Tests Failed | Ran Tests {e} Times\"
+
+var time: float = 0
+var passed: int = 0
+var failed: int = 0
+var total: int = 0
+var runcount: int = 0
+
+func start_time() -> void:
+	runcount += 1
+	time = OS.get_ticks_msec()
+
+func summarize(caselist: Array) -> void:
+	time = (OS.get_ticks_msec() - time) / 1000
+	passed = 0
+	failed = 0
+	total = 0
+	for case in caselist:
+		total += 1
+		if case.success:
+			passed += 1
+		else:
+			failed += 1
+	var summary = {t = time, r = total, p = passed, f = failed, e = runcount}
+	$GUI/Summary.text = SUMMARY.format(summary)
+"
+
+[node name="Tests" type="PanelContainer"]
+margin_right = 1024.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 0, 300 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GUI" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 593.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Interact" type="HBoxContainer" parent="GUI"]
+margin_right = 1010.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Run" type="HBoxContainer" parent="GUI/Interact"]
+margin_right = 76.0
+margin_bottom = 24.0
+
+[node name="QuickStart" type="Button" parent="GUI/Interact/Run"]
+margin_right = 28.0
+margin_bottom = 24.0
+hint_tooltip = "Run All Tests"
+icon = ExtResource( 8 )
+flat = true
+
+[node name="VSeparator" type="VSeparator" parent="GUI/Interact/Run"]
+margin_left = 32.0
+margin_right = 36.0
+margin_bottom = 24.0
+
+[node name="Menu" type="MenuButton" parent="GUI/Interact/Run"]
+margin_left = 40.0
+margin_right = 76.0
+margin_bottom = 24.0
+text = "Run"
+items = [ "Run All Tests", null, 0, false, false, 0, 0, null, "", false, "Run Selected Directory", null, 0, false, false, 1, 0, null, "", false, "Run Selected Script", null, 0, false, false, 2, 0, null, "", false, "Run Tagged", null, 0, false, false, 3, 0, null, "", false, "Run Method", null, 0, false, false, 4, 0, null, "", false, "Rerun Failures", null, 0, false, false, 5, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="View" type="MenuButton" parent="GUI/Interact"]
+margin_left = 86.0
+margin_right = 128.0
+margin_bottom = 24.0
+text = "View"
+items = [ "Expand All Results", null, 0, false, false, 0, 0, null, "", false, "Collapse All Results", null, 0, false, false, 1, 0, null, "", false, "Expand All Failures", null, 0, false, false, 2, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="VSeparator" type="VSeparator" parent="GUI/Interact"]
+margin_left = 138.0
+margin_right = 142.0
+margin_bottom = 24.0
+
+[node name="Select" type="HBoxContainer" parent="GUI/Interact"]
+margin_left = 152.0
+margin_right = 818.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Directory" type="OptionButton" parent="GUI/Interact/Select"]
+margin_right = 219.0
+margin_bottom = 24.0
+grow_horizontal = 0
+grow_vertical = 0
+hint_tooltip = "select a directory of tests to run"
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/hseparation = 20
+button_mask = 3
+text = "Select Directory"
+align = 1
+items = [ "Select Directory", null, false, 0, null ]
+selected = 0
+
+[node name="Script" type="OptionButton" parent="GUI/Interact/Select"]
+margin_left = 223.0
+margin_right = 442.0
+margin_bottom = 24.0
+hint_tooltip = "Select a single test script to run (your choices depend on which folder is selected)."
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Select Script"
+align = 1
+items = [ "Select Script", null, false, 0, null ]
+selected = 0
+__meta__ = {
+"_editor_description_": "select a test script to run"
+}
+
+[node name="Tag" type="OptionButton" parent="GUI/Interact/Select"]
+margin_left = 446.0
+margin_right = 666.0
+margin_bottom = 24.0
+hint_tooltip = "select a tag and then run all tests that have that tag"
+size_flags_horizontal = 3
+text = "Select Tag"
+align = 1
+items = [ "Select Tag", null, false, 0, null ]
+selected = 0
+
+[node name="VSeparator2" type="VSeparator" parent="GUI/Interact"]
+margin_left = 828.0
+margin_right = 832.0
+margin_bottom = 24.0
+
+[node name="Repeat" type="SpinBox" parent="GUI/Interact"]
+margin_left = 842.0
+margin_right = 972.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 130, 0 )
+size_flags_horizontal = 0
+max_value = 10.0
+value = 1.0
+allow_greater = true
+allow_lesser = true
+prefix = "Repeat"
+suffix = "Times"
+
+[node name="More" type="Button" parent="GUI/Interact"]
+margin_left = 982.0
+margin_right = 1010.0
+margin_bottom = 24.0
+icon = ExtResource( 1 )
+flat = true
+
+[node name="HiddenBorder" type="HSeparator" parent="GUI"]
+visible = false
+margin_top = 28.0
+margin_right = 1010.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 0, 10 )
+size_flags_horizontal = 3
+
+[node name="Method" type="OptionButton" parent="GUI"]
+visible = false
+margin_top = 28.0
+margin_right = 1010.0
+margin_bottom = 48.0
+text = "Run Test Method"
+align = 1
+
+[node name="Results" parent="GUI" instance=ExtResource( 2 )]
+margin_top = 28.0
+margin_bottom = 518.0
+
+[node name="Summary" type="Label" parent="GUI"]
+margin_top = 522.0
+margin_right = 1010.0
+margin_bottom = 536.0
+size_flags_vertical = 1
+text = "Time Taken: 0.00 | Ran 0 Tests | 0 Tests Passed | 0 Tests Failed | Ran Tests 0 Times"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopSeperator" type="HSeparator" parent="GUI"]
+margin_top = 540.0
+margin_right = 1010.0
+margin_bottom = 544.0
+size_flags_horizontal = 3
+
+[node name="Links" type="HBoxContainer" parent="GUI"]
+margin_top = 548.0
+margin_right = 1010.0
+margin_bottom = 578.0
+rect_min_size = Vector2( 0, 30 )
+size_flags_horizontal = 3
+custom_constants/separation = 0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Support" type="Button" parent="GUI/Links"]
+margin_right = 249.0
+margin_bottom = 30.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 30, 30 )
+hint_tooltip = "Support WAT on Kofi"
+focus_mode = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+enabled_focus_mode = 1
+text = "  Support WAT   "
+icon = ExtResource( 9 )
+flat = true
+expand_icon = true
+
+[node name="VSeparator" type="VSeparator" parent="GUI/Links"]
+margin_left = 249.0
+margin_right = 253.0
+margin_bottom = 30.0
+
+[node name="Issue" type="Button" parent="GUI/Links"]
+margin_left = 253.0
+margin_right = 502.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+shortcut_in_tooltip = false
+action_mode = 0
+text = "Report An Issue"
+flat = true
+
+[node name="VSeparator2" type="VSeparator" parent="GUI/Links"]
+margin_left = 502.0
+margin_right = 506.0
+margin_bottom = 30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RequestDocs" type="Button" parent="GUI/Links"]
+margin_left = 506.0
+margin_right = 755.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+text = "Request Docs"
+flat = true
+
+[node name="VSeparator3" type="VSeparator" parent="GUI/Links"]
+margin_left = 755.0
+margin_right = 759.0
+margin_bottom = 30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OnlineDocs" type="Button" parent="GUI/Links"]
+margin_left = 759.0
+margin_right = 1010.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Online Docs"
+flat = true
+
+[node name="BottomSeperator" type="HSeparator" parent="GUI"]
+margin_top = 582.0
+margin_right = 1010.0
+margin_bottom = 586.0

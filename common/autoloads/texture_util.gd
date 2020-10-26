@@ -1,8 +1,8 @@
 extends Node
 
 
-var cache := {}
-var table := {
+var _cache := {}
+var _table := {
 	DataType.ANY: "icon_any.svg",
 	DataType.BOOLEAN: "icon_bool.svg",
 	DataType.BOX_3D: "icon_selector_box.svg",
@@ -23,26 +23,23 @@ var table := {
 	DataType.VECTOR_CURVE_3D: "icon_vector_curve.svg",
 }
 
-"""
-
-"""
-
-var empty_texture: ImageTexture
+var _empty_texture: ImageTexture
+var _square_textures := {}
 
 
-func get_slot_icon(type: int, multi := false) -> Texture:
+func get_slot_icon(type: int) -> Texture:
 	var path = "res://ui/icons/icon_graph.svg" # Default icon
 	var root = "res://ui/icons/data_types/"
 
-	if table.has(type):
-		path = root + table[type]
+	if _table.has(type):
+		path = root + _table[type]
 	
 	return get_texture(path)
 
 
 func get_texture(path) -> Texture:
-	if cache.has(path):
-		return cache[path]
+	if _cache.has(path):
+		return _cache[path]
 	
 	var texture = load(path)
 	if not texture is Texture:
@@ -52,28 +49,31 @@ func get_texture(path) -> Texture:
 	var scale = EditorUtil.get_editor_scale() / 4.0
 	if scale != 1.0:
 		var image: Image = texture.get_data()
-		image.resize(round(texture.get_width() * scale), round(texture.get_height() * scale))
+		image.resize(int(texture.get_width() * scale), int(texture.get_height() * scale))
 		texture = ImageTexture.new()
 		texture.create_from_image(image)
 		
-	cache[path] = texture
+	_cache[path] = texture
 	return texture
 
 
-"""
-Returns a square texture or a given color. Used in GraphNodes that accept multiple connections
-on the same slot.
-"""
-static func get_square_texture(color: Color) -> ImageTexture:
+# Returns a square texture or a given color. Used in the 'Add node panel' to
+# display a colored square next to each node based on their category.
+func get_square_texture(color: Color) -> ImageTexture:
+	if _square_textures.has(color):
+		return _square_textures[color]
+	
+	var d = 10 * EditorUtil.get_editor_scale()
 	var image = Image.new()
-	image.create(0, 10, false, Image.FORMAT_RGBA8)
+	image.create(d, d, false, Image.FORMAT_RGBA8)
 	image.fill(color)
 
-	var imageTexture = ImageTexture.new()
-	imageTexture.create_from_image(image)
-	imageTexture.resource_name = "square " + String(color.to_rgba32())
+	var image_texture = ImageTexture.new()
+	image_texture.create_from_image(image)
+	image_texture.resource_name = "square " + String(color.to_rgba32())
+	_square_textures[color] = image_texture
 
-	return imageTexture
+	return image_texture
 
 
 func get_input_texture(multi) -> Texture:
@@ -87,16 +87,14 @@ func get_output_texture() -> Texture:
 	return get_texture("res://ui/icons/output_slot.svg")
 
 
-"""
-Returns a 0x0 texture. Used by the ConceptNode class to hide the slots.
-"""
+# Returns a 0x0 texture. Used by the ConceptNode class to hide the slots.
 func get_empty_texture() -> ImageTexture:
-	if not empty_texture:
+	if not _empty_texture:
 		var image = Image.new()
 		image.create(0, 0, false, Image.FORMAT_RGBA8)
 		
-		empty_texture = ImageTexture.new()
-		empty_texture.create_from_image(image)
-		empty_texture.resource_name = "cg_empty_texture"
+		_empty_texture = ImageTexture.new()
+		_empty_texture.create_from_image(image)
+		_empty_texture.resource_name = "cg_empty_texture"
 	
-	return empty_texture
+	return _empty_texture

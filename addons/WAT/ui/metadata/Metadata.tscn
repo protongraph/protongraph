@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/WAT/ui/metadata/metadata.gd" type="Script" id=1]
+[ext_resource path="res://addons/WAT/assets/down.png" type="Texture" id=2]
+[ext_resource path="res://addons/WAT/assets/replace.png" type="Texture" id=3]
+
+[node name="Main" type="VBoxContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 83.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Data" type="HBoxContainer" parent="."]
+margin_right = 1010.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Data"]
+margin_right = 978.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Test Metadata"
+align = 1
+
+[node name="ClearAll" type="Button" parent="Data"]
+margin_left = 982.0
+margin_right = 1010.0
+margin_bottom = 22.0
+icon = ExtResource( 3 )
+
+[node name="HSeparator" type="HSeparator" parent="."]
+margin_top = 22.0
+margin_right = 1010.0
+margin_bottom = 38.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_vertical = 3
+
+[node name="TagList" type="VBoxContainer" parent="."]
+margin_top = 38.0
+margin_right = 1010.0
+margin_bottom = 54.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="Tags" type="HBoxContainer" parent="."]
+margin_top = 54.0
+margin_right = 1010.0
+margin_bottom = 76.0
+
+[node name="Select" type="MenuButton" parent="Tags"]
+margin_right = 978.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Add New Tag"
+switch_on_hover = true
+
+[node name="TextureRect" type="Button" parent="Tags"]
+margin_left = 982.0
+margin_right = 1010.0
+margin_bottom = 22.0
+size_flags_vertical = 3
+icon = ExtResource( 2 )
+flat = true

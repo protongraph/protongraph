@@ -103,7 +103,9 @@ func _load_template(path: String) -> void:
 
 
 func _save_template_as(path: String) -> void:
-	pass
+	var view = get_current_tab_content()
+	if view is EditorView:
+		view.save_template_as(path)
 
 
 func _is_view_opened(type: GDScript) -> bool:

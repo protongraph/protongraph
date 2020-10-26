@@ -20,3 +20,6 @@ func _input(_event: InputEvent) -> void:
 		undo_redo.redo()
 	elif Input.is_action_just_released("undo"):
 		undo_redo.undo()
+
+
+# warning-ignore-all:return_value_discarded

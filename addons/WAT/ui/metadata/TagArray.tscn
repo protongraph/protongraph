@@ -1,0 +1,33 @@
+[gd_scene format=2]
+
+[node name="TagArray" type="VBoxContainer"]
+margin_top = 38.0
+margin_right = 1010.0
+margin_bottom = 58.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Element" type="HBoxContainer" parent="."]
+margin_right = 1010.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Position" type="Label" parent="Element"]
+margin_right = 503.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "0"
+align = 1
+
+[node name="SelectTag" type="MenuButton" parent="Element"]
+margin_left = 507.0
+margin_right = 1010.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Select Tag"

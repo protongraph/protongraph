@@ -11,7 +11,7 @@ var _count := 2
 func create(label_name: String, type: int, opts := {}) -> void:
 	.create(label_name, type, opts)
 
-	var _col = VBoxContainer.new()
+	_col = VBoxContainer.new()
 	add_child(_col)
 	
 	_label_box = HBoxContainer.new()
@@ -49,13 +49,13 @@ func create(label_name: String, type: int, opts := {}) -> void:
 		_vector_box.add_child(s)
 
 		if inline:
-			s.style = 3
+			s.set_style(3)
 		elif i == 0:
-			s.style = 0
+			s.set_style(0)
 		elif i == item_indexes.size() - 1:
-			s.style = 2
+			s.set_style(2)
 		else:
-			s.style = 1
+			s.set_style(1)
 
 	var separator = VSeparator.new()
 	separator.modulate = Color(0, 0, 0, 0)
@@ -70,7 +70,8 @@ func get_value():
 		res = Vector3.ZERO
 
 	for i in _count:
-		res[i] = _vector_box.get_child(i).value
+		var spinbox: CustomSpinBox = _vector_box.get_child(i)
+		res[i] = spinbox.value
 	return res
 
 
@@ -86,7 +87,8 @@ func set_value(value) -> void:
 		vector = value.split(',')
 
 	for i in _count:
-		_vector_box.get_child(i).value = float(vector[i])
+		var spinbox = _vector_box.get_child(i)
+		spinbox.value = float(vector[i])
 
 
 func notify_connection_changed(connected: bool) -> void:

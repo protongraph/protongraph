@@ -115,19 +115,13 @@ script = ExtResource( 14 )
 
 [node name="GizmosManager" type="Spatial" parent="MarginContainer/ViewportContainer/Viewport"]
 script = ExtResource( 13 )
-camera_node = NodePath("../../../MarginContainer/ViewportContainer/Viewport/Pivot/Camera")
-viewport_node = NodePath("../../../MarginContainer/ViewportContainer/Viewport")
-input_root = NodePath("../../../MarginContainer/ViewportContainer/Viewport/Input")
-output_root = NodePath("../../../MarginContainer/ViewportContainer/Viewport/Output")
+camera_node = NodePath("../Pivot/Camera")
+viewport_node = NodePath("..")
+input_root = NodePath("../Input")
+output_root = NodePath("../Output")
 
 [node name="MoveGizmo" parent="MarginContainer/ViewportContainer/Viewport/GizmosManager" instance=ExtResource( 12 )]
 visible = false
-arrow_x = NodePath("../../../../MarginContainer/ViewportContainer/Viewport/GizmosManager/MoveGizmo/Arrows/ArrowX")
-arrow_y = NodePath("../../../../MarginContainer/ViewportContainer/Viewport/GizmosManager/MoveGizmo/Arrows/ArrowY")
-arrow_z = NodePath("../../../../MarginContainer/ViewportContainer/Viewport/GizmosManager/MoveGizmo/Arrows/ArrowZ")
-quad_x = NodePath("../../../../MarginContainer/ViewportContainer/Viewport/GizmosManager/MoveGizmo/Quads/X")
-quad_y = NodePath("../../../../MarginContainer/ViewportContainer/Viewport/GizmosManager/MoveGizmo/Quads/Y")
-quad_z = NodePath("../../../../MarginContainer/ViewportContainer/Viewport/GizmosManager/MoveGizmo/Quads/Z")
 
 [node name="ViewportUI" type="MarginContainer" parent="MarginContainer"]
 margin_right = 964.0
@@ -220,7 +214,7 @@ alignment = 2
 [connection signal="node_removed" from="MarginContainer/ViewportContainer/Viewport/Input" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_removed"]
 [connection signal="node_added" from="MarginContainer/ViewportContainer/Viewport/Output" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_added"]
 [connection signal="node_removed" from="MarginContainer/ViewportContainer/Viewport/Output" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_removed"]
-[connection signal="toggled" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/Legend" to="MarginContainer/ViewportContainer" method="display_legend"]
+[connection signal="toggled" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/Legend" to="." method="display_legend"]
 [connection signal="pressed" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/ResetCamera" to="MarginContainer/ViewportContainer/Viewport/Pivot" method="reset_camera"]
-[connection signal="pressed" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/LightSetup1" to="MarginContainer/ViewportContainer" method="enable_camera_light"]
-[connection signal="pressed" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/LightSetup2" to="MarginContainer/ViewportContainer" method="enable_static_light"]
+[connection signal="pressed" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/LightSetup1" to="." method="enable_camera_light"]
+[connection signal="pressed" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/LightSetup2" to="." method="enable_static_light"]

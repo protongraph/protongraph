@@ -57,7 +57,7 @@ func save_template_as(path: String) -> void:
 	save_template()
 
 
-func get_input(name) -> Node:
+func get_input(_name) -> Node:
 	return null
 
 

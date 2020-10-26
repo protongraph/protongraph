@@ -4,10 +4,6 @@ class_name CustomSpinBox
 
 export var spinbox_name: String
 export var enforce_step: bool
-export var decrease_button: NodePath
-export var increase_button: NodePath
-export var name_label: NodePath
-export var value_edit: NodePath
 export(int, "Top", "Middle", "Bottom", "Single") var style = 3 setget set_style
 
 var _undo_redo: UndoRedo
@@ -42,8 +38,6 @@ func _ready() -> void:
 	Signals.safe_connect(_decrease_button, "pressed", self, "_on_button_pressed", [false])
 	
 	# Listen to the line_edit changes to sync the progress bar value
-	_name_label = get_node(name_label)
-	_line_edit = get_node(value_edit)
 	Signals.safe_connect(_line_edit, "text_entered", self, "_on_line_edit_changed")
 	Signals.safe_connect(_line_edit, "focus_exited", self, "_on_line_edit_changed")
 	Signals.safe_connect(self, "value_changed", self, "_update_line_edit_value")

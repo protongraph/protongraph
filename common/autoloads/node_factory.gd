@@ -88,7 +88,10 @@ func _find_all_nodes(path) -> void:
 
 		# If the interface is defined in a separate file, load it instead
 		if node.has_custom_gui():
-			node = load(path_root + file.replace(".gd", ".tscn")).instance()
+			var scene = load(path_root + file.replace(".gd", ".tscn"))
+			if not scene is PackedScene:
+				continue # Scene file does not exists
+			node = scene.instance()
 
 		if _nodes.has(id):
 			print("Warning: Node ", name, " has duplicate id ", full_path)

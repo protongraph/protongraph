@@ -63,8 +63,8 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 	else:
 		folder_collapsed = false
 
-	for cat in categories:
-		_get_or_create_category(cat, folder_collapsed)
+	#for cat in categories:
+	#	_get_or_create_category(cat, folder_collapsed)
 
 	for node in nodes:
 		if _filter_node(node):
@@ -74,7 +74,7 @@ func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
 			item.set_tooltip(0, node.description)
 			item.set_metadata(0, node.unique_id)
 			var color = DataType.to_category_color(node.category)
-			item.set_icon(0, EditorUtil.get_square_texture(color))
+			item.set_icon(0, TextureUtil.get_square_texture(color))
 	
 	# Select the first result if the user searched a node
 	if _search_text:

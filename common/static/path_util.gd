@@ -8,8 +8,6 @@ static func get_relative_path(absolute_path: String, origin: String) -> String:
 	var t1: Array = absolute_path.split("/")
 	var t2: Array = origin.split("/")
 
-	var steps: int = min(t1.size(), t2.size())
-
 	while t1[0] == t2[0]:
 		t1.remove(0)
 		t2.remove(0)

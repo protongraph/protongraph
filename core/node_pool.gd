@@ -48,7 +48,7 @@ the node type when calling this method.
 var node = pool.get_or_create(Position3D) # Or any other type
 pool.release_node(Position3D, node)
 """
-func release_node(type: GDScriptNativeClass, node: Node) -> void:
+func release_node(type: GDScriptNativeClass, node) -> void:
 	# TODO find a way to convert Node to GDScriptNativeClass or use something else to use as a key
 	if not _pools.has(type):
 		node.queue_free()

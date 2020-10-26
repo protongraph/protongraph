@@ -45,9 +45,9 @@ func set_value(_val) -> void:
 	pass
 
 
-func notify_connection_changed(connected: bool) -> void:
+func notify_connection_changed(_connected: bool) -> void:
 	pass
 
 
-func _on_value_changed(value: float) -> void:
+func _on_value_changed(value) -> void:
 	emit_signal("value_changed", value)

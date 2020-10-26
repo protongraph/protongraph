@@ -74,6 +74,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/viewport/gizmos/curve_gizmo.gd"
 }, {
+"base": "Control",
+"class": "CurvePanel",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/inspector/curve/curve_panel.gd"
+}, {
 "base": "Reference",
 "class": "CurveUtil",
 "language": "GDScript",
@@ -319,6 +324,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/root/components/view_container.gd"
 }, {
+"base": "Reference",
+"class": "WAT",
+"language": "GDScript",
+"path": "res://addons/WAT/namespace.gd"
+}, {
+"base": "",
+"class": "WATTest",
+"language": "GDScript",
+"path": "res://addons/WAT/core/test/test.gd"
+}, {
 "base": "PanelContainer",
 "class": "WelcomeView",
 "language": "GDScript",
@@ -338,6 +353,7 @@ _global_script_class_icons={
 "ConfirmDialog": "",
 "Constants": "",
 "CurveGizmo": "",
+"CurvePanel": "",
 "CurveUtil": "",
 "CustomGraphEdit": "",
 "CustomSpinBox": "",
@@ -387,8 +403,22 @@ _global_script_class_icons={
 "VectorComponent": "",
 "VectorUtil": "",
 "ViewContainer": "",
+"WAT": "",
+"WATTest": "",
 "WelcomeView": ""
 }
+
+[WAT]
+
+Test_Directory="res://tests"
+Results_Directory="res://tests/results/WAT"
+Minimize_Window_When_Running_Tests=false
+TestStrategy={
+"repeat": 1,
+"strategy": "RunAll"
+}
+Tags=PoolStringArray(  )
+Display=8
 
 [application]
 
@@ -423,6 +453,10 @@ gdscript/warnings/unsafe_call_argument=true
 
 window/size/width=1366
 window/size/height=768
+
+[editor_plugins]
+
+enabled=PoolStringArray( "WAT" )
 
 [gui]
 

@@ -13,6 +13,7 @@ var _viewport: Viewport
 var _container: ViewportContainer
 var _captured := false
 var _captured_from_outside := false
+var _margin := 5 # Margin in pixels. Warp the mouse before it actually leaves.
 
 
 func _ready() -> void:
@@ -31,10 +32,7 @@ func _process(delta: float) -> void:
 """
 Handles the zoom, panning and orbiting in the viewport.
 """
-func _unhandled_input(event: InputEvent) -> void:
-	if not _is_visible_in_tree():
-		return # Another tab is opened
-
+func _unhandled_input(event) -> void:
 	if not event is InputEventMouse:
 		return # Not a mouse event
 
@@ -43,42 +41,31 @@ func _unhandled_input(event: InputEvent) -> void:
 	var shift = Input.is_key_pressed(KEY_SHIFT)
 	var middle = Input.is_mouse_button_pressed(BUTTON_MIDDLE)
 
-	# If another part of the UI (like the graph node) starts panning and the mouse gets over
-	# the viewport, we ignore that
-	if not _captured and not _captured_from_outside and middle:
-		if _is_in_viewport(event.position):
-			_captured = true
-		else:
-			_captured_from_outside = true
-
-	# If the user release the middle button, that means nothing is currently capturing the mouse
-	if not middle:
-		_captured = false
-		_captured_from_outside = false
-
-	# For when the user moves over the viewport but started pressing the middle button somewhere else
-	if _captured_from_outside:
-		return
+	# If another part of the UI (like the graph node) starts panning and the
+	# mouse gets over the viewport, we ignore that
+	_captured = middle
 
 	if _captured: # Handle mouse wrapping if the mouse leaves the viewport
 		var new_pos: Vector2 = event.position
-		if event.position.x < 0:
-			new_pos.x = vx
 
-		if event.position.x > vx:
-			new_pos.x = 0
 
-		if event.position.y < 0:
-			new_pos.y = vy
+		if event.position.x < 0 + _margin:
+			new_pos.x = vx - _margin
 
-		if event.position.y > vy:
-			new_pos.y = 0
+		if event.position.x > vx - _margin:
+			new_pos.x = 0 + _margin
+
+		if event.position.y < 0 + _margin:
+			new_pos.y = vy - _margin
+
+		if event.position.y > vy - _margin:
+			new_pos.y = 0 + _margin
 
 		if new_pos != event.position:
 			_viewport.warp_mouse(new_pos + _container.get_global_transform().origin)
 
 	# Handle zoom input when user scrolls up or down
-	if event is InputEventMouseButton and _is_in_viewport(event.position):
+	if event is InputEventMouseButton:
 		var dist = _camera.transform.origin.z
 		if event.button_index == BUTTON_WHEEL_UP:
 			_camera.transform.origin.z -= 0.2 * zoom_speed * dist
@@ -90,10 +77,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# Handle panning and orbiting
 	elif event is InputEventMouseMotion:
-		if abs(event.relative.x) > vx:
-			event.relative.x += vx * sign(-event.relative.x)
-		if abs(event.relative.y) > vy:
-			event.relative.y += vy * sign(-event.relative.y)
+		# If the mouse cursor was just warped, ignore this event.
+		if abs(event.relative.x) > vx - (_margin * 2):
+			return
+		if abs(event.relative.y) > vy - (_margin * 2):
+			return
 
 		if shift and middle:
 			_pan_motion = event.relative
@@ -129,20 +117,3 @@ func _orbit_camera(delta: float) -> void:
 		rotation.x = -PI/2
 	if rotation.x > PI/2:
 		rotation.x = PI/2
-
-
-func _is_in_viewport(vec: Vector2) -> bool:
-	return vec.x >= 0 and vec.x < _viewport.size.x and vec.y >= 0 and vec.y < _viewport.size.y
-
-
-# Custom is_visible_on_tree because the built in one doesn't work if a spatial is parented
-# to a viewport or something else that's not a spatial.
-func _is_visible_in_tree() -> bool:
-	var s = self
-	while s:
-		var v = s.get("visible")
-		if v != null and v == false:
-			return false
-		s = s.get_parent()
-
-	return true

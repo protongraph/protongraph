@@ -12,7 +12,7 @@ export var bake_resolution: NodePath
 
 
 var _curve: Curve
-var _curve_panel: Control
+var _curve_panel: CurvePanel
 var _label: Label
 var _min: CustomSpinBox
 var _max: CustomSpinBox
@@ -69,9 +69,8 @@ func get_value(storage := false):
 	if not storage:
 		return _curve
 
+	# We can't store the curve object in the save file so we turn it in a json first
 	return _curve_panel.get_curve_data()
-	# We can't store the curve object in the save file so we turn in in a json first
-
 
 
 func _on_curve_updated() -> void:
@@ -92,5 +91,5 @@ func _on_parameter_changed(value: float, parameter: String) -> void:
 
 	_curve.set_min_value(_min.value)
 	_curve.set_max_value(_max.value)
-	_curve.set_bake_resolution(_res.value)
+	_curve.set_bake_resolution(int(_res.value))
 	_curve_panel.update()

@@ -63,7 +63,8 @@ func _run_task(arg) -> void:
 	var function = arg[1]
 	var thread = arg[2]
 	node.call(function)
-	call_deferred("emit_signal", "task_completed", thread)
+	yield(self, "idle_frame")
+	emit_signal("task_completed", thread)
 
 
 """

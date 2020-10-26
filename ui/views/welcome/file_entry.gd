@@ -6,10 +6,14 @@ var _path
 onready var _label_name: Label = $MarginContainer/VBoxContainer/HBoxContainer/Name
 onready var _label_path: Label = $MarginContainer/VBoxContainer/Path
 onready var _close_button: Button = $MarginContainer/VBoxContainer/HBoxContainer/CloseButton
+onready var _margin_container: MarginContainer = $MarginContainer
 
 
 func _ready():
-	rect_min_size.y = get_child(0).rect_size.y
+	# Workaround because button isn't a container so it doesn't scale to fit
+	# its children automatically.
+	rect_min_size.y = _margin_container.rect_size.y
+	
 	Signals.safe_connect(_close_button, "mouse_entered", self, "_on_mouse_entered")
 	Signals.safe_connect(self, "mouse_entered", self, "_on_mouse_entered")
 	Signals.safe_connect(self, "mouse_exited", self, "_on_mouse_exited")

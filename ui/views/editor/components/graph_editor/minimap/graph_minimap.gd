@@ -56,12 +56,11 @@ func _ready() -> void:
 	update()
 
 
-func _gui_input(event : InputEvent) -> void:
+func _gui_input(event) -> void:
 	if (event is InputEventMouseButton && event.button_index == BUTTON_LEFT):
 		if (event.is_pressed()):
 			_is_pressing = true
-			var mouse_event = (event as InputEventMouseButton)
-			var click_location = _convert_to_graph_position(mouse_event.position - _map_padding) - _graph_padding
+			var click_location = _convert_to_graph_position(event.position - _map_padding) - _graph_padding
 
 			if (graph_edit):
 				var scroll_offset = get_scroll_offset()
@@ -71,8 +70,7 @@ func _gui_input(event : InputEvent) -> void:
 
 		accept_event()
 	elif (event is InputEventMouseMotion && _is_pressing):
-		var mouse_event = (event as InputEventMouseMotion)
-		var click_location = _convert_to_graph_position(mouse_event.position - _map_padding) - _graph_padding
+		var click_location = _convert_to_graph_position(event.position - _map_padding) - _graph_padding
 
 		if (graph_edit):
 			var scroll_offset = get_scroll_offset()
@@ -197,7 +195,7 @@ func _update_node_references() -> void:
 	if !(parent_node is GraphEdit):
 		return
 
-	graph_edit = (parent_node as GraphEdit)
+	graph_edit = parent_node
 	var top_layer = NodeUtil.get_child_by_class(graph_edit, "GraphEditFilter")
 	graph_hscroll = NodeUtil.get_child_by_class(top_layer, "HScrollBar")
 	graph_vscroll = NodeUtil.get_child_by_class(top_layer, "VScrollBar")

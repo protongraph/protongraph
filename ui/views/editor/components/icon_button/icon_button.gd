@@ -19,7 +19,7 @@ func _ready() -> void:
 
 	update_texture()
 
-	_button.connect("resized", self, "_on_button_resized")
+	Signals.safe_connect(_button, "resized", self, "_on_button_resized")
 
 
 func update_texture(texture: Texture = null) -> void:

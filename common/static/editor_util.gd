@@ -8,20 +8,6 @@ static func get_editor_scale() -> float:
 	return scale / 100.0
 
 
-# Returns a square texture or a given color. Used in GraphNodes that accept 
-# multiple connections on the same slot.
-static func get_square_texture(color: Color) -> ImageTexture:
-	var image = Image.new()
-	image.create(10, 10, false, Image.FORMAT_RGBA8)
-	image.fill(color)
-
-	var imageTexture = ImageTexture.new()
-	imageTexture.create_from_image(image)
-	imageTexture.resource_name = "square " + String(color.to_rgba32())
-
-	return imageTexture
-
-
 # >>>> ONLY CALL THIS ONCE <<<<
 static func scale_all_ui_resources() -> void:
 	_scale_fonts()
@@ -36,7 +22,9 @@ static func get_scaled_theme(theme: Theme) -> Theme:
 
 	var res: Theme = theme.duplicate(true)
 
-	res.default_font.size *= scale
+	if res.default_font is DynamicFont:
+		# warning-ignore:unsafe_property_access
+		res.default_font.size *= scale
 
 	for font_name in res.get_font_list("EditorFonts"):
 		var font = res.get_font(font_name, "EditorFonts")

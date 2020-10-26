@@ -5,9 +5,6 @@
 [ext_resource path="res://ui/views/editor/components/viewport/gizmos/material_green.tres" type="Material" id=3]
 [ext_resource path="res://ui/views/editor/components/viewport/gizmos/move_gizmo.gd" type="Script" id=4]
 
-
-
-
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1, 0.02, 0.02 )
 
@@ -29,12 +26,6 @@ extents = Vector3( 0.2, 0.2, 0.01 )
 
 [node name="MoveGizmo" type="Spatial"]
 script = ExtResource( 4 )
-arrow_x = NodePath("Arrows/ArrowX")
-arrow_y = NodePath("Arrows/ArrowY")
-arrow_z = NodePath("Arrows/ArrowZ")
-quad_x = NodePath("Quads/X")
-quad_y = NodePath("Quads/Y")
-quad_z = NodePath("Quads/Z")
 
 [node name="Lines" type="Spatial" parent="."]
 

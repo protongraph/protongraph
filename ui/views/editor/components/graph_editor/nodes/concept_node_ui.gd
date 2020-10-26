@@ -12,7 +12,6 @@ signal connection_changed
 # style only. Useful if the graphnode has UI controls like OptionButtons that
 # can't be generated properly under a spatial node.
 var requires_full_gui_rebuild := false
-var inline_vectors := false
 var minimap_color: Color
 var template_path: String # Sometimes needed to get relative paths.
 
@@ -23,7 +22,6 @@ var description: String
 var _spinbox
 var _hboxes := []
 var _resize_timer := Timer.new()
-var _file_dialog: FileDialog
 var _initialized := false	# True when all enter_tree initialization is done
 var _inputs := {}
 var _outputs := {}
@@ -169,6 +167,24 @@ get_property_list [ {name: , type: }, ... ]
 """
 func get_exposed_variables() -> Array:
 	return []
+
+
+func get_input_type(idx: int) -> int:
+	if is_input_connected(idx):
+		return get_connected_input_type(idx)
+	return get_local_input_type(idx)
+
+
+func get_local_input_type(idx: int) -> int:
+	if _inputs.has(idx):
+		return _inputs[idx]["type"]
+	return -1
+
+
+func get_output_type(idx: int) -> int:
+	if _outputs.has(idx):
+		return _outputs[idx]["type"]
+	return -1
 
 
 func is_valid() -> bool:
@@ -364,12 +380,11 @@ func _generate_default_gui_style() -> void:
 		add_stylebox_override("comment", style)
 		add_stylebox_override("commentfocus", selected_style)
 
-	add_constant_override("port_offset", 12 * scale)
-	var bold_font: Font = get_font("bold", "EditorFonts")
+	add_constant_override("port_offset", int(12 * scale))
 	add_font_override("title_font", get_font("bold", "EditorFonts"))
 	add_constant_override("separation", 2)
-	add_constant_override("title_offset", 21 * scale)
-	add_constant_override("close_offset", 21 * scale)
+	add_constant_override("title_offset", int(21 * scale))
+	add_constant_override("close_offset", int(21 * scale))
 
 
 # Generate a default UI based on the parameters found in _inputs and _outputs.
@@ -450,6 +465,8 @@ func _get_default_gui_value(idx: int, for_export := false):
 		return null
 	
 	var component: GraphNodeComponent = _hboxes[idx].get_node("Input")
+	if for_export:
+		return component.get_value_for_export()
 	return component.get_value()
 
 
@@ -536,13 +553,8 @@ func _on_connection_changed() -> void:
 	# the given slot
 	for i in _inputs.size():
 		var connected = is_input_connected(i)
-		var type = _inputs[i]["type"]
-		if _inputs[i].has("default_type"):
-			type = _inputs[i]["default_type"] # Mirroring is enabled
-		
 		var component = _hboxes[i].get_node("Input")
 		component.notify_connection_changed(connected)
-
 
 	_update_slots_types()
 	_redraw()

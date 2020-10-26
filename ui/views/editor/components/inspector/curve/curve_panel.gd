@@ -1,4 +1,5 @@
 extends Control
+class_name CurvePanel
 
 
 signal curve_updated
@@ -31,7 +32,7 @@ var _undo_data := {}
 func _ready() -> void:
 	rect_min_size.y *= EditorUtil.get_editor_scale()
 	update()
-	connect("resized", self, "_on_resized")
+	Signals.safe_connect(self, "resized", self, "_on_resized")
 
 
 func set_curve(c) -> void:
@@ -153,12 +154,7 @@ func add_point(pos: Vector2) -> void:
 	if not curve:
 		return
 
-	var ur = GlobalUndoRedo.get_undo_redo()
-
-	ur.create_action("Add Curve Point")
-
 	var point_pos = pos
-
 	if point_pos.y < 0.0:
 		point_pos.y = 0.0
 	elif point_pos.y > 1.0:
@@ -167,24 +163,29 @@ func add_point(pos: Vector2) -> void:
 	# Small trick to get the point index to feed the undo method
 	var i: int = curve.add_point(point_pos)
 	curve.remove_point(i)
-
+	
+	var ur = GlobalUndoRedo.get_undo_redo()
+	ur.create_action("Add Curve Point")
 	ur.add_do_method(curve, "add_point", point_pos)
 	ur.add_undo_method(curve, "remove_point", i)
-
 	ur.commit_action()
 	update()
+	
+	emit_signal("curve_updated")
 
 
 func remove_point(idx: int) -> void:
-	var ur = GlobalUndoRedo.get_undo_redo()
-	ur.create_action("Remove Curve Point")
-
+	if not curve:
+		return
+	
 	var pos = curve.get_point_position(idx)
 	var lt = curve.get_point_left_tangent(idx)
 	var rt = curve.get_point_right_tangent(idx)
 	var lm = curve.get_point_left_mode(idx)
 	var rm = curve.get_point_right_mode(idx)
-
+	
+	var ur = GlobalUndoRedo.get_undo_redo()
+	ur.create_action("Remove Curve Point")
 	ur.add_do_method(curve, "remove_point", idx)
 	ur.add_undo_method(curve, "add_point", pos, lt, rt, lm, rm)
 
@@ -196,6 +197,8 @@ func remove_point(idx: int) -> void:
 
 	ur.commit_action()
 	update()
+	
+	emit_signal("curve_updated")
 
 
 func get_point_at(pos: Vector2) -> int:
@@ -363,4 +366,4 @@ func set_selected_tangent(val: int) -> void:
 
 func _on_resized() -> void:
 	if dynamic_row_count:
-		rows = round(rect_size.y / rect_min_size.y) + 1
+		rows = int(rect_size.y / rect_min_size.y) + 1

@@ -1,6 +1,8 @@
 extends HBoxContainer
 
+
 signal value_changed
+
 
 var label: Label
 var checkbox: CheckBox
@@ -9,7 +11,7 @@ var checkbox: CheckBox
 func init(name: String, value: bool) -> void:
 	label = get_node("Label")
 	checkbox = get_node("CheckBox")
-	checkbox.connect("pressed", self, "_on_pressed")
+	Signals.safe_connect(checkbox, "pressed", self, "_on_pressed")
 
 	label.text = name
 	checkbox.pressed = value
