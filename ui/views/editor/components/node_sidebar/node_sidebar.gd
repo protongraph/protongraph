@@ -42,7 +42,8 @@ func _rebuild_ui() -> void:
 		var value = _current._get_default_gui_value(index)
 		var ui: SidebarProperty = preload("property.tscn").instance()
 		_inputs.add_child(ui)
-		ui.create_input(name, type, value)
+		ui.create_input(name, type, value, index)
+		Signals.safe_connect(ui, "value_changed", self, "_on_sidebar_value_changed")
 
 	for slot in _current._outputs.values():
 		var name = slot["name"]
@@ -55,12 +56,32 @@ func _rebuild_ui() -> void:
 func _on_node_selected(node) -> void:
 	if not node:
 		return
+	
+	if _current:
+		Signals.safe_disconnect(_current, "gui_value_changed", self, "_on_node_value_changed")
 		
 	clear()
 	_current = node
 	_rebuild_ui()
+	Signals.safe_connect(_current, "gui_value_changed", self, "_on_node_value_changed")
 
 
 func _on_node_deleted(node) -> void:
 	if node == _current:
 		clear()
+
+
+# Sync changes from the graph node to the side bar
+func _on_node_value_changed(value, idx: int) -> void:
+	for child in _inputs.get_children():
+		if child is SidebarProperty and child.get_index() == idx:
+			child.set_value(value)
+			return
+
+
+# Sync changes from the sidebar to the graphnode
+func _on_sidebar_value_changed(value, idx: int) -> void:
+	if not _current:
+		return # Should not happen
+	
+	_current.set_default_gui_value(idx, value)

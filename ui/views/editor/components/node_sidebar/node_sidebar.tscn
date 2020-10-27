@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://ui/views/editor/components/node_sidebar/node_sidebar.gd" type="Script" id=1]
 [ext_resource path="res://ui/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=2]
 [ext_resource path="res://ui/views/editor/components/inspector/inspector_panel_style.tres" type="StyleBox" id=3]
+[ext_resource path="res://ui/themes/fonts/fira_sans_regular_small.tres" type="DynamicFont" id=4]
 
 [node name="NodeSidebar" type="ScrollContainer"]
 anchor_right = 1.0
@@ -67,6 +68,8 @@ margin_bottom = 35.0
 margin_top = 43.0
 margin_right = 250.0
 margin_bottom = 68.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 1, 1, 1, 0.501961 )
 text = "Inputs"
 
 [node name="Inputs" type="VBoxContainer" parent="MarginContainer/Properties"]
@@ -83,6 +86,8 @@ margin_bottom = 92.0
 margin_top = 100.0
 margin_right = 250.0
 margin_bottom = 125.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 1, 1, 1, 0.501961 )
 text = "Outputs"
 
 [node name="Outputs" type="VBoxContainer" parent="MarginContainer/Properties"]
