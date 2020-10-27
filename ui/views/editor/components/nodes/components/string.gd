@@ -31,9 +31,10 @@ func create(label_name: String, type: int, opts := {}) -> void:
 		_line_edit.add_stylebox_override("normal", load("res://ui/themes/styles/graphnode_button_normal.tres"))
 		_line_edit.add_stylebox_override("focus", load("res://ui/themes/styles/graphnode_line_edit_focus.tres"))
 		_line_edit.rect_min_size.x = 120
+		_line_edit.size_flags_horizontal = SIZE_EXPAND_FILL
 		_line_edit.name = "LineEdit"
 		_line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
-		_line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else true
+		_line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else false
 		_line_edit.text = opts["text"] if opts.has("text") else ""
 		_compact_display = opts["compact_display"] if opts.has("compact_display") else false
 		Signals.safe_connect(_line_edit, "text_changed", self, "_on_value_changed")

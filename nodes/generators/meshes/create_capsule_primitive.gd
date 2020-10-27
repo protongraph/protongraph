@@ -10,8 +10,10 @@ func _init() -> void:
 
 	set_input(0, "Radius", DataType.SCALAR, {"value": 1})
 	set_input(1, "Mid-Height", DataType.SCALAR, {"value": 1})
-	set_input(2, "Radial segments", DataType.SCALAR, {"value": 64, "step": 1})
-	set_input(3, "Rings", DataType.SCALAR, {"value": 8, "step": 1})
+	set_input(2, "Radial segments", DataType.SCALAR,
+		{"value": 64, "step": 1, "min": 1, "allow_lesser": false})
+	set_input(3, "Rings", DataType.SCALAR,
+		{"value": 64, "step": 1, "min": 1, "allow_lesser": false})
 	set_output(0, "", DataType.MESH_3D)
 
 

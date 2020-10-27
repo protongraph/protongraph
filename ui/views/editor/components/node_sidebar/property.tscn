@@ -4,15 +4,28 @@
 [ext_resource path="res://ui/views/editor/components/node_sidebar/property.gd" type="Script" id=3]
 
 [node name="Property" type="HBoxContainer"]
-margin_right = 24.0
+margin_right = 48.0
 margin_bottom = 29.0
+size_flags_horizontal = 5
+size_flags_vertical = 5
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="VSeparator" type="VSeparator" parent="."]
+margin_right = 8.0
+margin_bottom = 29.0
+
+[node name="Component" type="MarginContainer" parent="."]
+margin_left = 16.0
+margin_right = 16.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 24.0
+margin_left = 24.0
+margin_right = 48.0
 margin_bottom = 29.0
 alignment = 1
 
@@ -21,9 +34,3 @@ margin_right = 24.0
 margin_bottom = 29.0
 toggle_mode = true
 pressed = true
-
-[node name="Component" type="VBoxContainer" parent="."]
-margin_left = 32.0
-margin_right = 32.0
-margin_bottom = 29.0
-size_flags_horizontal = 3

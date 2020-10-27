@@ -26,25 +26,31 @@ func clear() -> void:
 
 
 func _rebuild_ui() -> void:
+	# Show the default screen and abort if no nodes are selected
 	if not _current:
 		_default.visible = true
 		_properties.visible = false
 		return
 
+	# Show the property screen
 	_default.visible = false
 	_properties.visible = true
 	_name.text = _current.display_name
 
+	# Create a new SidebarProperty object for each slots. They rely on the 
+	# safe GraphNodeComponents used by the ConceptNodeUi class.
 	for index in _current._inputs.keys():
 		var slot = _current._inputs[index]
 		var name = slot["name"]
 		var type = slot["type"]
+		var opts = slot["options"]
 		var value = _current._get_default_gui_value(index)
 		var ui: SidebarProperty = preload("property.tscn").instance()
 		_inputs.add_child(ui)
-		ui.create_input(name, type, value, index)
+		ui.create_input(name, type, value, index, opts)
 		Signals.safe_connect(ui, "value_changed", self, "_on_sidebar_value_changed")
 
+	# Outputs are simpler and only require the name and type.
 	for slot in _current._outputs.values():
 		var name = slot["name"]
 		var type = slot["type"]
