@@ -2,6 +2,9 @@ extends ConceptNodeUi
 class_name ConceptNode
 
 
+signal cache_cleared
+
+
 var unique_id: String
 var ignore := false
 var node_pool: NodePool # Injected from template
@@ -16,6 +19,7 @@ var _output_ready := false # True when the background generation was completed
 func _enter_tree() -> void:
 	._enter_tree()
 	_reset_output()
+	Signals.safe_connect(self, "gui_value_changed", self, "_on_value_changed")
 
 
 func is_output_ready() -> bool:
@@ -116,6 +120,13 @@ func get_output(idx: int, default := []) -> Array:
 	return res.duplicate(true)
 
 
+func get_output_single(idx: int, default = null):
+	var res = get_output(idx)
+	if res == null or res.size() == 0 or res[0] == null:
+		return default
+	return res[0]
+
+
 # Return the variables exposed to the node inspector. Same format as
 # get_property_list [ {name: , type: }, ... ]
 func get_exposed_variables() -> Array:
@@ -138,6 +149,7 @@ func clear_cache() -> void:
 	_clear_cache()
 	_reset_output()
 	_output_ready = false
+	emit_signal("cache_cleared")
 
 
 # Because we're saving the tree to a json file, we need each node to explicitely
@@ -190,3 +202,8 @@ func _reset_output():
 	output = []
 	for i in _outputs.size():
 		output.append([])
+
+
+func _on_value_changed(_value, _idx) -> void:
+	reset()
+	emit_signal("node_changed", self, true)

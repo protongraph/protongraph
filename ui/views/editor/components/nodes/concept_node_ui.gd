@@ -202,6 +202,7 @@ func set_default_gui_value(slot: int, value) -> void:
 	
 	var component = _hboxes[slot].get_node("Input")
 	component.set_value(value)
+	emit_signal("gui_value_changed", value, slot)
 
 
 # Force the node to rebuild the user interface. This is needed because the Node 
@@ -543,9 +544,8 @@ func _on_connection_changed() -> void:
 
 
 func _on_default_gui_value_changed(value, slot: int) -> void:
-	emit_signal("node_changed", self, true)
-	emit_signal("input_changed", slot, value)
 	emit_signal("gui_value_changed", value, slot)
+	emit_signal("input_changed", slot, value)
 
 
 func _on_default_gui_ready() -> void:

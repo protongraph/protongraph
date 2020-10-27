@@ -11,6 +11,7 @@ func _init() -> void:
 	set_input(1, "Name", DataType.STRING)
 
 	Signals.safe_connect(self, "connection_changed", self, "_on_connection_changed_custom")
+	Signals.safe_connect(self, "gui_value_changed", self, "_on_gui_value_changed")
 
 
 func _exit_tree() -> void:
@@ -38,7 +39,7 @@ func _on_editor_data_restored() -> void:
 	_register_as_proxy(get_input_single(1))
 
 
-func _on_default_gui_interaction(value, _control: Control, slot: int) -> void:
+func _on_gui_value_changed(value, slot: int) -> void:
 	if slot == 1:
 		_register_as_proxy(value)
 

@@ -22,8 +22,7 @@ func _enter_tree() -> void:
 			return
 
 		Signals.safe_connect(template, "proxy_list_updated", self, "_link_proxy")
-		Signals.safe_connect(template, "template_loaded", self, "_link_proxy")
-		Signals.safe_connect(self, "gui_value_changed", self, "_on_default_gui_interaction")
+		Signals.safe_connect(self, "gui_value_changed", self, "_on_gui_value_changed")
 		_template_signals_connected = true
 	
 	_link_proxy()
@@ -37,7 +36,7 @@ func _generate_outputs() -> void:
 		output[0] = proxy.get_output(0)
 
 
-func _on_default_gui_interaction(_value, slot: int) -> void:
+func _on_gui_value_changed(_value, slot: int) -> void:
 	if slot == 0:
 		_link_proxy()
 
@@ -45,6 +44,7 @@ func _on_default_gui_interaction(_value, slot: int) -> void:
 func _link_proxy() -> void:
 	if _proxy_in:
 		Signals.safe_disconnect(_proxy_in, "connection_changed", self, "_update_output_type")
+		Signals.safe_disconnect(_proxy_in, "cache_cleared", self, "reset")
 		_proxy_in = null
 
 	var proxy_name = get_input_single(0, "")
@@ -54,8 +54,10 @@ func _link_proxy() -> void:
 
 	_proxy_in = template.get_proxy(proxy_name)
 	if _proxy_in:
-		_update_output_type()
 		Signals.safe_connect(_proxy_in, "connection_changed", self, "_update_output_type")
+		Signals.safe_connect(_proxy_in, "cache_cleared", self, "reset")
+	
+	_update_output_type()
 
 
 func _update_output_type() -> void:

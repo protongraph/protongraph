@@ -37,5 +37,5 @@ func _on_ready_to_quit() -> void:
 	get_tree().quit()
 
 
-func _on_quit_cancelled() -> void:
+func _on_quit_canceled() -> void:
 	_is_quitting = false

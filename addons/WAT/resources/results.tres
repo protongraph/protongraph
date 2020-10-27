@@ -4,5 +4,5 @@
 
 [resource]
 script = ExtResource( 1 )
-failures = [ "res://tests/test_proxy_nodes.gd" ]
+failures = [  ]
 _list = [  ]

@@ -95,7 +95,7 @@ func create_node(type: String, data := {}, notify := true) -> ConceptNode:
 		new_node.restore_editor_data(data["editor"])
 	if data.has("data"):
 		new_node.restore_custom_data(data["data"])
-
+	
 	if notify:
 		emit_signal("graph_changed")
 		emit_signal("simulation_outdated")
@@ -260,6 +260,7 @@ func load_from_file(path: String, soft_load := false) -> void:
 
 	if graph.has("inspector"):
 		inspector.set_all_values(graph["inspector"])
+		update_exposed_variables()
 
 	if graph.has("editor"): # Everything related to how the editor looks like
 		var editor = graph["editor"]
@@ -299,7 +300,6 @@ func save_to_file(path: String) -> void:
 			node["data"] = c.export_custom_data()
 			graph["nodes"].append(node)
 
-
 	if not _save_thread:
 		_save_thread = Thread.new()
 
@@ -323,19 +323,16 @@ func save_to_file(path: String) -> void:
 	emit_signal("template_saved")
 
 
-"""
-Manual garbage collection handling. Before each generation, we clean everything the graphnodes may
-have created in the process. Because graphnodes hand over their result to the next one, they can't
-handle the removal themselves as they don't know if the resource is still in use or not.
-"""
+# Manual garbage collection handling. Before each generation, we clean
+# everything the graphnodes may have created in the process. Because
+# graphnodes hand over their results to the next node, they can't handle the
+# removal themselves as they don't know if the resource is still in use or not.
 func register_to_garbage_collection(resource):
 	if resource is Object and not resource is Reference:
 		_registered_resources.append(weakref(resource))
 
 
-"""
-Iterate over all the registered resources and free them if they still exist
-"""
+# Iterate over all the registered resources and free them if they still exist
 func run_garbage_collection():
 	for res in _registered_resources:
 		var resource = res.get_ref()
@@ -350,10 +347,8 @@ func run_garbage_collection():
 	_registered_resources = []
 
 
-"""
-_run_generation makes sure there's no active thread running before starting a new generation.
-Called from _timer (on timeout event).
-"""
+# Makes sure there's no active thread running before starting a new generation.
+# Called from _timer (on timeout event).
 func _run_generation() -> void:
 	if not _thread:
 		_thread = Thread.new()

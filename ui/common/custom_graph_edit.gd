@@ -209,7 +209,7 @@ func _on_connection_request(from_node: String, from_slot: int, to_node: String, 
 	var err = connect_node(from_node, from_slot, to_node, to_slot)
 	if err != OK:
 		print("Error ", err, " - Could not connect node ", from_node, ":", from_slot, " to ", to_node, ":", to_slot)
-		
+	
 	emit_signal("graph_changed")
 	emit_signal("connections_updated")
 	get_node(to_node).emit_signal("connection_changed")
