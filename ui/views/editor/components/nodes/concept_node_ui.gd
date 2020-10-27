@@ -5,7 +5,8 @@ class_name ConceptNodeUi
 signal delete_node
 signal node_changed
 signal input_changed
-signal connection_changed
+signal connection_changed # Emitted from CustomGraphEdit
+signal gui_value_changed
 
 
 # Set to true to force the template to recreate the whole node instead of the 
@@ -121,6 +122,8 @@ func restore_editor_data(data: Dictionary) -> void:
 		if data["slots"].has(String(i)):
 			var value = data["slots"][String(i)]
 			set_default_gui_value(i, value)
+	
+	_on_editor_data_restored()
 
 
 # Automatically change the output data type to mirror the type of what's
@@ -142,9 +145,6 @@ func cancel_type_mirroring(input_index, output_index) -> void:
 	_update_slots_types()
 
 
-
-
-
 func get_inputs_count() -> int:
 	return _inputs.size()
 
@@ -153,26 +153,17 @@ func get_connected_input_type(idx) -> int:
 	var input_type = -1
 	if is_input_connected(idx):
 		var inputs: Array = get_parent().get_left_nodes(self, idx)
-		for data in inputs:
-			if input_type == -1:
-				input_type = data["node"]._outputs[data["slot"]]["type"]
-				break
+		if inputs.size() > 0:
+			var data = inputs[0]
+			input_type = data["node"]._outputs[data["slot"]]["type"]
 
 	return input_type
 
 
-"""
-Return the variables exposed to the node inspector. Same format as
-get_property_list [ {name: , type: }, ... ]
-"""
+# Return the variables exposed to the node inspector. Same format as
+# get_property_list [ {name: , type: }, ... ]
 func get_exposed_variables() -> Array:
 	return []
-
-
-func get_input_type(idx: int) -> int:
-	if is_input_connected(idx):
-		return get_connected_input_type(idx)
-	return get_local_input_type(idx)
 
 
 func get_local_input_type(idx: int) -> int:
@@ -213,16 +204,20 @@ func set_default_gui_value(slot: int, value) -> void:
 	component.set_value(value)
 
 
-"""
-Force the node to rebuild the user interface. This is needed because the Node 
-is generated under a spatial, which make accessing the current theme
-impossible and breaks OptionButtons.
-"""
+# Force the node to rebuild the user interface. This is needed because the Node 
+# is generated under a spatial, which make accessing the current theme
+# impossible and breaks OptionButtons.
 func regenerate_default_ui():
 	var editor_data = export_editor_data()
 	_generate_default_gui()
 	restore_editor_data(editor_data)
 	_setup_slots()
+
+
+func force_redraw():
+	var parent = get_parent()
+	if parent:
+		parent.force_redraw()
 
 
 # Override and make it return true if your node should be instanced from a
@@ -235,9 +230,7 @@ func has_custom_gui() -> bool:
 	return false
 
 
-"""
-Returns a list of every ConceptNode connected to this node
-"""
+# Returns a list of every ConceptNode connected to this node
 func _get_connected_inputs() -> Array:
 	var connected_inputs = []
 	for i in _inputs.size():
@@ -247,18 +240,14 @@ func _get_connected_inputs() -> Array:
 	return connected_inputs
 
 
-"""
-Override this if you're using a custom GUI to change input slots default behavior. This returns
-the local input data for the given slot
-"""
+# Override this if you're using a custom GUI to change input slots default
+# behavior. This returns the local input data for the given slot
 func _get_input(_index: int) -> Array:
 	return []
 
 
-"""
-Used in mirror_slot_types and cancel_slot_types. Prints a warning if the provided slot is out of
-bounds.
-"""
+# Used in mirror_slot_types and cancel_slot_types. Prints a warning if the
+# provided slot is out of bounds.
 func _mirror_type_check(input_index, output_index) -> bool:
 	if input_index >= _inputs.size():
 		print("Error: invalid input index (", input_index, ") passed to ", display_name)
@@ -271,10 +260,8 @@ func _mirror_type_check(input_index, output_index) -> bool:
 	return true
 
 
-"""
-Returns true if the given output slot get its type from a mirrored input.
-False otherwise
-"""
+# Returns true if the given output slot get its type from a mirrored input.
+# False otherwise
 func _is_output_mirrored(output_index: int) -> bool:
 	if output_index >= _outputs.size():
 		return false
@@ -287,11 +274,9 @@ func _is_output_mirrored(output_index: int) -> bool:
 	return false
 
 
-"""
-Based on the previous calls to set_input and set_ouput, this method will call the
-GraphNode.set_slot method accordingly with the proper parameters. This makes it easier syntax
-wise on the child node side and make it more readable.
-"""
+# Based on the previous calls to set_input and set_ouput, this method will call
+# the GraphNode.set_slot method accordingly with the proper parameters. This
+# makes it easier syntax wise on the child node side and make it more readable.
 func _setup_slots() -> void:
 	var slots = _hboxes.size()
 	for i in slots + 1:	# +1 to prevent leaving an extra slot active when removing inputs
@@ -336,9 +321,7 @@ func _setup_slots() -> void:
 		emit_signal("resize_request", Vector2(rect_min_size.x, 0.0))
 
 
-"""
-Clear all child controls
-"""
+# Clear all child controls
 func _clear_gui() -> void:
 	_hboxes = []
 	for child in get_children():
@@ -413,6 +396,7 @@ func _generate_default_gui() -> void:
 		if input_component:
 			input_component.name = "Input"
 			hbox.add_child(input_component)
+			Signals.safe_connect(input_component, "value_changed", self, "_on_default_gui_value_changed", [i])
 		
 		var output_component = _create_component("output", i)
 		if output_component:
@@ -420,7 +404,7 @@ func _generate_default_gui() -> void:
 			hbox.add_child(output_component)
 
 	_on_connection_changed()
-	_redraw()
+	_on_default_gui_ready()
 
 
 func _create_component(source: String, i: int) -> GraphNodeComponent:
@@ -538,16 +522,14 @@ func _on_close_request() -> void:
 	emit_signal("delete_node", self)
 
 
-"""
-When the nodes connections changes, this method checks for all the input slots 
-and hides everything that's not a label if something is connected to the
-associated slot.
-
-For types like Numbers, Strings, Vectors or Boolean, it's possible to set a
-value on the node itself, but if something is connected to the slot, it takes
-priority over the local value. Hiding the default GUI should avoid some 
-confusion by not displaying a value that's not used.
-"""
+# When the nodes connections changes, this method checks for all the input slots 
+# and hides everything that's not a label if something is connected to the
+# associated slot.
+#
+# For types like Numbers, Strings, Vectors or Boolean, it's possible to set a
+# value on the node itself, but if something is connected to the slot, it takes
+# priority over the local value. Hiding the default GUI should avoid some 
+# confusion by not displaying a value that's not used.
 func _on_connection_changed() -> void:
 	# Hides the default gui (except for the name) if something is connected to 
 	# the given slot
@@ -563,3 +545,13 @@ func _on_connection_changed() -> void:
 func _on_default_gui_value_changed(value, slot: int) -> void:
 	emit_signal("node_changed", self, true)
 	emit_signal("input_changed", slot, value)
+	emit_signal("gui_value_changed", value, slot)
+
+
+func _on_default_gui_ready() -> void:
+	pass
+
+
+# Override in child nodes. Called when restore_editor_data() has completed
+func _on_editor_data_restored() -> void:
+	pass

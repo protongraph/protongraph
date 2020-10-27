@@ -1,16 +1,11 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://ui/views/editor/components/spinbox/spinbox.tscn" type="PackedScene" id=1]
-[ext_resource path="res://ui/views/editor/components/nodes/noise_preview.gd" type="Script" id=2]
+[ext_resource path="res://ui/views/editor/components/nodes/previews/preview_2d.gd" type="Script" id=2]
 
 
 
-
-
-
-
-
-[node name="NoisePreview" type="VBoxContainer"]
+[node name="2DPreview" type="VBoxContainer"]
 margin_right = 99.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 170, 0 )
@@ -21,26 +16,27 @@ __meta__ = {
 }
 
 [node name="Button" type="Button" parent="."]
-margin_right = 170.0
-margin_bottom = 20.0
+margin_right = 175.0
+margin_bottom = 37.0
 text = "Show Preview"
 
 [node name="Container" type="VBoxContainer" parent="."]
 visible = false
-margin_top = 24.0
+margin_top = 45.0
 margin_right = 175.0
-margin_bottom = 227.0
+margin_bottom = 247.0
 
 [node name="TextureRect" type="TextureRect" parent="Container"]
-margin_right = 170.0
+margin_right = 175.0
 margin_bottom = 170.0
 rect_min_size = Vector2( 170, 170 )
 expand = true
 
 [node name="SpinBox" parent="Container" instance=ExtResource( 1 )]
-margin_top = 179.0
+anchor_right = 0.0
+margin_top = 178.0
 margin_right = 175.0
-margin_bottom = 203.0
+margin_bottom = 202.0
 min_value = 1.0
 max_value = 512.0
 step = 1.0

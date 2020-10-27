@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://ui/views/editor/components/graph_editor/minimap/graph_minimap.gd" type="Script" id=1]
+[ext_resource path="res://ui/views/editor/components/minimap/graph_minimap.gd" type="Script" id=1]
 [ext_resource path="res://ui/icons/icon_minimap.png" type="Texture" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]

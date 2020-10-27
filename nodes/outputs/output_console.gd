@@ -41,7 +41,7 @@ func _create_text_container() -> void:
 		remove_child(_print_area)
 		_print_area.queue_free()
 
-	_print_area = load("res://src/nodes/outputs/print_area.tscn").instance()
+	_print_area = load("res://nodes/outputs/print_area.tscn").instance()
 	_label = _print_area.get_node("PanelContainer/Label")
 	add_child(_print_area)
 	connect("resize_request", self, "_on_resize")

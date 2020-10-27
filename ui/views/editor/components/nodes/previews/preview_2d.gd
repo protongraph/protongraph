@@ -1,5 +1,5 @@
 extends VBoxContainer
-class_name NoisePreview
+class_name Preview2D
 
 
 signal preview_requested

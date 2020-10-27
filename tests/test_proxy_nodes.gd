@@ -24,8 +24,8 @@ func test_should_mirror_slot_type() -> void:
 	describe("ProxyOut should mirror the input type of ProxyIn")
 	
 	# Get the default type, make sure they match.
-	var source_type = proxy_in.get_input_type(0)
-	var output_type = proxy_out.get_output_type(0)
+	var source_type = get_input_type(proxy_in)
+	var output_type = get_output_type(proxy_out)
 	
 	asserts.is_not_equal(source_type, -1, "ProxyIn has a valid type")
 	asserts.is_not_equal(output_type, -1, "ProxyOut has a valid type")
@@ -40,8 +40,18 @@ func test_should_mirror_slot_type() -> void:
 	var err = template.connect_node(input_node.name, 0, proxy_in.name, 0)
 	asserts.is_equal(err, OK, "New node successfully connected to ProxyIn")
 	
-	source_type = proxy_in.get_input_type(0)
-	output_type = proxy_out.get_output_type(0)
+	source_type = get_input_type(proxy_in)
+	output_type = get_output_type(proxy_out)
 	
 	asserts.is_equal(input_type, source_type, "Connected node type matches ProxyIn type")
 	asserts.is_equal(source_type, output_type, "Proxy In and Out matches")
+
+
+func get_input_type(node: ConceptNode) -> int:
+	if node.is_input_connected(0):
+		return node.get_connected_input_type(0)
+	return node.get_local_input_type(0)
+
+
+func get_output_type(node: ConceptNode) -> int:
+	return node.get_output_type(0)

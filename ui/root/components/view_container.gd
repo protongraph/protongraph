@@ -20,9 +20,9 @@ func _ready() -> void:
 	
 	_dialog_manager = get_node(dialog_manager)
 	Signals.safe_connect(self, "tabs_cleared", self, "_on_tabs_cleared")
-	Signals.safe_connect(_dialog_manager, "canceled", self, "_on_close_cancel")
-	Signals.safe_connect(_dialog_manager, "discarded", self, "_on_close_discard")
-	Signals.safe_connect(_dialog_manager, "confirmed", self, "_on_close_confirm")
+	Signals.safe_connect(_dialog_manager, "canceled", self, "_on_close_canceled")
+	Signals.safe_connect(_dialog_manager, "discarded", self, "_on_close_discarded")
+	Signals.safe_connect(_dialog_manager, "confirmed", self, "_on_close_confirmed")
 	
 	_load_start_view()
 
@@ -151,11 +151,11 @@ func _on_tab_close_request(tab: int) -> void:
 		._on_tab_close_request(tab)
 
 
-func _on_close_confirm() -> void:
+func _on_close_confirmed() -> void:
 	_save_current_template(true)
 
 
-func _on_close_discard() -> void:
+func _on_close_discarded() -> void:
 	close_tab(current_tab)
 
 

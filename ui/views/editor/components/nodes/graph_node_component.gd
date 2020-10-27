@@ -20,14 +20,13 @@ func create(label_name: String, type: int, opts := {}):
 		icon = TextureRect.new()
 		icon_container = CenterContainer.new()
 		icon_container.add_child(icon)
-	if opts.has("show_type_icon") and not opts["show_type_icon"]:
-		icon.visible = false
-	
+
 	label.text = label_name
 	label.hint_tooltip = DataType.get_type_name(type)
 	icon.texture = TextureUtil.get_slot_icon(type)
 	icon.modulate = DataType.COLORS[type]
 	icon.mouse_filter = Control.MOUSE_FILTER_PASS
+	icon.visible = opts["show_type_icon"] if opts.has("show_type_icon") else true
 	
 	size_flags_horizontal = SIZE_EXPAND_FILL
 

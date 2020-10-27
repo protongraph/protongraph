@@ -9,6 +9,7 @@ signal graph_changed
 signal node_created
 signal node_deleted
 signal update_minimap
+signal connections_updated
 
 
 var undo_redo: UndoRedo
@@ -16,7 +17,7 @@ var undo_redo: UndoRedo
 var _copy_buffer := []
 var _connections_buffer := []
 var _ui_style_ready := false
-var _minimap = preload("minimap/graph_minimap.tscn").instance()
+var _minimap = preload("res://ui/views/editor/components/minimap/graph_minimap.tscn").instance()
 
 
 func _init() -> void:
@@ -210,14 +211,14 @@ func _on_connection_request(from_node: String, from_slot: int, to_node: String, 
 		print("Error ", err, " - Could not connect node ", from_node, ":", from_slot, " to ", to_node, ":", to_slot)
 		
 	emit_signal("graph_changed")
-	emit_signal("simulation_outdated")
+	emit_signal("connections_updated")
 	get_node(to_node).emit_signal("connection_changed")
 
 
 func _on_disconnection_request(from_node: String, from_slot: int, to_node: String, to_slot: int) -> void:
 	disconnect_node(from_node, from_slot, to_node, to_slot)
 	emit_signal("graph_changed")
-	emit_signal("simulation_outdated")
+	emit_signal("connections_updated")
 	get_node(to_node).emit_signal("connection_changed")
 
 

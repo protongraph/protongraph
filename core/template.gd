@@ -47,6 +47,7 @@ func _init() -> void:
 	Signals.safe_connect(self, "thread_completed", self, "_on_thread_completed")
 	Signals.safe_connect(self, "node_created", self, "_on_node_created")
 	Signals.safe_connect(self, "node_deleted", self, "_on_node_deleted")
+	Signals.safe_connect(self, "connections_updated", self, "_on_connections_updated")
 
 	_timer.one_shot = true
 	_timer.autostart = false
@@ -76,6 +77,7 @@ func create_node(type: String, data := {}, notify := true) -> ConceptNode:
 		return null
 
 	new_node.thread_pool = _thread_pool
+	
 	if data.has("offset"):
 		new_node.offset = data["offset"]
 	else:
@@ -148,10 +150,8 @@ func notify_exposed_variable_change(name):
 			c.reset()
 
 
-"""
-Proxy nodes allow the user to reference some parts of the graph in another part of the graph.
-Mostly used for organization purposes
-"""
+# Proxy nodes allow the user to reference some parts of the graph in another
+# part of the graph. Mostly used for organization purposes.
 func register_proxy(node, name) -> void:
 	_proxy_nodes[node] = name
 	emit_signal("proxy_list_updated")
@@ -177,25 +177,20 @@ func deregister_input_object(input: Spatial, _graphnode: ConceptNode) -> void:
 	emit_signal("input_deleted", input)
 
 
-"""
-Get exposed variable from the inspector
-"""
+# Get exposed variable from the inspector
 func get_value_from_inspector(name: String):
 	return inspector.get_value(name)
 
 
-"""
-Clears the cache of every single node in the template. Useful when only the inputs changes
-and node the whole graph structure itself. Next time get_output is called, every nodes will
-recalculate their output
-"""
+# Clears the cache of every single node in the template. Useful when only the
+# inputs changes and node the whole graph structure itself. Next time
+# get_output is called, every nodes will recalculate their output.
 func clear_simulation_cache() -> void:
 	for node in get_children():
 		if node is ConceptNode:
 			node.clear_cache()
 	run_garbage_collection()
 	_clear_cache_on_next_run = false
-
 
 
 # This is the exposed API to run the simulation but doesn't run it immediately
@@ -418,7 +413,7 @@ func _is_multithreading_enabled() -> bool:
 
 
 func _on_thread_completed() -> void:
-	if _is_multithreading_enabled():
+	if _is_multithreading_enabled() and _thread.is_active():
 		_thread.wait_to_finish()
 	if restart_generation:
 		generate()
@@ -450,6 +445,10 @@ func _on_node_changed(_node := null, replay_simulation := false) -> void:
 	if replay_simulation:
 		emit_signal("simulation_outdated")
 	update()
+
+
+func _on_connections_updated() -> void:
+	emit_signal("simulation_outdated")
 
 
 func _on_import_all() -> void:

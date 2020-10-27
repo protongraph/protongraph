@@ -39,13 +39,20 @@ func set_confirm_text(text: String) -> void:
 	_confirm.text = text
 
 
+func hide() -> void:
+	visible = false
+
+
 func _on_cancel() -> void:
 	emit_signal("canceled")
+	hide()
 
 
 func _on_discard() -> void:
 	emit_signal("discarded")
+	hide()
 
 
 func _on_confirm() -> void:
 	emit_signal("confirmed")
+	hide()

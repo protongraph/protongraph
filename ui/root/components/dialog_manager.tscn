@@ -30,5 +30,7 @@ __meta__ = {
 }
 
 [node name="ConfirmDialog" parent="." instance=ExtResource( 4 )]
+margin_right = 838.0
+margin_bottom = 444.0
 
 [node name="FileDialog" parent="." instance=ExtResource( 3 )]

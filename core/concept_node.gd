@@ -171,12 +171,10 @@ func _generate_outputs() -> void:
 	pass
 
 
-
 # Overide this function to customize how the output cache should be cleared. If
 # you have memory to free or anything else, that's where you should define it.
 func _clear_cache():
 	pass
-
 
 
 # Clear previously generated outputs
@@ -192,14 +190,3 @@ func _reset_output():
 	output = []
 	for i in _outputs.size():
 		output.append([])
-
-
-
-# Override in child nodes. Called when a default gui value was modified
-func _on_default_gui_interaction(_value, _control: Control, _slot: int) -> void:
-	pass
-
-
-# Override in child nodes. Called when restore_editor_data() has completed
-func _on_editor_data_restored() -> void:
-	pass

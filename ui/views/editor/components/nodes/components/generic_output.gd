@@ -5,8 +5,8 @@ class_name GenericOutputComponent
 var _row: HBoxContainer
 
 
-func create(label_name: String, type: int, _opts := {}):
-	.create(label_name, type)
+func create(label_name: String, type: int, opts := {}):
+	.create(label_name, type, opts)
 
 	label.align = Label.ALIGN_RIGHT
 	
