@@ -5,16 +5,14 @@ class_name InspectorPanel
 signal value_changed
 
 
-export var root: NodePath
-
-var _root: Control
 var _exposed_variables := {}
 var _variables_ui := {}
 var _cache := {}
 
+onready var _root: Control = $PanelContainer/VBoxContainer
+
 
 func _ready() -> void:
-	_root = get_node(root)
 	_regenerate_inspector_ui()
 
 

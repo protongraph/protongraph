@@ -1,6 +1,13 @@
 extends Control
 class_name EditorView
 
+# Displays a graph editor, a viewport and an inspector.
+# It handles autosaves and the communication between the different parts of
+# this view.
+
+
+signal template_saved
+
 
 export var viewport_container: NodePath
 export var template: NodePath
@@ -37,7 +44,6 @@ func _ready() -> void:
 func load_template(path: String) -> void:
 	_template_path = path
 	_template.load_from_file(path)
-#	_template.update_exposed_variables()
 	_template.generate()
 	_saved = true
 	GlobalEventBus.dispatch("template_loaded", path)
@@ -49,6 +55,7 @@ func save_template() -> void:
 	_saved = true
 	GlobalEventBus.dispatch("message", "Saved template " + _template_path)
 	GlobalEventBus.dispatch("template_saved")
+	emit_signal("template_saved")
 	print("Saved template ", _template_path)
 
 
@@ -79,14 +86,7 @@ func _show_node_dialog(position: Vector2) -> void:
 	_node_dialog.popup()
 
 
-func _hide_node_dialog() -> void:
-	_node_dialog.visible = false
-
-
-func _clear_graph():
-	_template.clear()
-
-
+# warning-ignore:return_value_discarded
 func _on_create_node_request(type: String) -> void:
 	var local_pos = _last_position - _template.get_global_transform().origin + _template.scroll_offset
 	_template.create_node(type, {"offset": local_pos})
