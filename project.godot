@@ -194,6 +194,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://core/node_pool.gd"
 }, {
+"base": "PanelContainer",
+"class": "NodeSidebar",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/node_sidebar/node_sidebar.gd"
+}, {
 "base": "Object",
 "class": "NodeUtil",
 "language": "GDScript",
@@ -377,6 +382,7 @@ _global_script_class_icons={
 "JSONBeautifier": "",
 "LoadSaveDialog": "",
 "NodePool": "",
+"NodeSidebar": "",
 "NodeUtil": "",
 "Noise": "",
 "NoiseAdd": "",

@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ui/views/editor/components/node_sidebar/node_sidebar.gd" type="Script" id=1]
+
+[node name="NodeSidebar" type="PanelContainer"]
+anchor_bottom = 1.0
+margin_right = 250.0
+margin_bottom = 6.10352e-05
+rect_min_size = Vector2( 250, 0 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DefaultContent" type="VBoxContainer" parent="."]
+margin_left = 14.0
+margin_top = 14.0
+margin_right = 236.0
+margin_bottom = 754.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="DefaultContent"]
+margin_top = 326.0
+margin_right = 222.0
+margin_bottom = 413.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Select a node to display its local properties here. "
+align = 1
+autowrap = true
+
+[node name="PropertiesRoot" type="VBoxContainer" parent="."]
+margin_left = 14.0
+margin_top = 14.0
+margin_right = 236.0
+margin_bottom = 754.0
+size_flags_vertical = 3
