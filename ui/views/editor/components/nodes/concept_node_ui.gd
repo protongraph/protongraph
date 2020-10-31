@@ -9,24 +9,16 @@ signal connection_changed # Emitted from CustomGraphEdit
 signal gui_value_changed
 
 
-# Set to true to force the template to recreate the whole node instead of the 
-# style only. Useful if the graphnode has UI controls like OptionButtons that
-# can't be generated properly under a spatial node.
-var requires_full_gui_rebuild := false
+var display_name: String
+var category: String
 var minimap_color: Color
 var template_path: String # Sometimes needed to get relative paths.
 
-var display_name: String
-var category: String
-var description: String
-
-var _spinbox
-var _hboxes := []
-var _resize_timer := Timer.new()
-var _initialized := false	# True when all enter_tree initialization is done
 var _inputs := {}
 var _outputs := {}
-var _is_valid := false
+var _slots := []	# Stores the UI components for each displayed slot
+var _resize_timer := Timer.new()
+var _initialized := false	# True when all enter_tree initialization is done
 
 
 func _enter_tree() -> void:
@@ -54,7 +46,8 @@ func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void
 		"mirror": [],
 		"driver": -1,
 		"linked": [],
-		"multi": false
+		"multi": false,
+		"hidden": false
 	}
 
 
@@ -62,7 +55,8 @@ func set_output(idx: int, name: String, type: int, opts: Dictionary = {}) -> voi
 	_outputs[idx] = {
 		"name": name,
 		"type": type,
-		"options": opts
+		"options": opts,
+		"hidden": false
 	}
 
 
@@ -78,7 +72,7 @@ func remove_input(idx: int) -> bool:
 
 # Allows multiple connections on the same input slot.
 func enable_multiple_connections_on_slot(idx: int) -> void:
-	if idx >= _inputs.size():
+	if not _inputs.has(idx):
 		return
 	_inputs[idx]["multi"] = true
 
@@ -93,12 +87,24 @@ func export_editor_data() -> Dictionary:
 		data["rect_x"] = rect_size.x / editor_scale
 		data["rect_y"] = rect_size.y / editor_scale
 
-	data["slots"] = {}
-	for i in _inputs.size():
-		var idx = String(i) # Needed to fix inconsistencies when calling restore
-		var local_value = _get_default_gui_value(i, true)
+	data["inputs"] = {}
+	for idx in _inputs.keys():
+		data["inputs"][idx] = {}
+		
+		# Store the gui local value
+		var local_value = _get_default_gui_value(idx, true)
 		if local_value != null:
-			data["slots"][idx] = local_value
+			data["inputs"][idx]["value"] = local_value
+		
+		# Store the visibility status if it was changed. By default everything
+		# is visible.
+		if _inputs[idx]["hidden"]:
+			data["inputs"][idx]["hidden"] = true
+	
+	data["outputs"] = {}
+	for idx in _outputs.keys():
+		if _outputs[idx]["hidden"]:
+			data["outputs"][idx]["hidden"] = true
 
 	return data
 
@@ -116,12 +122,25 @@ func restore_editor_data(data: Dictionary) -> void:
 
 	emit_signal("resize_request", rect_size)
 
-	var slots = _hboxes.size()
-
-	for i in slots:
-		if data["slots"].has(String(i)):
-			var value = data["slots"][String(i)]
-			set_default_gui_value(i, value)
+	# For backward compatibility with pre 0.7
+	if data.has("slots"):
+		for idx in data["slots"].keys():
+			var i_idx = idx.to_int() if idx is String else idx
+			set_default_gui_value(i_idx, data["slots"][idx])
+	
+	if data.has("inputs"):
+		for idx in data["inputs"].keys():
+			var input = data["inputs"][idx]
+			if input.has("value"):
+				set_default_gui_value(idx, input["value"])
+			if input.has("hidden"):
+				_inputs[idx]["hidden"] = input["hidden"]
+	
+	if data.has("outputs"):
+		for idx in data["outputs"].keys():
+			var output = data["outputs"][idx]
+			if output.has("hidden"):
+				_outputs[idx]["hidden"] = output["hidden"]
 	
 	_on_editor_data_restored()
 
@@ -178,10 +197,6 @@ func get_output_type(idx: int) -> int:
 	return -1
 
 
-func is_valid() -> bool:
-	return _is_valid
-
-
 func is_input_connected(idx: int) -> bool:
 	var parent = get_parent()
 	if not parent:
@@ -191,16 +206,16 @@ func is_input_connected(idx: int) -> bool:
 
 
 func is_multiple_connections_enabled_on_slot(idx: int) -> bool:
-	if idx >= _inputs.size():
+	if not _inputs.has(idx):
 		return false
 	return _inputs[idx]["multi"]
 
 
 func set_default_gui_value(slot: int, value) -> void:
-	if _hboxes.size() <= slot:
+	if _slots.size() <= slot:
 		return
 	
-	var component = _hboxes[slot].get_node("Input")
+	var component = _slots[slot].get_node("Input")
 	component.set_value(value)
 	emit_signal("gui_value_changed", value, slot)
 
@@ -234,8 +249,8 @@ func has_custom_gui() -> bool:
 # Returns a list of every ConceptNode connected to this node
 func _get_connected_inputs() -> Array:
 	var connected_inputs = []
-	for i in _inputs.size():
-		var nodes: Array = get_parent().get_left_nodes(self, i)
+	for idx in _inputs.keys():
+		var nodes: Array = get_parent().get_left_nodes(self, idx)
 		for data in nodes:
 			connected_inputs.append(data["node"])
 	return connected_inputs
@@ -250,11 +265,11 @@ func _get_input(_index: int) -> Array:
 # Used in mirror_slot_types and cancel_slot_types. Prints a warning if the
 # provided slot is out of bounds.
 func _mirror_type_check(input_index, output_index) -> bool:
-	if input_index >= _inputs.size():
+	if not _inputs.has(input_index):
 		print("Error: invalid input index (", input_index, ") passed to ", display_name)
 		return false
 
-	if output_index >= _outputs.size():
+	if not _outputs.has(output_index):
 		print("Error: invalid output index (", input_index, ") passed to ", display_name)
 		return false
 
@@ -264,10 +279,10 @@ func _mirror_type_check(input_index, output_index) -> bool:
 # Returns true if the given output slot get its type from a mirrored input.
 # False otherwise
 func _is_output_mirrored(output_index: int) -> bool:
-	if output_index >= _outputs.size():
+	if not _outputs.has(output_index):
 		return false
 	
-	for i in _inputs.size():
+	for i in _inputs.keys():
 		for index in _inputs[i]["mirror"]:
 			if index == output_index:
 				return true
@@ -279,8 +294,9 @@ func _is_output_mirrored(output_index: int) -> bool:
 # the GraphNode.set_slot method accordingly with the proper parameters. This
 # makes it easier syntax wise on the child node side and make it more readable.
 func _setup_slots() -> void:
-	var slots = _hboxes.size()
-	for i in slots + 1:	# +1 to prevent leaving an extra slot active when removing inputs
+	var count = _slots.size()
+	
+	for i in count + 1:	# +1 to prevent leaving an extra slot active after calling remove_input()
 		var has_input := false
 		var input_type := 0
 		var input_color := Color(0)
@@ -289,32 +305,34 @@ func _setup_slots() -> void:
 		var output_color := Color(0)
 		var input_icon = null
 		var output_icon = null
-
-		if _inputs.has(i):
+		
+		var i_idx = _get_input_index_at(i)
+		if _inputs.has(i_idx):
 			has_input = true
-			var driver = _inputs[i]["driver"]
+			var driver = _inputs[i_idx]["driver"]
 			if driver != -1:
 				input_type = _inputs[driver]["type"]
 			else:
-				input_type = _inputs[i]["type"]
+				input_type = _inputs[i_idx]["type"]
 			input_color = DataType.COLORS[input_type]
-			input_icon = TextureUtil.get_input_texture(_inputs[i]["multi"])
+			input_icon = TextureUtil.get_input_texture(_inputs[i_idx]["multi"])
 		
-		if _outputs.has(i):
+		var o_idx = _get_output_index_at(i)
+		if _outputs.has(o_idx):
 			has_output = true
-			output_type = _outputs[i]["type"]
+			output_type = _outputs[o_idx]["type"]
 			output_color = DataType.COLORS[output_type]
 			output_icon = TextureUtil.get_output_texture()
 
-		if not has_input and not has_output and i < _hboxes.size():
-			_hboxes[i].visible = false
+		if not has_input and not has_output and i < _slots.size():
+			_slots[i].visible = false
 
 		set_slot(i, has_input, input_type, input_color, has_output, output_type, output_color, input_icon, output_icon)
 
 	# Remove elements generated as part of the default gui but doesn't match any slots
-	for b in _hboxes:
+	for b in _slots:
 		if not b.visible:
-			_hboxes.erase(b)
+			_slots.erase(b)
 			remove_child(b)
 
 	# If the node can't be resized, make it as small as possible
@@ -324,7 +342,7 @@ func _setup_slots() -> void:
 
 # Clear all child controls
 func _clear_gui() -> void:
-	_hboxes = []
+	_slots = []
 	for child in get_children():
 		if child is Control:
 			remove_child(child)
@@ -383,26 +401,42 @@ func _generate_default_gui() -> void:
 	show_close = true
 	rect_min_size = Vector2(0.0, 0.0)
 	rect_size = Vector2(0.0, 0.0)
-	var total_slots = max(_inputs.size(), _outputs.size())
+
+	var inputs_components := []
+	for idx in _inputs.keys():
+		var component = _create_component("input", idx)
+		if component:
+			component.name = "Input"
+			Signals.safe_connect(component, "value_changed", self, "_on_default_gui_value_changed", [idx])
+			inputs_components.append(component)
+	
+	var outputs_components := []
+	for idx in _outputs.keys():
+		var component = _create_component("output", idx)
+		if component:
+			component.name = "Output"
+	
+	var total_slots: int = max(inputs_components.size(), outputs_components.size())
+	
+	print("--")
+	print(inputs_components)
+	print(outputs_components)
+	print(total_slots)
 	
 	for i in total_slots:
 		# Create a Hbox container per slot like this
 		# -> [InputComponent, OutputComponent]
 		var hbox = HBoxContainer.new()
 		hbox.rect_min_size.y = Constants.get_slot_height()
-		_hboxes.append(hbox)
+		
+		# Add the relevant component if any
+		if i < inputs_components.size():
+			hbox.add_child(inputs_components[i])
+		if i < outputs_components.size():
+			hbox.add_child(outputs_components[i])
+		
+		_slots.append(hbox)
 		add_child(hbox)
-		
-		var input_component = _create_component("input", i)
-		if input_component:
-			input_component.name = "Input"
-			hbox.add_child(input_component)
-			Signals.safe_connect(input_component, "value_changed", self, "_on_default_gui_value_changed", [i])
-		
-		var output_component = _create_component("output", i)
-		if output_component:
-			output_component.name = "Output"
-			hbox.add_child(output_component)
 
 	_on_connection_changed()
 	_on_default_gui_ready()
@@ -446,10 +480,10 @@ func _create_component(source: String, i: int) -> GraphNodeComponent:
 
 
 func _get_default_gui_value(idx: int, for_export := false):
-	if _hboxes.size() <= idx:
+	if _slots.size() <= idx:
 		return null
 	
-	var component: GraphNodeComponent = _hboxes[idx].get_node("Input")
+	var component: GraphNodeComponent = _slots[idx].get_node("Input")
 	if for_export:
 		return component.get_value_for_export()
 	return component.get_value()
@@ -475,7 +509,7 @@ func _update_slots_types() -> void:
 	# Change the slots type if the mirror option is enabled
 	var slots_types_updated = false
 
-	for i in _inputs.size():
+	for i in _inputs.keys():
 		for o in _inputs[i]["mirror"]:
 			slots_types_updated = true
 			var type = _inputs[i]["default_type"]
@@ -509,6 +543,55 @@ func _update_slots_types() -> void:
 				node.emit_signal("connection_changed")
 
 
+# Get the input index of a slot. Indices are arbitrary numbers that doesn't
+# match the slot physical position among other other slots.
+# Returns -1 if the input index wasn't found
+func _get_input_index_at(pos: int) -> int:
+	return _get_index_at(pos, _inputs)
+
+
+func _get_output_index_at(pos: int) -> int:
+	return _get_index_at(pos, _outputs)
+
+
+func _get_index_at(pos: int, dict: Dictionary) -> int:
+	if pos >= _slots.size():
+		return -1
+	
+	var i = 0
+	for idx in dict.keys():
+		if dict[idx]["hidden"]:
+			continue
+		if i == pos:
+			return idx
+		i += 1
+	
+	return -1
+
+
+# Opposite of _get_input_index_at, takes an input index and return its UI 
+# slot position.
+# returns -1 if the input index is invalid or not visible
+func _get_input_index_pos(idx: int) -> int:
+	return _get_index_pos(idx, _inputs)
+
+
+func _get_output_index_pos(idx: int) -> int:
+	return _get_index_pos(idx, _outputs)
+
+
+func _get_index_pos(idx: int, dict: Dictionary) -> int:
+	if not dict.has(idx) or dict[idx]["hidden"]:
+		return -1
+	
+	for i in _slots.size():
+		if _get_index_at(i, dict) == idx:
+			return i
+	
+	return -1
+
+
+
 func _on_resize_request(new_size) -> void:
 	rect_size = new_size
 	if resizable:
@@ -523,21 +606,14 @@ func _on_close_request() -> void:
 	emit_signal("delete_node", self)
 
 
-# When the nodes connections changes, this method checks for all the input slots 
-# and hides everything that's not a label if something is connected to the
-# associated slot.
-#
-# For types like Numbers, Strings, Vectors or Boolean, it's possible to set a
-# value on the node itself, but if something is connected to the slot, it takes
-# priority over the local value. Hiding the default GUI should avoid some 
-# confusion by not displaying a value that's not used.
 func _on_connection_changed() -> void:
-	# Hides the default gui (except for the name) if something is connected to 
-	# the given slot
-	for i in _inputs.size():
+	# Notify the UI slot component about the new connection status. Some 
+	# components hides their icon and label depending on this.
+	for i in _slots.size():
 		var connected = is_input_connected(i)
-		var component = _hboxes[i].get_node("Input")
-		component.notify_connection_changed(connected)
+		var component = _slots[i].get_node("Input")
+		if component:
+			component.notify_connection_changed(connected)
 
 	_update_slots_types()
 	_redraw()

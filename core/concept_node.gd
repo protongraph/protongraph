@@ -6,10 +6,11 @@ signal cache_cleared
 
 
 var unique_id: String
+var description: String
 var ignore := false
 var node_pool: NodePool # Injected from template
 var thread_pool: ThreadPool # Injected from template
-var output := []
+var output := {}
 
 
 var _generation_requested := false # True after calling prepare_output once
@@ -22,13 +23,44 @@ func _enter_tree() -> void:
 	Signals.safe_connect(self, "gui_value_changed", self, "_on_value_changed")
 
 
-func is_output_ready() -> bool:
-	return _output_ready
+# Because we're saving the tree to a json file, we need each node to explicitely
+# specify the data to save. It's also the node responsability to restore it
+# when we load the file. Most nodes won't need this but it could be useful for
+# nodes that allows the user to type in raw values directly if nothing is
+# connected to a slot.
+func export_custom_data() -> Dictionary:
+	return {}
 
 
-# Override this function to return true if the node marks the end of a graphnode
-func is_final_output_node() -> bool:
-	return false
+# This method get exactly what it exported from the export_custom_data method.
+# Use it to manually restore the previous node state.
+func restore_custom_data(_data: Dictionary) -> void:
+	pass
+
+
+# Override this method when exposing a variable to the inspector. It's up to
+# you to decide what to do with the user defined value.
+func set_value_from_inspector(_name: String, _value) -> void:
+	pass
+
+
+func register_to_garbage_collection(resource):
+	get_parent().register_to_garbage_collection(resource)
+
+
+# Clears the cache and the cache of every single nodes right to this one.
+func reset() -> void:
+	clear_cache()
+	if get_parent():
+		for node in get_parent().get_all_right_nodes(self):
+			node.reset()
+
+
+func clear_cache() -> void:
+	_clear_cache()
+	_reset_output()
+	_output_ready = false
+	emit_signal("cache_cleared")
 
 
 # Returns the associated data to the given slot index. It either comes from a
@@ -133,48 +165,13 @@ func get_exposed_variables() -> Array:
 	return []
 
 
-func get_editor_input(_val):
-	return null
+func is_output_ready() -> bool:
+	return _output_ready
 
 
-# Clears the cache and the cache of every single nodes right to this one.
-func reset() -> void:
-	clear_cache()
-	if get_parent():
-		for node in get_parent().get_all_right_nodes(self):
-			node.reset()
-
-
-func clear_cache() -> void:
-	_clear_cache()
-	_reset_output()
-	_output_ready = false
-	emit_signal("cache_cleared")
-
-
-# Because we're saving the tree to a json file, we need each node to explicitely
-# specify the data to save. It's also the node responsability to restore it
-# when we load the file. Most nodes won't need this but it could be useful for
-# nodes that allows the user to type in raw values directly if nothing is
-# connected to a slot.
-func export_custom_data() -> Dictionary:
-	return {}
-
-
-# This method get exactly what it exported from the export_custom_data method.
-# Use it to manually restore the previous node state.
-func restore_custom_data(_data: Dictionary) -> void:
-	pass
-
-
-# Override this method when exposing a variable to the inspector. It's up to
-# you to decide what to do with the user defined value.
-func set_value_from_inspector(_name: String, _value) -> void:
-	pass
-
-
-func register_to_garbage_collection(resource):
-	get_parent().register_to_garbage_collection(resource)
+# Override this function to return true if the node marks the end of a graphnode
+func is_final_output_node() -> bool:
+	return false
 
 
 # Overide this function in the derived classes to return something usable.
@@ -199,11 +196,16 @@ func _reset_output():
 		elif slot is Node:
 			slot.queue_free()
 
-	output = []
-	for i in _outputs.size():
-		output.append([])
+	output = {}
+	for idx in _outputs.keys():
+		output[idx] = []
 
 
 func _on_value_changed(_value, _idx) -> void:
 	reset()
+	emit_signal("node_changed", self, true)
+
+
+func _on_connection_changed() -> void:
+	._on_connection_changed()
 	emit_signal("node_changed", self, true)

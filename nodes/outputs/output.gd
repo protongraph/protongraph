@@ -1,9 +1,4 @@
-tool
 extends ConceptNode
-
-"""
-This node marks the end of every ConceptNodeTemplate. A template can have multiple outputs.
-"""
 
 
 func _init() -> void:
@@ -17,7 +12,7 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	output.append(get_input(0))	# Special case, don't specify the index here
+	output[0] = get_input(0)
 
 
 func reset() -> void:

@@ -20,46 +20,41 @@
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
-[sub_resource type="InputEventKey" id=12]
-shift = true
-scancode = 65
-
-[sub_resource type="ShortCut" id=13]
-shortcut = SubResource( 12 )
-
-[sub_resource type="InputEventKey" id=2]
-control = true
-command = true
-scancode = 83
+[sub_resource type="InputEventAction" id=2]
+action = "editor_add_node"
 
 [sub_resource type="ShortCut" id=3]
 shortcut = SubResource( 2 )
 
-[sub_resource type="InputEventKey" id=4]
-control = true
-command = true
-scancode = 82
+[sub_resource type="InputEventAction" id=4]
+action = "editor_save_template"
 
 [sub_resource type="ShortCut" id=5]
 shortcut = SubResource( 4 )
 
-[sub_resource type="InputEventKey" id=8]
-scancode = 84
-
-[sub_resource type="ShortCut" id=9]
-shortcut = SubResource( 8 )
-
-[sub_resource type="InputEventKey" id=6]
-scancode = 78
+[sub_resource type="InputEventAction" id=6]
+action = "editor_force_generation"
 
 [sub_resource type="ShortCut" id=7]
 shortcut = SubResource( 6 )
 
-[sub_resource type="InputEventKey" id=10]
-scancode = 86
+[sub_resource type="InputEventAction" id=8]
+action = "editor_toggle_sidebar"
+
+[sub_resource type="ShortCut" id=9]
+shortcut = SubResource( 8 )
+
+[sub_resource type="InputEventAction" id=10]
+action = "editor_toggle_inspector"
 
 [sub_resource type="ShortCut" id=11]
 shortcut = SubResource( 10 )
+
+[sub_resource type="InputEventAction" id=12]
+action = "editor_toggle_viewport"
+
+[sub_resource type="ShortCut" id=13]
+shortcut = SubResource( 12 )
 
 [node name="GraphEditorView" type="PanelContainer"]
 anchor_right = 1.0
@@ -90,7 +85,7 @@ min_size_x = true
 margin_right = 28.0
 margin_bottom = 29.0
 hint_tooltip = "Create a new node. You can right click anywhere in the graph editor to bring up this menu."
-shortcut = SubResource( 13 )
+shortcut = SubResource( 3 )
 icon = ExtResource( 14 )
 
 [node name="Save" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
@@ -98,7 +93,7 @@ margin_top = 37.0
 margin_right = 28.0
 margin_bottom = 66.0
 hint_tooltip = "Save the edited template to disk"
-shortcut = SubResource( 3 )
+shortcut = SubResource( 5 )
 icon = ExtResource( 7 )
 
 [node name="RunGeneration" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
@@ -106,7 +101,7 @@ margin_top = 74.0
 margin_right = 28.0
 margin_bottom = 103.0
 hint_tooltip = "Force the editor to regenerate the final result. This should happen automatically when the template is updated."
-shortcut = SubResource( 5 )
+shortcut = SubResource( 7 )
 icon = ExtResource( 6 )
 script = ExtResource( 9 )
 normal_icon = ExtResource( 6 )
@@ -132,7 +127,7 @@ margin_top = 159.0
 margin_right = 28.0
 margin_bottom = 188.0
 hint_tooltip = "Enable or disable the node sidebar."
-shortcut = SubResource( 7 )
+shortcut = SubResource( 11 )
 icon = ExtResource( 16 )
 script = ExtResource( 11 )
 target = NodePath("../../HSplitContainer/Inspector")
@@ -142,7 +137,7 @@ margin_top = 196.0
 margin_right = 28.0
 margin_bottom = 225.0
 hint_tooltip = "Enable or disable the node sidebar."
-shortcut = SubResource( 11 )
+shortcut = SubResource( 13 )
 icon = ExtResource( 17 )
 script = ExtResource( 11 )
 target = NodePath("../../HSplitContainer/HSplitContainer/Control")

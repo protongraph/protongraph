@@ -81,10 +81,7 @@ func regenerate_graphnodes_style() -> void:
 
 	for child in get_children():
 		if child is ConceptNodeUi:
-			if child.requires_full_gui_rebuild:
-				child.regenerate_default_ui()
-			else:
-				child._generate_default_gui_style()
+			child._generate_default_gui_style()
 	_ui_style_ready = true
 
 

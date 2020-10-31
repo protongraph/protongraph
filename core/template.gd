@@ -2,12 +2,9 @@ extends CustomGraphEdit
 class_name Template
 
 
-signal output_ready
 signal simulation_started
 signal simulation_outdated
 signal simulation_completed
-signal thread_completed
-signal json_ready
 signal exposed_variables_updated
 signal template_saved
 signal template_loaded
@@ -16,6 +13,12 @@ signal force_import
 signal force_export
 signal input_created
 signal input_deleted
+
+# warning-ignore:unused_signal
+signal thread_completed	# deferred call
+
+# warning-ignore:unused_signal
+signal json_ready	# deferred call
 
 
 var root: Spatial
@@ -43,7 +46,6 @@ var _loaded_template_path: String
 
 
 func _init() -> void:
-	Signals.safe_connect(self, "output_ready", self, "_on_output_ready")
 	Signals.safe_connect(self, "thread_completed", self, "_on_thread_completed")
 	Signals.safe_connect(self, "node_created", self, "_on_node_created")
 	Signals.safe_connect(self, "node_deleted", self, "_on_node_deleted")
@@ -58,6 +60,111 @@ func _init() -> void:
 func _exit_tree() -> void:
 	if _thread and _thread.is_active():
 		_thread.wait_to_finish()
+
+
+# Opens a cgraph file, reads its contents and recreate a node graph from there
+func load_from_file(path: String, soft_load := false) -> void:
+	if not path or path == "":
+		return
+
+	paused = true
+	_template_loaded = false
+	if soft_load:	# Don't clear, simply refresh the graph edit UI without running the sim
+		clear_editor()
+	else:
+		clear()
+
+	# Open the file and read the contents
+	var file = File.new()
+	file.open(path, File.READ)
+	var json = JSON.parse(file.get_as_text())
+	if not json or not json.result:
+		print("Failed to parse the template file")
+		return	# Template file is either empty or not a valid Json. Ignore
+
+	# Abort if the file doesn't have node data
+	var graph: Dictionary = DictUtil.fix_types(json.result)
+	if not graph.has("nodes"):
+		return
+
+	# For each node found in the template file
+	for node_data in graph["nodes"]:
+		if node_data.has("type"):
+			var type = node_data["type"]
+			create_node(type, node_data, false)
+
+	for c in graph["connections"]:
+		# TODO: convert the to/from ports stored in file to actual port
+		connect_node(c["from"], c["from_port"], c["to"], c["to_port"])
+		var n = get_node(c["to"])
+		if not n:
+			print("Can't find node ", c["to"])
+			continue
+		n.emit_signal("connection_changed")
+
+	if graph.has("inspector"):
+		inspector.set_all_values(graph["inspector"])
+		update_exposed_variables()
+
+	if graph.has("editor"): # Everything related to how the editor looks like
+		var editor = graph["editor"]
+
+		# Restore previous scroll offset
+		if editor.has("offset_x") and editor.has("offset_y"):
+			var new_offset = Vector2(editor["offset_x"], editor["offset_y"])
+			call_deferred("set_scroll_ofs", new_offset) # Do that on next frame or be ignored
+
+		# TODO
+		# Restore previous camera position and zoom level
+		# Restore panels width and height
+
+	_loaded_template_path = path
+	_template_loaded = true
+	paused = false
+	emit_signal("template_loaded")
+
+
+func save_to_file(path: String) -> void:
+	var graph := {}
+	# TODO : Convert the connection_list to an ID connection list
+	graph["editor"] = {
+		"offset_x": scroll_offset.x,
+		"offset_y": scroll_offset.y
+	}
+	graph["inspector"] = inspector.get_all_values(true)
+	graph["connections"] = get_connection_list()
+	graph["nodes"] = []
+
+	for c in get_children():
+		if c is ConceptNode:
+			var node = {}
+			node["name"] = c.get_name()
+			node["type"] = c.unique_id
+			node["editor"] = c.export_editor_data()
+			node["data"] = c.export_custom_data()
+			graph["nodes"].append(node)
+
+	if not _save_thread:
+		_save_thread = Thread.new()
+
+	if _save_thread.is_active():
+		_save_queued = true
+		return
+
+	_save_thread.start(self, "_beautify_json", to_json(graph))
+
+	yield(self, "json_ready")
+
+	var json = _save_thread.wait_to_finish()
+	var file = File.new()
+	file.open(path, File.WRITE)
+	file.store_string(json)
+	file.close()
+
+	if _save_queued:
+		_save_queued = false
+		save_to_file(path)
+	emit_signal("template_saved")
 
 
 # Remove all children and connections
@@ -157,16 +264,16 @@ func register_proxy(node, name) -> void:
 	emit_signal("proxy_list_updated")
 
 
+func deregister_proxy(node) -> void:
+	_proxy_nodes.erase(node)
+	emit_signal("proxy_list_updated")
+
+
 func get_proxy(name) -> ConceptNode:
 	for node in _proxy_nodes.keys():
 		if _proxy_nodes[node] == name:
 			return node
 	return null
-
-
-func deregister_proxy(node) -> void:
-	_proxy_nodes.erase(node)
-	emit_signal("proxy_list_updated")
 
 
 func register_input_object(input: Spatial, _graphnode: ConceptNode) -> void:
@@ -182,29 +289,6 @@ func get_value_from_inspector(name: String):
 	return inspector.get_value(name)
 
 
-# Clears the cache of every single node in the template. Useful when only the
-# inputs changes and node the whole graph structure itself. Next time
-# get_output is called, every nodes will recalculate their output.
-func clear_simulation_cache() -> void:
-	for node in get_children():
-		if node is ConceptNode:
-			node.clear_cache()
-	run_garbage_collection()
-	_clear_cache_on_next_run = false
-
-
-# This is the exposed API to run the simulation but doesn't run it immediately
-# in case it get called multiple times in a very short interval (moving or
-# resizing an input can cause this).
-# Actual simulation happens in _run_generation
-func generate(force_full_simulation := false) -> void:
-	if paused:
-		return
-	_timer.start(Settings.get_setting(Settings.GENERATION_DELAY) / 1000.0)
-	_clear_cache_on_next_run = _clear_cache_on_next_run or force_full_simulation
-	emit_signal("simulation_started")
-
-
 # Returns the final result generated by the whole graph
 func get_output() -> Array:
 	return _output
@@ -216,111 +300,6 @@ func get_relative_path(path) -> String:
 
 func get_absolute_path(path) -> String:
 	return PathUtil.get_absolute_path(path, _loaded_template_path)
-
-
-# Opens a cgraph file, reads its contents and recreate a node graph from there
-func load_from_file(path: String, soft_load := false) -> void:
-	if not path or path == "":
-		return
-
-	paused = true
-	_template_loaded = false
-	if soft_load:	# Don't clear, simply refresh the graph edit UI without running the sim
-		clear_editor()
-	else:
-		clear()
-
-	# Open the file and read the contents
-	var file = File.new()
-	file.open(path, File.READ)
-	var json = JSON.parse(file.get_as_text())
-	if not json or not json.result:
-		print("Failed to parse the template file")
-		return	# Template file is either empty or not a valid Json. Ignore
-
-	# Abort if the file doesn't have node data
-	var graph: Dictionary = json.result
-	if not graph.has("nodes"):
-		return
-
-	# For each node found in the template file
-	for node_data in graph["nodes"]:
-		if node_data.has("type"):
-			var type = node_data["type"]
-			create_node(type, node_data, false)
-
-	for c in graph["connections"]:
-		# TODO: convert the to/from ports stored in file to actual port
-		connect_node(c["from"], c["from_port"], c["to"], c["to_port"])
-		var n = get_node(c["to"])
-		if not n:
-			print("Can't find node ", c["to"])
-			continue
-		n.emit_signal("connection_changed")
-
-	if graph.has("inspector"):
-		inspector.set_all_values(graph["inspector"])
-		update_exposed_variables()
-
-	if graph.has("editor"): # Everything related to how the editor looks like
-		var editor = graph["editor"]
-
-		# Restore previous scroll offset
-		if editor.has("offset_x") and editor.has("offset_y"):
-			var new_offset = Vector2(editor["offset_x"], editor["offset_y"])
-			call_deferred("set_scroll_ofs", new_offset) # Do that on next frame or be ignored
-
-		# TODO
-		# Restore previous camera position and zoom level
-		# Restore panels width and height
-
-	_loaded_template_path = path
-	_template_loaded = true
-	paused = false
-	emit_signal("template_loaded")
-
-
-func save_to_file(path: String) -> void:
-	var graph := {}
-	# TODO : Convert the connection_list to an ID connection list
-	graph["editor"] = {
-		"offset_x": scroll_offset.x,
-		"offset_y": scroll_offset.y
-	}
-	graph["inspector"] = inspector.get_all_values(true)
-	graph["connections"] = get_connection_list()
-	graph["nodes"] = []
-
-	for c in get_children():
-		if c is ConceptNode:
-			var node = {}
-			node["name"] = c.get_name()
-			node["type"] = c.unique_id
-			node["editor"] = c.export_editor_data()
-			node["data"] = c.export_custom_data()
-			graph["nodes"].append(node)
-
-	if not _save_thread:
-		_save_thread = Thread.new()
-
-	if _save_thread.is_active():
-		_save_queued = true
-		return
-
-	_save_thread.start(self, "_beautify_json", to_json(graph))
-
-	yield(self, "json_ready")
-
-	var json = _save_thread.wait_to_finish()
-	var file = File.new()
-	file.open(path, File.WRITE)
-	file.store_string(json)
-	file.close()
-
-	if _save_queued:
-		_save_queued = false
-		save_to_file(path)
-	emit_signal("template_saved")
 
 
 # Manual garbage collection handling. Before each generation, we clean
@@ -345,6 +324,30 @@ func run_garbage_collection():
 			elif resource is Object:
 				resource.call_deferred("free")
 	_registered_resources = []
+
+
+# Clears the cache of every single node in the template. Useful when only the
+# inputs changes and node the whole graph structure itself. Next time
+# get_output is called, every nodes will recalculate their output.
+func clear_simulation_cache() -> void:
+	for node in get_children():
+		if node is ConceptNode:
+			node.clear_cache()
+	run_garbage_collection()
+	_clear_cache_on_next_run = false
+
+
+# This is the exposed API to run the simulation but doesn't run it immediately
+# in case it get called multiple times in a very short interval (moving or
+# resizing an input can cause this).
+# Actual simulation happens in _run_generation
+func generate(force_full_simulation := false) -> void:
+	if paused:
+		return
+	
+	_timer.start(Settings.get_setting(Settings.GENERATION_DELAY) / 1000.0)
+	_clear_cache_on_next_run = _clear_cache_on_next_run or force_full_simulation
+	emit_signal("simulation_started")
 
 
 # Makes sure there's no active thread running before starting a new generation.
@@ -375,6 +378,7 @@ func _run_generation_threaded(_var = null) -> void:
 		if _template_loaded:
 			print("Error : No output node found in ", get_parent().get_name())
 			call_deferred("emit_signal", "thread_completed")
+			return
 
 	_output = []
 	var node_output
@@ -435,10 +439,11 @@ func _on_node_changed(_node := null, replay_simulation := false) -> void:
 	# Prevent regeneration hell while loading the template from file
 	if not _template_loaded:
 		return
-
+	
 	emit_signal("graph_changed")
 	if replay_simulation:
 		emit_signal("simulation_outdated")
+	
 	update()
 
 

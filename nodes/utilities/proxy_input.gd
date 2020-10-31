@@ -19,7 +19,6 @@ func _exit_tree() -> void:
 
 
 func _generate_outputs() -> void:
-	output.resize(1) # Little trick to avoid showing an output socket but still have the output array the valid size
 	output[0] = get_input(0)
 
 
