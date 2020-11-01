@@ -38,16 +38,18 @@ func _on_default_gui_ready() -> void:
 
 func _create_text_container() -> void:
 	if _print_area:
-		remove_child(_print_area)
+		if has_node(_print_area.name):
+			remove_child(_print_area)
 		_print_area.queue_free()
 
 	_print_area = load("res://nodes/outputs/print_area.tscn").instance()
 	_label = _print_area.get_node("PanelContainer/Label")
 	add_child(_print_area)
-	connect("resize_request", self, "_on_resize")
+	Signals.safe_connect(self, "resize_request", self, "_on_resize")
 	update()
 
 
 # Graphnode doesn't support childnodes with the expand flag so we fake it here
 func _on_resize(new_size: Vector2) -> void:
 	_print_area.rect_min_size.y = max(new_size.y - 60, 32 * EditorUtil.get_editor_scale())
+

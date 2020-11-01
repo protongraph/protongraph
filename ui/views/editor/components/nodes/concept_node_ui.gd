@@ -18,6 +18,7 @@ var _inputs := {}
 var _outputs := {}
 var _input_components := {}
 var _output_components := {}
+var _rows := []
 
 # var _slots := []	# Stores the hboxes for the components actually displ
 var _resize_timer: Timer
@@ -77,7 +78,7 @@ func remove_input(idx: int) -> bool:
 		return false
 
 	if is_input_connected(idx):
-		get_parent()._disconnect_input(self, get_input_index_pos(idx))
+		get_parent().disconnect_input(self, get_input_index_pos(idx))
 
 	return true
 
@@ -87,7 +88,7 @@ func remove_output(idx: int) -> bool:
 		return false
 
 	if is_input_connected(idx):
-		get_parent()._disconnect_input(self, get_output_index_at(idx))
+		get_parent().disconnect_input(self, get_output_index_pos(idx))
 
 	return true
 
@@ -196,13 +197,16 @@ func get_inputs_count() -> int:
 	return _inputs.size()
 
 
-func get_connected_input_type(idx) -> int:
+func get_connected_input_type(idx: int) -> int:
 	var input_type = -1
 	if is_input_connected(idx):
-		var inputs: Array = get_parent().get_left_nodes(self, get_input_index_pos(idx))
+		var slot_pos = get_input_index_pos(idx)
+		var inputs: Array = get_parent().get_left_nodes(self, slot_pos)
 		if inputs.size() > 0:
 			var data = inputs[0]
-			input_type = data["node"]._outputs[data["slot"]]["type"]
+			var input_node = data["node"]
+			var output_idx = input_node.get_output_index_at(data["slot"])
+			input_type = input_node._outputs[output_idx]["type"]
 
 	return input_type
 
@@ -286,7 +290,7 @@ func has_custom_gui() -> bool:
 # match the slot physical position among other other slots.
 # Returns -1 if the input index wasn't found
 func get_input_index_at(pos: int) -> int:
-	if pos == -1 or pos >= get_child_count():
+	if pos == -1 or pos >= _rows.size():
 		return -1
 	
 	var row = get_child(pos)
@@ -298,7 +302,7 @@ func get_input_index_at(pos: int) -> int:
 
 
 func get_output_index_at(pos: int) -> int:
-	if pos >= get_child_count():
+	if pos >= _rows.size():
 		return -1
 	
 	var row = get_child(pos)
@@ -312,8 +316,8 @@ func get_output_index_at(pos: int) -> int:
 # slot position.
 # returns -1 if the input index is invalid or not visible
 func get_input_index_pos(idx: int) -> int:
-	for i in get_child_count():
-		var row = get_child(i)
+	for i in _rows.size():
+		var row = _rows[i]
 		if not row.has_node("Input"):
 			continue
 		if row.get_node("Input").index == idx:
@@ -322,8 +326,8 @@ func get_input_index_pos(idx: int) -> int:
 
 
 func get_output_index_pos(idx: int) -> int:
-	for i in get_child_count():
-		var row = get_child(i)
+	for i in _rows.size():
+		var row = _rows[i]
 		if not row.has_node("Output"):
 			continue
 		if row.get_node("Output").index == idx:
@@ -380,7 +384,7 @@ func _is_output_mirrored(output_index: int) -> bool:
 # the GraphNode.set_slot method accordingly with the proper parameters. This
 # makes it easier syntax wise on the derived node and makes it more readable.
 func _setup_slots() -> void:
-	for i in get_child_count():
+	for i in _rows.size():
 		var has_input := false
 		var input_type := 0
 		var input_color := Color(0)
@@ -389,7 +393,7 @@ func _setup_slots() -> void:
 		var output_color := Color(0)
 		var input_icon = null
 		var output_icon = null
-		var row = get_child(i)
+		var row = _rows[i]
 		
 		if row.has_node("Input"):
 			has_input = true
@@ -420,12 +424,13 @@ func _setup_slots() -> void:
 
 # Clear all child controls
 func _clear_gui() -> void:
-	_input_components = {}
-	_output_components = {}
-	
-	for child in get_children():
+	for child in _rows:
 		remove_child(child)
 		child.queue_free()
+		
+	_input_components = {}
+	_output_components = {}
+	_rows = []
 
 
 func _generate_default_gui_style() -> void:
@@ -517,6 +522,7 @@ func _generate_default_gui() -> void:
 		
 		if hbox.get_child_count() > 0:
 			add_child(hbox)
+			_rows.append(hbox)
 
 	_on_connection_changed()
 	_on_default_gui_ready()
@@ -612,12 +618,16 @@ func _update_slots_types() -> void:
 				var input_type = -1
 
 				for data in inputs:
-					if not data["node"]:
+					var input_node = data["node"]
+					if not input_node:
+						continue
+					var output_idx = input_node.get_output_index_at(data["slot"])
+					if output_idx == -1:
 						continue
 					if input_type == -1:
-						input_type = data["node"]._outputs[data["slot"]]["type"]
+						input_type = input_node._outputs[output_idx]["type"]
 					else:
-						if data["node"]._outputs[data["slot"]]["type"] != input_type:
+						if input_node._outputs[output_idx]["type"] != input_type:
 							input_type = -2
 				if input_type >= 0:
 					type = input_type
