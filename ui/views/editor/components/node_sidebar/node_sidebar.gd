@@ -44,10 +44,12 @@ func _rebuild_ui() -> void:
 		var name = slot["name"]
 		var type = slot["type"]
 		var opts = slot["options"]
+		var hidden = slot["hidden"]
 		var value = _current._get_default_gui_value(idx)
 		var ui: SidebarProperty = preload("property.tscn").instance()
 		_inputs.add_child(ui)
 		ui.create_input(name, type, value, idx, opts)
+		ui.set_property_visibility(hidden)
 		Signals.safe_connect(ui, "value_changed", self, "_on_sidebar_value_changed")
 		Signals.safe_connect(ui, "property_visibility_changed", self, "_on_input_property_visibility_changed", [idx])
 
@@ -56,9 +58,11 @@ func _rebuild_ui() -> void:
 		var slot: Dictionary = _current._outputs[idx]
 		var name = slot["name"]
 		var type = slot["type"]
+		var hidden = slot["hidden"]
 		var ui: SidebarProperty = preload("property.tscn").instance()
 		_outputs.add_child(ui)
 		ui.create_generic(name, type)
+		ui.set_property_visibility(hidden)
 		Signals.safe_connect(ui, "property_visibility_changed", self, "_on_output_property_visibility_changed", [idx])
 
 

@@ -10,6 +10,7 @@ var _slot_index: int
 var _ui
 
 onready var _root: Control = $Component
+onready var _button: Button = $VBoxContainer/VisibilityButton
 
 
 func create_input(name: String, type: int, value, idx: int, opts := {}) -> void:
@@ -51,6 +52,11 @@ func set_value(value) -> void:
 
 func get_index() -> int:
 	return _slot_index
+
+
+func set_property_visibility(hidden: bool) -> void:
+	_button.pressed = !hidden
+	_on_visibility_button_toggled(_button.pressed)
 
 
 func _sanitize_name(name: String, type: int) -> String:

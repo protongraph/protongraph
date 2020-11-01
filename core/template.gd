@@ -207,6 +207,8 @@ func create_node(type: String, data := {}, notify := true) -> ConceptNode:
 	if data.has("data"):
 		new_node.restore_custom_data(data["data"])
 	
+	new_node.regenerate_default_ui()
+	
 	if notify:
 		emit_signal("graph_changed")
 		emit_signal("simulation_outdated")

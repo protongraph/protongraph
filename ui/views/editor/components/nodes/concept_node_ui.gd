@@ -20,7 +20,7 @@ var _input_components := {}
 var _output_components := {}
 
 # var _slots := []	# Stores the hboxes for the components actually displ
-var _resize_timer := Timer.new()
+var _resize_timer: Timer
 var _initialized := false	# True when all enter_tree initialization is done
 
 
@@ -30,10 +30,7 @@ func _enter_tree() -> void:
 
 	_generate_default_gui()
 	_setup_slots()
-
-	_resize_timer.one_shot = true
-	_resize_timer.autostart = false
-	add_child(_resize_timer)
+	_setup_resize_timer()
 
 	_connect_signals()
 	_initialized = true
@@ -150,12 +147,6 @@ func restore_editor_data(data: Dictionary) -> void:
 		rect_size.y = data["rect_y"] * editor_scale
 
 	emit_signal("resize_request", rect_size)
-
-	# For backward compatibility with pre 0.7
-	if data.has("slots"):
-		for idx in data["slots"].keys():
-			var i_idx = DictUtil.format_value(idx)
-			set_default_gui_value(i_idx, data["slots"][idx])
 	
 	if data.has("inputs"):
 		for idx in data["inputs"].keys():
@@ -172,6 +163,12 @@ func restore_editor_data(data: Dictionary) -> void:
 			idx = DictUtil.format_value(idx)
 			if output.has("hidden"):
 				_outputs[idx]["hidden"] = output["hidden"]
+	
+	# For backward compatibility with pre 0.7
+	if data.has("slots"):
+		for idx in data["slots"].keys():
+			var i_idx = DictUtil.format_value(idx)
+			set_default_gui_value(i_idx, data["slots"][idx])
 	
 	_on_editor_data_restored()
 
@@ -581,6 +578,14 @@ func _connect_signals() -> void:
 	Signals.safe_connect(_resize_timer, "timeout", self, "_on_resize_timeout")
 
 
+func _setup_resize_timer() -> void:
+	if not _resize_timer:
+		_resize_timer = Timer.new()
+		_resize_timer.one_shot = true
+		_resize_timer.autostart = false
+		add_child(_resize_timer)
+
+
 func _update_slots_types() -> void:
 	# Change the slots type if the mirror option is enabled
 	var slots_types_updated = false
@@ -623,8 +628,11 @@ func _update_slots_types() -> void:
 
 func _on_resize_request(new_size) -> void:
 	rect_size = new_size
-	if resizable:
-		_resize_timer.start(2.0)
+	if not resizable:
+		return
+	if not _resize_timer:
+		_setup_resize_timer()
+	_resize_timer.start(2.0)
 
 
 func _on_resize_timeout() -> void:
