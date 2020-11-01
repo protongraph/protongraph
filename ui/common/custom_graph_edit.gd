@@ -116,6 +116,24 @@ func disconnect_input(node: GraphNode, idx: int) -> void:
 			return
 
 
+func backup_connections_for(node: ConceptNodeUi) -> Array:
+	var res = []
+	for c in get_custom_connection_list():
+		if c["from"] == node.name or c["to"] == node.name:
+			res.append(c)
+	return res
+
+
+func restore_connections_for(node: ConceptNodeUi, connections: Array) -> void:
+	for c in connections:
+		var from = get_node(c["from"])
+		var to = get_node(c["to"])
+		var from_port = from.get_output_index_pos(c["from_port"])
+		var to_port = to.get_input_index_pos(c["to_port"])
+		if from_port != -1 and to_port != -1:
+			connect_node(c["from"], from_port, c["to"], to_port)
+
+
 func get_selected_nodes() -> Array:
 	var nodes = []
 	for c in get_children():

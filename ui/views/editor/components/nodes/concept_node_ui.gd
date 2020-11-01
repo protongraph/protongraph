@@ -252,10 +252,18 @@ func set_default_gui_value(idx: int, value) -> void:
 # is generated under a spatial, which make accessing the current theme
 # impossible and breaks OptionButtons.
 func regenerate_default_ui():
+	var template = get_parent()
+	if not template:
+		return
+	
+	var connections = template.backup_connections_for(self)
+	template.disconnect_active_connections(self)
 	var editor_data = export_editor_data()
 	_generate_default_gui()
 	restore_editor_data(editor_data)
 	_setup_slots()
+	template.restore_connections_for(self, connections)
+	_on_connection_changed()
 
 
 func force_redraw():
@@ -278,7 +286,7 @@ func has_custom_gui() -> bool:
 # match the slot physical position among other other slots.
 # Returns -1 if the input index wasn't found
 func get_input_index_at(pos: int) -> int:
-	if pos >= get_child_count():
+	if pos == -1 or pos >= get_child_count():
 		return -1
 	
 	var row = get_child(pos)
