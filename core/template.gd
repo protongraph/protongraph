@@ -94,13 +94,17 @@ func load_from_file(path: String, soft_load := false) -> void:
 			create_node(type, node_data, false)
 
 	for c in graph["connections"]:
-		# TODO: convert the to/from ports stored in file to actual port
-		connect_node(c["from"], c["from_port"], c["to"], c["to_port"])
-		var n = get_node(c["to"])
-		if not n:
+		var from = get_node(c["from"])
+		var to = get_node(c["to"])
+		if not to:
 			print("Can't find node ", c["to"])
 			continue
-		n.emit_signal("connection_changed")
+		
+		var from_port = from.get_output_index_pos(c["from_port"])
+		var to_port = to.get_input_index_pos(c["to_port"])
+		if from_port != -1 and to_port != -1:
+			connect_node(c["from"], from_port, c["to"], to_port)
+			to.emit_signal("connection_changed")
 
 	if graph.has("inspector"):
 		inspector.set_all_values(graph["inspector"])
@@ -132,7 +136,7 @@ func save_to_file(path: String) -> void:
 		"offset_y": scroll_offset.y
 	}
 	graph["inspector"] = inspector.get_all_values(true)
-	graph["connections"] = get_connection_list()
+	graph["connections"] = get_custom_connection_list()
 	graph["nodes"] = []
 
 	for c in get_children():

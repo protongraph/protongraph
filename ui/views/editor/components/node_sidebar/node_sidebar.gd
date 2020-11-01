@@ -39,24 +39,27 @@ func _rebuild_ui() -> void:
 
 	# Create a new SidebarProperty object for each slots. They rely on the 
 	# safe GraphNodeComponents used by the ConceptNodeUi class.
-	for index in _current._inputs.keys():
-		var slot = _current._inputs[index]
+	for idx in _current._inputs.keys():
+		var slot = _current._inputs[idx]
 		var name = slot["name"]
 		var type = slot["type"]
 		var opts = slot["options"]
-		var value = _current._get_default_gui_value(index)
+		var value = _current._get_default_gui_value(idx)
 		var ui: SidebarProperty = preload("property.tscn").instance()
 		_inputs.add_child(ui)
-		ui.create_input(name, type, value, index, opts)
+		ui.create_input(name, type, value, idx, opts)
 		Signals.safe_connect(ui, "value_changed", self, "_on_sidebar_value_changed")
+		Signals.safe_connect(ui, "property_visibility_changed", self, "_on_input_property_visibility_changed", [idx])
 
 	# Outputs are simpler and only require the name and type.
-	for slot in _current._outputs.values():
+	for idx in _current._outputs.keys():
+		var slot: Dictionary = _current._outputs[idx]
 		var name = slot["name"]
 		var type = slot["type"]
 		var ui: SidebarProperty = preload("property.tscn").instance()
 		_outputs.add_child(ui)
 		ui.create_generic(name, type)
+		Signals.safe_connect(ui, "property_visibility_changed", self, "_on_output_property_visibility_changed", [idx])
 
 
 func _on_node_selected(node) -> void:
@@ -91,3 +94,11 @@ func _on_sidebar_value_changed(value, idx: int) -> void:
 		return # Should not happen
 	
 	_current.set_default_gui_value(idx, value)
+
+
+func _on_input_property_visibility_changed(visible: bool, index: int) -> void:
+	_current.set_input_visibility(index, visible)
+
+
+func _on_output_property_visibility_changed(visible: bool, index: int) -> void:
+	_current.set_output_visibility(index, visible)

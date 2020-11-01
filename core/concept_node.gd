@@ -71,7 +71,8 @@ func get_input(idx: int, default = []) -> Array:
 	if not parent:
 		return default
 
-	var inputs: Array = parent.get_left_nodes(self, idx)
+	var pos = get_input_index_pos(idx)
+	var inputs: Array = parent.get_left_nodes(self, pos)
 	if inputs.size() > 0: # Input source connected, ignore local data
 		var res = []
 		for input in inputs:

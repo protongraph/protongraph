@@ -3,6 +3,7 @@ class_name SidebarProperty
 
 
 signal value_changed
+signal property_visibility_changed
 
 
 var _slot_index: int
@@ -62,3 +63,7 @@ func _sanitize_name(name: String, type: int) -> String:
 
 func _on_value_changed(value) -> void:
 	emit_signal("value_changed", value, _slot_index)
+
+
+func _on_visibility_button_toggled(pressed: bool) -> void:
+	emit_signal("property_visibility_changed", pressed)

@@ -182,6 +182,20 @@ func force_redraw() -> void:
 	scroll_offset.x += 0.001
 
 
+# Same format as get_connection_list() but returns the slot id (defined by
+# set_input and set_output) instead of the slot position.
+func get_custom_connection_list() -> Array:
+	var res := get_connection_list()
+	
+	for c in res:
+		var node_from = get_node(c["from"])
+		var node_to = get_node(c["to"])
+		c["from_port"] = node_from.get_output_index_at(c["from_port"])
+		c["to_port"] = node_to.get_input_index_at(c["to_port"])
+	
+	return res
+
+
 func _setup_gui() -> void:
 	right_disconnects = true
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL

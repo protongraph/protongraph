@@ -34,3 +34,4 @@ margin_right = 24.0
 margin_bottom = 29.0
 toggle_mode = true
 pressed = true
+[connection signal="toggled" from="VBoxContainer/VisibilityButton" to="." method="_on_visibility_button_toggled"]

@@ -18,10 +18,12 @@ static func fix_types(dict: Dictionary) -> Dictionary:
 	var res := {}
 	for key in dict.keys():
 		var new_key = format_value(key)
-		var value = format_value(dict[key])
-		
-		if value is Dictionary:
-			value = fix_types(value)
+		var value
+
+		if dict[key] is Dictionary:
+			value = fix_types(dict[key])
+		else:
+			value = format_value(dict[key])
 
 		res[new_key] = value
 
