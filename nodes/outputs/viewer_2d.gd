@@ -8,6 +8,7 @@ func _init() -> void:
 	description = "Display a preview of a 2D node output"
 
 	set_input(0, "2D Object", DataType.NODE_2D)
+	set_extra(0, Constants.UI_PREVIEW_2D, {"output_index": 0})
 
 
 func _ready() -> void:
@@ -15,7 +16,7 @@ func _ready() -> void:
 
 
 func _generate_outputs() -> void:
-	var input = get_input_single(0)
+	output[0] = get_input_single(0)
 
 
 func reset() -> void:

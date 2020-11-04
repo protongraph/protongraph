@@ -23,3 +23,10 @@ static func get_child_by_name(node : Node, child_name : String) -> Node:
 			return child
 		
 	return null
+
+
+static func remove_children(node: Node, free := true) -> void:
+	for child in node.get_children():
+		node.remove_child(child)
+		if free:
+			child.queue_free()

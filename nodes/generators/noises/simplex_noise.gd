@@ -1,4 +1,3 @@
-tool
 extends ConceptNode
 
 
@@ -18,10 +17,7 @@ func _init() -> void:
 	set_input(4, "Lacunarity", DataType.SCALAR, {"value": 2, "step": 0.01, "max":4, "allow_greater":false})
 	set_input(5, "Curve", DataType.CURVE_FUNC)
 	set_output(0, "Noise", DataType.NOISE)
-
-
-func _ready() -> void:
-	connect("input_changed", self, "_on_input_changed")
+	set_extra(0, Constants.UI_PREVIEW_2D, {"output_index": 0})
 
 
 func _generate_outputs() -> void:

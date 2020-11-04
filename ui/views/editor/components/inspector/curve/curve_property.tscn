@@ -9,10 +9,6 @@
 [ext_resource path="res://ui/views/editor/components/spinbox/styles/progress_bar_bg_middle.tres" type="StyleBox" id=7]
 [ext_resource path="res://ui/views/editor/components/spinbox/styles/progress_bar_fg_middle.tres" type="StyleBox" id=8]
 
-
-
-
-
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.168317, 0.863636 ), 5.13102, -6.66422, 1, 1, Vector2( 0.270627, 0.181818 ), -6.66422, 0.0706293, 1, 1, Vector2( 0.656766, 0.209091 ), 0.0706293, 2.30428, 1, 1, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
@@ -69,6 +65,9 @@ margin_bottom = 174.0
 custom_constants/separation = 0
 
 [node name="MinValue" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+margin_right = 95.0
+margin_bottom = 24.0
 custom_styles/fg = ExtResource( 8 )
 custom_styles/bg = ExtResource( 7 )
 min_value = -1024.0
@@ -80,8 +79,10 @@ spinbox_name = "Min"
 style = 1
 
 [node name="MaxValue" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
 margin_left = 95.0
 margin_right = 190.0
+margin_bottom = 24.0
 custom_styles/fg = ExtResource( 8 )
 custom_styles/bg = ExtResource( 7 )
 min_value = -1024.0
@@ -93,6 +94,7 @@ spinbox_name = "Max"
 style = 1
 
 [node name="BakeResolution" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
 margin_top = 174.0
 margin_right = 190.0
 margin_bottom = 198.0

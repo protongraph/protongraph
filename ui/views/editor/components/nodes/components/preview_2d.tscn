@@ -1,13 +1,11 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://ui/views/editor/components/spinbox/spinbox.tscn" type="PackedScene" id=1]
-[ext_resource path="res://ui/views/editor/components/nodes/previews/preview_2d.gd" type="Script" id=2]
-
-
+[ext_resource path="res://ui/views/editor/components/nodes/components/preview_2d.gd" type="Script" id=2]
 
 [node name="2DPreview" type="VBoxContainer"]
-margin_right = 99.0
-margin_bottom = 20.0
+margin_right = 175.0
+margin_bottom = 37.0
 rect_min_size = Vector2( 170, 0 )
 size_flags_vertical = 0
 script = ExtResource( 2 )

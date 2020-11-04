@@ -3,6 +3,7 @@ class_name ConceptNode
 
 
 signal cache_cleared
+signal output_ready
 
 
 var unique_id: String
@@ -76,25 +77,29 @@ func get_input(idx: int, default = []) -> Array:
 	if inputs.size() > 0: # Input source connected, ignore local data
 		var res = []
 		for input in inputs:
-			var node_output = input["node"].get_output(input["slot"], default)
+			var input_node = input["node"]
+			var output_index = input_node.get_output_index_at(input["slot"])
+			var node_output = input["node"].get_output(output_index, default)
 			if node_output is Array:
 				res += node_output
 			else:
 				res.append(node_output)
 		return res
 
+	# If no source is connected but the node has a custom gui
 	if has_custom_gui():
 		var node_output = _get_input(idx)
 		if node_output == null:
 			return default
 		return node_output
 
-	# If no source is connected, check if it's a base type with a value defined on the node itself
+	# If no source is connected but the node has a gui component attached where
+	# the user can enter a local value
 	var local_value = _get_default_gui_value(idx)
 	if local_value != null:
 		return [local_value]
 
-	return default # Not a base type and no source connected
+	return default # No local value and no source connected
 
 
 # By default, every input and output is an array. This is just a short hand with
@@ -114,8 +119,9 @@ func get_output(idx: int, default := []) -> Array:
 	if not is_output_ready():
 		_generate_outputs()
 		_output_ready = true
+		emit_signal("output_ready")
 
-	if output.size() < idx + 1:
+	if not output.has(idx):
 		return default
 
 	var res = output[idx]
@@ -209,4 +215,5 @@ func _on_value_changed(_value, _idx) -> void:
 
 func _on_connection_changed() -> void:
 	._on_connection_changed()
+	reset()
 	emit_signal("node_changed", self, true)

@@ -2,23 +2,23 @@ extends Object
 class_name Noise
 
 
-var noise: Noise
+var noise
 var curve: Curve
 
 
-func get_noise_2d(x: float, y: float) -> float:
+func get_noise_2d(_x: float, _y: float) -> float:
 	return 0.0
 
 
-func get_noise_2dv(v: Vector2) -> float:
+func get_noise_2dv(_v: Vector2) -> float:
 	return 0.0
 
 
-func get_noise_3d(x: float, y: float, z: float) -> float:
+func get_noise_3d(_x: float, _y: float, _z: float) -> float:
 	return 0.0
 
 
-func get_noise_3dv(v: Vector3) -> float:
+func get_noise_3dv(_v: Vector3) -> float:
 	return 0.0
 
 

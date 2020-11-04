@@ -16,12 +16,12 @@ var template_path: String # Sometimes needed to get relative paths.
 
 var _inputs := {}
 var _outputs := {}
-var _input_components := {}
-var _output_components := {}
-var _rows := []
+var _extras := {}
+var _rows := [] # Stores the hboxes for the visible components
 
-# var _slots := []	# Stores the hboxes for the components actually displ
 var _resize_timer: Timer
+var _2d_preview_index := -1
+var _2d_preview: Control
 var _initialized := false	# True when all enter_tree initialization is done
 
 
@@ -48,7 +48,8 @@ func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void
 		"driver": -1,
 		"linked": [],
 		"multi": false,
-		"hidden": false
+		"hidden": false,
+		"ui": null
 	}
 
 
@@ -57,7 +58,17 @@ func set_output(idx: int, name: String, type: int, opts: Dictionary = {}) -> voi
 		"name": name,
 		"type": type,
 		"options": opts,
-		"hidden": false
+		"hidden": false,
+		"ui": null
+	}
+
+
+func set_extra(idx: int, type: int, opts := {}) -> void:
+	_extras[idx] = {
+		"type": type,
+		"options": opts,
+		"hidden": false,
+		"ui": null
 	}
 
 
@@ -70,6 +81,12 @@ func set_input_visibility(idx: int, is_visible: bool) -> void:
 func set_output_visibility(idx: int, is_visible: bool) -> void:
 	if _outputs.has(idx):
 		_outputs[idx]["hidden"] = !is_visible
+		regenerate_default_ui()
+
+
+func set_extra_visibility(idx: int, is_visible: bool) -> void:
+	if _extras.has(idx):
+		_extras[idx]["hidden"] = !is_visible
 		regenerate_default_ui()
 
 
@@ -132,11 +149,24 @@ func export_editor_data() -> Dictionary:
 		if _outputs[idx]["hidden"]:
 			data["outputs"][idx] = {}
 			data["outputs"][idx]["hidden"] = true
+	
+	data["extras"] = {}
+	for idx in _extras.keys():
+		if _extras[idx]["hidden"]:
+			data["extras"][idx] = {}
+			data["extras"][idx]["hidden"] = true
+	
+	if data["outputs"].empty():
+		data.erase("outputs")
+	
+	if data["extras"].empty():
+		data.erase("extras")
 
 	return data
 
 
 func restore_editor_data(data: Dictionary) -> void:
+	data = DictUtil.fix_types(data)
 	var editor_scale = EditorUtil.get_editor_scale()
 	offset.x = data["offset_x"] * editor_scale
 	offset.y = data["offset_y"] * editor_scale
@@ -152,7 +182,6 @@ func restore_editor_data(data: Dictionary) -> void:
 	if data.has("inputs"):
 		for idx in data["inputs"].keys():
 			var input = data["inputs"][idx]
-			idx = DictUtil.format_value(idx)
 			if input.has("value"):
 				set_default_gui_value(idx, input["value"])
 			if input.has("hidden"):
@@ -161,15 +190,19 @@ func restore_editor_data(data: Dictionary) -> void:
 	if data.has("outputs"):
 		for idx in data["outputs"].keys():
 			var output = data["outputs"][idx]
-			idx = DictUtil.format_value(idx)
 			if output.has("hidden"):
 				_outputs[idx]["hidden"] = output["hidden"]
+	
+	if data.has("extras"):
+		for idx in data["extras"].keys():
+			var extra = data["extras"][idx]
+			if extra.has("hidden"):
+				_extras[idx]["hidden"] = extra["hidden"]
 	
 	# For backward compatibility with pre 0.7
 	if data.has("slots"):
 		for idx in data["slots"].keys():
-			var i_idx = DictUtil.format_value(idx)
-			set_default_gui_value(i_idx, data["slots"][idx])
+			set_default_gui_value(idx, data["slots"][idx])
 	
 	_on_editor_data_restored()
 
@@ -245,10 +278,10 @@ func is_multiple_connections_enabled_on_slot(idx: int) -> bool:
 
 func set_default_gui_value(idx: int, value) -> void:
 	var pos = get_input_index_pos(idx)
-	if not _input_components.has(idx):
+	if not _inputs.has(idx):
 		return
 	
-	_input_components[idx].set_value(value)
+	_inputs[idx]["ui"].set_value(value)
 	emit_signal("gui_value_changed", value, idx)
 
 
@@ -293,7 +326,7 @@ func get_input_index_at(pos: int) -> int:
 	if pos == -1 or pos >= _rows.size():
 		return -1
 	
-	var row = get_child(pos)
+	var row = _rows[pos]
 	if not row.has_node("Input"):
 		return -1
 	
@@ -305,7 +338,7 @@ func get_output_index_at(pos: int) -> int:
 	if pos >= _rows.size():
 		return -1
 	
-	var row = get_child(pos)
+	var row = _rows[pos]
 	if not row.has_node("Output"):
 		return -1
 	
@@ -384,6 +417,12 @@ func _is_output_mirrored(output_index: int) -> bool:
 # the GraphNode.set_slot method accordingly with the proper parameters. This
 # makes it easier syntax wise on the derived node and makes it more readable.
 func _setup_slots() -> void:
+	# Reset and disable all slots to avoid leaving ghost slots when hiding
+	# graph node ui components.
+	for i in get_child_count():
+		set_slot(i, false, 0, Color.black, false, 0, Color.black)
+	
+	# Setup a slot for each visible components.
 	for i in _rows.size():
 		var has_input := false
 		var input_type := 0
@@ -427,10 +466,21 @@ func _clear_gui() -> void:
 	for child in _rows:
 		remove_child(child)
 		child.queue_free()
-		
-	_input_components = {}
-	_output_components = {}
+	
 	_rows = []
+	
+	for idx in _inputs.keys():
+		_inputs[idx]["ui"] = null
+	
+	for idx in _outputs.keys():
+		_outputs[idx]["ui"] = null
+	
+	for idx in _extras.keys():
+		var ui = _extras[idx]["ui"]
+		if ui:
+			remove_child(ui)
+			ui.queue_free()
+			_extras[idx]["ui"] = null
 
 
 func _generate_default_gui_style() -> void:
@@ -491,16 +541,16 @@ func _generate_default_gui() -> void:
 		if component:
 			component.name = "Input"
 			Signals.safe_connect(component, "value_changed", self, "_on_default_gui_value_changed", [idx])
-			_input_components[idx] = component
+			_inputs[idx]["ui"] = component
 	
 	for idx in _outputs.keys():
 		var component = _create_component("output", idx)
 		if component:
 			component.name = "Output"
-			_output_components[idx] = component
+			_outputs[idx]["ui"] = component
 	
-	var input_keys = _input_components.keys()
-	var output_keys = _output_components.keys()
+	var input_keys = _inputs.keys()
+	var output_keys = _outputs.keys()
 	
 	while not input_keys.empty() or not output_keys.empty():
 		# Create a Hbox container per slot like this
@@ -511,18 +561,29 @@ func _generate_default_gui() -> void:
 		while not input_keys.empty():
 			var i_idx = input_keys.pop_front()
 			if i_idx != null and not _inputs[i_idx]["hidden"]:
-				hbox.add_child(_input_components[i_idx])
+				hbox.add_child(_inputs[i_idx]["ui"])
 				break
 		
 		while not output_keys.empty():
 			var o_idx = output_keys.pop_front()
 			if o_idx != null and not _outputs[o_idx]["hidden"]:
-				hbox.add_child(_output_components[o_idx])
+				hbox.add_child(_outputs[o_idx]["ui"])
 				break
 		
 		if hbox.get_child_count() > 0:
 			add_child(hbox)
 			_rows.append(hbox)
+
+	for idx in _extras.keys():
+		if _extras[idx]["hidden"]:
+			continue
+		
+		if _extras[idx]["type"] == Constants.UI_PREVIEW_2D:
+			var preview = preload("components/preview_2d.tscn").instance()
+			preview.link_to_output(_extras[idx]["options"]["output_index"])
+			_extras[idx]["ui"] = preview
+			Signals.safe_connect(preview, "preview_hidden", self, "_on_2d_preview_hidden")
+			add_child(preview)
 
 	_on_connection_changed()
 	_on_default_gui_ready()
@@ -567,10 +628,10 @@ func _create_component(source: String, i: int) -> GraphNodeComponent:
 
 
 func _get_default_gui_value(idx: int, for_export := false):
-	if not _input_components.has(idx):
+	if not _inputs.has(idx):
 		return null
 
-	var component: GraphNodeComponent = _input_components[idx]
+	var component: GraphNodeComponent = _inputs[idx]["ui"]
 	if for_export:
 		return component.get_value_for_export()
 	return component.get_value()
@@ -664,9 +725,9 @@ func _on_close_request() -> void:
 func _on_connection_changed() -> void:
 	# Notify the UI slot component about the new connection status. Some 
 	# components hides their icon and label depending on this.
-	for idx in _input_components.keys():
+	for idx in _inputs.keys():
 		var connected = is_input_connected(idx)
-		_input_components[idx].notify_connection_changed(connected)
+		_inputs[idx]["ui"].notify_connection_changed(connected)
 
 	_update_slots_types()
 	_redraw()
@@ -675,6 +736,11 @@ func _on_connection_changed() -> void:
 func _on_default_gui_value_changed(value, slot: int) -> void:
 	emit_signal("gui_value_changed", value, slot)
 	emit_signal("input_changed", slot, value)
+
+
+func _on_2d_preview_hidden() -> void:
+	if not resizable:
+		emit_signal("resize_request", Vector2(rect_min_size.x, 0.0))
 
 
 func _on_default_gui_ready() -> void:

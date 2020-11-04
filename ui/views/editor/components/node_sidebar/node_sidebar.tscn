@@ -94,3 +94,21 @@ text = "Outputs"
 margin_top = 133.0
 margin_right = 250.0
 margin_bottom = 133.0
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/Properties"]
+margin_top = 84.0
+margin_right = 250.0
+margin_bottom = 92.0
+
+[node name="ExtraLabel" type="Label" parent="MarginContainer/Properties"]
+margin_top = 100.0
+margin_right = 250.0
+margin_bottom = 125.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 1, 1, 1, 0.501961 )
+text = "Others"
+
+[node name="Extras" type="VBoxContainer" parent="MarginContainer/Properties"]
+margin_top = 133.0
+margin_right = 250.0
+margin_bottom = 133.0

@@ -2,23 +2,33 @@ extends Control
 class_name NodeSidebar
 
 
+# The Node sidebar is a panel shown on the left side of the graph editor.
+# From there you can change the node locals value but also decide to hide or
+# show individual parts of the graph UI. This is useful for nodes having 
+# a lot of parameters (like the noises nodes) but you don't connect them to
+# anything. Hiding them makes the node appear smaller and saves space on the
+# graph. This is purely visual, the node keeps behaving exactly the same way.
+
+
 var _current: ConceptNode
 
 
 onready var _default: Control = $MarginContainer/DefaultContent
 onready var _properties: Control = $MarginContainer/Properties
 onready var _name: Label = $MarginContainer/Properties/NameLabel
+onready var _input_label: Label = $MarginContainer/Properties/InputLabel
+onready var _output_label: Label = $MarginContainer/Properties/OutputLabel
+onready var _extra_label: Label = $MarginContainer/Properties/ExtraLabel
 onready var _inputs: Control = $MarginContainer/Properties/Inputs
 onready var _outputs: Control = $MarginContainer/Properties/Outputs
+onready var _extras: Control = $MarginContainer/Properties/Extras
+
 
 
 func clear() -> void:
-	for c in _inputs.get_children():
-		c.queue_free()
-		
-	for c in _outputs.get_children():
-		c.queue_free()
-	
+	NodeUtil.remove_children(_inputs)
+	NodeUtil.remove_children(_outputs)
+	NodeUtil.remove_children(_extras)
 	_current = null
 	_name.text = ""
 	_default.visible = true
@@ -64,6 +74,22 @@ func _rebuild_ui() -> void:
 		ui.create_generic(name, type)
 		ui.set_property_visibility(hidden)
 		Signals.safe_connect(ui, "property_visibility_changed", self, "_on_output_property_visibility_changed", [idx])
+	
+	# For custom components (like 2D preview or other things that don't fall in
+	# the previous categories. We just display a name.
+	for idx in _current._extras.keys():
+		var extra = _current._extras[idx]
+		var name = Constants.get_readable_name(extra["type"])
+		var hidden = extra["hidden"]
+		var ui: SidebarProperty = preload("property.tscn").instance()
+		_extras.add_child(ui)
+		ui.create_generic(name, -1)
+		ui.set_property_visibility(hidden)
+		Signals.safe_connect(ui, "property_visibility_changed", self, "_on_extra_property_visibility_changed", [idx])
+	
+	_input_label.visible = _inputs.get_child_count() != 0
+	_output_label.visible = _outputs.get_child_count() != 0
+	_extra_label.visible = _extras.get_child_count() != 0
 
 
 func _on_node_selected(node) -> void:
@@ -106,3 +132,7 @@ func _on_input_property_visibility_changed(visible: bool, index: int) -> void:
 
 func _on_output_property_visibility_changed(visible: bool, index: int) -> void:
 	_current.set_output_visibility(index, visible)
+
+
+func _on_extra_property_visibility_changed(visible: bool, index: int) -> void:
+	_current.set_extra_visibility(index, visible)

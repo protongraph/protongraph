@@ -366,4 +366,4 @@ func set_selected_tangent(val: int) -> void:
 
 func _on_resized() -> void:
 	if dynamic_row_count:
-		rows = int(rect_size.y / rect_min_size.y) + 1
+		rows = (int(rect_size.y / rect_min_size.y) + 1) * 2

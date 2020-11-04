@@ -272,7 +272,7 @@ _global_script_classes=[ {
 "base": "VBoxContainer",
 "class": "Preview2D",
 "language": "GDScript",
-"path": "res://ui/views/editor/components/nodes/previews/preview_2d.gd"
+"path": "res://ui/views/editor/components/nodes/components/preview_2d.gd"
 }, {
 "base": "GenericInputComponent",
 "class": "ScalarComponent",
