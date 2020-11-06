@@ -8,7 +8,7 @@ var use_immediate_geometry := false
 var _target: Path
 var _immediate_geometry: ImmediateGeometry
 var _static_mesh: MeshInstance
-var _material: SpatialMaterial = load("res://views/editor/viewport/gizmos/material_blue.tres")
+var _material: SpatialMaterial = load("res://ui/views/editor/components/viewport/gizmos/material_blue.tres")
 var _handles := []
 
 

@@ -16,7 +16,7 @@ func _init() -> void:
 	set_input(3, "Persistence", DataType.SCALAR, {"value": 0.5, "max": 1, "allow_greater":false})
 	set_input(4, "Lacunarity", DataType.SCALAR, {"value": 2, "step": 0.01, "max":4, "allow_greater":false})
 	set_input(5, "Curve", DataType.CURVE_FUNC)
-	set_output(0, "Noise", DataType.NOISE)
+	set_output(0, "", DataType.NOISE)
 	set_extra(0, Constants.UI_PREVIEW_2D, {"output_index": 0})
 
 

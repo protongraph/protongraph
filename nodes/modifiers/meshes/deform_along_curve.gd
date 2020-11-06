@@ -13,6 +13,7 @@ Deform a mesh along a curve.
 #  curve, but might be good to have an option lock this, post thoughts in the thread?
 # - Could a scalar to project the verts out wider or less. Fairly trivial
 #  hook that up to a 2d Curve as well.
+# - Make rotate in degrees instead of radians
 
 func _init() -> void:
 	unique_id = "deform_along_path"
@@ -28,6 +29,7 @@ func _init() -> void:
 	set_input(5, "Rotate", DataType.SCALAR,{"min": 0, "value": 1.0})
 	set_output(0, "Mesh", DataType.MESH_3D)
 
+
 func _generate_outputs() -> void:
 	var mesh : Mesh = get_input_single(0).mesh
 	var paths := get_input(1)
@@ -41,22 +43,17 @@ func _generate_outputs() -> void:
 	start_offset =  clamp(start_offset, 0, 1)
 	end_offset =  clamp(end_offset, 0.01, 1)
 
-	# NOTE:
-	# Primitive meshes seem to be rejected by the mesh_data_tool
-	# Muzz: this code below seems to work for generated meshes, not imported meshes, so the below is here
-	# for if we decide to make it work with primitive meshes
-
-	# var temporary_mesh = ArrayMesh.new()
-	# var verts = mesh.get_faces()
-	# var arrays = Array()
-	# arrays.resize(ArrayMesh.ARRAY_MAX)
-	# arrays[ArrayMesh.ARRAY_VERTEX] = verts
-	# temporary_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
-
 	# Muzz: would potentially be faster if I use ArrayMesh instead but the data tool
 	# makes things a fair bit easier.
 	var mesh_data_tool = MeshDataTool.new()
-	mesh_data_tool.create_from_surface(mesh, 0)
+	
+	if mesh is PrimitiveMesh:
+		var temporary_mesh = ArrayMesh.new()
+		temporary_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh.get_mesh_arrays())
+		mesh_data_tool.create_from_surface(temporary_mesh, 0)
+	else:
+		mesh_data_tool.create_from_surface(mesh, 0)
+	
 	var rotate_angle = Vector2(cos(rotate_along_axis), sin(rotate_along_axis))
 
 	# Muzz: this transform puts the verts into the correct axis that the next transform expects.
@@ -80,7 +77,6 @@ func _generate_outputs() -> void:
 		var curve: Curve3D = path.curve
 		var length: float = curve.get_baked_length()
 		var vertex_count = mesh_data_tool.get_vertex_count()
-
 		var min_mesh_height = -1000000
 		var max_mesh_height = 1000000
 
@@ -99,9 +95,9 @@ func _generate_outputs() -> void:
 			var normal = mesh_data_tool.get_vertex_normal(i)
 
 			if min_mesh_height < 0:
-				offset = (vert.y + min_mesh_height) / (max_mesh_height+min_mesh_height)
+				offset = (vert.y + min_mesh_height) / (max_mesh_height + min_mesh_height)
 			else:
-				offset = (vert.y - min_mesh_height) / (max_mesh_height-min_mesh_height)
+				offset = (vert.y - min_mesh_height) / (max_mesh_height - min_mesh_height)
 
 			offset = range_lerp(offset,0,1,start_offset,end_offset)
 			offset = offset * length

@@ -37,8 +37,6 @@ func _enter_tree() -> void:
 	_initialized = true
 
 
-# TODO: Call order should define the display order, idx should only be useful
-# for save files.
 func set_input(idx: int, name: String, type: int, opts: Dictionary = {}) -> void:
 	_inputs[idx] = {
 		"name": name,

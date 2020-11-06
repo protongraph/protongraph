@@ -9,13 +9,15 @@ func _init() -> void:
 	category = "Inputs"
 	description = "Load a gltf or glb file"
 
-	set_output(0, "", DataType.NODE_3D)
+	set_output(0, "", DataType.MESH_3D)
 
 
 func _trigger_import() -> void:
-	_data = null
+	_data = []
 	var path: String = get_input_single(0, "")
 	path = get_parent().get_absolute_path(path)
 	var gltf = PackedSceneGLTF.new()
 	gltf.pack_gltf(path)
 	_data = gltf.instance()
+	if _data.get_child_count() == 1:
+		_data = _data.get_child(0)

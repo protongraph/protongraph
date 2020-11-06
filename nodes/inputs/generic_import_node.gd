@@ -2,7 +2,6 @@ extends ConceptNode
 class_name GenericImportNode
 
 
-var _label: Label
 var _data
 var _template
 
@@ -27,12 +26,10 @@ func _init(filters := ["*.*"]) -> void:
 
 func _enter_tree() -> void:
 	_template = get_parent()
-	Signals.safe_connect(_template, "template_loaded", self, "_update_preview")
 	Signals.safe_connect(_template, "force_import", self, "_trigger_import")
 
 
 func _exit_tree() -> void:
-	Signals.safe_disconnect(_template, "template_loaded", self, "_update_preview")
 	Signals.safe_disconnect(_template, "force_import", self, "_trigger_import")
 
 
@@ -45,9 +42,7 @@ func _generate_outputs() -> void:
 		output[0] = _data.duplicate(7)
 
 
-"""
-Override this method
-"""
+# Override this method
 func _trigger_import() -> void:
 	pass
 
@@ -64,24 +59,4 @@ func _force_import() -> void:
 
 func _on_default_gui_interaction(_value, _control: Control, slot: int) -> void:
 	if slot == 0:
-		_update_preview()
 		_trigger_import()
-
-
-func _on_connection_changed() -> void:
-	._on_connection_changed()
-	_update_preview()
-
-
-func _update_preview() -> void:
-	if not _label:
-		_label = Label.new()
-		add_child(_label)
-
-	var text: String = get_input_single(0, "")
-
-	_label.text = "Source: "
-	if text != "":
-		_label.text += text.get_file()
-	else:
-		_label.text += "None"

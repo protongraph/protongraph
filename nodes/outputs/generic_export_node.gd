@@ -2,9 +2,6 @@ extends ConceptNode
 class_name GenericExportNode
 
 
-var _label: Label
-
-
 func _init(filters := ["*.*"]) -> void:
 	ignore = true
 	unique_id = "generic_export_node"
@@ -20,17 +17,16 @@ func _init(filters := ["*.*"]) -> void:
 		"expand": false,
 	}
 	
-	#set_input(0, "Node", DataType.NODE_3D)
+	set_input(0, "Node", DataType.ANY)
 	set_input(1, "Path", DataType.STRING, opts)
 	set_input(2, "Auto Export", DataType.BOOLEAN, {"value": false})
 
 
 func _enter_tree() -> void:
-	Signals.safe_connect(get_parent(), "template_loaded", self, "_update_preview")
 	Signals.safe_connect(get_parent(), "force_export", self, "_trigger_export")
 
+
 func _exit_tree() -> void:
-	Signals.safe_disconnect(get_parent(), "template_loaded", self, "_update_preview")
 	Signals.safe_disconnect(get_parent(), "force_export", self, "_trigger_export")
 
 
@@ -40,9 +36,7 @@ func _generate_outputs() -> void:
 		_trigger_export()
 
 
-"""
-Override this method in the child class
-"""
+# Override this method in the derived class
 func _trigger_export() -> void:
 	pass
 
@@ -59,31 +53,3 @@ func reset() -> void:
 
 func is_final_output_node() -> bool:
 	return true
-
-
-func _on_default_gui_interaction(value, _control: Control, slot: int) -> void:
-	if slot == 1:
-		_update_preview()
-
-
-func _on_connection_changed() -> void:
-	._on_connection_changed()
-	_update_preview()
-
-
-func _update_preview() -> void:
-	if not _label:
-		_label = Label.new()
-		add_child(_label)
-
-	var text: String = get_input_single(1, "")
-
-	_label.text = "Target: "
-	if text != "":
-		_label.text += text.get_file()
-	else:
-		_label.text += "None"
-
-	if not resizable:
-		rect_size = Vector2.ZERO
-		_redraw()

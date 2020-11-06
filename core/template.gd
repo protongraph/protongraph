@@ -69,6 +69,8 @@ func load_from_file(path: String, soft_load := false) -> void:
 
 	paused = true
 	_template_loaded = false
+	_loaded_template_path = path
+	
 	if soft_load:	# Don't clear, simply refresh the graph edit UI without running the sim
 		clear_editor()
 	else:
@@ -122,7 +124,6 @@ func load_from_file(path: String, soft_load := false) -> void:
 		# Restore previous camera position and zoom level
 		# Restore panels width and height
 
-	_loaded_template_path = path
 	_template_loaded = true
 	paused = false
 	emit_signal("template_loaded")
@@ -130,7 +131,6 @@ func load_from_file(path: String, soft_load := false) -> void:
 
 func save_to_file(path: String) -> void:
 	var graph := {}
-	# TODO : Convert the connection_list to an ID connection list
 	graph["editor"] = {
 		"offset_x": scroll_offset.x,
 		"offset_y": scroll_offset.y
@@ -188,6 +188,7 @@ func create_node(type: String, data := {}, notify := true) -> ConceptNode:
 		return null
 
 	new_node.thread_pool = _thread_pool
+	new_node.template_path = _loaded_template_path
 	
 	if data.has("offset"):
 		new_node.offset = data["offset"]

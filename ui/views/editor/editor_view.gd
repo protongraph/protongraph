@@ -60,8 +60,11 @@ func save_template() -> void:
 
 
 func save_template_as(path: String) -> void:
+	var old = _template_path
 	_template_path = path
 	save_template()
+	yield(_template, "template_saved")
+	_template_path = old
 
 
 func get_input(_name) -> Node:
