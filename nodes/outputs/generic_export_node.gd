@@ -43,12 +43,7 @@ func _trigger_export() -> void:
 
 func get_resource_path() -> String:
 	var path: String = get_input_single(1, "")
-	return get_parent().get_absolute_path(path)
-
-
-func reset() -> void:
-	.reset()
-	emit_signal("node_changed", self, true)
+	return PathUtil.get_absolute_path(path, template_path)
 
 
 func is_final_output_node() -> bool:

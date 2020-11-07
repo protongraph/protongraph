@@ -2,12 +2,12 @@ extends ConceptNode
 
 
 func _init() -> void:
-	unique_id = "final_output"
-	display_name = "Viewer"
+	unique_id = "remote_sync"
+	display_name = "Remote Sync"
 	category = "Output"
-	description = "Display the 3d output in the viewport"
+	description = "Marks the output to be synced withg a remote program like an engine or a game"
 
-	set_input(0, "3D Object", DataType.NODE_3D)
+	set_input(0, "Nodes", DataType.NODE_3D)
 	enable_multiple_connections_on_slot(0)
 
 

@@ -48,6 +48,7 @@ func create(label_name: String, type: int, opts := {}) -> void:
 		else:
 			s = ScalarComponent.create_spinbox(vector_index, opts)
 		_vector_box.add_child(s)
+		Signals.safe_connect(s, "value_changed", self, "_on_value_changed")
 
 		if inline:
 			s.set_style(3)
@@ -94,3 +95,7 @@ func set_value(value) -> void:
 
 func notify_connection_changed(connected: bool) -> void:
 	_vector_box.visible = !connected
+
+
+func _on_value_changed(_val) -> void:
+	emit_signal("value_changed", get_value())

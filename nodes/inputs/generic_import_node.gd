@@ -49,7 +49,7 @@ func _trigger_import() -> void:
 
 func get_resource_path() -> String:
 	var path: String = get_input_single(0, "")
-	return get_parent().get_absolute_path(path)
+	return PathUtil.get_absolute_path(path, template_path)
 
 
 func _force_import() -> void:

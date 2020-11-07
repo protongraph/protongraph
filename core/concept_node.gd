@@ -55,6 +55,9 @@ func reset() -> void:
 	if get_parent():
 		for node in get_parent().get_all_right_nodes(self):
 			node.reset()
+	
+	if is_final_output_node():
+		emit_signal("node_changed", self, true)
 
 
 func clear_cache() -> void:

@@ -12,16 +12,11 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	connect("input_changed", self, "_on_input_changed")
+	Signals.safe_connect(self, "input_changed", self, "_on_input_changed")
 
 
 func _generate_outputs() -> void:
 	output[0] = get_input_single(0)
-
-
-func reset() -> void:
-	.reset()
-	emit_signal("node_changed", self, true)
 
 
 func is_final_output_node() -> bool:

@@ -122,7 +122,6 @@ func _on_node_value_changed(value, idx: int) -> void:
 func _on_sidebar_value_changed(value, idx: int) -> void:
 	if not _current:
 		return # Should not happen
-	
 	_current.set_default_gui_value(idx, value)
 
 
