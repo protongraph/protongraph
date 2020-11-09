@@ -157,15 +157,19 @@ script = ExtResource( 7 )
 min_size_y = true
 
 [node name="Legend" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
+self_modulate = Color( 1, 1, 1, 0.627451 )
 margin_right = 24.0
 margin_bottom = 29.0
+hint_tooltip = "Display help."
 toggle_mode = true
 icon = ExtResource( 2 )
 
 [node name="ResetCamera" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
+self_modulate = Color( 1, 1, 1, 0.627451 )
 margin_left = 32.0
 margin_right = 56.0
 margin_bottom = 29.0
+hint_tooltip = "Reset camera's position and orientation."
 icon = ExtResource( 10 )
 
 [node name="VSeparator2" type="VSeparator" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions"]
@@ -175,15 +179,21 @@ margin_bottom = 29.0
 custom_constants/separation = 15
 
 [node name="LightSetup1" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
+self_modulate = Color( 1, 1, 1, 0.627451 )
 margin_left = 87.0
 margin_right = 111.0
 margin_bottom = 29.0
+hint_tooltip = "Use dynamic lighting.
+The light will follow the camera, making the scene always lit no matter the viewing angle."
 icon = ExtResource( 8 )
 
 [node name="LightSetup2" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
+self_modulate = Color( 1, 1, 1, 0.627451 )
 margin_left = 119.0
 margin_right = 143.0
 margin_bottom = 29.0
+hint_tooltip = "Use static lighting.
+The light remains in a fixed spot allowing you to see the shaded parts of the scene."
 icon = ExtResource( 4 )
 
 [node name="Legend" type="PanelContainer" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn"]

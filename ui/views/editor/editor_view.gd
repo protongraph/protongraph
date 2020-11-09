@@ -31,14 +31,9 @@ func _ready() -> void:
 	_viewport = get_node(viewport_container)
 	_inspector = get_node(inspector)
 	_template.inspector = _inspector
-
-	if Settings.get_setting("autosave"):
-		_save_timer = Timer.new()
-		_save_timer.one_shot = false
-		_save_timer.autostart = false
-		Signals.safe_connect(_save_timer, "timeout", self, "save_template")
-		add_child(_save_timer)
-		_save_timer.start(Settings.get_setting(Settings.AUTOSAVE_INTERVAL))
+	
+	GlobalEventBus.register_listener(self, "settings_updated", "_on_settings_updated")
+	_on_settings_updated(Settings.AUTOSAVE_ENABLED)
 
 
 func load_template(path: String) -> void:
@@ -53,8 +48,7 @@ func save_template() -> void:
 	_template.save_to_file(_template_path)
 	yield(_template, "template_saved")
 	_saved = true
-	GlobalEventBus.dispatch("message", "Saved template " + _template_path)
-	GlobalEventBus.dispatch("template_saved")
+	GlobalEventBus.dispatch("template_saved", _template_path)
 	emit_signal("template_saved")
 	print("Saved template ", _template_path)
 
@@ -125,3 +119,32 @@ func _on_input_created(node: Spatial) -> void:
 
 func _on_input_deleted(node: Spatial) -> void:
 	_viewport.remove_input_node(node)
+
+
+# Called when the user changes parameters in the settings panel.
+func _on_settings_updated(setting: String) -> void:
+	var enabled = Settings.get_setting(Settings.AUTOSAVE_ENABLED)
+	var interval = Settings.get_setting(Settings.AUTOSAVE_INTERVAL)
+	
+	# Autosave delay was changed
+	if setting == Settings.AUTOSAVE_INTERVAL and _save_timer:
+		_save_timer.start(interval)
+		return
+	
+	if setting == Settings.AUTOSAVE_ENABLED:
+		# Autosave was enabled
+		if enabled and not _save_timer:
+			_save_timer = Timer.new()
+			_save_timer.one_shot = false
+			_save_timer.autostart = false
+			Signals.safe_connect(_save_timer, "timeout", self, "save_template")
+			add_child(_save_timer)
+			_save_timer.start(interval)
+			return
+			
+		# Autosave was disabled
+		if not enabled and _save_timer:
+			_save_timer.stop()
+			_save_timer.queue_free()
+			_save_timer = null
+			return

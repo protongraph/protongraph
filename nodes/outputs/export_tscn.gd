@@ -16,8 +16,7 @@ func _init() -> void:
 
 func _trigger_export() -> void:
 	var scene = get_input_single(0)
-	var path: String = get_input_single(1, "")
-	path = get_parent().get_absolute_path(path)
+	var path: String = get_resource_path()
 
 	if path and path != "" and scene:
 		# sets the owner of all the children to scene

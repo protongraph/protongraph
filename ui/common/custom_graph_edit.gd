@@ -128,10 +128,15 @@ func restore_connections_for(node: ConceptNodeUi, connections: Array) -> void:
 	for c in connections:
 		var from = get_node(c["from"])
 		var to = get_node(c["to"])
+		if not from or not to:
+			continue
+		
 		var from_port = from.get_output_index_pos(c["from_port"])
 		var to_port = to.get_input_index_pos(c["to_port"])
 		if from_port != -1 and to_port != -1:
 			connect_node(c["from"], from_port, c["to"], to_port)
+			from._on_connection_changed()
+			to._on_connection_changed()
 
 
 func get_selected_nodes() -> Array:

@@ -12,7 +12,6 @@ class_name NodeSidebar
 
 var _current: ConceptNode
 
-
 onready var _default: Control = $MarginContainer/DefaultContent
 onready var _properties: Control = $MarginContainer/Properties
 onready var _name: Label = $MarginContainer/Properties/NameLabel
@@ -121,7 +120,7 @@ func _on_node_value_changed(value, idx: int) -> void:
 # Sync changes from the sidebar to the graphnode
 func _on_sidebar_value_changed(value, idx: int) -> void:
 	if not _current:
-		return # Should not happen
+		return
 	_current.set_default_gui_value(idx, value)
 
 

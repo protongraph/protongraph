@@ -7,7 +7,7 @@ func _init() -> void:
 	category = "Output"
 	description = "Display the 3d output in the viewport"
 
-	set_input(0, "3D Object", DataType.NODE_3D)
+	set_input(0, "3D Objects", DataType.NODE_3D)
 	enable_multiple_connections_on_slot(0)
 
 

@@ -1,4 +1,3 @@
-tool
 extends ConceptNode
 
 
@@ -9,8 +8,8 @@ func _init() -> void:
 	description = "Expose a String value to the inspector"
 
 	set_input(0, "Name", DataType.STRING)
-	set_input(1, "Default", DataType.STRING)
 	set_input(2, "Section", DataType.STRING)
+	set_input(1, "Default", DataType.STRING)
 	set_output(0, "", DataType.STRING)
 
 

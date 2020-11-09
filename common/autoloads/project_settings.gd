@@ -56,6 +56,7 @@ func update_setting(setting: String, value) -> void:
 	var old_value = _settings[setting]
 	_settings[setting] = value
 	save_config()
+	GlobalEventBus.dispatch("settings_updated", setting)
 
 	if _require_restart.has(setting): # Keep using the old value until the user restarts the application
 		_settings[setting] = old_value

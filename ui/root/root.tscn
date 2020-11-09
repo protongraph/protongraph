@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://ui/root/menu_button.gd" type="Script" id=1]
 [ext_resource path="res://ui/root/components/view_container.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://ui/root/root.gd" type="Script" id=5]
 [ext_resource path="res://ui/themes/dark.tres" type="Theme" id=6]
 [ext_resource path="res://ui/icons/icon_menu.svg" type="Texture" id=7]
+[ext_resource path="res://ui/root/components/notifications_center.tscn" type="PackedScene" id=8]
 [ext_resource path="res://ui/themes/styles/icon_button_normal.tres" type="StyleBox" id=9]
 [ext_resource path="res://ui/themes/styles/icon_button_hover.tres" type="StyleBox" id=10]
 [ext_resource path="res://ui/themes/styles/icon_button_pressed.tres" type="StyleBox" id=11]
@@ -78,6 +79,14 @@ tabs = NodePath("../TopBar/Tabs")
 dialog_manager = NodePath("../../DialogManager")
 
 [node name="DialogManager" parent="." instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 1360.0
+margin_bottom = 764.0
+
+[node name="NotificationsCenter" parent="." instance=ExtResource( 8 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 6.0

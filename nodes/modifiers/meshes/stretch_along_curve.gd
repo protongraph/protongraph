@@ -1,9 +1,4 @@
-tool
 extends ConceptNode
-
-"""
-Deform a mesh along a curve.
-"""
 
 # Muzz: currently this node remaps the Y axis to match the curve.
 #  Todo:
@@ -16,17 +11,17 @@ Deform a mesh along a curve.
 # - Make rotate in degrees instead of radians
 
 func _init() -> void:
-	unique_id = "deform_along_path"
-	display_name = "Deform Along Curve"
+	unique_id = "stretch_along_path"
+	display_name = "Stretch Along Curve"
 	category = "Modifiers/Meshes"
 	description = "Deforms a mesh's y axis along a curve."
 
 	set_input(0, "Input mesh", DataType.MESH_3D)
 	set_input(1, "Path curve", DataType.CURVE_3D)
-	set_input(2, "Start offset", DataType.SCALAR,{"min": 0, "value": 0.0})
-	set_input(3, "End offset", DataType.SCALAR,{"min": 0, "value": 1.0})
-	set_input(4, "Tilt", DataType.BOOLEAN)
-	set_input(5, "Rotate", DataType.SCALAR,{"min": 0, "value": 1.0})
+	set_input(2, "Start offset", DataType.SCALAR, {"min": 0, "value": 0.0})
+	set_input(3, "End offset", DataType.SCALAR, {"min": 0, "value": 1.0})
+	set_input(4, "Rotate", DataType.SCALAR, {"min": 0, "value": 1.0})
+	set_input(5, "Tilt", DataType.BOOLEAN)
 	set_output(0, "Mesh", DataType.MESH_3D)
 
 

@@ -20,6 +20,7 @@ signal open_settings
 signal quit
 signal remove_from_file_history
 signal request_node_list
+signal settings_updated
 signal save_all_templates
 signal save_template_as
 signal save_template

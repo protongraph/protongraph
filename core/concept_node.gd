@@ -184,6 +184,12 @@ func is_final_output_node() -> bool:
 	return false
 
 
+# Override this function to return true if the outputs of the node should be
+# sent to external applications.
+func is_remote_sync_node() -> bool:
+	return true
+
+
 # Overide this function in the derived classes to return something usable.
 # Generate all the outputs for every output slots declared.
 func _generate_outputs() -> void:

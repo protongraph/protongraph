@@ -280,7 +280,7 @@ func set_default_gui_value(idx: int, value) -> void:
 		return
 	
 	_inputs[idx]["ui"].set_value(value)
-	emit_signal("gui_value_changed", value, idx)
+	_on_default_gui_value_changed(value, idx)
 
 
 # Force the node to rebuild the user interface. This is needed because the Node 
@@ -298,7 +298,6 @@ func regenerate_default_ui():
 	restore_editor_data(editor_data)
 	_setup_slots()
 	template.restore_connections_for(self, connections)
-	_on_connection_changed()
 
 
 func force_redraw():

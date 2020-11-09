@@ -14,8 +14,7 @@ func _init() -> void:
 
 func _trigger_import() -> void:
 	_data = []
-	var path: String = get_input_single(0, "")
-	path = get_parent().get_absolute_path(path)
+	var path: String = get_resource_path()
 	var gltf = PackedSceneGLTF.new()
 	gltf.pack_gltf(path)
 	_data = gltf.instance()

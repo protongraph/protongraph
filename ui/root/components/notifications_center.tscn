@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ui/root/components/notifications_center.gd" type="Script" id=1]
+
+[node name="NotificationsCenter" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -1.49829
+margin_bottom = -1.49829
+mouse_filter = 2
+custom_constants/margin_right = 12
+custom_constants/margin_top = 12
+custom_constants/margin_left = 12
+custom_constants/margin_bottom = 12
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_left = 954.0
+margin_top = 12.0
+margin_right = 1354.0
+margin_bottom = 756.0
+rect_min_size = Vector2( 400, 0 )
+mouse_filter = 2
+size_flags_horizontal = 8
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 400.0
+margin_bottom = 744.0
+rect_min_size = Vector2( 250, 0 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}

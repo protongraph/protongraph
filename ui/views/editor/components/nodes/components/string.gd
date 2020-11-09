@@ -64,7 +64,10 @@ func get_value_for_export():
 
 
 func set_value(value) -> void:
-	if _line_edit:
+	# Extra comparison needed because there's a feedback loop I don't know how
+	# to fix when the node is updated from the sidebar, causing the cursor
+	# to be put back at position 0 automatically.
+	if _line_edit and _line_edit.text != value:
 		_line_edit.text = value
 	
 	elif _dropdown:

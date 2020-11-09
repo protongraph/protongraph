@@ -1,4 +1,3 @@
-tool
 extends ConceptNode
 
 
@@ -7,6 +6,7 @@ func _init() -> void:
 	display_name = "Edit Mesh Properties"
 	category = "Modifiers/Meshes"
 	description = "Expose the internal properties of the CSG mesh"
+	ignore = true
 
 	set_input(0, "Mesh", DataType.MESH_3D)
 	set_input(1, "Materials", DataType.MATERIAL)
