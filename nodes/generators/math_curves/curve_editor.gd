@@ -1,4 +1,4 @@
-extends ConceptNode
+extends ProtonNode
 
 """
 Generates a curve object made of a single line

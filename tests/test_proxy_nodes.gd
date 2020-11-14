@@ -7,8 +7,8 @@ extends WAT.Test
 
 
 var template: Template
-var proxy_in: ConceptNode
-var proxy_out: ConceptNode
+var proxy_in: ProtonNode
+var proxy_out: ProtonNode
 
 
 func pre():
@@ -73,11 +73,11 @@ func test_should_reset_proxy_out_automaically() -> void:
 	asserts.is_equal(final_result, new_value, "New value was propagated to the ProxyOut")
 
 
-func get_input_type(node: ConceptNode) -> int:
+func get_input_type(node: ProtonNode) -> int:
 	if node.is_input_connected(0):
 		return node.get_connected_input_type(0)
 	return node.get_local_input_type(0)
 
 
-func get_output_type(node: ConceptNode) -> int:
+func get_output_type(node: ProtonNode) -> int:
 	return node.get_output_type(0)

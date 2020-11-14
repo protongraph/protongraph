@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 """
 TODO: It would be nice to have a WrapAroundCurve instead, so we could use a regular MakeGrid

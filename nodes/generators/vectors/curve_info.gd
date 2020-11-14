@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Returns the maximum width, length and height of the curve and the center position averaged from

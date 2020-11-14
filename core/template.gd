@@ -138,7 +138,7 @@ func save_to_file(path: String) -> void:
 	graph["nodes"] = []
 
 	for c in get_children():
-		if c is ConceptNode:
+		if c is ProtonNode:
 			var node = {}
 			node["name"] = c.get_name()
 			node["type"] = c.unique_id
@@ -179,9 +179,9 @@ func clear() -> void:
 
 
 # Creates a node using the provided model and add it as child which makes it
-# visible and editable from the Concept Graph Editor
-func create_node(type: String, data := {}, notify := true) -> ConceptNode:
-	var new_node: ConceptNode = NodeFactory.create(type)
+# visible and editable from the ProtonGraph Editor
+func create_node(type: String, data := {}, notify := true) -> ProtonNode:
+	var new_node: ProtonNode = NodeFactory.create(type)
 	if not new_node:
 		return null
 
@@ -213,7 +213,7 @@ func create_node(type: String, data := {}, notify := true) -> ConceptNode:
 	return new_node
 
 
-func duplicate_node(node: ConceptNode) -> GraphNode:
+func duplicate_node(node: ProtonNode) -> GraphNode:
 	var ref = NodeFactory.create(node.unique_id)
 	add_child(ref)	# Call add child because the init is done in enter tree
 	ref.restore_editor_data(node.export_editor_data())
@@ -231,7 +231,7 @@ func update_exposed_variables() -> void:
 	var exposed_variables = []
 
 	for c in get_children():
-		if c is ConceptNode:
+		if c is ProtonNode:
 			var variables = c.get_exposed_variables()
 			if not variables:
 				continue
@@ -262,18 +262,18 @@ func deregister_proxy(node) -> void:
 	emit_signal("proxy_list_updated")
 
 
-func get_proxy(name) -> ConceptNode:
+func get_proxy(name) -> ProtonNode:
 	for node in _proxy_nodes.keys():
 		if _proxy_nodes[node] == name:
 			return node
 	return null
 
 
-func register_input_object(input: Spatial, _graphnode: ConceptNode) -> void:
+func register_input_object(input: Spatial, _graphnode: ProtonNode) -> void:
 	emit_signal("input_created", input)
 
 
-func deregister_input_object(input: Spatial, _graphnode: ConceptNode) -> void:
+func deregister_input_object(input: Spatial, _graphnode: ProtonNode) -> void:
 	emit_signal("input_deleted", input)
 
 
@@ -321,7 +321,7 @@ func run_garbage_collection():
 # get_output is called, every nodes will recalculate their output.
 func clear_simulation_cache() -> void:
 	for node in get_children():
-		if node is ConceptNode:
+		if node is ProtonNode:
 			node.clear_cache()
 	run_garbage_collection()
 	_clear_cache_on_next_run = false

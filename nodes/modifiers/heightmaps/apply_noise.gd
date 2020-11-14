@@ -1,5 +1,4 @@
-tool
-extends ConceptNode
+extends ProtonNode
 
 
 func _init() -> void:
@@ -18,7 +17,7 @@ func _init() -> void:
 
 func _generate_outputs() -> void:
 #	var start_time = OS.get_ticks_msec()
-	var heightmap: ConceptGraphHeightmap = get_input_single(0)
+	var heightmap: Heightmap = get_input_single(0)
 	var noise: Noise = get_input_single(1)
 	var noise_scale: Vector3 = get_input_single(2, Vector3.ONE)
 	var noise_offset: Vector3 = get_input_single(3, Vector3.ZERO)

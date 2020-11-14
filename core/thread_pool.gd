@@ -4,7 +4,7 @@ class_name ThreadPool
 """
 WARNING : Don't use this yet.
 
-An barebone thread pool specifically made for the ConceptGraph addon. There's no need for
+An barebone thread pool specifically made for the ProtonGraph addon. There's no need for
 synchronization between threads, no parameters or no return data.
 """
 

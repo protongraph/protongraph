@@ -1,5 +1,4 @@
-tool
-extends ConceptNode
+extends ProtonNode
 
 
 func _init() -> void:
@@ -22,8 +21,8 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var heightmap: ConceptGraphHeightmap = get_input_single(0)
-	var box: ConceptBoxInput = get_input_single(1)
+	var heightmap: Heightmap = get_input_single(0)
+	var box: BoxInput = get_input_single(1)
 	var operation: String = get_input_single(2, "Flatten")
 
 	if not heightmap:

@@ -1,5 +1,5 @@
 extends Node
-class_name ConceptGraphSettings
+class_name ProtonGraphSettings
 
 
 const MULTITHREAD_ENABLED = "enable_multithreading"

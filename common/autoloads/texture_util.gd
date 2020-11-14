@@ -87,7 +87,7 @@ func get_output_texture() -> Texture:
 	return get_texture("res://ui/icons/output_slot.svg")
 
 
-# Returns a 0x0 texture. Used by the ConceptNode class to hide the slots.
+# Returns a 0x0 texture. Used by the ProtonNode class to hide the slots.
 func get_empty_texture() -> ImageTexture:
 	if not _empty_texture:
 		var image = Image.new()

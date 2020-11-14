@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Creates an array of transforms

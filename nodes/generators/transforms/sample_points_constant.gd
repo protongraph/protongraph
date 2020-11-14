@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 """
 March along the curve to create new transforms at regular intervals

@@ -1,6 +1,6 @@
 tool
 extends Spatial
-class_name ConceptNodeVectorCurve2D
+class_name ProtonNodeVectorCurve2D
 
 
 export var points: Array

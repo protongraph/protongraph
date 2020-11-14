@@ -1,4 +1,4 @@
-extends ConceptNode
+extends ProtonNode
 class_name GenericExportNode
 
 

@@ -1,5 +1,4 @@
-tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Assigns a material to the selected node

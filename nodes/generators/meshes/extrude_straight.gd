@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 
 func _init() -> void:
@@ -36,7 +36,7 @@ func _generate_outputs() -> void:
 		return
 
 	for i in range(polygon_curves.size()):
-		var pc := polygon_curves[i] as ConceptNodeVectorCurve
+		var pc := polygon_curves[i] as ProtonNodeVectorCurve
 		var polygon = pc.to_pool_vector_2(axis, !local)
 
 		var mesh = CSGPolygon.new()

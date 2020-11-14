@@ -80,7 +80,7 @@ func regenerate_graphnodes_style() -> void:
 		return
 
 	for child in get_children():
-		if child is ConceptNodeUi:
+		if child is ProtonNodeUi:
 			child._generate_default_gui_style()
 	_ui_style_ready = true
 
@@ -116,7 +116,7 @@ func disconnect_input(node: GraphNode, idx: int) -> void:
 			return
 
 
-func backup_connections_for(node: ConceptNodeUi) -> Array:
+func backup_connections_for(node: ProtonNodeUi) -> Array:
 	var res = []
 	for c in get_custom_connection_list():
 		if c["from"] == node.name or c["to"] == node.name:
@@ -124,7 +124,7 @@ func backup_connections_for(node: ConceptNodeUi) -> Array:
 	return res
 
 
-func restore_connections_for(node: ConceptNodeUi, connections: Array) -> void:
+func restore_connections_for(node: ProtonNodeUi, connections: Array) -> void:
 	for c in connections:
 		var from = get_node(c["from"])
 		var to = get_node(c["to"])

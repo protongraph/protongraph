@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Create plane mesh from transforms

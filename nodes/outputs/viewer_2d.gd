@@ -1,4 +1,4 @@
-extends ConceptNode
+extends ProtonNode
 
 
 func _init() -> void:

@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 
 func _init() -> void:
@@ -38,7 +38,7 @@ func _generate_outputs() -> void:
 		output[0].append(vector_curve)
 
 
-func _get_vector_curve_center(v: ConceptNodeVectorCurve) -> Vector3:
+func _get_vector_curve_center(v: ProtonNodeVectorCurve) -> Vector3:
 	var res := Vector3.ZERO
 	for p in v.points:
 		res += p

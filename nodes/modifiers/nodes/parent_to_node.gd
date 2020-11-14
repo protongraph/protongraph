@@ -1,4 +1,4 @@
-extends ConceptNode
+extends ProtonNode
 
 """
 Takes a node or a node array and parent it to the selected node. Returns the parent.

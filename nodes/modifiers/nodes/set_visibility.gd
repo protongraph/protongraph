@@ -1,5 +1,4 @@
-tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Sets a node visibility, useful for colliders for example.

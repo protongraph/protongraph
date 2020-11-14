@@ -1,4 +1,4 @@
-class_name ConceptBoxInput
+class_name BoxInput
 extends MeshInstance
 
 
@@ -50,4 +50,4 @@ func set_center(val: Vector3) -> void:
 
 
 func _on_box_changed() -> void:
-	emit_signal("input_changed", self)	# That tell the ConceptGraph to rerun the simulation
+	emit_signal("input_changed", self)	# That tell the ProtonGraph to rebuild the output

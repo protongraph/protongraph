@@ -1,5 +1,4 @@
-tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Discard all the nodes inside (or outside) the provided curves

@@ -24,7 +24,7 @@ var _initialized := false
 
 func _ready() -> void:
 	_node_tree = get_node(node_tree)
-	_refresh_concept_nodes_list()
+	_refresh_nodes_list()
 
 	_create_button = get_node(create_button)
 	_create_button.disabled = true
@@ -36,7 +36,7 @@ func _ready() -> void:
 	_initialized = true
 
 
-func _refresh_concept_nodes_list(nodes := [], folder_collapsed := true) -> void:
+func _refresh_nodes_list(nodes := [], folder_collapsed := true) -> void:
 	if not _initialized:
 		return
 
@@ -169,12 +169,12 @@ func _on_item_activated() -> void:
 
 func _on_search_text_changed(new_text):
 	_search_text = new_text
-	_refresh_concept_nodes_list()
+	_refresh_nodes_list()
 
 
 func _on_grouping_type_changed(_pressed):
-	_refresh_concept_nodes_list()
+	_refresh_nodes_list()
 
 
 func _on_dialog_about_to_show() -> void:
-	_refresh_concept_nodes_list()
+	_refresh_nodes_list()

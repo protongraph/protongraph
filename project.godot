@@ -20,44 +20,9 @@ _global_script_classes=[ {
 "path": "res://ui/views/editor/components/nodes/components/boolean.gd"
 }, {
 "base": "MeshInstance",
-"class": "ConceptBoxInput",
+"class": "BoxInput",
 "language": "GDScript",
 "path": "res://common/custom_types/box_input.gd"
-}, {
-"base": "Path",
-"class": "ConceptGraphCurve",
-"language": "GDScript",
-"path": "res://common/custom_types/curve_input.gd"
-}, {
-"base": "Object",
-"class": "ConceptGraphHeightmap",
-"language": "GDScript",
-"path": "res://common/custom_types/heightmap.gd"
-}, {
-"base": "Node",
-"class": "ConceptGraphSettings",
-"language": "GDScript",
-"path": "res://common/autoloads/project_settings.gd"
-}, {
-"base": "ConceptNodeUi",
-"class": "ConceptNode",
-"language": "GDScript",
-"path": "res://core/concept_node.gd"
-}, {
-"base": "GraphNode",
-"class": "ConceptNodeUi",
-"language": "GDScript",
-"path": "res://ui/views/editor/components/nodes/concept_node_ui.gd"
-}, {
-"base": "Spatial",
-"class": "ConceptNodeVectorCurve",
-"language": "GDScript",
-"path": "res://common/custom_types/vector_curve_3d.gd"
-}, {
-"base": "Spatial",
-"class": "ConceptNodeVectorCurve2D",
-"language": "GDScript",
-"path": "res://common/custom_types/vector_curve_2d.gd"
 }, {
 "base": "WindowDialog",
 "class": "ConfirmDialog",
@@ -139,12 +104,12 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://common/autoloads/event_bus.gd"
 }, {
-"base": "ConceptNode",
+"base": "ProtonNode",
 "class": "GenericExportNode",
 "language": "GDScript",
 "path": "res://nodes/outputs/generic_export_node.gd"
 }, {
-"base": "ConceptNode",
+"base": "ProtonNode",
 "class": "GenericImportNode",
 "language": "GDScript",
 "path": "res://nodes/inputs/generic_import_node.gd"
@@ -163,6 +128,11 @@ _global_script_classes=[ {
 "class": "GraphNodeComponent",
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/graph_node_component.gd"
+}, {
+"base": "Object",
+"class": "Heightmap",
+"language": "GDScript",
+"path": "res://common/custom_types/heightmap.gd"
 }, {
 "base": "Button",
 "class": "HistoryFileEntry",
@@ -284,6 +254,36 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/components/preview_2d.gd"
 }, {
+"base": "Path",
+"class": "ProtonGraphCurve",
+"language": "GDScript",
+"path": "res://common/custom_types/curve_input.gd"
+}, {
+"base": "Node",
+"class": "ProtonGraphSettings",
+"language": "GDScript",
+"path": "res://common/autoloads/project_settings.gd"
+}, {
+"base": "ProtonNodeUi",
+"class": "ProtonNode",
+"language": "GDScript",
+"path": "res://core/proton_node.gd"
+}, {
+"base": "GraphNode",
+"class": "ProtonNodeUi",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/nodes/concept_node_ui.gd"
+}, {
+"base": "Spatial",
+"class": "ProtonNodeVectorCurve",
+"language": "GDScript",
+"path": "res://common/custom_types/vector_curve_3d.gd"
+}, {
+"base": "Spatial",
+"class": "ProtonNodeVectorCurve2D",
+"language": "GDScript",
+"path": "res://common/custom_types/vector_curve_2d.gd"
+}, {
 "base": "GenericInputComponent",
 "class": "ScalarComponent",
 "language": "GDScript",
@@ -362,14 +362,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "BaseGizmo": "",
 "BooleanComponent": "",
-"ConceptBoxInput": "",
-"ConceptGraphCurve": "",
-"ConceptGraphHeightmap": "",
-"ConceptGraphSettings": "",
-"ConceptNode": "",
-"ConceptNodeUi": "",
-"ConceptNodeVectorCurve": "",
-"ConceptNodeVectorCurve2D": "",
+"BoxInput": "",
 "ConfirmDialog": "",
 "Constants": "",
 "CurveGizmo": "",
@@ -391,6 +384,7 @@ _global_script_class_icons={
 "GenericInputComponent": "",
 "GenericOutputComponent": "",
 "GraphNodeComponent": "",
+"Heightmap": "",
 "HistoryFileEntry": "",
 "IPCServer": "",
 "InspectorPanel": "",
@@ -415,6 +409,12 @@ _global_script_class_icons={
 "NotificationsCenter": "",
 "PathUtil": "",
 "Preview2D": "",
+"ProtonGraphCurve": "",
+"ProtonGraphSettings": "",
+"ProtonNode": "",
+"ProtonNodeUi": "",
+"ProtonNodeVectorCurve": "",
+"ProtonNodeVectorCurve2D": "",
 "ScalarComponent": "",
 "SidebarProperty": "",
 "SignalManager": "",
@@ -446,7 +446,7 @@ Display=8
 
 [application]
 
-config/name="ConceptGraph"
+config/name="ProtonGraph"
 run/main_scene="res://ui/root/root.tscn"
 boot_splash/image="res://ui/themes/splash.png"
 boot_splash/fullsize=false

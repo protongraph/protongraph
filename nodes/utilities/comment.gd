@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 var _line_edit_comment
 
@@ -8,7 +8,7 @@ func _init() -> void:
 	unique_id = "comment"
 	display_name = "Comment"
 	category = "Utilities"
-	description = "Insert comment in concept graph editor"
+	description = "Insert a comment in the ProtonGraph editor"
 	resizable = true
 	comment = true
 

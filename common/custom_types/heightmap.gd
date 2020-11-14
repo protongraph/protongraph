@@ -1,5 +1,5 @@
-class_name ConceptGraphHeightmap
 extends Object
+class_name Heightmap
 
 
 var size := Vector2(64, 64)
@@ -21,7 +21,7 @@ func init(_size: Vector2, _mesh_size: Vector2, _height_scale: float, _height_off
 
 
 func duplicate(_opts):
-	# Don't use ConceptGraphHeightmap.new() here because it causes a cyclic dependency
+	# Don't use Heightmap.new() here because it causes a cyclic dependency
 	var res = get_script().new()
 	res.size = size
 	res.data = data.duplicate()

@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Tessellate a curve using the path controls points only.
@@ -23,7 +23,7 @@ func _generate_outputs() -> void:
 		return
 
 	for c in curves:	# c is a Path object here
-		var p = ConceptNodeVectorCurve.new()
+		var p = ProtonNodeVectorCurve.new()
 		var points = PoolVector3Array()
 		var curve: Curve3D = c.curve
 

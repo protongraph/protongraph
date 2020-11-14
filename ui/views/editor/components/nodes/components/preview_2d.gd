@@ -38,7 +38,7 @@ func generate_preview() -> void:
 	
 	if source is Noise:
 		create_from_noise(source)
-	elif source is ConceptGraphHeightmap:
+	elif source is Heightmap:
 		create_from_heightmap(source)
 	elif source is Image:
 		create_from_image(source)
@@ -52,7 +52,7 @@ func create_from_noise(noise: Noise) -> void:
 	_size_spinbox.visible = true
 
 
-func create_from_heightmap(heightmap: ConceptGraphHeightmap) -> void:
+func create_from_heightmap(heightmap: Heightmap) -> void:
 	_image_texture.create_from_image(heightmap.get_image())
 	_size_spinbox.visible = false
 

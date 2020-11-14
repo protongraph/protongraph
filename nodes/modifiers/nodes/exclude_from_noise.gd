@@ -1,4 +1,4 @@
-extends ConceptNode
+extends ProtonNode
 
 """
 Discard all the nodes if their corresponding noise value is above a certain threshold

@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 
 func _init() -> void:
@@ -24,7 +24,7 @@ func _generate_outputs() -> void:
 	var height_scale: float = get_input_single(2, 16.0)
 	var height_offset: float = get_input_single(3, 1.0)
 
-	var map = ConceptGraphHeightmap.new()
+	var map = Heightmap.new()
 	map.init(
 		map_size * Vector2.ONE,
 		mesh_size * Vector2.ONE,

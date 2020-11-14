@@ -2,7 +2,7 @@ extends Node
 
 
 # This script parses the node folder to retrieve a list of all the
-# available ConceptNodes.
+# available ProtonNodes.
 
 
 var _nodes: Dictionary
@@ -30,7 +30,7 @@ func clear() -> void:
 		node.queue_free()
 
 
-func create(type: String) -> ConceptNode:
+func create(type: String) -> ProtonNode:
 	if not _node_search_index:
 		refresh_list()
 
@@ -47,7 +47,7 @@ func refresh_list() -> void:
 	_find_all_nodes("res://nodes/")
 
 
-# Recursively search all the scripts that inherits from ConceptNode and store
+# Recursively search all the scripts that inherits from ProtonNode and store
 # them in the dictionnary
 func _find_all_nodes(path) -> void:
 	var dir = Directory.new()
@@ -72,7 +72,7 @@ func _find_all_nodes(path) -> void:
 			continue
 
 		var node = script.new()
-		if not node is ConceptNode:
+		if not node is ProtonNode:
 			continue
 
 		if node.ignore:
@@ -82,8 +82,8 @@ func _find_all_nodes(path) -> void:
 		var name = node.display_name
 		var id = node.unique_id
 
-		# ConceptNode is abstract, don't add it to the list
-		if not (node is ConceptNode) or name == "ConceptNode":
+		# ProtonNode is abstract, don't add it to the list
+		if not (node is ProtonNode) or name == "ProtonNode":
 			continue
 
 		# If the interface is defined in a separate file, load it instead

@@ -10,7 +10,7 @@ class_name NodeSidebar
 # graph. This is purely visual, the node keeps behaving exactly the same way.
 
 
-var _current: ConceptNode
+var _current: ProtonNode
 
 onready var _default: Control = $MarginContainer/DefaultContent
 onready var _properties: Control = $MarginContainer/Properties
@@ -47,7 +47,7 @@ func _rebuild_ui() -> void:
 	_name.text = _current.display_name
 
 	# Create a new SidebarProperty object for each slots. They rely on the 
-	# safe GraphNodeComponents used by the ConceptNodeUi class.
+	# safe GraphNodeComponents used by the ProtonNodeUi class.
 	for idx in _current._inputs.keys():
 		var slot = _current._inputs[idx]
 		var name = slot["name"]

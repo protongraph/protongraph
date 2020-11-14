@@ -1,7 +1,7 @@
-extends ConceptNode
+extends ProtonNode
 
 
-var _box: ConceptBoxInput
+var _box: BoxInput
 var _updating := false
 
 
@@ -17,7 +17,7 @@ func _init() -> void:
 	set_input(3, "Scale", DataType.VECTOR3, {"value": 1})
 	set_output(0, "", DataType.BOX_3D)
 
-	_box = ConceptBoxInput.new()
+	_box = BoxInput.new()
 	_box.name = "Unnamed Box"
 	Signals.safe_connect(_box, "input_changed", self, "_on_box_input_changed")
 

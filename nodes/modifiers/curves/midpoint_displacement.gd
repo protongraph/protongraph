@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Apply the midpoint displacement algorithm to a curve. Useful to randomize an existing curve path

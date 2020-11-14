@@ -1,4 +1,4 @@
-extends ConceptNode
+extends ProtonNode
 
 
 var _noise: Noise

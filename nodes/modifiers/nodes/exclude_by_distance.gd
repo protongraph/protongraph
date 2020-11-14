@@ -1,5 +1,4 @@
-tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Discard all the nodes within a certain distance from the origin

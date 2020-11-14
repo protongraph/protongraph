@@ -1,4 +1,4 @@
-extends ConceptNode
+extends ProtonNode
 
 """
 Uses an L-System to generate 3D curves

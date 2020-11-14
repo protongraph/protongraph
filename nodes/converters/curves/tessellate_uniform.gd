@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Tessellate a curve by sampling the curve at regular intervals. This creates an array of points of
@@ -31,7 +31,7 @@ func _generate_outputs() -> void:
 
 	for c in curves:
 		var curve = c.curve
-		var p = ConceptNodeVectorCurve.new()
+		var p = ProtonNodeVectorCurve.new()
 		p.transform = c.transform
 
 		var length = curve.get_baked_length()

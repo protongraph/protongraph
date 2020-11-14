@@ -1,5 +1,5 @@
 extends GraphNode
-class_name ConceptNodeUi
+class_name ProtonNodeUi
 
 
 signal delete_node
@@ -365,7 +365,7 @@ func get_output_index_pos(idx: int) -> int:
 	return -1
 
 
-# Returns a list of every ConceptNode connected to this node
+# Returns a list of every ProtonNode connected to this node
 func _get_connected_inputs() -> Array:
 	var connected_inputs = []
 	for idx in _inputs.keys():

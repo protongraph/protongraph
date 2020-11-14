@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 
 var _source_scene = load("res://nodes/outputs/print_area.tscn")

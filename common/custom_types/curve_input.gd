@@ -1,4 +1,4 @@
-class_name ConceptGraphCurve
+class_name ProtonGraphCurve
 extends Path
 
 

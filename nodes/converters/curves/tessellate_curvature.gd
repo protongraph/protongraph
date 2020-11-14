@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Tessellate a curve using the built in tessellate function on the curve3D. Creates an array of points
@@ -29,7 +29,7 @@ func _generate_outputs() -> void:
 	var tolerance: float = get_input_single(2, 4.0)
 
 	for path in paths:
-		var p = ConceptNodeVectorCurve.new()
+		var p = ProtonNodeVectorCurve.new()
 		p.points = path.curve.tessellate(stages, tolerance)
 		p.transform = path.transform
 		output[0].append(p)

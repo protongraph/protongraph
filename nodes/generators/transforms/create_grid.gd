@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Generates a list of transforms aligned to a grid in a 3D volume

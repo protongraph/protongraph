@@ -1,4 +1,4 @@
-extends ConceptNode
+extends ProtonNode
 
 # Ported from Sebastian Lague Hydraulic Erosion project
 # https://github.com/SebLague/Hydraulic-Erosion
@@ -43,7 +43,7 @@ func _generate_outputs() -> void:
 	var start_time = OS.get_ticks_msec()
 
 	# Node parameters
-	var heightmap: ConceptGraphHeightmap = get_input_single(0)
+	var heightmap: Heightmap = get_input_single(0)
 	
 	var custom_seed: int = get_input_single(1, 0)
 	var iterations: int = get_input_single(2, 1000)
@@ -138,7 +138,7 @@ the final values from the 4 pixels around that (px, py) point
 
 # TODO : Maybe move this to the heightmap class?
 """
-func _get_height_and_gradient(pos: Vector2, heightmap: ConceptGraphHeightmap) -> Array:
+func _get_height_and_gradient(pos: Vector2, heightmap: Heightmap) -> Array:
 	var ix = int(pos.x)
 	var iy = int(pos.y)
 	var x = pos.x - ix
@@ -182,7 +182,7 @@ func _deposit_old(pos, amount, heightmap) -> void:
 	heightmap.data[idx] += amount * x * y
 
 
-func _deposit(pos: Vector2, amount: float, heightmap: ConceptGraphHeightmap) -> float:
+func _deposit(pos: Vector2, amount: float, heightmap: Heightmap) -> float:
 	var acc = 0.0
 	var r = _brush_diameter / 2.0
 	var area = PI * r * r
@@ -204,7 +204,7 @@ func _deposit(pos: Vector2, amount: float, heightmap: ConceptGraphHeightmap) -> 
 	return acc
 
 
-func _erode(pos: Vector2, amount: float, heightmap: ConceptGraphHeightmap) -> float:
+func _erode(pos: Vector2, amount: float, heightmap: Heightmap) -> float:
 	var acc = 0.0
 	var r = _brush_diameter / 2.0
 	var area = PI * r * r

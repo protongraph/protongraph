@@ -1,5 +1,4 @@
-tool
-extends ConceptNode
+extends ProtonNode
 
 """
 Extrude a curve along another one at constant intervals.
@@ -22,7 +21,7 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var bevel: ConceptNodeVectorCurve = get_input_single(0)	# We extrude this
+	var bevel: ProtonNodeVectorCurve = get_input_single(0)	# We extrude this
 	var paths := get_input(1)	# following these
 	var taper: Curve = get_input_single(2)	# and vary its scale at each step based on this
 	var resolution: float = get_input_single(3, 1.0)	# at this interval

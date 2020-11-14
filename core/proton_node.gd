@@ -1,5 +1,5 @@
-extends ConceptNodeUi
-class_name ConceptNode
+extends ProtonNodeUi
+class_name ProtonNode
 
 
 signal cache_cleared
@@ -150,7 +150,7 @@ func get_output(idx: int, default := []) -> Array:
 			if node is Path or node is Path2D:
 				duplicate.curve = node.curve.duplicate(true)
 
-			# Outputs from final nodes are the responsibility of the ConceptGraph node
+			# Outputs from final nodes are the responsibility of the ProtonGraph node
 			if not is_final_output_node():
 				register_to_garbage_collection(duplicate)
 

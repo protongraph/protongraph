@@ -1,4 +1,4 @@
-extends ConceptNode
+extends ProtonNode
 
 # Muzz: currently this node remaps the Y axis to match the curve.
 #  Todo:
@@ -20,7 +20,7 @@ func _init() -> void:
 	set_input(1, "Path curve", DataType.CURVE_3D)
 	set_input(2, "Start offset", DataType.SCALAR, {"min": 0, "value": 0.0})
 	set_input(3, "End offset", DataType.SCALAR, {"min": 0, "value": 1.0})
-	set_input(4, "Rotate", DataType.SCALAR, {"min": 0, "value": 1.0})
+	set_input(4, "Rotate", DataType.SCALAR, {"min": 0, "value": 0.0})
 	set_input(5, "Tilt", DataType.BOOLEAN)
 	set_output(0, "Mesh", DataType.MESH_3D)
 
@@ -28,12 +28,10 @@ func _init() -> void:
 func _generate_outputs() -> void:
 	var mesh : Mesh = get_input_single(0).mesh
 	var paths := get_input(1)
-	var start_offset : float = get_input_single(2,0.0)
-	var end_offset : float = get_input_single(3,1.0)
-	var tilt: bool = get_input_single(4,false)
-
-	# this is in radians
-	var rotate_along_axis : float = get_input_single(5,0.0)
+	var start_offset : float = get_input_single(2, 0.0)
+	var end_offset : float = get_input_single(3, 1.0)
+	var tilt: bool = get_input_single(5, false)
+	var rotate_along_axis : float = deg2rad(get_input_single(4, 0.0))
 
 	start_offset =  clamp(start_offset, 0, 1)
 	end_offset =  clamp(end_offset, 0.01, 1)
@@ -53,7 +51,7 @@ func _generate_outputs() -> void:
 
 	# Muzz: this transform puts the verts into the correct axis that the next transform expects.
 	var pre_transform: Transform
-	var pre_look_at = Vector3(rotate_angle.x,rotate_angle.y,0)
+	var pre_look_at = Vector3(rotate_angle.x, rotate_angle.y,0)
 	pre_transform = pre_transform.looking_at(pre_look_at , Vector3(0, 0, 1))
 
 	# Muzz: if there are multiple paths, we'll duplicate the mesh for every single one.
@@ -99,7 +97,7 @@ func _generate_outputs() -> void:
 			var position_on_curve: Vector3 = curve.interpolate_baked(offset)
 
 			# I should add a check that there is an up vector in the curve.
-			var up: Vector3 = curve.interpolate_baked_up_vector (offset,tilt)
+			var up: Vector3 = curve.interpolate_baked_up_vector (offset, tilt)
 			var position_look_at: Vector3
 
 			if offset + 0.05 < length:
@@ -124,8 +122,8 @@ func _generate_outputs() -> void:
 			normal = transform.xform(normal)
 			vert =  transform.xform(vert)
 
-			mesh_data_tool.set_vertex(i,vert+position_on_curve)
-			mesh_data_tool.set_vertex_normal(i,normal)
+			mesh_data_tool.set_vertex(i,vert + position_on_curve)
+			mesh_data_tool.set_vertex_normal(i, normal)
 
 		var temporary_mesh = ArrayMesh.new()
 		var arrays = Array()

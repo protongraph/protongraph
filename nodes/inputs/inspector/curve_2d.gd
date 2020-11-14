@@ -1,5 +1,5 @@
 tool
-extends ConceptNode
+extends ProtonNode
 
 var default: Curve
 

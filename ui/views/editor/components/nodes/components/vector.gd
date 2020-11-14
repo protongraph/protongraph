@@ -20,7 +20,7 @@ func create(label_name: String, type: int, opts := {}) -> void:
 
 	_col.add_child(_label_box)
 	
-	var inline = Settings.get_setting(ConceptGraphSettings.INLINE_VECTOR_FIELDS)
+	var inline = Settings.get_setting(Settings.INLINE_VECTOR_FIELDS)
 	
 	if inline:
 		_vector_box = HBoxContainer.new()

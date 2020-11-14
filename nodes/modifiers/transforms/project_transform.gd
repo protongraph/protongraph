@@ -1,5 +1,4 @@
-tool
-extends ConceptNode
+extends ProtonNode
 
 
 func _init() -> void:
@@ -28,8 +27,10 @@ func _generate_outputs() -> void:
 	if not nodes or nodes.size() == 0:
 		return
 
-	var cg = get_parent().concept_graph
-	if not cg or cg.is_2d():
+	return
+	# TODO : find a way to expose the direct space state to the nodes
+	var cg = get_parent()
+	if not cg:
 		return
 
 	if invert:

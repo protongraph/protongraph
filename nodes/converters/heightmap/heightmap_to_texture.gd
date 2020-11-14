@@ -1,4 +1,4 @@
-extends ConceptNode
+extends ProtonNode
 
 
 func _init() -> void:
@@ -12,6 +12,6 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var heightmap: ConceptGraphHeightmap = get_input_single(0, null)
+	var heightmap: Heightmap = get_input_single(0, null)
 	if heightmap:
 		output[0].append(heightmap.get_image())
