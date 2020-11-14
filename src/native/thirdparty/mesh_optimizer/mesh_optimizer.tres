@@ -1,9 +1,0 @@
-[gd_resource type="GDNativeLibrary" format=2]
-
-[resource]
-entry/OSX.64 = "res://src/native/thirdparty/mesh_optimizer/bin/osx/libmeshoptimizer.dylib"
-entry/Windows.64 = "res://src/native/thirdparty/mesh_optimizer/bin/win/libmeshoptimizer.dll"
-entry/X11.64 = "res://src/native/thirdparty/mesh_optimizer/bin/x11/libmeshoptimizer.so"
-dependency/OSX.64 = [  ]
-dependency/Windows.64 = [  ]
-dependency/X11.64 = [  ]

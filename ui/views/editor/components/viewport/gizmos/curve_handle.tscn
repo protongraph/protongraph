@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://views/editor/viewport/gizmos/curve_handle.gd" type="Script" id=1]
+[ext_resource path="res://views/editor/viewport/gizmos/move_gizmo.tscn" type="PackedScene" id=2]
+[ext_resource path="res://views/editor/viewport/gizmos/material_handle.tres" type="Material" id=3]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 0.2
+height = 0.4
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereShape" id=2]
+radius = 0.3
+
+[node name="CurveHandle" type="Spatial"]
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "The curve handle itself doesn't move. Instead the sphere (always visible) is linked to the associated control point. The MoveGizmo controls this sphere (which then update the curve point). It is only visible when the sphere is selected."
+}
+
+[node name="MoveGizmo" parent="." instance=ExtResource( 2 )]
+
+[node name="Sphere" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = ExtResource( 3 )
+
+[node name="Area" type="Area" parent="Sphere"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Sphere/Area"]
+shape = SubResource( 2 )

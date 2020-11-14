@@ -1,43 +1,45 @@
-# Concept Graph
-This is a node based, procedural content creation tool.
-You have a collection of nodes that you connect together to create a complex result. You can see it as a form
-of visual scripting, but for 3D models generation.
+# ProtonGraph
 
-## Overview
+**Work in progress, please read the Current Status section**
 
-The graph node can be as simple ...
-![image](https://user-images.githubusercontent.com/52043844/82753238-77f64300-9dc4-11ea-9526-f7ada2883abc.png)
+A node based tool for procedural content creation.
+Which means, you have a collection of nodes that you connect together to
+create a complex result. You can see it as a form of visual scripting, but
+for 3D models generation.
 
-... or as complicated as you want ![image](https://user-images.githubusercontent.com/52043844/82753149-d0791080-9dc3-11ea-8b76-035d7115ee55.png)
+![image](https://user-images.githubusercontent.com/52043844/99144382-b0852400-2665-11eb-9ca1-2e8ddb34fc93.png)
 
-## Status
+## Current Status
 
-This tool is still a **work in progress**. Until it hits version 1.0, it is not
-considered production ready and there's no guarantees the files generated with
-this addon will be compatible with later versions.
+ProtonGraph is currently going through **a lot of refactoring** and a rebrand. As a result, **it's not usable
+right now**, but the next major update is due soon and will break backward compatiblity. Therefore I suggest
+you to wait until it's released. 
+Release announcement will be made here and on the social media listed below.
 
-### Important note
-
-This tool started as a Godot Engine addon but is currently been transitionned to be a standalone software.
-More information here https://www.youtube.com/watch?v=RVSum5m2suU
-
-This means you will no longer need to use this from the Godot editor, but simply download and use ConceptGraph as any other tool.
-The current release is a preview version. I expect bugs and regressions as it was not fully tested on all target platforms. OSX versions are
-known to be troublesome.
+### Rebrand
+ProtonGraph used to be called ConceptGraph, but I noticed Microsoft already have a product called like
+this, they also own the domain name and possibly the trademark too. So we rebranded the tool as ProtonGraph
+after running a community poll. This way we get a unique name (as in, not in used by anybody else) and
+a valid domain name and you won't mix it up with conceptual graphs which are completely different things.
 
 
-## Quick start
+## Roadmap
 
-[Check out the wiki](https://github.com/HungryProton/concept_graph/wiki) for detailed explanations
+ProtonGraph is a standalone software but it's a lot more convienient to drive the content generation from
+you engine of choice. So the immediate priority is to get a sync plugin running for the Godot engine as 
+a proof of concept. 
+
+Why? Because this requires internal changes that may or may not break compatibility so it has to be done
+as soon as possible. Once the software works as expected, we need to write massive amounts of documentation
+on how to actually use the software, tutorials and example files.
+
++ To track the work in progress and planned features, [head over the project board](https://github.com/proton-graph/proton-graph/projects)
 
 
-## Known issues and roadmap
+## Build from source
+If you want to build the project from source yourself, you will need a custom version of the engine.
+Follow the instructions on this repository: https://github.com/proton-graph/environment
 
-+ For a list of known issues, [head over the issue tracker](https://github.com/HungryProton/concept_graph/issues)
-+ To track the work in progress and planned feature, [head over the project board](https://github.com/HungryProton/concept_graph/projects)
-
-The **current focus** is to get the standalone version in a working state and **add a lot of documentation**.
-Even though ConceptGraph doesn't have all of its planned features, we can't expect anyone to actually use this tool if nobody knows how to.
 
 ## Build from source
 
@@ -53,3 +55,9 @@ and hear about every little update or work in progress. Head over to Youtube or 
 + **Twitter:** https://twitter.com/HungryProton
 + **Youtube:** https://www.youtube.com/channel/UCN-YuzlFmOOh0A5iwiDab2w
 + **LBRY:** https://lbry.tv/@HungryProton:2
+
+
+## Licence
++ Unless stated otherwise, this project is available under the MIT licence.
++ Thirdparties library have their own licence but are all MIT friendly.
++ Almost every svg icons used comes from the GodotEngine editor and are distributed under the CC-BY 4.0 licence.

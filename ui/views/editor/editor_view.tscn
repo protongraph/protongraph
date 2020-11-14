@@ -1,0 +1,240 @@
+[gd_scene load_steps=31 format=2]
+
+[ext_resource path="res://core/template.gd" type="Script" id=1]
+[ext_resource path="res://ui/views/editor/components/inspector/inspector.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/views/editor/components/viewport/viewport.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/views/editor/editor_view.gd" type="Script" id=4]
+[ext_resource path="res://ui/views/editor/components/panels/add_node_panel.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ui/icons/icon_replay.svg" type="Texture" id=6]
+[ext_resource path="res://ui/icons/icon_save.svg" type="Texture" id=7]
+[ext_resource path="res://ui/common/auto_scale.gd" type="Script" id=8]
+[ext_resource path="res://ui/views/editor/components/icon_button/animated_icon_button.gd" type="Script" id=9]
+[ext_resource path="res://ui/views/editor/components/node_sidebar/node_sidebar.tscn" type="PackedScene" id=10]
+[ext_resource path="res://ui/views/editor/components/icon_button/hide_target.gd" type="Script" id=11]
+[ext_resource path="res://ui/views/editor/components/icon_button/icon_button.tscn" type="PackedScene" id=12]
+[ext_resource path="res://ui/icons/progress/progress_icon.tres" type="Texture" id=13]
+[ext_resource path="res://ui/icons/icon_add.svg" type="Texture" id=14]
+[ext_resource path="res://ui/icons/icon_sidebar.svg" type="Texture" id=15]
+[ext_resource path="res://ui/icons/icon_inspector.svg" type="Texture" id=16]
+[ext_resource path="res://ui/icons/icon_viewport.svg" type="Texture" id=17]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="InputEventAction" id=2]
+action = "editor_add_node"
+
+[sub_resource type="ShortCut" id=3]
+shortcut = SubResource( 2 )
+
+[sub_resource type="InputEventAction" id=4]
+action = "editor_save_template"
+
+[sub_resource type="ShortCut" id=5]
+shortcut = SubResource( 4 )
+
+[sub_resource type="InputEventAction" id=6]
+action = "editor_force_generation"
+
+[sub_resource type="ShortCut" id=7]
+shortcut = SubResource( 6 )
+
+[sub_resource type="InputEventAction" id=8]
+action = "editor_toggle_sidebar"
+
+[sub_resource type="ShortCut" id=9]
+shortcut = SubResource( 8 )
+
+[sub_resource type="InputEventAction" id=10]
+action = "editor_toggle_inspector"
+
+[sub_resource type="ShortCut" id=11]
+shortcut = SubResource( 10 )
+
+[sub_resource type="InputEventAction" id=12]
+action = "editor_toggle_viewport"
+
+[sub_resource type="ShortCut" id=13]
+shortcut = SubResource( 12 )
+
+[node name="GraphEditorView" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+viewport_container = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/Control/Viewport")
+template = NodePath("VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor")
+add_node_dialog = NodePath("AddNodeDialog")
+inspector = NodePath("VBoxContainer/HSplitContainer/Inspector")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 1366.0
+margin_bottom = 768.0
+
+[node name="ToolShelf" type="VBoxContainer" parent="VBoxContainer"]
+margin_right = 28.0
+margin_bottom = 768.0
+rect_min_size = Vector2( 28, 0 )
+script = ExtResource( 8 )
+min_size_x = true
+
+[node name="AddNodes" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
+margin_right = 28.0
+margin_bottom = 29.0
+hint_tooltip = "(Shift + A)
+Create a new node. You can right click anywhere in the graph editor to bring up this menu."
+shortcut_in_tooltip = false
+shortcut = SubResource( 3 )
+icon = ExtResource( 14 )
+
+[node name="Save" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
+margin_top = 37.0
+margin_right = 28.0
+margin_bottom = 66.0
+hint_tooltip = "(Ctrl + S)
+Save the edited template to disk
+"
+shortcut_in_tooltip = false
+shortcut = SubResource( 5 )
+icon = ExtResource( 7 )
+
+[node name="RunGeneration" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
+margin_top = 74.0
+margin_right = 28.0
+margin_bottom = 103.0
+hint_tooltip = "(Ctrl + R)
+Force the editor to regenerate the final result. This should happen automatically when the template is updated.
+"
+shortcut_in_tooltip = false
+shortcut = SubResource( 7 )
+icon = ExtResource( 6 )
+script = ExtResource( 9 )
+normal_icon = ExtResource( 6 )
+animated_icon = ExtResource( 13 )
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/ToolShelf"]
+margin_top = 111.0
+margin_right = 28.0
+margin_bottom = 114.0
+
+[node name="ToggleSidebar" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
+margin_top = 122.0
+margin_right = 28.0
+margin_bottom = 151.0
+hint_tooltip = "(T)
+Enable or disable the node sidebar."
+shortcut_in_tooltip = false
+shortcut = SubResource( 9 )
+icon = ExtResource( 15 )
+script = ExtResource( 11 )
+target = NodePath("../../HSplitContainer/HSplitContainer/HBoxContainer/NodeSidebar")
+
+[node name="ToggleInspector" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
+margin_top = 159.0
+margin_right = 28.0
+margin_bottom = 188.0
+hint_tooltip = "(N)
+Enable or disable the inspector."
+shortcut_in_tooltip = false
+shortcut = SubResource( 11 )
+icon = ExtResource( 16 )
+script = ExtResource( 11 )
+target = NodePath("../../HSplitContainer/Inspector")
+
+[node name="ToggleViewport" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
+margin_top = 196.0
+margin_right = 28.0
+margin_bottom = 225.0
+hint_tooltip = "(V)
+Enable or disable the 3D viewport."
+shortcut_in_tooltip = false
+shortcut = SubResource( 13 )
+icon = ExtResource( 17 )
+script = ExtResource( 11 )
+target = NodePath("../../HSplitContainer/HSplitContainer/Control")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
+margin_left = 36.0
+margin_right = 1366.0
+margin_bottom = 768.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/autohide = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSplitContainer" type="VSplitContainer" parent="VBoxContainer/HSplitContainer"]
+margin_right = 1056.0
+margin_bottom = 768.0
+rect_clip_content = true
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 20.0
+custom_constants/autohide = 0
+
+[node name="HBoxContainer" type="HSplitContainer" parent="VBoxContainer/HSplitContainer/HSplitContainer"]
+margin_right = 1056.0
+margin_bottom = 500.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="NodeSidebar" parent="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer" instance=ExtResource( 10 )]
+visible = false
+anchor_bottom = 0.0
+margin_bottom = 500.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TemplateEditor" type="GraphEdit" parent="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer"]
+margin_right = 1056.0
+margin_bottom = 500.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 20.0
+right_disconnects = true
+scroll_offset = Vector2( -321, -268 )
+script = ExtResource( 1 )
+
+[node name="Control" type="Control" parent="VBoxContainer/HSplitContainer/HSplitContainer"]
+margin_top = 524.0
+margin_right = 1056.0
+margin_bottom = 768.0
+mouse_filter = 2
+size_flags_vertical = 3
+__meta__ = {
+"_editor_description_": "Hack to make it possible to completely hide the viewport when dragging the hsplit all the way down."
+}
+
+[node name="Viewport" parent="VBoxContainer/HSplitContainer/HSplitContainer/Control" instance=ExtResource( 3 )]
+
+[node name="Inspector" parent="VBoxContainer/HSplitContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1080.0
+margin_right = 1330.0
+margin_bottom = 768.0
+
+[node name="AddNodeDialog" parent="." instance=ExtResource( 5 )]
+margin_right = 512.0
+margin_bottom = 400.0
+[connection signal="pressed" from="VBoxContainer/ToolShelf/AddNodes" to="." method="_show_node_dialog_centered"]
+[connection signal="pressed" from="VBoxContainer/ToolShelf/Save" to="." method="save_template"]
+[connection signal="pressed" from="VBoxContainer/ToolShelf/RunGeneration" to="." method="regenerate"]
+[connection signal="exposed_variables_updated" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_exposed_variables_updated"]
+[connection signal="graph_changed" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_graph_changed"]
+[connection signal="input_created" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_input_created"]
+[connection signal="input_deleted" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_input_deleted"]
+[connection signal="node_deleted" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/NodeSidebar" method="_on_node_deleted"]
+[connection signal="node_selected" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/NodeSidebar" method="_on_node_selected"]
+[connection signal="popup_request" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_show_node_dialog"]
+[connection signal="simulation_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_simulation_completed"]
+[connection signal="simulation_outdated" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_simulation_outdated"]
+[connection signal="value_changed" from="VBoxContainer/HSplitContainer/Inspector" to="." method="_on_inspector_value_changed"]
+[connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]

@@ -4,6 +4,11 @@
 export.cfg
 export_presets.cfg
 
+# WAT-specific ignores
+.test/
+tests/results
+script_templates/
+
 # Mono-specific ignores
 .mono/
 # data_*/

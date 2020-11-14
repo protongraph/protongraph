@@ -9,193 +9,462 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Spatial",
+"class": "BaseGizmo",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/viewport/gizmos/base_gizmo.gd"
+}, {
+"base": "GenericInputComponent",
+"class": "BooleanComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/nodes/components/boolean.gd"
+}, {
 "base": "MeshInstance",
-"class": "ConceptBoxInput",
+"class": "BoxInput",
 "language": "GDScript",
-"path": "res://nodes/box_input.gd"
+"path": "res://common/custom_types/box_input.gd"
 }, {
-"base": "Path",
-"class": "ConceptGraphCurveInput",
+"base": "WindowDialog",
+"class": "ConfirmDialog",
 "language": "GDScript",
-"path": "res://nodes/curve_input.gd"
+"path": "res://ui/root/components/confirm_dialog.gd"
 }, {
-"base": "Reference",
-"class": "ConceptGraphCurveUtil",
+"base": "Node",
+"class": "Constants",
 "language": "GDScript",
-"path": "res://src/common/curve_util.gd"
+"path": "res://common/static/constants.gd"
 }, {
-"base": "Reference",
-"class": "ConceptGraphDataType",
+"base": "BaseGizmo",
+"class": "CurveGizmo",
 "language": "GDScript",
-"path": "res://src/data_structures/data_types.gd"
-}, {
-"base": "Reference",
-"class": "ConceptGraphEditorUtil",
-"language": "GDScript",
-"path": "res://src/common/editor_util.gd"
+"path": "res://ui/views/editor/components/viewport/gizmos/curve_gizmo.gd"
 }, {
 "base": "Control",
-"class": "ConceptGraphEditorView",
+"class": "CurvePanel",
 "language": "GDScript",
-"path": "res://views/editor/editor_view.gd"
-}, {
-"base": "Object",
-"class": "ConceptGraphHeightmap",
-"language": "GDScript",
-"path": "res://src/data_structures/heightmap.gd"
-}, {
-"base": "Node",
-"class": "ConceptGraphNodePool",
-"language": "GDScript",
-"path": "res://src/core/node_pool.gd"
+"path": "res://ui/views/editor/components/inspector/curve/curve_panel.gd"
 }, {
 "base": "Reference",
-"class": "ConceptGraphNodeUtil",
+"class": "CurveUtil",
 "language": "GDScript",
-"path": "res://src/common/node_util.gd"
+"path": "res://common/static/curve_util.gd"
 }, {
-"base": "Object",
-"class": "ConceptGraphNoise",
+"base": "GraphEdit",
+"class": "CustomGraphEdit",
 "language": "GDScript",
-"path": "res://src/data_structures/noise.gd"
-}, {
-"base": "ConceptGraphNoise",
-"class": "ConceptGraphNoiseBlend",
-"language": "GDScript",
-"path": "res://src/data_structures/noise_blend.gd"
-}, {
-"base": "ConceptGraphNoise",
-"class": "ConceptGraphNoiseSimplex",
-"language": "GDScript",
-"path": "res://src/data_structures/noise_simplex.gd"
-}, {
-"base": "Node",
-"class": "ConceptGraphSettings",
-"language": "GDScript",
-"path": "res://src/core/project_settings.gd"
-}, {
-"base": "",
-"class": "ConceptGraphTemplate",
-"language": "GDScript",
-"path": "res://src/core/template.gd"
-}, {
-"base": "Reference",
-"class": "ConceptGraphThreadPool",
-"language": "GDScript",
-"path": "res://src/core/thread_pool.gd"
-}, {
-"base": "Reference",
-"class": "ConceptGraphVectorUtil",
-"language": "GDScript",
-"path": "res://src/common/vector_util.gd"
-}, {
-"base": "GraphNode",
-"class": "ConceptNode",
-"language": "GDScript",
-"path": "res://src/core/concept_node.gd"
-}, {
-"base": "Node",
-"class": "ConceptNodeLibrary",
-"language": "GDScript",
-"path": "res://src/core/node_library.gd"
-}, {
-"base": "Spatial",
-"class": "ConceptNodeVectorCurve",
-"language": "GDScript",
-"path": "res://src/data_structures/vector_curve_3d.gd"
-}, {
-"base": "Spatial",
-"class": "ConceptNodeVectorCurve2D",
-"language": "GDScript",
-"path": "res://src/data_structures/vector_curve_2d.gd"
+"path": "res://ui/common/custom_graph_edit.gd"
 }, {
 "base": "ProgressBar",
 "class": "CustomSpinBox",
 "language": "GDScript",
-"path": "res://views/editor/common/spinbox/spinbox.gd"
+"path": "res://ui/views/editor/components/spinbox/spinbox.gd"
+}, {
+"base": "TabContainer",
+"class": "CustomTabContainer",
+"language": "GDScript",
+"path": "res://ui/common/custom_tab_container.gd"
+}, {
+"base": "Reference",
+"class": "DataType",
+"language": "GDScript",
+"path": "res://common/static/data_types.gd"
+}, {
+"base": "Control",
+"class": "DialogManager",
+"language": "GDScript",
+"path": "res://ui/root/components/dialog_manager.gd"
+}, {
+"base": "Object",
+"class": "DictUtil",
+"language": "GDScript",
+"path": "res://common/static/dict_util.gd"
+}, {
+"base": "PanelContainer",
+"class": "EditorSettingsView",
+"language": "GDScript",
+"path": "res://ui/views/settings/editor_settings_view.gd"
+}, {
+"base": "Reference",
+"class": "EditorUtil",
+"language": "GDScript",
+"path": "res://common/static/editor_util.gd"
+}, {
+"base": "Control",
+"class": "EditorView",
+"language": "GDScript",
+"path": "res://ui/views/editor/editor_view.gd"
+}, {
+"base": "Control",
+"class": "EditorViewport",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/viewport/viewport.gd"
+}, {
+"base": "Node",
+"class": "EventBus",
+"language": "GDScript",
+"path": "res://common/autoloads/event_bus.gd"
+}, {
+"base": "ProtonNode",
+"class": "GenericExportNode",
+"language": "GDScript",
+"path": "res://nodes/outputs/generic_export_node.gd"
+}, {
+"base": "ProtonNode",
+"class": "GenericImportNode",
+"language": "GDScript",
+"path": "res://nodes/inputs/generic_import_node.gd"
+}, {
+"base": "GraphNodeComponent",
+"class": "GenericInputComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/nodes/components/generic_input.gd"
+}, {
+"base": "GraphNodeComponent",
+"class": "GenericOutputComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/nodes/components/generic_output.gd"
+}, {
+"base": "MarginContainer",
+"class": "GraphNodeComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/nodes/graph_node_component.gd"
+}, {
+"base": "Object",
+"class": "Heightmap",
+"language": "GDScript",
+"path": "res://common/custom_types/heightmap.gd"
+}, {
+"base": "Button",
+"class": "HistoryFileEntry",
+"language": "GDScript",
+"path": "res://ui/views/welcome/file_entry.gd"
+}, {
+"base": "Node",
+"class": "IPCServer",
+"language": "GDScript",
+"path": "res://common/autoloads/server/server.gd"
 }, {
 "base": "ScrollContainer",
 "class": "InspectorPanel",
 "language": "GDScript",
-"path": "res://views/editor/inspector/inspector.gd"
+"path": "res://ui/views/editor/components/inspector/inspector.gd"
 }, {
 "base": "Reference",
 "class": "JSONBeautifier",
 "language": "GDScript",
-"path": "res://src/thirdparty/json_beautifier/json_beautifier.gd"
+"path": "res://thirdparty/json_beautifier/json_beautifier.gd"
+}, {
+"base": "FileDialog",
+"class": "LoadSaveDialog",
+"language": "GDScript",
+"path": "res://ui/root/components/load_save_dialog.gd"
+}, {
+"base": "Node",
+"class": "NodePool",
+"language": "GDScript",
+"path": "res://core/node_pool.gd"
+}, {
+"base": "Control",
+"class": "NodeSidebar",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/node_sidebar/node_sidebar.gd"
 }, {
 "base": "Object",
-"class": "NodeUtils",
+"class": "NodeUtil",
 "language": "GDScript",
-"path": "res://src/common/node_utils.gd"
+"path": "res://common/static/node_util.gd"
 }, {
-"base": "VBoxContainer",
-"class": "NoisePreview",
+"base": "Object",
+"class": "Noise",
 "language": "GDScript",
-"path": "res://views/nodes/noise_preview.gd"
+"path": "res://common/custom_types/noise/noise.gd"
+}, {
+"base": "NoiseCombiner",
+"class": "NoiseAdd",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_add.gd"
+}, {
+"base": "NoiseCombiner",
+"class": "NoiseBlend",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/noise_blend.gd"
+}, {
+"base": "Noise",
+"class": "NoiseCombiner",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_combiner.gd"
+}, {
+"base": "NoiseCombiner",
+"class": "NoiseDivide",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_divide.gd"
+}, {
+"base": "NoiseCombiner",
+"class": "NoiseMax",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_max.gd"
+}, {
+"base": "NoiseCombiner",
+"class": "NoiseMin",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_min.gd"
+}, {
+"base": "NoiseCombiner",
+"class": "NoiseMultiply",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_multiply.gd"
+}, {
+"base": "NoiseCombiner",
+"class": "NoiseOverlay",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_overlay.gd"
+}, {
+"base": "NoiseCombiner",
+"class": "NoiseScreen",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_screen.gd"
+}, {
+"base": "Noise",
+"class": "NoiseSimplex",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/noise_simplex.gd"
+}, {
+"base": "NoiseCombiner",
+"class": "NoiseSubstract",
+"language": "GDScript",
+"path": "res://common/custom_types/noise/combiners/noise_substract.gd"
+}, {
+"base": "Control",
+"class": "Notification",
+"language": "GDScript",
+"path": "res://ui/root/components/notification.gd"
+}, {
+"base": "Control",
+"class": "NotificationsCenter",
+"language": "GDScript",
+"path": "res://ui/root/components/notifications_center.gd"
 }, {
 "base": "Reference",
 "class": "PathUtil",
 "language": "GDScript",
-"path": "res://src/common/path_util.gd"
+"path": "res://common/static/path_util.gd"
 }, {
-"base": "Reference",
-"class": "PoolVectorUtil",
+"base": "VBoxContainer",
+"class": "Preview2D",
 "language": "GDScript",
-"path": "res://src/common/pool_vector_util.gd"
+"path": "res://ui/views/editor/components/nodes/components/preview_2d.gd"
+}, {
+"base": "Path",
+"class": "ProtonGraphCurve",
+"language": "GDScript",
+"path": "res://common/custom_types/curve_input.gd"
 }, {
 "base": "Node",
+"class": "ProtonGraphSettings",
+"language": "GDScript",
+"path": "res://common/autoloads/project_settings.gd"
+}, {
+"base": "ProtonNodeUi",
+"class": "ProtonNode",
+"language": "GDScript",
+"path": "res://core/proton_node.gd"
+}, {
+"base": "GraphNode",
+"class": "ProtonNodeUi",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/nodes/concept_node_ui.gd"
+}, {
+"base": "Spatial",
+"class": "ProtonNodeVectorCurve",
+"language": "GDScript",
+"path": "res://common/custom_types/vector_curve_3d.gd"
+}, {
+"base": "Spatial",
+"class": "ProtonNodeVectorCurve2D",
+"language": "GDScript",
+"path": "res://common/custom_types/vector_curve_2d.gd"
+}, {
+"base": "GenericInputComponent",
+"class": "ScalarComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/nodes/components/scalar.gd"
+}, {
+"base": "HBoxContainer",
+"class": "SidebarProperty",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/node_sidebar/property.gd"
+}, {
+"base": "Object",
+"class": "SignalManager",
+"language": "GDScript",
+"path": "res://common/signal_manager.gd"
+}, {
+"base": "Reference",
 "class": "Signals",
 "language": "GDScript",
-"path": "res://src/common/signal_util.gd"
+"path": "res://common/static/signal_util.gd"
+}, {
+"base": "GenericInputComponent",
+"class": "StringComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/nodes/components/string.gd"
+}, {
+"base": "CustomGraphEdit",
+"class": "Template",
+"language": "GDScript",
+"path": "res://core/template.gd"
+}, {
+"base": "Reference",
+"class": "ThreadPool",
+"language": "GDScript",
+"path": "res://core/thread_pool.gd"
+}, {
+"base": "Node",
+"class": "Turtle",
+"language": "GDScript",
+"path": "res://nodes/generators/curves/l_system/turtle.gd"
+}, {
+"base": "PanelContainer",
+"class": "UserInterfaceRoot",
+"language": "GDScript",
+"path": "res://ui/root/root.gd"
+}, {
+"base": "GraphNodeComponent",
+"class": "VectorComponent",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/nodes/components/vector.gd"
+}, {
+"base": "Reference",
+"class": "VectorUtil",
+"language": "GDScript",
+"path": "res://common/static/vector_util.gd"
+}, {
+"base": "CustomTabContainer",
+"class": "ViewContainer",
+"language": "GDScript",
+"path": "res://ui/root/components/view_container.gd"
+}, {
+"base": "Reference",
+"class": "WAT",
+"language": "GDScript",
+"path": "res://addons/WAT/namespace.gd"
+}, {
+"base": "",
+"class": "WATTest",
+"language": "GDScript",
+"path": "res://addons/WAT/core/test/test.gd"
+}, {
+"base": "PanelContainer",
+"class": "WelcomeView",
+"language": "GDScript",
+"path": "res://ui/views/welcome/welcome_view.gd"
 } ]
 _global_script_class_icons={
-"ConceptBoxInput": "",
-"ConceptGraphCurveInput": "",
-"ConceptGraphCurveUtil": "",
-"ConceptGraphDataType": "",
-"ConceptGraphEditorUtil": "",
-"ConceptGraphEditorView": "",
-"ConceptGraphHeightmap": "",
-"ConceptGraphNodePool": "",
-"ConceptGraphNodeUtil": "",
-"ConceptGraphNoise": "",
-"ConceptGraphNoiseBlend": "",
-"ConceptGraphNoiseSimplex": "",
-"ConceptGraphSettings": "",
-"ConceptGraphTemplate": "",
-"ConceptGraphThreadPool": "",
-"ConceptGraphVectorUtil": "",
-"ConceptNode": "",
-"ConceptNodeLibrary": "",
-"ConceptNodeVectorCurve": "",
-"ConceptNodeVectorCurve2D": "",
+"BaseGizmo": "",
+"BooleanComponent": "",
+"BoxInput": "",
+"ConfirmDialog": "",
+"Constants": "",
+"CurveGizmo": "",
+"CurvePanel": "",
+"CurveUtil": "",
+"CustomGraphEdit": "",
 "CustomSpinBox": "",
+"CustomTabContainer": "",
+"DataType": "",
+"DialogManager": "",
+"DictUtil": "",
+"EditorSettingsView": "",
+"EditorUtil": "",
+"EditorView": "",
+"EditorViewport": "",
+"EventBus": "",
+"GenericExportNode": "",
+"GenericImportNode": "",
+"GenericInputComponent": "",
+"GenericOutputComponent": "",
+"GraphNodeComponent": "",
+"Heightmap": "",
+"HistoryFileEntry": "",
+"IPCServer": "",
 "InspectorPanel": "",
 "JSONBeautifier": "",
-"NodeUtils": "",
-"NoisePreview": "",
+"LoadSaveDialog": "",
+"NodePool": "",
+"NodeSidebar": "",
+"NodeUtil": "",
+"Noise": "",
+"NoiseAdd": "",
+"NoiseBlend": "",
+"NoiseCombiner": "",
+"NoiseDivide": "",
+"NoiseMax": "",
+"NoiseMin": "",
+"NoiseMultiply": "",
+"NoiseOverlay": "",
+"NoiseScreen": "",
+"NoiseSimplex": "",
+"NoiseSubstract": "",
+"Notification": "",
+"NotificationsCenter": "",
 "PathUtil": "",
-"PoolVectorUtil": "",
-"Signals": ""
+"Preview2D": "",
+"ProtonGraphCurve": "",
+"ProtonGraphSettings": "",
+"ProtonNode": "",
+"ProtonNodeUi": "",
+"ProtonNodeVectorCurve": "",
+"ProtonNodeVectorCurve2D": "",
+"ScalarComponent": "",
+"SidebarProperty": "",
+"SignalManager": "",
+"Signals": "",
+"StringComponent": "",
+"Template": "",
+"ThreadPool": "",
+"Turtle": "",
+"UserInterfaceRoot": "",
+"VectorComponent": "",
+"VectorUtil": "",
+"ViewContainer": "",
+"WAT": "",
+"WATTest": "",
+"WelcomeView": ""
 }
+
+[WAT]
+
+Test_Directory="res://tests"
+Results_Directory="res://tests/results/WAT"
+Minimize_Window_When_Running_Tests=false
+TestStrategy={
+"repeat": 1,
+"strategy": "RunAll"
+}
+Tags=PoolStringArray(  )
+Display=8
 
 [application]
 
-config/name="ConceptGraph"
-run/main_scene="res://views/main/main_view.tscn"
-boot_splash/image="res://views/themes/splash.png"
+config/name="ProtonGraph"
+run/main_scene="res://ui/root/root.tscn"
+boot_splash/image="res://ui/themes/splash.png"
 boot_splash/fullsize=false
-boot_splash/bg_color=Color( 0.1408, 0.1456, 0.16, 1 )
-config/icon="res://icons/icon.png"
+boot_splash/bg_color=Color( 0.1672, 0.17632, 0.19, 1 )
+config/icon="res://ui/icons/icon_concept_graph_shield.svg"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
 
 [autoload]
 
-GlobalUndoRedo="*res://src/common/undo_redo.gd"
-Settings="*res://src/core/project_settings.gd"
-NodeLibrary="*res://src/core/node_library.gd"
+CommandLine="*res://common/autoloads/command_line_util.gd"
+Settings="*res://common/autoloads/project_settings.gd"
+GlobalEventBus="*res://common/autoloads/event_bus.gd"
+GlobalUndoRedo="*res://common/autoloads/undo_redo.gd"
+Protocol="*res://common/autoloads/server/protocol.gd"
+TextureUtil="*res://common/autoloads/texture_util.gd"
+NodeFactory="*res://common/autoloads/node_factory.gd"
+FileHistory="*res://common/autoloads/file_history.gd"
 
 [debug]
 
@@ -211,11 +480,34 @@ window/size/height=768
 
 [editor_plugins]
 
-enabled=PoolStringArray(  )
+enabled=PoolStringArray( "WAT" )
 
 [gui]
 
 theme/use_hidpi=true
+
+[importer_defaults]
+
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d": true,
+"flags/anisotropic": false,
+"flags/filter": true,
+"flags/mipmaps": false,
+"flags/repeat": 0,
+"flags/srgb": 2,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/premult_alpha": false,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 4.0
+}
 
 [input]
 
@@ -229,10 +521,47 @@ redo={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":true,"control":true,"meta":false,"command":true,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
  ]
 }
+editor_add_node={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":true,"control":false,"meta":false,"command":false,"pressed":false,"scancode":65,"unicode":0,"echo":false,"script":null)
+ ]
+}
+editor_save_template={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":true,"meta":false,"command":true,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
+ ]
+}
+editor_force_generation={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":true,"meta":false,"command":true,"pressed":false,"scancode":82,"unicode":0,"echo":false,"script":null)
+ ]
+}
+editor_toggle_inspector={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":78,"unicode":0,"echo":false,"script":null)
+ ]
+}
+editor_toggle_sidebar={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":84,"unicode":0,"echo":false,"script":null)
+ ]
+}
+editor_toggle_viewport={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":86,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [memory]
 
 limits/message_queue/max_size_kb=8192
+
+[network]
+
+limits/websocket_client/max_in_buffer_kb=1024
+limits/websocket_client/max_out_buffer_kb=1024
+limits/websocket_server/max_in_buffer_kb=1024
+limits/websocket_server/max_out_buffer_kb=1024
 
 [rendering]
 
@@ -240,5 +569,5 @@ quality/driver/driver_name="GLES2"
 quality/intended_usage/framebuffer_allocation=3
 threads/thread_model=2
 quality/filters/msaa=1
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://ui/views/editor/components/viewport/default_env.tres"
 quality/subsurface_scattering/quality=0
