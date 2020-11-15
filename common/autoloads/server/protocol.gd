@@ -6,7 +6,7 @@ var _server: IPCServer
 
 func _ready():
 	_start_server()
-	GlobalEventBus.register_listener(self, "generation_completed", "_on_generation_completed")
+	GlobalEventBus.register_listener(self, "remote_build_completed", "_on_remote_build_completed")
 
 
 func _start_server() -> void:
@@ -18,7 +18,7 @@ func _start_server() -> void:
 	_server.start()
 
 
-func _on_data_received(data: String) -> void:
+func _on_data_received(id: int , data: String) -> void:
 	var json = JSON.parse(data)
 	if json.error != OK:
 		print("Data was not a valid json object")
@@ -31,11 +31,11 @@ func _on_data_received(data: String) -> void:
 	
 	match msg["command"]:
 		"generate":
-			_on_generation_requested(msg)
+			_on_remote_build_requested(id, msg)
 
 
-func _on_generation_requested(msg: Dictionary) -> void:
-	print("External process requested a generation")
+func _on_remote_build_requested(id, msg: Dictionary) -> void:
+	print("External process requested a rebuild")
 	if not msg.has("path"):
 		return
 	
@@ -44,11 +44,19 @@ func _on_generation_requested(msg: Dictionary) -> void:
 	if msg.has("args"):
 		args = msg["args"]
 	
-	GlobalEventBus.dispatch("generation_requested", [path, args])
+	GlobalEventBus.dispatch("generation_requested", [id, path, args])
 
 
 # TODO: Figure out how to serialize the data and pass it to the Sync plugin
-func _on_generation_completed(path := "") -> void:
-	var msg = {"type": "generation_completed"}
-	if path != "":
-		msg["path"] = path
+func _on_remote_build_completed(id, data: Array) -> void:
+	var msg = {"type": "build_completed"}
+	msg["data"] = data
+	_server.send(id, msg)
+
+
+func _serialize_node_trees(roots) -> Array:
+	var res := []
+	for node in roots:
+		
+		pass
+	return res

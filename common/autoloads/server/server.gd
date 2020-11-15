@@ -7,7 +7,7 @@ signal data_received
 
 var _ws := WebSocketServer.new()
 var _port := -1
-var _client_id := -1
+var _clients := []
 
 
 func _ready() -> void:
@@ -42,14 +42,15 @@ func stop() -> void:
 		_ws.stop()
 
 
-func send(message: String) -> void:
-	if _client_id == -1 or not _ws.has_peer(_client_id):
+func send(client_id: int, message: String) -> void:
+	if _ws.has_peer(client_id):
 		return	# No connected clients
+	
 	var packet = message.to_utf8()
 	print("Sending packet: ", packet.size() / 1024.0, "kb")
-	var err = _ws.get_peer(_client_id).put_packet(packet)
+	var err = _ws.get_peer(client_id).put_packet(packet)
 	if err != OK:
-		print("Error ", err, " when sending packet to peer ", _client_id)
+		print("Error ", err, " when sending packet to peer ", client_id)
 
 
 # Return all the possible ports on which the server could try to listen
@@ -63,11 +64,13 @@ func _get_possible_ports() -> Array:
 
 func _on_client_connected(id: int, protocol: String) -> void:
 	print("Client connected ", id, " ", protocol)
-	_client_id = id
+	if not _clients.has(id):
+		_clients.append(id)
 
 
 func _on_client_disconnected(id: int, clean_close := false) -> void:
 	print("Client disconnected ", id, " ", clean_close)
+	_clients.erase(id)
 
 
 func _on_data_received(id: int) -> void:
@@ -76,7 +79,7 @@ func _on_data_received(id: int) -> void:
 	print("packet received: ", packet)
 	var msg = packet.get_string_from_utf8()
 	print("string from packet: ", msg)
-	emit_signal("data_received", msg)
+	emit_signal("data_received", id, msg)
 
 
 func _on_client_close_request(id: int, reason: String) -> void:

@@ -62,7 +62,7 @@ func delete_node(node) -> void:
 	disconnect_active_connections(node)
 	remove_child(node)
 	emit_signal("graph_changed")
-	emit_signal("simulation_outdated")
+	emit_signal("build_outdated")
 	update() # Force the GraphEdit to redraw to hide the old connections to the deleted node
 	emit_signal("node_deleted", node)
 
@@ -71,7 +71,7 @@ func restore_node(node) -> void:
 	connect_node_signals(node)
 	add_child(node, true)
 	emit_signal("graph_changed")
-	emit_signal("simulation_outdated")
+	emit_signal("build_outdated")
 	emit_signal("node_created", node)
 
 

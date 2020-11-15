@@ -465,6 +465,7 @@ Protocol="*res://common/autoloads/server/protocol.gd"
 TextureUtil="*res://common/autoloads/texture_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
 FileHistory="*res://common/autoloads/file_history.gd"
+RemoteManager="*res://common/autoloads/remote_manager.gd"
 
 [debug]
 
