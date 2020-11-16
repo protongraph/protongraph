@@ -7,7 +7,6 @@ signal data_received
 
 var _ws := WebSocketServer.new()
 var _port := -1
-var _clients := []
 
 
 func _ready() -> void:
@@ -42,11 +41,9 @@ func stop() -> void:
 		_ws.stop()
 
 
-func send(client_id: int, message: String) -> void:
-	if _ws.has_peer(client_id):
-		return	# No connected clients
-	
-	var packet = message.to_utf8()
+func send(client_id: int, data: Dictionary) -> void:
+	var msg = JSON.print(data)
+	var packet = msg.to_utf8()
 	print("Sending packet: ", packet.size() / 1024.0, "kb")
 	var err = _ws.get_peer(client_id).put_packet(packet)
 	if err != OK:
@@ -64,23 +61,17 @@ func _get_possible_ports() -> Array:
 
 func _on_client_connected(id: int, protocol: String) -> void:
 	print("Client connected ", id, " ", protocol)
-	if not _clients.has(id):
-		_clients.append(id)
 
 
 func _on_client_disconnected(id: int, clean_close := false) -> void:
 	print("Client disconnected ", id, " ", clean_close)
-	_clients.erase(id)
 
 
 func _on_data_received(id: int) -> void:
-	print("Data received from client ", id)
 	var packet: PoolByteArray = _ws.get_peer(id).get_packet()
-	print("packet received: ", packet)
 	var msg = packet.get_string_from_utf8()
-	print("string from packet: ", msg)
 	emit_signal("data_received", id, msg)
 
 
 func _on_client_close_request(id: int, reason: String) -> void:
-	print("Client clean request ", id, " reason: ", reason)
+	print("Client close request ", id, " reason: ", reason)

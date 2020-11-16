@@ -10,24 +10,21 @@ class_name SignalManager
 # Alphabetically ordered
 
 # warning-ignore-all:UNUSED_SIGNAL
+signal build_for_remote
 signal create_template
 signal file_history_changed
-signal generation_completed
 signal load_template
 signal message
-signal node_list_received
 signal open_settings
 signal quit
 signal remove_from_file_history
-signal request_node_list
+signal remote_build_completed
 signal settings_updated
 signal save_all_templates
 signal save_template_as
 signal save_template
 signal template_loaded
 signal template_saved
-signal generate
-signal cleanup
 
 
 func call_emit_signal(args):

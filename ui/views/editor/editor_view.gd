@@ -93,12 +93,12 @@ func _on_graph_changed() -> void:
 	_saved = false
 
 
-func _on_simulation_completed() -> void:
+func _on_build_completed() -> void:
 	var result = _template.get_output()
 	_viewport.display(result)
 
 
-func _on_simulation_outdated() -> void:
+func _on_build_outdated() -> void:
 	_template.generate(false)
 
 

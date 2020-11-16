@@ -61,7 +61,7 @@ func _exit_tree() -> void:
 		_thread.wait_to_finish()
 
 
-# Opens a cgraph file, reads its contents and recreate a node graph from there
+# Opens a pgraph file, reads its contents and recreate a node graph from there
 func load_from_file(path: String, soft_load := false) -> void:
 	if not path or path == "":
 		return
@@ -106,7 +106,7 @@ func load_from_file(path: String, soft_load := false) -> void:
 			connect_node(c["from"], from_port, c["to"], to_port)
 			to.emit_signal("connection_changed")
 
-	if graph.has("inspector"):
+	if inspector and graph.has("inspector"):
 		inspector.set_all_values(graph["inspector"])
 		update_exposed_variables()
 
@@ -289,7 +289,9 @@ func notify_exposed_variable_change(name):
 
 # Get exposed variable from the inspector
 func get_value_from_inspector(name: String):
-	return inspector.get_value(name)
+	if inspector:
+		return inspector.get_value(name)
+	return null
 
 
 # Manual garbage collection handling. Before each generation, we clean

@@ -10,9 +10,9 @@ func _ready() -> void:
 	_icon_button = get_child(0)
 
 
-func _on_simulation_started() -> void:
+func _on_build_started() -> void:
 	_icon_button.update_texture(animated_icon)
 
 
-func _on_simulation_completed() -> void:
+func _on_build_completed() -> void:
 	_icon_button.update_texture(normal_icon)

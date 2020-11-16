@@ -187,7 +187,7 @@ func is_final_output_node() -> bool:
 # Override this function to return true if the outputs of the node should be
 # sent to external applications.
 func is_remote_sync_node() -> bool:
-	return true
+	return false
 
 
 # Overide this function in the derived classes to return something usable.

@@ -7,7 +7,7 @@ var templates := {}
 
 
 func _ready():
-	GlobalEventBus.register_listener(self, "build_requested", "_on_build_requested")
+	GlobalEventBus.register_listener(self, "build_for_remote", "_on_build_requested")
 
 
 func _on_build_requested(id: int, path: String, args: Array) -> void:
@@ -16,12 +16,13 @@ func _on_build_requested(id: int, path: String, args: Array) -> void:
 		tpl = templates[id]
 	else:
 		tpl = Template.new()
+		add_child(tpl)
 		templates[id] = tpl
 	
 	if tpl._loaded_template_path != path:
 		tpl.load_from_file(path)
-	
+
 	tpl.generate(true)
 	yield(tpl, "build_completed")
 	
-	GlobalEventBus.dispatch("remote_build_complete", [id, tpl.get_remote_output()])
+	GlobalEventBus.dispatch("remote_build_completed", [id, tpl.get_remote_output()])

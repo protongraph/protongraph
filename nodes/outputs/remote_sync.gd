@@ -19,5 +19,5 @@ func is_final_output_node() -> bool:
 	return true
 
 
-func _is_remote_sync_node() -> bool:
+func is_remote_sync_node() -> bool:
 	return true
