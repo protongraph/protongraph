@@ -22,6 +22,7 @@ func _ready() -> void:
 	popup.add_icon_item(_save_icon, "Save All", 14)
 	popup.add_separator()
 	popup.add_icon_item(_settings_icon, "Settings", 20)
+	popup.add_icon_item(_settings_icon, "Remote Tasks", 22)
 	popup.add_separator()
 	popup.add_icon_item(_close_icon, "Quit", 30)
 
@@ -43,5 +44,7 @@ func _on_id_pressed(id) -> void:
 			GlobalEventBus.dispatch("save_all_templates")
 		20:
 			GlobalEventBus.dispatch("open_settings")
+		22:
+			GlobalEventBus.dispatch("open_remote_view")
 		30:
 			GlobalEventBus.dispatch("quit")

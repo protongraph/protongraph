@@ -17,6 +17,7 @@ func _ready() -> void:
 	GlobalEventBus.register_listener(self, "save_template", "_on_save_template")
 	GlobalEventBus.register_listener(self, "save_template_as", "_on_save_template_as")
 	GlobalEventBus.register_listener(self, "open_settings", "_load_settings_view")
+	GlobalEventBus.register_listener(self, "open_remote_view", "_load_remote_view")
 	
 	_dialog_manager = get_node(dialog_manager)
 	Signals.safe_connect(self, "tabs_cleared", self, "_on_tabs_cleared")
@@ -72,6 +73,13 @@ func _load_settings_view():
 		return 
 	var settings_view = preload("res://ui/views/settings/editor_settings_view.tscn").instance()
 	add_tab(settings_view)
+
+
+func _load_remote_view():
+	if _is_view_opened(RemoteView):
+		return
+	var remote_view = preload("res://ui/views/remote/remote_view.tscn").instance()
+	add_tab(remote_view)
 
 
 func _create_template(path: String) -> void:

@@ -61,10 +61,12 @@ func _get_possible_ports() -> Array:
 
 func _on_client_connected(id: int, protocol: String) -> void:
 	print("Client connected ", id, " ", protocol)
+	GlobalEventBus.dispatch("peer_connected", [id])
 
 
 func _on_client_disconnected(id: int, clean_close := false) -> void:
 	print("Client disconnected ", id, " ", clean_close)
+	GlobalEventBus.dispatch("peer_disconnected", [id])
 
 
 func _on_data_received(id: int) -> void:

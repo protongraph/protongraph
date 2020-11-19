@@ -249,6 +249,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://common/static/path_util.gd"
 }, {
+"base": "PanelContainer",
+"class": "PeerItem",
+"language": "GDScript",
+"path": "res://ui/views/remote/components/peer_item.gd"
+}, {
 "base": "VBoxContainer",
 "class": "Preview2D",
 "language": "GDScript",
@@ -283,6 +288,11 @@ _global_script_classes=[ {
 "class": "ProtonNodeVectorCurve2D",
 "language": "GDScript",
 "path": "res://common/custom_types/vector_curve_2d.gd"
+}, {
+"base": "Control",
+"class": "RemoteView",
+"language": "GDScript",
+"path": "res://ui/views/remote/remote_view.gd"
 }, {
 "base": "GenericInputComponent",
 "class": "ScalarComponent",
@@ -408,6 +418,7 @@ _global_script_class_icons={
 "Notification": "",
 "NotificationsCenter": "",
 "PathUtil": "",
+"PeerItem": "",
 "Preview2D": "",
 "ProtonGraphCurve": "",
 "ProtonGraphSettings": "",
@@ -415,6 +426,7 @@ _global_script_class_icons={
 "ProtonNodeUi": "",
 "ProtonNodeVectorCurve": "",
 "ProtonNodeVectorCurve2D": "",
+"RemoteView": "",
 "ScalarComponent": "",
 "SidebarProperty": "",
 "SignalManager": "",
@@ -451,7 +463,7 @@ run/main_scene="res://ui/root/root.tscn"
 boot_splash/image="res://ui/themes/splash.png"
 boot_splash/fullsize=false
 boot_splash/bg_color=Color( 0.1672, 0.17632, 0.19, 1 )
-config/icon="res://ui/icons/icon_concept_graph_shield.svg"
+config/icon="res://ui/icons/icon_proton_graph.svg"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
 

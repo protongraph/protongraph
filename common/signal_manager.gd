@@ -15,10 +15,14 @@ signal create_template
 signal file_history_changed
 signal load_template
 signal message
+signal open_remote_view
 signal open_settings
+signal peer_disconnected
+signal peer_connected
 signal quit
-signal remove_from_file_history
+signal remote_build_started
 signal remote_build_completed
+signal remove_from_file_history
 signal settings_updated
 signal save_all_templates
 signal save_template_as

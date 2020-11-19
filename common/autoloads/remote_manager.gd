@@ -3,26 +3,39 @@ extends Node
 # Listen for remote requests and run the builds locally before sending back
 # the results.
 
-var templates := {}
+
+var _peers := {}
 
 
 func _ready():
 	GlobalEventBus.register_listener(self, "build_for_remote", "_on_build_requested")
+	GlobalEventBus.register_listener(self, "template_saved", "_on_template_saved")
 
 
 func _on_build_requested(id: int, path: String, args: Array) -> void:
+	GlobalEventBus.dispatch("remote_build_started", [id])
 	var tpl: Template
-	if templates.has(id):
-		tpl = templates[id]
+	if _peers.has(id):
+		tpl = _peers[id]["template"]
 	else:
 		tpl = Template.new()
 		add_child(tpl)
-		templates[id] = tpl
+		_peers[id] = {}
+		_peers[id]["template"] = tpl
 	
 	if tpl._loaded_template_path != path:
 		tpl.load_from_file(path)
 
+	emit_signal("job_started", id)
 	tpl.generate(true)
 	yield(tpl, "build_completed")
-	
 	GlobalEventBus.dispatch("remote_build_completed", [id, tpl.get_remote_output()])
+
+
+# Refresh the loaded templates if they were modified
+# TODO: what happens when we reload something in the middle of a rebuild?
+func _on_template_saved(path: String) -> void:
+	for peer in _peers.values():
+		var tpl = peer["template"]
+		if tpl.get_template_path() == path:
+			tpl.load_from_file(path)

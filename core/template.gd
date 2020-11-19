@@ -166,7 +166,9 @@ func save_to_file(path: String) -> void:
 	if _save_queued:
 		_save_queued = false
 		save_to_file(path)
+	
 	emit_signal("template_saved")
+	GlobalEventBus.dispatch("template_saved", path)
 
 
 # Remove all children and connections
@@ -353,6 +355,10 @@ func get_remote_output() -> Array:
 	for node in _sync_nodes:
 		res.append(node.get_output(0))
 	return res
+
+
+func get_template_path() -> String:
+	return _loaded_template_path
 
 
 # Makes sure there's no active thread running before starting a new generation.
