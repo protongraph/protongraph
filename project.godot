@@ -142,7 +142,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "IPCServer",
 "language": "GDScript",
-"path": "res://common/autoloads/server/server.gd"
+"path": "res://common/autoloads/lib/server.gd"
 }, {
 "base": "ScrollContainer",
 "class": "InspectorPanel",
@@ -163,6 +163,11 @@ _global_script_classes=[ {
 "class": "NodePool",
 "language": "GDScript",
 "path": "res://core/node_pool.gd"
+}, {
+"base": "Reference",
+"class": "NodeSerializer",
+"language": "GDScript",
+"path": "res://common/static/serializer.gd"
 }, {
 "base": "Control",
 "class": "NodeSidebar",
@@ -289,6 +294,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://common/custom_types/vector_curve_2d.gd"
 }, {
+"base": "Reference",
+"class": "RemoteInspector",
+"language": "GDScript",
+"path": "res://common/autoloads/lib/remote_inspector.gd"
+}, {
 "base": "Control",
 "class": "RemoteView",
 "language": "GDScript",
@@ -401,6 +411,7 @@ _global_script_class_icons={
 "JSONBeautifier": "",
 "LoadSaveDialog": "",
 "NodePool": "",
+"NodeSerializer": "",
 "NodeSidebar": "",
 "NodeUtil": "",
 "Noise": "",
@@ -426,6 +437,7 @@ _global_script_class_icons={
 "ProtonNodeUi": "",
 "ProtonNodeVectorCurve": "",
 "ProtonNodeVectorCurve2D": "",
+"RemoteInspector": "",
 "RemoteView": "",
 "ScalarComponent": "",
 "SidebarProperty": "",
@@ -473,7 +485,7 @@ CommandLine="*res://common/autoloads/command_line_util.gd"
 Settings="*res://common/autoloads/project_settings.gd"
 GlobalEventBus="*res://common/autoloads/event_bus.gd"
 GlobalUndoRedo="*res://common/autoloads/undo_redo.gd"
-Protocol="*res://common/autoloads/server/protocol.gd"
+Protocol="*res://common/autoloads/protocol.gd"
 TextureUtil="*res://common/autoloads/texture_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
 FileHistory="*res://common/autoloads/file_history.gd"

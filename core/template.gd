@@ -25,7 +25,7 @@ var root: Spatial
 var paused := false
 var restart_generation := false
 var multithreading_enabled := true	# Set to false to ignore the ProjectSettings and force multithreading off
-var inspector: InspectorPanel
+var inspector
 
 var _node_pool := NodePool.new()
 var _thread_pool := ThreadPool.new()
@@ -125,6 +125,7 @@ func load_from_file(path: String, soft_load := false) -> void:
 	_template_loaded = true
 	paused = false
 	emit_signal("template_loaded")
+	GlobalEventBus.dispatch("template_loaded", path)
 
 
 func save_to_file(path: String) -> void:
@@ -234,11 +235,8 @@ func update_exposed_variables() -> void:
 
 	for c in get_children():
 		if c is ProtonNode:
-			var variables = c.get_exposed_variables()
-			if not variables:
-				continue
-
-			for v in variables:
+			for v in c.get_exposed_variables():
+				exposed_variables.append(v)
 				v.name = v.name.to_lower()
 				v.section = v.section.to_lower()
 				
@@ -246,8 +244,6 @@ func update_exposed_variables() -> void:
 					_property_nodes[v.name].append(c)
 				else:
 					_property_nodes[v.name] = [c]
-		
-			exposed_variables += variables
 
 	emit_signal("exposed_variables_updated", exposed_variables)
 

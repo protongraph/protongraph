@@ -32,6 +32,7 @@ func _ready() -> void:
 	_inspector = get_node(inspector)
 	_template.inspector = _inspector
 	
+	Signals.safe_connect(self, "template_saved", self, "_on_template_saved")
 	GlobalEventBus.register_listener(self, "settings_updated", "_on_settings_updated")
 	_on_settings_updated(Settings.AUTOSAVE_ENABLED)
 
@@ -41,14 +42,12 @@ func load_template(path: String) -> void:
 	_template.load_from_file(path)
 	_template.generate()
 	_saved = true
-	GlobalEventBus.dispatch("template_loaded", path)
 
 
 func save_template() -> void:
 	_template.save_to_file(_template_path)
 	yield(_template, "template_saved")
 	_saved = true
-	GlobalEventBus.dispatch("template_saved", _template_path)
 	emit_signal("template_saved")
 	print("Saved template ", _template_path)
 
@@ -135,7 +134,7 @@ func _on_settings_updated(setting: String) -> void:
 		# Autosave was enabled
 		if enabled and not _save_timer:
 			_save_timer = Timer.new()
-			_save_timer.one_shot = false
+			_save_timer.one_shot = true
 			_save_timer.autostart = false
 			Signals.safe_connect(_save_timer, "timeout", self, "save_template")
 			add_child(_save_timer)
@@ -148,3 +147,9 @@ func _on_settings_updated(setting: String) -> void:
 			_save_timer.queue_free()
 			_save_timer = null
 			return
+
+
+# Reset the autosave timer when the template is saved.
+func _on_template_saved() -> void:
+	if _save_timer:
+		_save_timer.start()

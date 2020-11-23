@@ -41,11 +41,6 @@ If you want to build the project from source yourself, you will need a custom ve
 Follow the instructions on this repository: https://github.com/proton-graph/environment
 
 
-## Build from source
-
-If the pre-built binaries doesn't work on your system, you can export the project by following the instructions on this repository: https://github.com/HungryProton/concept_graph_environment
-
-
 ## Social medias
 
 Despite being a very new project, the ConceptGraph community is growing. Head over to the Discord server if you want to ask for help

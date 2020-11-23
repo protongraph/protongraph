@@ -14,6 +14,7 @@ func _ready():
 	GlobalEventBus.register_listener(self, "peer_disconnected", "_on_peer_disconnected")
 	GlobalEventBus.register_listener(self, "remote_build_started", "_on_build_started")
 	GlobalEventBus.register_listener(self, "remote_build_completed", "_on_build_completed")
+	rebuild_ui()
 
 
 func rebuild_ui() -> void:
@@ -32,7 +33,7 @@ func _create_item(id: int) -> void:
 	var item = _peer_item.instance()
 	_root.add_child(item)
 	item.set_peer_name(id)
-	_peers["ui"] = item
+	_peers[id]["ui"] = item
 
 
 func _on_peer_connected(id: int) -> void:

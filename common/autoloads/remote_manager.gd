@@ -12,8 +12,28 @@ func _ready():
 	GlobalEventBus.register_listener(self, "template_saved", "_on_template_saved")
 
 
-func _on_build_requested(id: int, path: String, args: Array) -> void:
-	GlobalEventBus.dispatch("remote_build_started", [id])
+func get_peers() -> Dictionary:
+	return _peers
+
+
+func _set_inspector_values(tpl: Template, values: Array) -> void:
+	if not values:
+		return
+	
+	if not tpl.inspector:
+		var remote_inspector = RemoteInspector.new()
+		tpl.inspector = remote_inspector
+
+	tpl.inspector.update_variables(values)
+
+
+func _set_inputs(tpl: Template, inputs: Array) -> void:
+	print("inputs : ", inputs)
+	if not inputs:
+		return
+
+
+func _on_build_requested(id: int, path: String, args: Dictionary) -> void:
 	var tpl: Template
 	if _peers.has(id):
 		tpl = _peers[id]["template"]
@@ -25,8 +45,14 @@ func _on_build_requested(id: int, path: String, args: Array) -> void:
 	
 	if tpl._loaded_template_path != path:
 		tpl.load_from_file(path)
+	
+	if not tpl._template_loaded:
+		return
+	
+	_set_inspector_values(tpl, args["inspector"])
+	_set_inputs(tpl, args["inputs"])
 
-	emit_signal("job_started", id)
+	GlobalEventBus.dispatch("remote_build_started", [id])
 	tpl.generate(true)
 	yield(tpl, "build_completed")
 	GlobalEventBus.dispatch("remote_build_completed", [id, tpl.get_remote_output()])
