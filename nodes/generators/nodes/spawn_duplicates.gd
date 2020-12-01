@@ -30,4 +30,4 @@ func _generate_outputs() -> void:
 			parent.remove_child(n)
 
 		n.transform = t.transform
-		output[0].append(n)
+		output[0].push_back(n)

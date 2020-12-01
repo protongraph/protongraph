@@ -22,7 +22,7 @@ var _queue_mutex := Mutex.new()
 
 func _init() -> void:
 	for i in _max_threads:
-		_available_threads.append(Thread.new())
+		_available_threads.push_back(Thread.new())
 	Signals.safe_connect(self, "task_completed", self, "_on_task_completed")
 
 
@@ -83,7 +83,7 @@ func _on_task_completed(thread) -> void:
 	else:
 		#print("No tasks queued, moving thread ", thread, " to the available thread pool")
 		_busy_threads.erase(thread)
-		_available_threads.append(thread)
+		_available_threads.push_back(thread)
 		if _busy_threads.size() == 0:
 			emit_signal("all_tasks_completed")
 	_queue_mutex.unlock()

@@ -35,7 +35,7 @@ func _generate_outputs() -> void:
 			var dir = (pos - center).normalized()
 			vector_curve.points[j] = pos + (dir * dist)
 
-		output[0].append(vector_curve)
+		output[0].push_back(vector_curve)
 
 
 func _get_vector_curve_center(v: ProtonNodeVectorCurve) -> Vector3:

@@ -28,8 +28,8 @@ func _generate_outputs() -> void:
 		var curve: Curve3D = c.curve
 
 		for i in range(curve.get_point_count()):
-			points.append(curve.get_point_position(i))
+			points.push_back(curve.get_point_position(i))
 
 		p.points = points
 		p.transform = c.transform
-		output[0].append(p)
+		output[0].push_back(p)

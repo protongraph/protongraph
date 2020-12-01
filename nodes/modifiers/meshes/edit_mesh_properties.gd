@@ -27,4 +27,4 @@ func _generate_outputs() -> void:
 	for mesh in meshes:
 		mesh.smooth_faces = smooth
 		mesh.use_collision = use_collision
-		output[0].append(mesh)
+		output[0].push_back(mesh)

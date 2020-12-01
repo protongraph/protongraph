@@ -45,7 +45,7 @@ func _generate_outputs() -> void:
 				var node = Position3D.new()
 				node.transform.origin = pos
 				node.transform.origin.y += j * (height / instances_in_column)
-				output[0].append(node)
+				output[0].push_back(node)
 
 
 """

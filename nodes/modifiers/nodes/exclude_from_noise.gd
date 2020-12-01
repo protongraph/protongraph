@@ -34,6 +34,6 @@ func _generate_outputs() -> void:
 	for node in nodes:
 		var n = noise.get_noise_3dv(node.transform.origin)
 		if invert and n < threshold:
-			output[0].append(node)
+			output[0].push_back(node)
 		elif not invert and n >= threshold:
-			output[0].append(node)
+			output[0].push_back(node)

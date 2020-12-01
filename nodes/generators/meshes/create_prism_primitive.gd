@@ -35,4 +35,4 @@ func _generate_outputs() -> void:
 	var mesh_instance := MeshInstance.new()
 	mesh_instance.mesh = prism
 
-	output[0].append(mesh_instance)
+	output[0].push_back(mesh_instance)

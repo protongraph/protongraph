@@ -34,7 +34,7 @@ func create(label_name: String, type: int, opts := {}) -> void:
 
 	var item_indexes = ["x", "y"]
 	if type == DataType.VECTOR3:
-		item_indexes.append("z")
+		item_indexes.push_back("z")
 		_count = 3
 		
 

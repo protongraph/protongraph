@@ -211,7 +211,7 @@ func mirror_slots_type(input_index, output_index) -> void:
 	if not _mirror_type_check(input_index, output_index):
 		return
 
-	_inputs[input_index]["mirror"].append(output_index)
+	_inputs[input_index]["mirror"].push_back(output_index)
 	_inputs[input_index]["default_type"] = _inputs[input_index]["type"]
 	_update_slots_types()
 
@@ -372,7 +372,7 @@ func _get_connected_inputs() -> Array:
 		var slot_pos = get_input_index_pos(idx)
 		var nodes: Array = get_parent().get_left_nodes(self, slot_pos)
 		for data in nodes:
-			connected_inputs.append(data["node"])
+			connected_inputs.push_back(data["node"])
 	return connected_inputs
 
 
@@ -569,7 +569,7 @@ func _generate_default_gui() -> void:
 		
 		if hbox.get_child_count() > 0:
 			add_child(hbox)
-			_rows.append(hbox)
+			_rows.push_back(hbox)
 
 	for idx in _extras:
 		if _extras[idx]["hidden"]:

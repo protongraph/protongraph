@@ -39,7 +39,7 @@ func _on_node_added(node: Node):
 		gizmo.enable_for(node)
 		add_child(gizmo)
 		if _instanced_gizmos.has(node):
-			_instanced_gizmos[node].append(gizmo)
+			_instanced_gizmos[node].push_back(gizmo)
 		else:
 			_instanced_gizmos[node] = [gizmo]
 

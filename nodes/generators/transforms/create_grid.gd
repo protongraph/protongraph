@@ -55,4 +55,4 @@ func _generate_outputs() -> void:
 						p.transform.basis = reference.transform.basis
 				else:
 					p.transform.origin += center
-				output[0].append(p)
+				output[0].push_back(p)

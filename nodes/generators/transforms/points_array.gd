@@ -24,4 +24,4 @@ func _generate_outputs() -> void:
 	for i in range(count):
 		var p = Position3D.new()
 		p.transform.origin = offset * i
-		output[0].append(p)
+		output[0].push_back(p)

@@ -16,7 +16,7 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-#	var start_time = OS.get_ticks_msec()
+	var start_time = OS.get_ticks_msec()
 	var heightmap: Heightmap = get_input_single(0)
 	var noise: Noise = get_input_single(1)
 	var noise_scale: Vector3 = get_input_single(2, Vector3.ONE)
@@ -38,7 +38,7 @@ func _generate_outputs() -> void:
 				i += 1
 
 	heightmap.data = data
-	output[0].append(heightmap)
+	output[0].push_back(heightmap)
 
-#	var gen_time = OS.get_ticks_msec() - start_time
-#	print("Heightmap created in " + str(gen_time) + "ms")
+	var gen_time = OS.get_ticks_msec() - start_time
+	print("Heightmap created in " + str(gen_time) + "ms")

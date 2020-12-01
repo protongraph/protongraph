@@ -29,7 +29,7 @@ func _generate_outputs() -> void:
 		return
 
 	if not box:
-		output[0].append(heightmap)
+		output[0].push_back(heightmap)
 		return
 
 	var data: Array = heightmap.data
@@ -70,7 +70,7 @@ func _generate_outputs() -> void:
 			i += 1
 
 	heightmap.data = data
-	output[0].append(heightmap)
+	output[0].push_back(heightmap)
 
 
 func _on_default_gui_interaction(_value, control, slot) -> void:

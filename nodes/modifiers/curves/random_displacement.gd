@@ -60,7 +60,7 @@ func _generate_outputs() -> void:
 				start = end
 				end = path.curve.get_point_position(i + 1)
 
-		output[0].append(path)
+		output[0].push_back(path)
 
 
 func _rand_vector() -> Vector3:

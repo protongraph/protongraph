@@ -42,9 +42,9 @@ func _generate_outputs() -> void:
 		var points := []
 		for i in range(steps):
 			var pos = curve.interpolate_baked((i / (steps - 1)) * length)
-			points.append(pos)
+			points.push_back(pos)
 
 		p.points = points
 		p.transform = c.transform
 
-		output[0].append(p)
+		output[0].push_back(p)

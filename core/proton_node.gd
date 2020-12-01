@@ -87,7 +87,7 @@ func get_input(idx: int, default = []) -> Array:
 			if node_output is Array:
 				res += node_output
 			else:
-				res.append(node_output)
+				res.push_back(node_output)
 		return res
 
 	# If no source is connected but the node has a custom gui
@@ -155,7 +155,7 @@ func get_output(idx: int, default := []) -> Array:
 			if not is_final_output_node():
 				register_to_garbage_collection(duplicate)
 
-			duplicates.append(duplicate)
+			duplicates.push_back(duplicate)
 		return duplicates
 
 	# If it's not a node array, it either contains built in types or nested arrays.

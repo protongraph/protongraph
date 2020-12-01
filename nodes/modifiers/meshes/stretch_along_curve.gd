@@ -135,4 +135,4 @@ func _generate_outputs() -> void:
 		mesh_instance.mesh = temporary_mesh
 
 		# will need to fix this output if we want it to output a separate mesh for each path.
-		output[0].append(mesh_instance)
+		output[0].push_back(mesh_instance)

@@ -31,7 +31,7 @@ func _generate_outputs() -> void:
 			for j in point_count:
 				if j == 0:
 					if not closed:
-						points.append(vector_curve.points[0])
+						points.push_back(vector_curve.points[0])
 						continue
 					previous = vector_curve.points[point_count - 2]
 				else:
@@ -39,15 +39,15 @@ func _generate_outputs() -> void:
 
 				if j == point_count - 1:
 					if not closed:
-						points.append(vector_curve.points[j])
+						points.push_back(vector_curve.points[j])
 						continue
 					next = vector_curve.points[1]
 				else:
 					next = vector_curve.points[j + 1]
 
 				mean = (previous + next) / 2.0
-				points.append(lerp(vector_curve.points[j], mean, smooth))
+				points.push_back(lerp(vector_curve.points[j], mean, smooth))
 
 			vector_curve.points = points
 
-		output[0].append(vector_curve)
+		output[0].push_back(vector_curve)

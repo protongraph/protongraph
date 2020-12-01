@@ -34,6 +34,6 @@ func _generate_outputs() -> void:
 			pos = node.global_transform.origin
 		var dist2 = origin.distance_squared_to(pos)
 		if not invert and dist2 > radius2:
-			output[0].append(node)
+			output[0].push_back(node)
 		elif invert and dist2 <= radius2:
-			output[0].append(node)
+			output[0].push_back(node)

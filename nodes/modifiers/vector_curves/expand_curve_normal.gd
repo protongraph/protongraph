@@ -48,10 +48,10 @@ func _generate_outputs() -> void:
 				normal2 = axis.cross(vector_curve.points[j] - vector_curve.points[j + 1])
 
 			var normal = (normal1 + normal2).normalized()
-			points.append(vector_curve.points[j] + (normal * dist))
+			points.push_back(vector_curve.points[j] + (normal * dist))
 
 		vector_curve.points = points
-		output[0].append(vector_curve)
+		output[0].push_back(vector_curve)
 
 
 func _get_vector_curve_center(v: ProtonNodeVectorCurve) -> Vector3:

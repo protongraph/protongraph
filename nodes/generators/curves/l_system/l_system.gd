@@ -106,7 +106,7 @@ func _generate_rules_dictionary(rules: Array) -> Dictionary:
 			"probability": p,
 			"string": dst
 		}
-		dict[src].append(parameters)
+		dict[src].push_back(parameters)
 	
 	return dict
 
@@ -117,7 +117,7 @@ func _choose_among(rules: Array) -> String:
 	
 	for r in rules:
 		p_total += r["probability"]
-		map.append(r["probability"])
+		map.push_back(r["probability"])
 	
 	var rand = _rng.randf() * (1.0 / p_total)
 	var acc = 0

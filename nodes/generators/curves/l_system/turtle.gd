@@ -88,7 +88,7 @@ func draw(system: String) -> Array:
 				pass
 	
 	if _path.curve.get_point_count() > 1:
-		_curves.append(_path)
+		_curves.push_back(_path)
 	
 	return _curves
 
@@ -122,7 +122,7 @@ func _read(system: String) -> Array:
 			if not param.is_valid_float() and not param.is_valid_integer():
 				continue
 			
-			command.args.append(param.to_float())
+			command.args.push_back(param.to_float())
 		
 		# Remove the parameters from the string
 		var pos = system.find(")")

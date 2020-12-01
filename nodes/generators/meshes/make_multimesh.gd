@@ -18,7 +18,7 @@ func _retrive_multimesh_transforms(multimesh: MultiMeshInstance) -> Array:
 	var tranforms = []
 	for i in count:
 		var instance_tranform = multimesh.multimesh.get_instance_transform(i)
-		tranforms.append(instance_tranform)
+		tranforms.push_back(instance_tranform)
 	return tranforms
 
 
@@ -32,7 +32,7 @@ func _combine_transforms(src_multimesh, transforms) -> Array:
 		for j in src_count:
 			var p = Position3D.new()
 			p.transform = transforms[i].transform * src_tranforms[j]
-			combined_tranforms.append(p)
+			combined_tranforms.push_back(p)
 	return combined_tranforms
 
 

@@ -96,4 +96,4 @@ func _generate_outputs() -> void:
 		var mesh_instance = MeshInstance.new()
 		mesh_instance.transform = path.transform
 		mesh_instance.mesh = surface_tool.commit()
-		output[0].append(mesh_instance)
+		output[0].push_back(mesh_instance)

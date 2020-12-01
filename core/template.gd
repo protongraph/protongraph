@@ -145,7 +145,7 @@ func save_to_file(path: String) -> void:
 			node["type"] = c.unique_id
 			node["editor"] = c.export_editor_data()
 			node["data"] = c.export_custom_data()
-			graph["nodes"].append(node)
+			graph["nodes"].push_back(node)
 
 	if not _save_thread:
 		_save_thread = Thread.new()
@@ -236,12 +236,12 @@ func update_exposed_variables() -> void:
 	for c in get_children():
 		if c is ProtonNode:
 			for v in c.get_exposed_variables():
-				exposed_variables.append(v)
+				exposed_variables.push_back(v)
 				v.name = v.name.to_lower()
 				v.section = v.section.to_lower()
 				
 				if _property_nodes.has(v.name):
-					_property_nodes[v.name].append(c)
+					_property_nodes[v.name].push_back(c)
 				else:
 					_property_nodes[v.name] = [c]
 
@@ -298,7 +298,7 @@ func get_value_from_inspector(name: String):
 # removal themselves as they don't know if the resource is still in use or not.
 func register_to_garbage_collection(resource):
 	if resource is Object and not resource is Reference:
-		_registered_resources.append(weakref(resource))
+		_registered_resources.push_back(weakref(resource))
 
 
 # Iterate over all the registered resources and free them if they still exist
@@ -349,7 +349,7 @@ func get_output() -> Array:
 func get_remote_output() -> Array:
 	var res = []
 	for node in _sync_nodes:
-		res.append(node.get_output(0))
+		res.push_back(node.get_output(0))
 	return res
 
 
@@ -430,11 +430,11 @@ func _on_thread_completed() -> void:
 func _on_node_created(node) -> void:
 	if node.is_final_output_node():
 		if not _output_nodes.has(node):
-			_output_nodes.append(node)
+			_output_nodes.push_back(node)
 	
 	if node.is_remote_sync_node():
 		if not _sync_nodes.has(node):
-			_sync_nodes.append(node)
+			_sync_nodes.push_back(node)
 
 
 func _on_node_deleted(node) -> void:

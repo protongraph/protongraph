@@ -32,6 +32,6 @@ func to_pool_vector_2(axis: Vector3, global = true) -> Array:
 			v = t2.xform(v)
 
 		v = t_axis.xform_inv(v)
-		res.append(Vector2(v.x, v.y))
+		res.push_back(Vector2(v.x, v.y))
 	return res
 

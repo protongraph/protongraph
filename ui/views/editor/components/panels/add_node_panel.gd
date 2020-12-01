@@ -55,7 +55,7 @@ func _refresh_nodes_list(nodes := [], folder_collapsed := true) -> void:
 	for node in nodes:
 		node_category = _get_node_category(node)
 		if _filter_node(node) and not categories.has(node_category):
-			categories.append(node_category)
+			categories.push_back(node_category)
 	categories.sort()
 
 	if !_search_text:

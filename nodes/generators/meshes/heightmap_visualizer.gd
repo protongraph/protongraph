@@ -36,4 +36,4 @@ func _generate_outputs() -> void:
 	mi.material_override = material
 	mi.translate(Vector3(mesh.size.x * 0.5, 0.0, mesh.size.y * 0.5))
 	
-	output[0].append(mi)
+	output[0].push_back(mi)

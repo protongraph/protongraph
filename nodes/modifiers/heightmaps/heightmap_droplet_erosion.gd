@@ -125,7 +125,7 @@ func _generate_outputs() -> void:
 			water *= (1 - evaporate_speed)
 			pos = new_pos
 
-	output[0].append(heightmap)
+	output[0].push_back(heightmap)
 
 	var gen_time = OS.get_ticks_msec() - start_time
 	print("Erosion: " + str(gen_time) + "ms")

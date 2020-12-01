@@ -120,7 +120,7 @@ func backup_connections_for(node: ProtonNodeUi) -> Array:
 	var res = []
 	for c in get_custom_connection_list():
 		if c["from"] == node.name or c["to"] == node.name:
-			res.append(c)
+			res.push_back(c)
 	return res
 
 
@@ -143,7 +143,7 @@ func get_selected_nodes() -> Array:
 	var nodes = []
 	for c in get_children():
 		if c is GraphNode and c.selected:
-			nodes.append(c)
+			nodes.push_back(c)
 	return nodes
 
 
@@ -157,7 +157,7 @@ func get_left_nodes(node: GraphNode, slot: int) -> Array:
 				"node": get_node(c["from"]),
 				"slot": c["from_port"]
 			}
-			result.append(data)
+			result.push_back(data)
 	return result
 
 
@@ -166,7 +166,7 @@ func get_right_nodes(node: GraphNode, slot: int) -> Array:
 	var result = []
 	for c in get_connection_list():
 		if c["from"] == node.get_name() and c["from_port"] == slot:
-			result.append(get_node(c["to"]))
+			result.push_back(get_node(c["to"]))
 	return result
 
 
@@ -175,7 +175,7 @@ func get_all_left_nodes(node) -> Array:
 	var result = []
 	for c in get_connection_list():
 		if c["to"] == node.get_name():
-			result.append(get_node(c["from"]))
+			result.push_back(get_node(c["from"]))
 	return result
 
 
@@ -184,7 +184,7 @@ func get_all_right_nodes(node) -> Array:
 	var result = []
 	for c in get_connection_list():
 		if c["from"] == node.get_name():
-			result.append(get_node(c["to"]))
+			result.push_back(get_node(c["to"]))
 	return result
 
 
@@ -280,7 +280,7 @@ func _on_copy_nodes_request() -> void:
 		var new_node = duplicate_node(node)
 		new_node.name = node.name	# Needed to retrieve active connections later
 		new_node.offset -= scroll_offset
-		_copy_buffer.append(new_node)
+		_copy_buffer.push_back(new_node)
 		node.selected = false
 
 
@@ -293,7 +293,7 @@ func _on_paste_nodes_request() -> void:
 	undo_redo.create_action("Copy " + String(_copy_buffer.size()) + " GraphNode(s)")
 	for node in _copy_buffer:
 		var new_node = duplicate_node(node)
-		tmp.append(new_node)
+		tmp.push_back(new_node)
 		new_node.selected = true
 		new_node.offset += scroll_offset + Vector2(80, 80)
 		undo_redo.add_do_method(self, "restore_node", new_node)

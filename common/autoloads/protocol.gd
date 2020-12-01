@@ -56,6 +56,6 @@ func _on_remote_build_completed(id, data: Array) -> void:
 	msg["data"] = []
 	for output in data:
 		for node in output:
-			msg["data"].append(NodeSerializer.serialize(node))
+			msg["data"].push_back(NodeSerializer.serialize(node))
 	
 	_server.send(id, msg)

@@ -28,4 +28,4 @@ func _generate_outputs() -> void:
 			path.curve.add_point(p)
 
 		path.transform = vc.transform
-		output[0].append(path)
+		output[0].push_back(path)

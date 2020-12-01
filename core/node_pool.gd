@@ -25,10 +25,10 @@ func get_or_create(type: GDScriptNativeClass) -> Node:
 		var available_nodes: Array = _pools[type]["free"]
 		if available_nodes.size() == 0:
 			node = type.new()
-			_pools[type]["used"].append(node)
+			_pools[type]["used"].push_back(node)
 		else:
 			node = available_nodes.pop_front()
-			_pools[type]["used"].append(node)
+			_pools[type]["used"].push_back(node)
 	else:
 		node = type.new()
 		_pools[type] = {
@@ -70,7 +70,7 @@ func release_node(type: GDScriptNativeClass, node) -> void:
 	if script:
 		script._init()	#TODO : not sure that's enough
 
-	_pools[type]["free"].append(node)
+	_pools[type]["free"].push_back(node)
 
 
 """

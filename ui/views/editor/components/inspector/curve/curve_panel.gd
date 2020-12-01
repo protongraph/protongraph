@@ -53,7 +53,7 @@ func get_curve_data() -> Dictionary:
 		p["pos_y"] = pos.y
 		p["rm"] = curve.get_point_right_mode(i)
 		p["rt"] = curve.get_point_right_tangent(i)
-		res.points.append(p)
+		res.points.push_back(p)
 
 	res.parameters = {
 		"min": curve.get_min_value(),

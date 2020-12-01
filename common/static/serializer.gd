@@ -19,7 +19,7 @@ static func serialize(root: Node) -> Dictionary:
 	if root.get_child_count() > 0:
 		res["children"] = []
 		for child in root.get_children():
-			res["children"].append(serialize(child))
+			res["children"].push_back(serialize(child))
 
 	return res
 
@@ -44,14 +44,14 @@ static func deserialize(data: Dictionary) -> Node:
 static func serialize_all(nodes: Array) -> Array:
 	var res = []
 	for node in nodes:
-		res.append(serialize(node))
+		res.push_back(serialize(node))
 	return res
 
 
 static func deserialize_all(nodes: Array) -> Array:
 	var res = []
 	for node in nodes:
-		res.append(deserialize(node))
+		res.push_back(deserialize(node))
 	return res
 
 
@@ -156,7 +156,7 @@ static func _format_array(array: Array) -> Array:
 static func _format_pool_vector_array(array) -> Array:
 	var res = []
 	for vec in array:
-		res.append(_vector_to_array(vec))
+		res.push_back(_vector_to_array(vec))
 	return res
 
 
@@ -171,7 +171,7 @@ static func _vector_to_array(vec) -> Array:
 static func _to_pool(array: Array):
 	var tmp = []
 	for vec in array:
-		tmp.append(_extract_vector(vec))
+		tmp.push_back(_extract_vector(vec))
 
 	if tmp[0] is Vector2:
 		return PoolVector2Array(tmp)

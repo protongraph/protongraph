@@ -51,5 +51,5 @@ func _generate_outputs() -> void:
 		else:
 			mesh.transform = t.looking_at(t.origin + axis, up)
 
-		output[0].append(mesh)
+		output[0].push_back(mesh)
 

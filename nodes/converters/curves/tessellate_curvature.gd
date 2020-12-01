@@ -32,6 +32,6 @@ func _generate_outputs() -> void:
 		var p = ProtonNodeVectorCurve.new()
 		p.points = path.curve.tessellate(stages, tolerance)
 		p.transform = path.transform
-		output[0].append(p)
+		output[0].push_back(p)
 
 

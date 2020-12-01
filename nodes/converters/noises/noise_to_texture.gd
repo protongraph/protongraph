@@ -24,4 +24,4 @@ func _generate_outputs() -> void:
 	var offset: Vector2 = get_input_single(2, Vector2.ZERO)
 	var scale: float = get_input_single(3, 1.0)
 	var image = noise.get_image(size.x, size.y, scale, offset)
-	output[0].append(image)
+	output[0].push_back(image)

@@ -26,6 +26,6 @@ func _generate_outputs() -> void:
 	for mi in meshes:
 		var m = mesh_optimizer.optimize_mesh_instance(mi.mesh, amount, mi.skeleton, mi.name, mi.skin, true)
 		m.transform = mi.transform
-		res.append(m)
+		res.push_back(m)
 
 	output[0] = res

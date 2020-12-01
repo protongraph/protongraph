@@ -88,7 +88,7 @@ func _show_file_dialog(opts: Dictionary) -> void:
 	if opts.has("filters"):
 		var filters = PoolStringArray()
 		for filter in opts["filters"]:
-			filters.append(filter)
+			filters.push_back(filter)
 		_file_dialog.set_filters(filters)
 
 	Signals.safe_connect(_file_dialog, "file_selected", self, "_on_file_selected")
