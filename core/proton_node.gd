@@ -9,11 +9,12 @@ signal output_ready
 var unique_id: String
 var description: String
 var ignore := false
+var doc: NodeDocumentation
 var node_pool: NodePool # Injected from template
 var thread_pool: ThreadPool # Injected from template
 var output := {}
 
-
+var _docs: Dictionary
 var _generation_requested := false # True after calling prepare_output once
 var _output_ready := false # True when the background generation was completed
 
@@ -175,6 +176,7 @@ func get_exposed_variables() -> Array:
 	return []
 
 
+
 func is_output_ready() -> bool:
 	return _output_ready
 
@@ -213,7 +215,7 @@ func _reset_output():
 			slot.queue_free()
 
 	output = {}
-	for idx in _outputs.keys():
+	for idx in _outputs:
 		output[idx] = []
 
 

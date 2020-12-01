@@ -32,7 +32,8 @@ func create_input(name: String, type: int, value, idx: int, opts := {}) -> void:
 	_root.add_child(_ui)
 	name = _sanitize_name(name, type)
 	_ui.create(name, type, opts)
-	_ui.set_value(value)
+	if value:
+		_ui.set_value(value)
 	_ui.notify_connection_changed(false)
 	_slot_index = idx
 	Signals.safe_connect(_ui, "value_changed", self, "_on_value_changed")

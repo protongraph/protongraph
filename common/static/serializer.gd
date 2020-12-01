@@ -99,7 +99,7 @@ static func _deserialize_mesh(data: Dictionary) -> MeshInstance:
 	mi.transform = _extract_transform(data)
 	
 	var mesh = ArrayMesh.new()
-	for i in data["mesh"].keys():
+	for i in data["mesh"]:
 		var source = data["mesh"][i]
 		var surface_arrays = []
 		surface_arrays.resize(Mesh.ARRAY_MAX)

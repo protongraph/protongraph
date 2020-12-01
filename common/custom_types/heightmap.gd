@@ -11,7 +11,7 @@ var transform: Transform
 
 
 func init(_size: Vector2, _mesh_size: Vector2, _height_scale: float, _height_offset: float) -> void:
-	size = _size + Vector2(1, 1)
+	size = _size# + Vector2(1, 1)
 	mesh_size = _mesh_size + Vector2(1, 1)
 	height_scale = _height_scale
 	height_offset = _height_offset
@@ -53,8 +53,16 @@ func get_point(x: int, y: int) -> float:
 	return data[y * size.y + x]
 
 
+func get_point_transformed(x: int, y: int) -> float:
+	return data[y * size.y + x] * height_scale + height_offset
+
+
 func set_point(x: int, y: int, height: float) -> void:
 	data[y * size.y + x] = height
+
+
+func set_point_transformed(x: int, y: int, height: float) -> void:
+	data[y * size.y + x] = (height - height_offset) / height_scale
 
 
 func get_index(i: int) -> float:
@@ -74,12 +82,12 @@ func get_image() -> Image:
 	var i = 0
 
 	for y in size.y:
-		for x in size.y:
+		for x in size.x:
 			val = get_point(x, y)
 			color = Color(val, val, val)
-			bytes[i]   = color.r8
-			bytes[i+1] = color.g8
-			bytes[i+2] = color.b8
+			bytes[i] = color.r8
+			bytes[i + 1] = color.g8
+			bytes[i + 2] = color.b8
 			i += 3
 
 	var img = Image.new()

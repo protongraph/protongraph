@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://ui/views/editor/components/viewport/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://ui/icons/icon_question_mark.svg" type="Texture" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://ui/views/editor/components/viewport/gizmos_manager.gd" type="Script" id=13]
 [ext_resource path="res://ui/views/editor/components/viewport/monitor_local_tree_changes.gd" type="Script" id=14]
 [ext_resource path="res://ui/views/editor/components/viewport/viewport_input.gd" type="Script" id=15]
+[ext_resource path="res://addons/monitor_overlay/monitor_overlay.gd" type="Script" id=16]
 
 [sub_resource type="World" id=1]
 environment = ExtResource( 1 )
@@ -98,7 +99,7 @@ light_specular = 0.0
 [node name="Lighting" type="Spatial" parent="MarginContainer/ViewportContainer/Viewport"]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="MarginContainer/ViewportContainer/Viewport/Lighting"]
-transform = Transform( 0.446463, -0.751037, 0.48643, 0.446463, 0.658088, 0.606293, -0.775463, -0.0535144, 0.629122, 2.00127, 0, -1.33922 )
+transform = Transform( 0.446463, -0.751037, 0.48643, 0.446463, 0.658088, 0.606293, -0.775463, -0.0535142, 0.629122, 2.00127, 0, -1.37944 )
 visible = false
 light_energy = 0.7
 light_specular = 0.0
@@ -141,7 +142,7 @@ margin_bottom = 764.0
 mouse_filter = 2
 
 [node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/ViewportUI/HBoxContainer"]
-margin_right = 948.0
+margin_right = 873.0
 margin_bottom = 760.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -215,10 +216,24 @@ Shift + Middle Click: Pan
 Scroll Up / Down: Zoom"
 
 [node name="RightColumn" type="VBoxContainer" parent="MarginContainer/ViewportUI/HBoxContainer"]
-margin_left = 956.0
+margin_left = 881.0
 margin_right = 956.0
 margin_bottom = 760.0
+mouse_filter = 2
 alignment = 2
+
+[node name="MonitorOverlay" type="VBoxContainer" parent="MarginContainer/ViewportUI/HBoxContainer/RightColumn"]
+margin_right = 75.0
+margin_bottom = 760.0
+rect_min_size = Vector2( 75, 0 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 16 )
+plot_graphs = false
+history = 25
+graph_height = 25
+[connection signal="scene_updated" from="." to="Tree" method="_update_tree"]
 [connection signal="node_selected" from="Tree" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_selected"]
 [connection signal="node_added" from="MarginContainer/ViewportContainer/Viewport/Input" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_added"]
 [connection signal="node_removed" from="MarginContainer/ViewportContainer/Viewport/Input" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_removed"]

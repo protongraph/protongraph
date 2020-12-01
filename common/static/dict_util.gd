@@ -16,7 +16,7 @@ static func append_to(dict, key, row):
 # stored as floats. This method (along with format_value) attempt to fix that.
 static func fix_types(dict: Dictionary) -> Dictionary:
 	var res := {}
-	for key in dict.keys():
+	for key in dict:
 		var new_key = format_value(key)
 		var value
 

@@ -25,7 +25,7 @@ func rebuild_ui() -> void:
 		_info.visible = true
 		return
 	
-	for id in _peers.keys():
+	for id in _peers:
 		_create_item(id)
 
 

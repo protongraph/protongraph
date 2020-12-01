@@ -20,7 +20,7 @@ func create(label_name: String, type: int, opts := {}) -> void:
 		_dropdown.add_stylebox_override("hover", load("res://ui/themes/styles/graphnode_button_hover.tres"))
 		_dropdown.focus_mode = Control.FOCUS_NONE
 		_dropdown.name = "OptionButton"
-		for item in opts["items"].keys():
+		for item in opts["items"]:
 			_dropdown.add_item(item, opts["items"][item])
 
 		Signals.safe_connect(_dropdown, "item_selected", self, "_on_value_changed")

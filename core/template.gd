@@ -261,7 +261,7 @@ func deregister_proxy(node) -> void:
 
 
 func get_proxy(name) -> ProtonNode:
-	for node in _proxy_nodes.keys():
+	for node in _proxy_nodes:
 		if _proxy_nodes[node] == name:
 			return node
 	return null

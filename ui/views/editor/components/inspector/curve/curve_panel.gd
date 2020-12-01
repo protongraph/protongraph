@@ -37,6 +37,8 @@ func _ready() -> void:
 
 func set_curve(c) -> void:
 	curve = c
+	update()
+	emit_signal("curve_updated")
 
 
 func get_curve_data() -> Dictionary:

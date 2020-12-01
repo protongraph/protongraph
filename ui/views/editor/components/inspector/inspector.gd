@@ -42,7 +42,7 @@ func get_value(name):
 
 func get_all_values(storage := false) -> Dictionary:
 	var res = {}
-	for vname in _variables_ui.keys():
+	for vname in _variables_ui:
 		res[vname] = _variables_ui[vname].get_value(storage)
 	return res
 
@@ -52,7 +52,7 @@ func set_all_values(values) -> void:
 		_cache = values
 		return # Inspector was not initialized yet, caching the values for later
 
-	for vname in values.keys():
+	for vname in values:
 		vname = vname.to_lower()
 		if _variables_ui.has(vname):
 			_variables_ui[vname].set_value(values[vname])
@@ -67,7 +67,7 @@ func _regenerate_inspector_ui() -> void:
 
 	var sections = {}
 
-	for vname in _exposed_variables.keys():
+	for vname in _exposed_variables:
 		var v = _exposed_variables[vname]
 		var section_control
 		var section_name = ""

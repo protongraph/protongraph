@@ -2,8 +2,8 @@ extends ProtonNode
 
 
 func _init() -> void:
-	unique_id = "final_output"
-	display_name = "Viewer"
+	unique_id = "viewer_3d"
+	display_name = "Viewer 3D"
 	category = "Output"
 	description = "Display the 3d output in the viewport"
 
