@@ -40,4 +40,3 @@ func _scale_custom_margins() -> void:
 	set("custom_constants/margin_bottom", bottom)
 	set("custom_constants/margin_left", left)
 	set("custom_constants/margin_right", right)
-

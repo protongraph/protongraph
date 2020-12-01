@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ui/views/editor/components/node_sidebar/node_sidebar.gd" type="Script" id=1]
 [ext_resource path="res://ui/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=2]
 [ext_resource path="res://ui/views/editor/components/inspector/inspector_panel_style.tres" type="StyleBox" id=3]
 [ext_resource path="res://ui/themes/fonts/fira_sans_regular_small.tres" type="DynamicFont" id=4]
+[ext_resource path="res://ui/views/editor/components/node_sidebar/documentation/documentation_panel.tscn" type="PackedScene" id=5]
 
 [node name="NodeSidebar" type="ScrollContainer"]
 anchor_right = 1.0
@@ -55,60 +56,80 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="NameLabel" type="Label" parent="MarginContainer/Properties"]
-margin_right = 250.0
+margin_right = 1342.0
 margin_bottom = 19.0
 custom_fonts/font = ExtResource( 2 )
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/Properties"]
 margin_top = 27.0
-margin_right = 250.0
+margin_right = 1342.0
 margin_bottom = 35.0
 
 [node name="InputLabel" type="Label" parent="MarginContainer/Properties"]
 margin_top = 43.0
-margin_right = 250.0
-margin_bottom = 68.0
+margin_right = 1342.0
+margin_bottom = 61.0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 1, 1, 1, 0.501961 )
 text = "Inputs"
 
 [node name="Inputs" type="VBoxContainer" parent="MarginContainer/Properties"]
-margin_top = 76.0
-margin_right = 250.0
-margin_bottom = 76.0
+margin_top = 69.0
+margin_right = 1342.0
+margin_bottom = 69.0
 
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/Properties"]
-margin_top = 84.0
-margin_right = 250.0
-margin_bottom = 92.0
+margin_top = 77.0
+margin_right = 1342.0
+margin_bottom = 85.0
 
 [node name="OutputLabel" type="Label" parent="MarginContainer/Properties"]
-margin_top = 100.0
-margin_right = 250.0
-margin_bottom = 125.0
+margin_top = 93.0
+margin_right = 1342.0
+margin_bottom = 111.0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 1, 1, 1, 0.501961 )
 text = "Outputs"
 
 [node name="Outputs" type="VBoxContainer" parent="MarginContainer/Properties"]
-margin_top = 133.0
-margin_right = 250.0
-margin_bottom = 133.0
+margin_top = 119.0
+margin_right = 1342.0
+margin_bottom = 119.0
 
 [node name="HSeparator3" type="HSeparator" parent="MarginContainer/Properties"]
-margin_top = 84.0
-margin_right = 250.0
-margin_bottom = 92.0
+margin_top = 127.0
+margin_right = 1342.0
+margin_bottom = 135.0
 
 [node name="ExtraLabel" type="Label" parent="MarginContainer/Properties"]
-margin_top = 100.0
-margin_right = 250.0
-margin_bottom = 125.0
+margin_top = 143.0
+margin_right = 1342.0
+margin_bottom = 161.0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 1, 1, 1, 0.501961 )
 text = "Others"
 
 [node name="Extras" type="VBoxContainer" parent="MarginContainer/Properties"]
-margin_top = 133.0
-margin_right = 250.0
-margin_bottom = 133.0
+margin_top = 169.0
+margin_right = 1342.0
+margin_bottom = 169.0
+
+[node name="HSeparator4" type="HSeparator" parent="MarginContainer/Properties"]
+margin_top = 177.0
+margin_right = 1342.0
+margin_bottom = 185.0
+
+[node name="DocumentationLabel" type="Label" parent="MarginContainer/Properties"]
+margin_top = 193.0
+margin_right = 1342.0
+margin_bottom = 211.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 1, 1, 1, 0.501961 )
+text = "Documentation"
+
+[node name="Documentation" parent="MarginContainer/Properties" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 219.0
+margin_right = 1342.0
+margin_bottom = 219.0

@@ -9,7 +9,7 @@ signal output_ready
 var unique_id: String
 var description: String
 var ignore := false
-var doc: NodeDocumentation
+var doc := NodeDocumentation.new()
 var node_pool: NodePool # Injected from template
 var thread_pool: ThreadPool # Injected from template
 var output := {}

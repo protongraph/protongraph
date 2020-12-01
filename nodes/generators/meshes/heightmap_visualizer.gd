@@ -21,7 +21,7 @@ func _generate_outputs() -> void:
 	mesh.subdivide_width = heightmap.size.x - 2
 	mesh.subdivide_depth = heightmap.size.y - 2
 	
-	var material: ShaderMaterial = load("res://nodes/outputs/lib/m_heightmap.tres")
+	var material: ShaderMaterial = load("res://common/lib/heightmap.tres")
 	var texture = ImageTexture.new()
 	texture.create_from_image(heightmap.get_image())
 	texture.set_flags(Texture.FLAG_FILTER + Texture.FLAG_MIPMAPS)

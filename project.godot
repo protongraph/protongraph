@@ -79,6 +79,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://common/static/dict_util.gd"
 }, {
+"base": "VBoxContainer",
+"class": "DocumentationPanel",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/node_sidebar/documentation/documentation_panel.gd"
+}, {
 "base": "PanelContainer",
 "class": "EditorSettingsView",
 "language": "GDScript",
@@ -399,6 +404,7 @@ _global_script_class_icons={
 "DataType": "",
 "DialogManager": "",
 "DictUtil": "",
+"DocumentationPanel": "",
 "EditorSettingsView": "",
 "EditorUtil": "",
 "EditorView": "",
@@ -495,6 +501,7 @@ Protocol="*res://common/autoloads/protocol.gd"
 TextureUtil="*res://common/autoloads/texture_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
 FileHistory="*res://common/autoloads/file_history.gd"
+RenderTargetsPool="*res://common/autoloads/RenderTargetsPool.gd"
 RemoteManager="*res://common/autoloads/remote_manager.gd"
 
 [debug]
@@ -516,6 +523,7 @@ enabled=PoolStringArray( "WAT", "monitor_overlay" )
 [gui]
 
 theme/use_hidpi=true
+timers/tooltip_delay_sec=0.1
 
 [importer_defaults]
 

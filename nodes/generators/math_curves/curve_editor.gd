@@ -43,7 +43,7 @@ func _create_curve_widget() -> void:
 	_curve_widget = preload("res://ui/views/editor/components/inspector/curve/curve_property.tscn").instance()
 	_curve_widget.init("", curve)
 	add_child(_curve_widget)
-	connect("resize_request", self, "_on_resize")
+	Signals.safe_connect(self, "resize_request", self, "_on_resize")
 	update()
 
 

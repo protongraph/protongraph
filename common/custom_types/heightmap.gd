@@ -94,3 +94,18 @@ func get_image() -> Image:
 	img.create_from_data(size.x, size.y, false, Image.FORMAT_RGB8, bytes)
 
 	return img
+
+
+func set_from_image(image: Image) -> void:
+	image.lock()
+	for y in size.y:
+		for x in size.x:
+			set_point(x, y, image.get_pixel(x, y).r)
+
+	image.unlock()
+	
+
+func get_texture() -> ImageTexture:
+	var texture = ImageTexture.new()
+	texture.create_from_image(get_image())
+	return texture

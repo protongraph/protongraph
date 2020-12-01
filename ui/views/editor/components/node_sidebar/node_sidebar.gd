@@ -18,10 +18,11 @@ onready var _name: Label = $MarginContainer/Properties/NameLabel
 onready var _input_label: Label = $MarginContainer/Properties/InputLabel
 onready var _output_label: Label = $MarginContainer/Properties/OutputLabel
 onready var _extra_label: Label = $MarginContainer/Properties/ExtraLabel
+onready var _documentation_label: Label = $MarginContainer/Properties/DocumentationLabel
 onready var _inputs: Control = $MarginContainer/Properties/Inputs
 onready var _outputs: Control = $MarginContainer/Properties/Outputs
 onready var _extras: Control = $MarginContainer/Properties/Extras
-
+onready var _documentation: DocumentationPanel = $MarginContainer/Properties/Documentation
 
 
 func clear() -> void:
@@ -95,9 +96,13 @@ func _rebuild_ui() -> void:
 		ui.set_property_visibility(hidden)
 		Signals.safe_connect(ui, "property_visibility_changed", self, "_on_extra_property_visibility_changed", [idx])
 	
+	_documentation.rebuild(_current.doc)
+	
 	_input_label.visible = _inputs.get_child_count() != 0
 	_output_label.visible = _outputs.get_child_count() != 0
 	_extra_label.visible = _extras.get_child_count() != 0
+	_documentation_label.visible = _documentation.get_child_count() != 0
+	
 
 
 func _on_node_selected(node) -> void:
