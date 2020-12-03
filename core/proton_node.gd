@@ -13,6 +13,7 @@ var doc := NodeDocumentation.new()
 var node_pool: NodePool # Injected from template
 var thread_pool: ThreadPool # Injected from template
 var output := {}
+var debug_mode := false
 
 var _docs: Dictionary
 var _generation_requested := false # True after calling prepare_output once
@@ -121,7 +122,10 @@ func get_input_single(idx: int, default = null):
 # the results are the same and save some performance
 func get_output(idx: int, default := []) -> Array:
 	if not is_output_ready():
-		_generate_outputs()
+		if debug_mode:
+			_debug_generate_outputs()
+		else:
+			_generate_outputs()
 		_output_ready = true
 		emit_signal("output_ready")
 
@@ -196,6 +200,13 @@ func is_remote_sync_node() -> bool:
 # Generate all the outputs for every output slots declared.
 func _generate_outputs() -> void:
 	pass
+
+
+func _debug_generate_outputs() -> void:
+	var start_time = OS.get_ticks_msec()
+	_generate_outputs()
+	var gen_time = OS.get_ticks_msec() - start_time
+	print(display_name + ": " + str(gen_time) + "ms")
 
 
 # Overide this function to customize how the output cache should be cleared. If

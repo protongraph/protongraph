@@ -36,8 +36,6 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var start_time = OS.get_ticks_msec()
-	
 	var heightmap: Heightmap = get_input_single(0)
 	var directions: float = get_input_single(1, 16.0)
 	var quality: float = get_input_single(2, 3.0)
@@ -61,14 +59,8 @@ func _generate_outputs() -> void:
 	while not RenderTargetsPool.is_ready(viewport):
 		OS.delay_msec(16)
 	
-	print("POST UPDATE", OS.get_ticks_msec())
-	
 	var img = viewport.get_texture().get_data()
-	img.flip_y()
 	heightmap.set_from_image(img)
 	output[0].push_back(heightmap)
 	
 	viewport.queue_free()
-
-	var gen_time = OS.get_ticks_msec() - start_time
-	print("Heightmap blured in " + str(gen_time) + "ms")

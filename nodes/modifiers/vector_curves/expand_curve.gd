@@ -38,7 +38,7 @@ func _generate_outputs() -> void:
 		output[0].push_back(vector_curve)
 
 
-func _get_vector_curve_center(v: ProtonNodeVectorCurve) -> Vector3:
+func _get_vector_curve_center(v: VectorCurve) -> Vector3:
 	var res := Vector3.ZERO
 	for p in v.points:
 		res += p

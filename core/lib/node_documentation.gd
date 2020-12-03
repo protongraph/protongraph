@@ -2,6 +2,7 @@ class_name NodeDocumentation
 
 
 var _docs: Dictionary
+var _tags: Array
 
 
 func _init():
@@ -10,6 +11,7 @@ func _init():
 		"parameters": [],
 		"paragraphs": []
 	}
+	_tags = []
 
 
 func add_warning(text: String, opts: String) -> void:
@@ -33,6 +35,14 @@ func add_paragraph(text: String, opts: Dictionary) -> void:
 	_docs["paragraphs"].push_back(paragraph)
 
 
+func add_tag(tag: String) -> void:
+	_tags.push_back(tag)
+
+
+func add_tags(tags: Array) -> void:
+	_tags += tags
+
+
 func get_warnings() -> Array:
 	return _docs["warnings"]
 
@@ -43,3 +53,7 @@ func get_parameters() -> Array:
 
 func get_paragraphs() -> Array:
 	return _docs["paragraphs"]
+
+
+func get_tags() -> Array:
+	return _tags

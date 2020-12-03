@@ -36,7 +36,7 @@ func _generate_outputs() -> void:
 		return
 
 	for i in range(polygon_curves.size()):
-		var pc := polygon_curves[i] as ProtonNodeVectorCurve
+		var pc := polygon_curves[i] as VectorCurve
 		var polygon = pc.to_pool_vector_2(axis, !local)
 
 		var mesh = CSGPolygon.new()

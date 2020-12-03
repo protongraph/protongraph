@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[ext_resource path="res://common/lib/heightmap_thermal_erosion.shader" type="Shader" id=1]
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/mesh_size = null
+shader_param/texture_size = null
+shader_param/scale = null
+shader_param/threshold = null
+shader_param/erosion_rate = null
+shader_param/debug = null

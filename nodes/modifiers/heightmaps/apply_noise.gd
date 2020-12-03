@@ -9,14 +9,13 @@ func _init() -> void:
 
 	set_input(0, "Heightmap", DataType.HEIGHTMAP)
 	set_input(1, "Noise", DataType.NOISE)
-	set_input(2, "Noise Scale", DataType.VECTOR3, {"value":1, "min":0.001, "allow_lesser": false})
+	set_input(2, "Noise Scale", DataType.VECTOR3, {"value": 1, "min": 0.001, "allow_lesser": false})
 	set_input(3, "Noise Offset", DataType.VECTOR3)
 
 	set_output(0, "", DataType.HEIGHTMAP)
 
 
 func _generate_outputs() -> void:
-	var start_time = OS.get_ticks_msec()
 	var heightmap: Heightmap = get_input_single(0)
 	var noise: Noise = get_input_single(1)
 	var noise_scale: Vector3 = get_input_single(2, Vector3.ONE)
@@ -39,6 +38,3 @@ func _generate_outputs() -> void:
 
 	heightmap.data = data
 	output[0].push_back(heightmap)
-
-	var gen_time = OS.get_ticks_msec() - start_time
-	print("Heightmap created in " + str(gen_time) + "ms")

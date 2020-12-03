@@ -1,12 +1,14 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=2]
 
-[ext_resource path="res://common/lib/blur.shader" type="Shader" id=1]
-[ext_resource path="res://tmp/WoodFloor007_2K_Color.jpg" type="Texture" id=2]
+[ext_resource path="res://tmp/smooth_noise.png" type="Texture" id=1]
+[ext_resource path="res://common/lib/heightmap_thermal_erosion.shader" type="Shader" id=2]
 
 [resource]
-shader = ExtResource( 1 )
-shader_param/texture_size = 2048.0
-shader_param/directions = 16.0
-shader_param/quality = 3.0
-shader_param/size = 16.0
-shader_param/input = ExtResource( 2 )
+shader = ExtResource( 2 )
+shader_param/mesh_size = 64.0
+shader_param/texture_size = 256.0
+shader_param/scale = 32.0
+shader_param/threshold = null
+shader_param/erosion_rate = 0.25
+shader_param/debug = false
+shader_param/map = ExtResource( 1 )

@@ -25,3 +25,7 @@ func get_value(name):
 
 func get_all_values(storage := false) -> Dictionary:
 	return _values
+
+
+func set_all_values(values) -> void:
+	pass

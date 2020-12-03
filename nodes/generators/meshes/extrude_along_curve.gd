@@ -10,10 +10,10 @@ func _init() -> void:
 	category = "Generators/Meshes"
 	description = "Extrudes a curve along another curve to create a pipe-like mesh"
 
-	set_input(0, "Bevel curve", DataType.VECTOR_CURVE_3D)
+	set_input(0, "Cross Section", DataType.VECTOR_CURVE_3D)
 	set_input(1, "Path curve", DataType.CURVE_3D)
 	set_input(2, "Taper curve", DataType.CURVE_FUNC)
-	set_input(3, "Resolution", DataType.SCALAR, {"min": 0.01, "value": 1.0})
+	set_input(3, "Resolution", DataType.SCALAR, {"min": 0.01, "value": 1.0, "allow_lesser": false})
 	set_input(4, "UV scale", DataType.VECTOR2, {"min": 0.01, "value": 1.0})
 	set_input(5, "Smooth", DataType.BOOLEAN, {"value": false})
 	#set_input(6, "Close caps", DataType.BOOLEAN, {"value": false})
@@ -21,35 +21,35 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var bevel: ProtonNodeVectorCurve = get_input_single(0)	# We extrude this
+	var cross_section: VectorCurve = get_input_single(0)	# We extrude this
 	var paths := get_input(1)	# following these
 	var taper: Curve = get_input_single(2)	# and vary its scale at each step based on this
-	var resolution: float = get_input_single(3, 1.0)	# at this interval
+	var step_size: float = 1.0 / get_input_single(3, 1.0)	# at this interval
 	var uv_scale: Vector2 = get_input_single(4, 1.0)
 	var smooth: bool = get_input_single(5, false)
 	#var close_caps: bool = get_input_single(6, false)
 
-	if resolution == 0:
-		resolution = 0.01
+	if step_size == 0:
+		step_size = 0.01
 
-	if not bevel or not paths or paths.size() == 0:
+	if not cross_section or not paths or paths.size() == 0:
 		return
 
 	var surface_tool := SurfaceTool.new()
 
 	for path in paths:
 		surface_tool.clear()
-		surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES);
+		surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 		surface_tool.add_smooth_group(smooth)
 
 		var curve: Curve3D = path.curve
 		var length: float = curve.get_baked_length()
-		var steps: int = floor(length / resolution)
+		var steps: int = floor(length / step_size)
 		if steps == 0:
 			continue
 
 		var offset: float = length / steps
-		var bevel_count: int = bevel.points.size()
+		var count: int = cross_section.points.size()
 		var up = Vector3(0, 1, 0)
 
 		for i in range(steps + 1):
@@ -71,25 +71,25 @@ func _generate_outputs() -> void:
 			node.look_at_from_position(position_on_curve, position_2, up)
 			up = node.transform.basis.y
 
-			for j in range(bevel_count):
+			for j in range(count):
 
-				var pos = taper_size * bevel.points[j]
+				var pos = taper_size * cross_section.points[j]
 				pos = node.transform.xform(pos)
 
 				# TODO : Adding UV breaks the smooth group
 				surface_tool.add_color(Color(1, 1, 1, 1));
-				surface_tool.add_uv(Vector2(current_offset / length * uv_scale.x, j / float(bevel_count) * uv_scale.y))
+				surface_tool.add_uv(Vector2(current_offset / length * uv_scale.x, j / float(count) * uv_scale.y))
 				surface_tool.add_vertex(pos)
 
 			if i > 0:
-				for k in range(bevel_count - 1):
-					surface_tool.add_index((i - 1) * bevel_count + k)
-					surface_tool.add_index((i - 1) * bevel_count + k + 1)
-					surface_tool.add_index(i * bevel_count + k)
+				for k in range(count - 1):
+					surface_tool.add_index((i - 1) * count + k)
+					surface_tool.add_index((i - 1) * count + k + 1)
+					surface_tool.add_index(i * count + k)
 
-					surface_tool.add_index(i * bevel_count + k)
-					surface_tool.add_index((i - 1) * bevel_count + k + 1)
-					surface_tool.add_index(i * bevel_count + k + 1)
+					surface_tool.add_index(i * count + k)
+					surface_tool.add_index((i - 1) * count + k + 1)
+					surface_tool.add_index(i * count + k + 1)
 
 		surface_tool.generate_normals()
 

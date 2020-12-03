@@ -28,7 +28,6 @@ func _set_inspector_values(tpl: Template, values: Array) -> void:
 
 
 func _set_inputs(tpl: Template, inputs: Array) -> void:
-	print("inputs : ", inputs)
 	if not inputs:
 		return
 

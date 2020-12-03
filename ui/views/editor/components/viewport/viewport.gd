@@ -11,7 +11,8 @@ onready var _output_root: Spatial = $MarginContainer/ViewportContainer/Viewport/
 onready var _camera_root: Spatial = $MarginContainer/ViewportContainer/Viewport/Pivot
 onready var _camera_light: Light = $MarginContainer/ViewportContainer/Viewport/Pivot/Camera/DirectionalLight
 onready var _static_light: Light = $MarginContainer/ViewportContainer/Viewport/Lighting/DirectionalLight
-onready var _legend: Control = $MarginContainer/ViewportUI/HBoxContainer/LeftColumn/Legend
+onready var _help_panel: Control = $MarginContainer/ViewportUI/HBoxContainer/LeftColumn/HelpPanel
+onready var _overlay = $MarginContainer/ViewportUI/HBoxContainer/RightColumn/MonitorOverlay
 
 
 func add_input_node(node: Spatial) -> void:
@@ -40,16 +41,6 @@ func display(nodes: Array) -> void:
 	emit_signal("scene_updated")
 
 
-func enable_static_light() -> void:
-	_static_light.visible = true
-	_camera_light.visible = false
-
-
-func enable_camera_light() -> void:
-	_static_light.visible = false
-	_camera_light.visible = true
-
-
 func set_normal_display() -> void:
 	_viewport.debug_draw = Viewport.DEBUG_DRAW_DISABLED
 
@@ -58,9 +49,19 @@ func set_wireframe_display() -> void:
 	_viewport.debug_draw = Viewport.DEBUG_DRAW_WIREFRAME
 
 
-func display_legend(val) -> void:
-	_legend.visible = val
-
-
 func _on_input_changed(_input) -> void:
 	emit_signal("scene_updated")
+
+
+func _on_show_help_panel(val) -> void:
+	_help_panel.visible = val
+
+
+func _on_show_fps(val):
+	_overlay.fps = val
+	_overlay.rebuild_ui()
+
+
+func _on_use_static_light(val):
+	_static_light.visible = val
+	_camera_light.visible = not val

@@ -294,16 +294,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/concept_node_ui.gd"
 }, {
-"base": "Spatial",
-"class": "ProtonNodeVectorCurve",
-"language": "GDScript",
-"path": "res://common/custom_types/vector_curve_3d.gd"
-}, {
-"base": "Spatial",
-"class": "ProtonNodeVectorCurve2D",
-"language": "GDScript",
-"path": "res://common/custom_types/vector_curve_2d.gd"
-}, {
 "base": "Reference",
 "class": "RemoteInspector",
 "language": "GDScript",
@@ -363,6 +353,16 @@ _global_script_classes=[ {
 "class": "VectorComponent",
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/components/vector.gd"
+}, {
+"base": "Spatial",
+"class": "VectorCurve",
+"language": "GDScript",
+"path": "res://common/custom_types/vector_curve_3d.gd"
+}, {
+"base": "Spatial",
+"class": "VectorCurve2D",
+"language": "GDScript",
+"path": "res://common/custom_types/vector_curve_2d.gd"
 }, {
 "base": "Reference",
 "class": "VectorUtil",
@@ -447,8 +447,6 @@ _global_script_class_icons={
 "ProtonGraphSettings": "",
 "ProtonNode": "",
 "ProtonNodeUi": "",
-"ProtonNodeVectorCurve": "",
-"ProtonNodeVectorCurve2D": "",
 "RemoteInspector": "",
 "RemoteView": "",
 "ScalarComponent": "",
@@ -461,6 +459,8 @@ _global_script_class_icons={
 "Turtle": "",
 "UserInterfaceRoot": "",
 "VectorComponent": "",
+"VectorCurve": "",
+"VectorCurve2D": "",
 "VectorUtil": "",
 "ViewContainer": "",
 "WAT": "",
@@ -501,7 +501,7 @@ Protocol="*res://common/autoloads/protocol.gd"
 TextureUtil="*res://common/autoloads/texture_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
 FileHistory="*res://common/autoloads/file_history.gd"
-RenderTargetsPool="*res://common/autoloads/RenderTargetsPool.gd"
+RenderTargetsPool="*res://common/autoloads/render_target_pool.gd"
 RemoteManager="*res://common/autoloads/remote_manager.gd"
 
 [debug]

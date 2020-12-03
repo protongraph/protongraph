@@ -185,6 +185,6 @@ static func to_variant_type(type: int) -> int:
 
 static func get_type_name(type: int) -> String:
 	var keys = Types.keys()
-	if type in Types:
-		return Types[type].capitalize()
+	if not keys.has(type):
+		return keys[type].capitalize()
 	return ""

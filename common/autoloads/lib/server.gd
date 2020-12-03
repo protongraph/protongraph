@@ -41,13 +41,33 @@ func stop() -> void:
 		_ws.stop()
 
 
+# By default, Godot limits the packet size to 64kb. We can't ask the users to
+# manually raise that limit in their project settings so we split the packet 
+# in smaller chunks to make sure it's always under 64kb. Format is as follow:
+# {0: stream_id, 1: chunk_id, 2: total_chunk_count, 2: chunk_data}
 func send(client_id: int, data: Dictionary) -> void:
-	var msg = JSON.print(data)
-	var packet = msg.to_utf8()
-	print("Sending packet: ", packet.size() / 1024.0, "kb")
-	var err = _ws.get_peer(client_id).put_packet(packet)
-	if err != OK:
-		print("Error ", err, " when sending packet to peer ", client_id)
+	var id: int = randi()
+	var msg: String = JSON.print(data)
+	
+	# Calculate how many chunks will be sent, leave some margin for the extra
+	# caracters overhead (brackets, comas, digits used for the chunk id and
+	# total count and so on) this probably won't take more than 200 chars.
+	var chunk_size: int = (64 * 1024) - 200
+	var total_chunks: int = msg.length() / chunk_size + 1
+	
+	for chunk_id in total_chunks:
+		var chunk = msg.substr(chunk_id * chunk_size, chunk_size)
+		var packet = {
+			0: id,
+			1: chunk_id,
+			2: total_chunks,
+			3: chunk
+		}
+		packet = JSON.print(packet).to_utf8()
+		print("Sending packet: ", packet.size() / 1024.0, "kb")
+		var err = _ws.get_peer(client_id).put_packet(packet)
+		if err != OK:
+			print("Error ", err, " when sending packet to peer ", client_id)
 
 
 # Return all the possible ports on which the server could try to listen
@@ -75,5 +95,5 @@ func _on_data_received(id: int) -> void:
 	emit_signal("data_received", id, msg)
 
 
-func _on_client_close_request(id: int, reason: String) -> void:
+func _on_client_close_request(id: int, code: int, reason: String) -> void:
 	print("Client close request ", id, " reason: ", reason)

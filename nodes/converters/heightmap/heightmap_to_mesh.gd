@@ -16,8 +16,6 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var start_time = OS.get_ticks_msec()
-
 	var heightmap: Object = get_input_single(0)
 	var subdivide: int = get_input_single(1, 64)
 	var smoothing: bool = get_input_single(2, false)
@@ -80,6 +78,3 @@ func _generate_outputs() -> void:
 	mesh_instance.mesh = st.commit()
 
 	output[0].push_back(mesh_instance)
-
-	var gen_time = OS.get_ticks_msec() - start_time
-	print("Mesh created in " + str(gen_time) + "ms")

@@ -1,6 +1,5 @@
-tool
 extends Spatial
-class_name ProtonNodeVectorCurve
+class_name VectorCurve
 
 
 export var points: Array

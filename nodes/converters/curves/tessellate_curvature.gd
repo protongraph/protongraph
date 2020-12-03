@@ -29,7 +29,7 @@ func _generate_outputs() -> void:
 	var tolerance: float = get_input_single(2, 4.0)
 
 	for path in paths:
-		var p = ProtonNodeVectorCurve.new()
+		var p = VectorCurve.new()
 		p.points = path.curve.tessellate(stages, tolerance)
 		p.transform = path.transform
 		output[0].push_back(p)
