@@ -37,6 +37,9 @@ func _init() -> void:
 
 func _generate_outputs() -> void:
 	var heightmap: Heightmap = get_input_single(0)
+	if not heightmap:
+		return
+	
 	var directions: float = get_input_single(1, 16.0)
 	var quality: float = get_input_single(2, 3.0)
 	var size: float = get_input_single(3, 8.0)
@@ -45,7 +48,7 @@ func _generate_outputs() -> void:
 	material.set_shader_param("directions", directions)
 	material.set_shader_param("quality", quality)
 	material.set_shader_param("size", size)
-	material.set_shader_param("input", heightmap.get_texture())
+	material.set_shader_param("map", heightmap.get_texture())
 
 	var color_rect: ColorRect = ColorRect.new()
 	color_rect.rect_min_size = heightmap.size

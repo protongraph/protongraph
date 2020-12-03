@@ -1,6 +1,5 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
 
-[ext_resource path="res://tmp/smooth_noise.png" type="Texture" id=1]
 [ext_resource path="res://common/lib/heightmap_thermal_erosion.shader" type="Shader" id=2]
 
 [resource]
@@ -11,4 +10,3 @@ shader_param/scale = 32.0
 shader_param/threshold = null
 shader_param/erosion_rate = 0.25
 shader_param/debug = false
-shader_param/map = ExtResource( 1 )
