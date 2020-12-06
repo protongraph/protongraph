@@ -14,9 +14,10 @@ func _init():
 	_tags = []
 
 
-func add_warning(text: String, opts: String) -> void:
+func add_warning(text: String, opts: Dictionary = {}) -> void:
 	var warning = {}
-	warning.text = text
+	warning.text = _sanitize_text(text)
+	warning.level = opts["level"] if "level" in opts else 0
 	_docs["warnings"].push_back(warning)
 
 
@@ -24,14 +25,14 @@ func add_warning(text: String, opts: String) -> void:
 func add_parameter(parameter_name: String, text: String, performance_cost: int = 0) -> void:
 	var parameter = {}
 	parameter["name"] = parameter_name
-	parameter["text"] = text
+	parameter["text"] = _sanitize_text(text)
 	parameter["cost"] = performance_cost
 	_docs["parameters"].push_back(parameter)
 
 
-func add_paragraph(text: String, opts: Dictionary) -> void:
+func add_paragraph(text: String, opts: Dictionary = {}) -> void:
 	var paragraph = {}
-	paragraph["text"] = text
+	paragraph["text"] = _sanitize_text(text)
 	_docs["paragraphs"].push_back(paragraph)
 
 
@@ -57,3 +58,10 @@ func get_paragraphs() -> Array:
 
 func get_tags() -> Array:
 	return _tags
+
+
+func _sanitize_text(text: String) -> String:
+	# Remove line breaks
+	text = text.replace("\n", " ")
+	# Remove occasional double space caused by the line above
+	return text.replace("  ", " ")

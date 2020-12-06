@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://core/template.gd" type="Script" id=1]
 [ext_resource path="res://ui/views/editor/components/inspector/inspector.tscn" type="PackedScene" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://ui/icons/icon_sidebar.svg" type="Texture" id=15]
 [ext_resource path="res://ui/icons/icon_inspector.svg" type="Texture" id=16]
 [ext_resource path="res://ui/icons/icon_viewport.svg" type="Texture" id=17]
+[ext_resource path="res://ui/icons/icon_graphedit.svg" type="Texture" id=18]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -49,6 +50,12 @@ action = "editor_toggle_inspector"
 
 [sub_resource type="ShortCut" id=11]
 shortcut = SubResource( 10 )
+
+[sub_resource type="InputEventAction" id=14]
+action = "editor_toggle_graphedit"
+
+[sub_resource type="ShortCut" id=15]
+shortcut = SubResource( 14 )
 
 [sub_resource type="InputEventAction" id=12]
 action = "editor_toggle_viewport"
@@ -144,10 +151,23 @@ icon = ExtResource( 16 )
 script = ExtResource( 11 )
 target = NodePath("../../HSplitContainer/Inspector")
 
-[node name="ToggleViewport" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
+[node name="ToggleGraphEditor" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
 margin_top = 196.0
 margin_right = 28.0
 margin_bottom = 225.0
+hint_tooltip = "(G)
+Enable or disable the graph editor."
+focus_mode = 2
+shortcut_in_tooltip = false
+shortcut = SubResource( 15 )
+icon = ExtResource( 18 )
+script = ExtResource( 11 )
+target = NodePath("../../HSplitContainer/HSplitContainer/HBoxContainer")
+
+[node name="ToggleViewport" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
+margin_top = 233.0
+margin_right = 28.0
+margin_bottom = 262.0
 hint_tooltip = "(V)
 Enable or disable the 3D viewport."
 shortcut_in_tooltip = false
@@ -191,13 +211,13 @@ anchor_bottom = 0.0
 margin_bottom = 500.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
 
 [node name="TemplateEditor" type="GraphEdit" parent="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer"]
 margin_right = 1056.0
 margin_bottom = 500.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 20.0
 right_disconnects = true
 scroll_offset = Vector2( -321, -268 )
 script = ExtResource( 1 )

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://ui/common/auto_scale.gd" type="Script" id=1]
-[ext_resource path="res://ui/icons/curved_arrow_up.svg" type="Texture" id=2]
+[ext_resource path="res://ui/icons/arrow_up.svg" type="Texture" id=2]
 [ext_resource path="res://ui/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=3]
 [ext_resource path="res://ui/views/editor/components/node_sidebar/documentation/parameter.gd" type="Script" id=4]
 
@@ -46,10 +46,17 @@ hint_tooltip = "This parameter has an impact on performance. Handle with care."
 texture = ExtResource( 2 )
 stretch_mode = 4
 
-[node name="TextLabel" type="Label" parent="MarginContainer/LabelContainers"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/LabelContainers"]
 margin_top = 72.0
 margin_right = 1360.0
 margin_bottom = 97.0
+custom_constants/margin_left = 12
+script = ExtResource( 1 )
+
+[node name="TextLabel" type="Label" parent="MarginContainer/LabelContainers/MarginContainer"]
+margin_left = 12.0
+margin_right = 1360.0
+margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 2
 text = "This is a long and detailled explaination about how this parameter is useful and how changing this value affects the result."

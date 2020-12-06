@@ -34,6 +34,7 @@ __meta__ = {
 margin = 6
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+visible = false
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 39.0
