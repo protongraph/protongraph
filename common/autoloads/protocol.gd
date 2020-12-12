@@ -18,20 +18,13 @@ func _start_server() -> void:
 	_server.start()
 
 
-func _on_data_received(id: int , data: String) -> void:
-	var json = JSON.parse(data)
-	if json.error != OK:
-		print("Data was not a valid json object")
-		print("Error ", json.error, " ", json.error_string, " at ", json.error_line)
+func _on_data_received(id: int , data: Dictionary) -> void:
+	if not data.has("command"):
 		return
 	
-	var msg: Dictionary = json.result
-	if not msg.has("command"):
-		return
-	
-	match msg["command"]:
+	match data["command"]:
 		"build":
-			_on_remote_build_requested(id, msg)
+			_on_remote_build_requested(id, data)
 
 
 func _on_remote_build_requested(id, msg: Dictionary) -> void:

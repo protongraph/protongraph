@@ -7,6 +7,7 @@ signal data_received
 
 var _ws := WebSocketServer.new()
 var _port := -1
+var _incoming = {}
 
 
 func _ready() -> void:
@@ -89,10 +90,46 @@ func _on_client_disconnected(id: int, clean_close := false) -> void:
 	GlobalEventBus.dispatch("peer_disconnected", [id])
 
 
-func _on_data_received(id: int) -> void:
-	var packet: PoolByteArray = _ws.get_peer(id).get_packet()
-	var msg = packet.get_string_from_utf8()
-	emit_signal("data_received", id, msg)
+func _on_data_received(client_id: int) -> void:
+	var packet: PoolByteArray = _ws.get_peer(client_id).get_packet()
+	var string = packet.get_string_from_utf8()
+	
+	var json = JSON.parse(string)
+	if json.error != OK:
+		print("Data was not a valid json object")
+		print("error ", json.error, " ", json.error_string, " at ", json.error_line)
+		return
+	
+	var data = DictUtil.fix_types(json.result)
+	var id = int(data[0])
+	var chunk_id = int(data[1])
+	var total_chunks = int(data[2])
+	var chunk = data[3]
+	
+	if not id in _incoming:
+		_incoming[id] = {}
+	
+	_incoming[id][chunk_id] = chunk
+	if _incoming[id].size() == total_chunks:
+		_decode(id, client_id)
+
+
+func _decode(id: int, client_id: int) -> void:
+	var keys: Array = _incoming[id].keys()
+	keys.sort()
+	
+	var string = ""
+	for chunk_id in keys:
+		string += _incoming[id][chunk_id]
+	
+	var json = JSON.parse(string)
+	if json.error != OK:
+		print("Data was not a valid json object")
+		print("error ", json.error, " ", json.error_string, " at ", json.error_line)
+		return
+	
+	var data = DictUtil.fix_types(json.result)
+	emit_signal("data_received", client_id, data)
 
 
 func _on_client_close_request(id: int, code: int, reason: String) -> void:
