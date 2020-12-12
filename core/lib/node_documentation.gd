@@ -22,11 +22,11 @@ func add_warning(text: String, opts: Dictionary = {}) -> void:
 
 
 # Performance cost ranges from 0 to 3, 0 means no cost, 3 is a huge cost.
-func add_parameter(parameter_name: String, text: String, performance_cost: int = 0) -> void:
+func add_parameter(parameter_name: String, text: String, opts: Dictionary = {}) -> void:
 	var parameter = {}
 	parameter["name"] = parameter_name
 	parameter["text"] = _sanitize_text(text)
-	parameter["cost"] = performance_cost
+	parameter["cost"] = opts["cost"] if "cost" in opts else 0
 	_docs["parameters"].push_back(parameter)
 
 

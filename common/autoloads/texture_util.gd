@@ -5,8 +5,7 @@ var _cache := {}
 var _table := {
 	DataType.ANY: "icon_any.svg",
 	DataType.BOOLEAN: "icon_bool.svg",
-	DataType.BOX_3D: "icon_selector_box.svg",
-	DataType.CURVE_2D: "icon_bezier.svg",
+	DataType.MASK_3D: "icon_selector_box.svg",
 	DataType.CURVE_3D: "icon_bezier.svg",
 	DataType.CURVE_FUNC: "icon_func_curve.svg",
 	DataType.HEIGHTMAP: "icon_heightmap.svg",

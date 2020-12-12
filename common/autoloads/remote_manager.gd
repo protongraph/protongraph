@@ -30,6 +30,10 @@ func _set_inspector_values(tpl: Template, values: Array) -> void:
 func _set_inputs(tpl: Template, inputs: Array) -> void:
 	if not inputs:
 		return
+	for input in inputs:
+		print("input name ", input.name)
+		print("input ", input)
+		tpl.set_remote_input(input.name, input)
 
 
 func _on_build_requested(id: int, path: String, args: Dictionary) -> void:

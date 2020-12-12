@@ -5,7 +5,7 @@ class_name LoadSaveDialog
 var _save_title := "Create a new template"
 var _save_as_title := "Save the template as"
 var _load_title := "Load an existing template"
-var _default_file_suggestion := "new_template.cgraph"
+var _default_file_suggestion := "new_template.tpgn"
 var _mode := Constants.LOAD
 
 

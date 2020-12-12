@@ -174,7 +174,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://core/node_pool.gd"
 }, {
-"base": "Reference",
+"base": "Node",
 "class": "NodeSerializer",
 "language": "GDScript",
 "path": "res://common/static/serializer.gd"
@@ -334,11 +334,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/components/string.gd"
 }, {
-"base": "Reference",
-"class": "Tags",
-"language": "GDScript",
-"path": "res://common/static/tags.gd"
-}, {
 "base": "CustomGraphEdit",
 "class": "Template",
 "language": "GDScript",
@@ -470,7 +465,6 @@ _global_script_class_icons={
 "SignalManager": "",
 "Signals": "",
 "StringComponent": "",
-"Tags": "",
 "Template": "",
 "ThreadPool": "",
 "Turtle": "",

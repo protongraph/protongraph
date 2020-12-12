@@ -5,10 +5,10 @@ func _init() -> void:
 	unique_id = "heightmap_flatten_area"
 	display_name = "Flatten Area"
 	category = "Modifiers/Heightmaps"
-	description = "Flattens part of the heightmap based on a box input"
+	description = "Flattens part of the heightmap that's within the mask"
 
 	set_input(0, "HeightMap", DataType.HEIGHTMAP)
-	set_input(1, "Box", DataType.BOX_3D)
+	set_input(1, "Mask", DataType.MASK_3D)
 	set_input(2, "", DataType.STRING, \
 		{"type": "dropdown",
 		"items": {
@@ -22,20 +22,20 @@ func _init() -> void:
 
 func _generate_outputs() -> void:
 	var heightmap: Heightmap = get_input_single(0)
-	var box: BoxInput = get_input_single(1)
+	var mask: BoxInput = get_input_single(1)
 	var operation: String = get_input_single(2, "Flatten")
 
 	if not heightmap:
 		return
 
-	if not box:
+	if not mask:
 		output[0].push_back(heightmap)
 		return
 
 	var data: Array = heightmap.data
 	var size: Vector2 = heightmap.size
 
-	var box_position = NodeUtil.get_global_position3(box)
+	var box_position = NodeUtil.get_global_position3(mask)
 	var box_level: float
 	var p: Vector3
 	var height: float
@@ -45,11 +45,11 @@ func _generate_outputs() -> void:
 		for x in size.x:
 
 			p = heightmap.get_point_global(x, y)
-			if not box.is_inside(p, true):
+			if not mask.is_inside(p, true):
 				i += 1
 				continue
 
-			box_level = -box.transform.xform_inv(Vector3(p.x, box.size.y / 2.0, p.z)).y
+			box_level = -mask.transform.xform_inv(Vector3(p.x, mask.size.y / 2.0, p.z)).y
 			height = p.y
 
 			if operation == "Flatten":

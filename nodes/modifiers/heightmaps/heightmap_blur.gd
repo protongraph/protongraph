@@ -27,12 +27,13 @@ func _init() -> void:
 	doc.add_parameter("Directions", 
 		"""The directions from where the texture is sampled around a pixel.
 		Using 8 directions will result in something that looks like a box blur.
-		The more directions are used, the more round the sampling area will be.""",
-		1)
+		The more directions are used, the more round the sampling area will
+		be.""", {"cost": 1})
 	doc.add_parameter("Quality",
 		"""The higher this number, the more samples are used to calculate the
-		final blur.""", 2)
-	doc.add_parameter("Size", """Define the blur radius around a single pixel.""")
+		final blur.""", {"cost": 1})
+	doc.add_parameter("Size",
+		"""Define the blur radius around a single pixel.""")
 
 
 func _generate_outputs() -> void:

@@ -34,3 +34,4 @@ margin_right = 838.0
 margin_bottom = 444.0
 
 [node name="FileDialog" parent="." instance=ExtResource( 3 )]
+filters = PoolStringArray( "*.tpgn" )

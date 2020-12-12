@@ -51,17 +51,17 @@ action = "editor_toggle_inspector"
 [sub_resource type="ShortCut" id=11]
 shortcut = SubResource( 10 )
 
-[sub_resource type="InputEventAction" id=14]
-action = "editor_toggle_graphedit"
-
-[sub_resource type="ShortCut" id=15]
-shortcut = SubResource( 14 )
-
 [sub_resource type="InputEventAction" id=12]
-action = "editor_toggle_viewport"
+action = "editor_toggle_graphedit"
 
 [sub_resource type="ShortCut" id=13]
 shortcut = SubResource( 12 )
+
+[sub_resource type="InputEventAction" id=14]
+action = "editor_toggle_viewport"
+
+[sub_resource type="ShortCut" id=15]
+shortcut = SubResource( 14 )
 
 [node name="GraphEditorView" type="PanelContainer"]
 anchor_right = 1.0
@@ -157,9 +157,8 @@ margin_right = 28.0
 margin_bottom = 225.0
 hint_tooltip = "(G)
 Enable or disable the graph editor."
-focus_mode = 2
 shortcut_in_tooltip = false
-shortcut = SubResource( 15 )
+shortcut = SubResource( 13 )
 icon = ExtResource( 18 )
 script = ExtResource( 11 )
 target = NodePath("../../HSplitContainer/HSplitContainer/HBoxContainer")
@@ -171,7 +170,7 @@ margin_bottom = 262.0
 hint_tooltip = "(V)
 Enable or disable the 3D viewport."
 shortcut_in_tooltip = false
-shortcut = SubResource( 13 )
+shortcut = SubResource( 15 )
 icon = ExtResource( 17 )
 script = ExtResource( 11 )
 target = NodePath("../../HSplitContainer/HSplitContainer/Control")
@@ -247,8 +246,8 @@ margin_bottom = 400.0
 [connection signal="pressed" from="VBoxContainer/ToolShelf/AddNodes" to="." method="_show_node_dialog_centered"]
 [connection signal="pressed" from="VBoxContainer/ToolShelf/Save" to="." method="save_template"]
 [connection signal="pressed" from="VBoxContainer/ToolShelf/RunGeneration" to="." method="regenerate"]
-[connection signal="build_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_build_completed"]
 [connection signal="build_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="VBoxContainer/ToolShelf/RunGeneration" method="_on_build_completed"]
+[connection signal="build_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_build_completed"]
 [connection signal="build_outdated" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_build_outdated"]
 [connection signal="build_started" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="VBoxContainer/ToolShelf/RunGeneration" method="_on_build_started"]
 [connection signal="exposed_variables_updated" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_exposed_variables_updated"]
