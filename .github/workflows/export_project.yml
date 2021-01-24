@@ -1,4 +1,4 @@
-name: Export ConceptGraph builds
+name: Export ProtonGraph builds
 
 on:
   workflow_dispatch:
@@ -34,28 +34,28 @@ jobs:
           python --version
           scons --version
 
-      - name: Clone the ConceptGraph repository
+      - name: Clone the ProtonGraph repository
         uses: actions/checkout@v2
         with:
-          repository: HungryProton/concept_graph
-          path: concept_graph
+          repository: protongraph/protongraph
+          path: proton_graph
           ref: master
           submodules: recursive
 
       - name: Compile GDnative libraries
         run: |
-          cd concept_graph/src/native/
+          cd proton_graph/src/native/
           ./compile_all.sh osx
 
       - name: Zip the repository with compiled dylibs
         run: |
-          zip -r concept_graph.zip concept_graph
+          zip -r proton_graph.zip proton_graph
 
       - name: Save the repository
         uses: actions/upload-artifact@master
         with:
-          name: concept_graph
-          path: concept_graph.zip
+          name: proton_graph
+          path: proton_graph.zip
 
   export:
     name: Export the project
@@ -90,43 +90,43 @@ jobs:
       - name: Retrieve the repository from the previous job
         uses: actions/download-artifact@master
         with:
-          name: concept_graph
+          name: proton_graph
           path: ./
 
       - name: Unzip the artifact
         run: |
           ls -al
-          unzip concept_graph.zip
+          unzip proton_graph.zip
 
       - name: Clone the editor binaries
         uses: actions/checkout@v2
         with:
-          repository: HungryProton/concept_graph_environment
+          repository: protongraph/environment
           path: builds
 
       - name: Compile GDnative libraries
         run: |
-          cd concept_graph/src/native/
+          cd proton_graph/src/native/
           ./compile_all.sh linux
           ./compile_all.sh windows
 
       - name: Export Linux build
         run: |
-          mkdir -p x11/ConceptGraph-${{ github.event.inputs.version }}
-          builds/server/godot_server.x11.opt.tools.64 --path concept_graph --export "linux" "../x11/ConceptGraph-${{ github.event.inputs.version }}/ConceptGraph"
-          zip -r ConceptGraph-${{ github.event.inputs.version }}-linux.zip x11/ConceptGraph-${{ github.event.inputs.version }}
+          mkdir -p x11/ProtonGraph-${{ github.event.inputs.version }}
+          builds/server/godot_server.x11.opt.tools.64 --path proton_graph --export "linux" "../x11/ProtonGraph-${{ github.event.inputs.version }}/ProtonGraph"
+          zip -r ProtonGraph-${{ github.event.inputs.version }}-linux.zip x11/ProtonGraph-${{ github.event.inputs.version }}
 
       - name: Export Windows build
         run: |
-          mkdir -p win/ConceptGraph-${{ github.event.inputs.version }}
-          builds/server/godot_server.x11.opt.tools.64 --path concept_graph --export "windows" "../win/ConceptGraph-${{ github.event.inputs.version }}/ConceptGraph.exe"
-          zip -r ConceptGraph-${{ github.event.inputs.version }}-windows.zip win/ConceptGraph-${{ github.event.inputs.version }}
+          mkdir -p win/ProtonGraph-${{ github.event.inputs.version }}
+          builds/server/godot_server.x11.opt.tools.64 --path proton_graph --export "windows" "../win/ProtonGraph-${{ github.event.inputs.version }}/ProtonGraph.exe"
+          zip -r ProtonGraph-${{ github.event.inputs.version }}-windows.zip win/ProtonGraph-${{ github.event.inputs.version }}
 
       - name: Export OSX build
         run: |
-          mkdir -p osx/ConceptGraph-${{ github.event.inputs.version }}
-          builds/server/godot_server.x11.opt.tools.64 --path concept_graph --export "osx" "../osx/ConceptGraph-${{ github.event.inputs.version }}/ConceptGraph"
-          zip -r ConceptGraph-${{ github.event.inputs.version }}-osx.zip osx/ConceptGraph-${{ github.event.inputs.version }}
+          mkdir -p osx/ProtonGraph-${{ github.event.inputs.version }}
+          builds/server/godot_server.x11.opt.tools.64 --path proton_graph --export "osx" "../osx/ProtonGraph-${{ github.event.inputs.version }}/ProtonGraph"
+          zip -r ProtonGraph-${{ github.event.inputs.version }}-osx.zip osx/ProtonGraph-${{ github.event.inputs.version }}
 
       - name: Create a Release
         id: create_release
@@ -135,7 +135,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{ github.ref }}
-            release_name: ConceptGraph Release ${{ github.event.inputs.version }}
+            release_name: ProtonGraph Release ${{ github.event.inputs.version }}
             body: ''
             draft: true
             prerelease: true
@@ -146,8 +146,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ConceptGraph-${{ github.event.inputs.version }}-linux.zip
-          asset_name: ConceptGraph-${{ github.event.inputs.version }}-linux.zip
+          asset_path: ProtonGraph-${{ github.event.inputs.version }}-linux.zip
+          asset_name: ProtonGraph-${{ github.event.inputs.version }}-linux.zip
           asset_content_type: application/zip
 
       - name: Upload Windows build
@@ -156,8 +156,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ConceptGraph-${{ github.event.inputs.version }}-windows.zip
-          asset_name: ConceptGraph-${{ github.event.inputs.version }}-windows.zip
+          asset_path: ProtonGraph-${{ github.event.inputs.version }}-windows.zip
+          asset_name: ProtonGraph-${{ github.event.inputs.version }}-windows.zip
           asset_content_type: application/zip
 
       - name: Upload OSX build
@@ -166,7 +166,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ConceptGraph-${{ github.event.inputs.version }}-osx.zip
-          asset_name: ConceptGraph-${{ github.event.inputs.version }}-osx.zip
+          asset_path: ProtonGraph-${{ github.event.inputs.version }}-osx.zip
+          asset_name: ProtonGraph-${{ github.event.inputs.version }}-osx.zip
           asset_content_type: application/zip
 
