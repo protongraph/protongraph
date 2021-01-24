@@ -71,7 +71,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install build-essential pkg-config libgl-dev libglvnd-dev libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm mingw-w64
+          sudo apt-get install build-essential pkg-config yasm mingw-w64
 
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
