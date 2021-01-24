@@ -45,7 +45,6 @@ jobs:
       - name: Compile GDnative libraries
         run: |
           cd proton_graph/native/
-          ./compile_all.sh osx
 
       - name: Zip the repository with compiled dylibs
         run: |
