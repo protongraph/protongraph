@@ -42,10 +42,6 @@ jobs:
           ref: master
           submodules: recursive
 
-      - name: Compile GDnative libraries
-        run: |
-          cd proton_graph/native/
-
       - name: Zip the repository with compiled dylibs
         run: |
           zip -r proton_graph.zip proton_graph
@@ -102,12 +98,6 @@ jobs:
         with:
           repository: protongraph/environment
           path: builds
-
-      - name: Compile GDnative libraries
-        run: |
-          cd proton_graph/native/
-          ./compile_all.sh linux
-          ./compile_all.sh windows
 
       - name: Export Linux build
         run: |
