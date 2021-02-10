@@ -99,5 +99,5 @@ func _find_all_nodes(path) -> void:
 			node.name = id
 			_nodes[id] = node
 			_node_search_index[node.display_name] = id
-	
+
 	dir.list_dir_end()

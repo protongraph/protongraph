@@ -8,7 +8,7 @@ var _values := {}
 
 func update_variables(variables: Array) -> void:
 	_values = {}
-	
+
 	# Variable format : {"name": "var_name", "value": value}
 	for v in variables:
 		var vname = v["name"].to_lower()
@@ -20,6 +20,7 @@ func get_value(name):
 	name = name.to_lower()
 	if _values.has(name):
 		return _values[name]
+
 	return null
 
 

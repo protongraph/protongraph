@@ -70,7 +70,7 @@ func load_from_file(path: String, soft_load := false) -> void:
 	paused = true
 	_template_loaded = false
 	_loaded_template_path = path
-	
+
 	if soft_load:	# Don't clear, simply refresh the graph edit UI without running the sim
 		clear_editor()
 	else:
@@ -100,7 +100,7 @@ func load_from_file(path: String, soft_load := false) -> void:
 		var to = get_node(c["to"])
 		if not to or not from:
 			continue
-		
+
 		var from_port = from.get_output_index_pos(c["from_port"])
 		var to_port = to.get_input_index_pos(c["to_port"])
 		if from_port != -1 and to_port != -1:
@@ -168,7 +168,7 @@ func save_to_file(path: String) -> void:
 	if _save_queued:
 		_save_queued = false
 		save_to_file(path)
-	
+
 	emit_signal("template_saved")
 	GlobalEventBus.dispatch("template_saved", path)
 
@@ -192,7 +192,7 @@ func create_node(type: String, data := {}, notify := true) -> ProtonNode:
 
 	new_node.thread_pool = _thread_pool
 	new_node.template_path = _loaded_template_path
-	
+
 	if data.has("offset"):
 		new_node.offset = data["offset"]
 	else:
@@ -207,13 +207,13 @@ func create_node(type: String, data := {}, notify := true) -> ProtonNode:
 		new_node.restore_editor_data(data["editor"])
 	if data.has("data"):
 		new_node.restore_custom_data(data["data"])
-	
+
 	new_node.regenerate_default_ui()
-	
+
 	if notify:
 		emit_signal("graph_changed")
 		emit_signal("build_outdated")
-	
+
 	_on_node_created(new_node)
 	return new_node
 
@@ -241,7 +241,7 @@ func update_exposed_variables() -> void:
 				exposed_variables.push_back(v)
 				v.name = v.name.to_lower()
 				v.section = v.section.to_lower()
-				
+
 				if _property_nodes.has(v.name):
 					_property_nodes[v.name].push_back(c)
 				else:
@@ -336,7 +336,7 @@ func clear_simulation_cache() -> void:
 func generate(force_full_rebuild := false) -> void:
 	if paused:
 		return
-	
+
 	_timer.start(Settings.get_setting(Settings.GENERATION_DELAY) / 1000.0)
 	_clear_cache_on_next_run = _clear_cache_on_next_run or force_full_rebuild
 	emit_signal("build_started")
@@ -443,7 +443,7 @@ func _on_node_created(node) -> void:
 	if node.is_final_output_node():
 		if not _output_nodes.has(node):
 			_output_nodes.push_back(node)
-	
+
 	if node.is_remote_sync_node():
 		if not _sync_nodes.has(node):
 			_sync_nodes.push_back(node)
@@ -452,7 +452,7 @@ func _on_node_created(node) -> void:
 func _on_node_deleted(node) -> void:
 	if node.is_final_output_node():
 		_output_nodes.erase(node)
-	
+
 	if node.is_remote_sync_node():
 		_sync_nodes.erase(node)
 
@@ -466,11 +466,11 @@ func _on_node_changed(_node := null, rebuild := false) -> void:
 	# Prevent regeneration hell while loading the template from file
 	if not _template_loaded:
 		return
-	
+
 	emit_signal("graph_changed")
 	if rebuild:
 		emit_signal("build_outdated")
-	
+
 	update()
 
 

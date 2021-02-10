@@ -55,6 +55,5 @@ and hear about every little update or work in progress. Head over to Youtube or 
 ## Licence
 + Unless stated otherwise, this project is available under the MIT licence.
 + Thirdparties library have their own licence but are all MIT friendly.
-+ Almost every svg icons used comes from the GodotEngine editor and are distributed under the CC-BY 4.0 licence.
 + [The unofficial Godot logo redesign](https://marek95.github.io/godot.html)
 featured on the splash screen is from marek95 and is used with permission.

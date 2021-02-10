@@ -19,7 +19,7 @@ func get_peers() -> Dictionary:
 func _set_inspector_values(tpl: Template, values: Array) -> void:
 	if not values:
 		return
-	
+
 	if not tpl.inspector:
 		var remote_inspector = RemoteInspector.new()
 		tpl.inspector = remote_inspector
@@ -31,8 +31,6 @@ func _set_inputs(tpl: Template, inputs: Array) -> void:
 	if not inputs:
 		return
 	for input in inputs:
-		print("input name ", input.name)
-		print("input ", input)
 		tpl.set_remote_input(input.name, input)
 
 
@@ -45,13 +43,13 @@ func _on_build_requested(id: int, path: String, args: Dictionary) -> void:
 		add_child(tpl)
 		_peers[id] = {}
 		_peers[id]["template"] = tpl
-	
+
 	if tpl._loaded_template_path != path:
 		tpl.load_from_file(path)
-	
+
 	if not tpl._template_loaded:
 		return
-	
+
 	_set_inspector_values(tpl, args["inspector"])
 	_set_inputs(tpl, args["inputs"])
 

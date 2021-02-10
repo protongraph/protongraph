@@ -38,7 +38,7 @@ func _init() -> void:
 
 	_minimap.graph_edit = self
 	call_deferred("add_child", _minimap)
-	
+
 	var scale = EditorUtil.get_editor_scale()
 	snap_distance *= scale
 	add_constant_override("port_grab_distance_vertical", 16 * scale)
@@ -130,7 +130,7 @@ func restore_connections_for(node: ProtonNodeUi, connections: Array) -> void:
 		var to = get_node(c["to"])
 		if not from or not to:
 			continue
-		
+
 		var from_port = from.get_output_index_pos(c["from_port"])
 		var to_port = to.get_input_index_pos(c["to_port"])
 		if from_port != -1 and to_port != -1:
@@ -147,7 +147,7 @@ func get_selected_nodes() -> Array:
 	return nodes
 
 
-# Returns an array of GraphNodes connected to the left of the given slot, 
+# Returns an array of GraphNodes connected to the left of the given slot,
 # including the slot index the connection originates from
 func get_left_nodes(node: GraphNode, slot: int) -> Array:
 	var result = []
@@ -197,25 +197,24 @@ func is_node_connected_to_input(node: GraphNode, idx: int) -> bool:
 	return false
 
 
-# TMP hack because GraphEdit just love getting in my way. Update() alone won't 
-# redraw the connections and there's nothing exposed to do that so we force a
-# full redraw by moving the view just enough to invalidate the previous view
-# render but not enough to actually move the view
+# TMP hack because calling update alone doesn't update the connections which
+# are in another layer.
 func force_redraw() -> void:
-	scroll_offset.x += 0.001
+	$CLAYER.update()
+	update()
 
 
 # Same format as get_connection_list() but returns the slot id (defined by
 # set_input and set_output) instead of the slot position.
 func get_custom_connection_list() -> Array:
 	var res := get_connection_list()
-	
+
 	for c in res:
 		var node_from = get_node(c["from"])
 		var node_to = get_node(c["to"])
 		c["from_port"] = node_from.get_output_index_at(c["from_port"])
 		c["to_port"] = node_to.get_input_index_at(c["to_port"])
-	
+
 	return res
 
 
@@ -243,7 +242,7 @@ func _on_connection_request(from_node: String, from_slot: int, to_node: String, 
 	var err = connect_node(from_node, from_slot, to_node, to_slot)
 	if err != OK:
 		print("Error ", err, " - Could not connect node ", from_node, ":", from_slot, " to ", to_node, ":", to_slot)
-	
+
 	emit_signal("graph_changed")
 	emit_signal("connections_updated")
 	get_node(to_node).emit_signal("connection_changed")

@@ -13,15 +13,15 @@ func create(label_name: String, type: int, opts := {}) -> void:
 
 	_col = VBoxContainer.new()
 	add_child(_col)
-	
+
 	_label_box = HBoxContainer.new()
 	_label_box.add_child(icon_container)
 	_label_box.add_child(label)
 
 	_col.add_child(_label_box)
-	
+
 	var inline = Settings.get_setting(Settings.INLINE_VECTOR_FIELDS)
-	
+
 	if inline:
 		_vector_box = HBoxContainer.new()
 	else:
@@ -36,11 +36,11 @@ func create(label_name: String, type: int, opts := {}) -> void:
 	if type == DataType.VECTOR3:
 		item_indexes.push_back("z")
 		_count = 3
-		
+
 
 	for i in item_indexes.size():
 		var s: CustomSpinBox
-		
+
 		# Check if there's per attribute option when creating the spinboxes
 		var vector_index = item_indexes[i]
 		if opts.has(vector_index):

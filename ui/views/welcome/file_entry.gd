@@ -13,8 +13,7 @@ func _ready():
 	# Workaround because button isn't a container so it doesn't scale to fit
 	# its children automatically.
 	rect_min_size.y = _margin_container.rect_size.y
-	
-	Signals.safe_connect(_close_button, "mouse_entered", self, "_on_mouse_entered")
+
 	Signals.safe_connect(self, "mouse_entered", self, "_on_mouse_entered")
 	Signals.safe_connect(self, "mouse_exited", self, "_on_mouse_exited")
 	Signals.safe_connect(self, "pressed", self, "_on_pressed")
@@ -30,7 +29,7 @@ func set_path(path: String) -> void:
 func _shorten_path(path: String) -> String:
 	if path.length() < 80:
 		return path
-	
+
 	var tokens = path.split("/", false)
 	var total_size = path.length()
 

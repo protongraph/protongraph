@@ -274,6 +274,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/remote/components/peer_item.gd"
 }, {
+"base": "MeshInstance",
+"class": "PlaceholderMesh",
+"language": "GDScript",
+"path": "res://common/custom_types/placeholders/placeholder_mesh.gd"
+}, {
 "base": "VBoxContainer",
 "class": "Preview2D",
 "language": "GDScript",
@@ -333,6 +338,11 @@ _global_script_classes=[ {
 "class": "StringComponent",
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/components/string.gd"
+}, {
+"base": "Reference",
+"class": "StringUtil",
+"language": "GDScript",
+"path": "res://common/static/string_util.gd"
 }, {
 "base": "CustomGraphEdit",
 "class": "Template",
@@ -453,6 +463,7 @@ _global_script_class_icons={
 "Paragraph": "",
 "PathUtil": "",
 "PeerItem": "",
+"PlaceholderMesh": "",
 "Preview2D": "",
 "ProtonGraphCurve": "",
 "ProtonGraphSettings": "",
@@ -465,6 +476,7 @@ _global_script_class_icons={
 "SignalManager": "",
 "Signals": "",
 "StringComponent": "",
+"StringUtil": "",
 "Template": "",
 "ThreadPool": "",
 "Turtle": "",
@@ -511,6 +523,7 @@ GlobalEventBus="*res://common/autoloads/event_bus.gd"
 GlobalUndoRedo="*res://common/autoloads/undo_redo.gd"
 Protocol="*res://common/autoloads/protocol.gd"
 TextureUtil="*res://common/autoloads/texture_util.gd"
+MeshUtil="*res://common/autoloads/mesh_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
 FileHistory="*res://common/autoloads/file_history.gd"
 RenderTargetsPool="*res://common/autoloads/render_target_pool.gd"

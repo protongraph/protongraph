@@ -14,14 +14,14 @@ func _start_server() -> void:
 		_server = IPCServer.new()
 		add_child(_server)
 		Signals.safe_connect(_server, "data_received", self, "_on_data_received")
-		
+
 	_server.start()
 
 
 func _on_data_received(id: int , data: Dictionary) -> void:
 	if not data.has("command"):
 		return
-	
+
 	match data["command"]:
 		"build":
 			_on_remote_build_requested(id, data)
@@ -50,5 +50,5 @@ func _on_remote_build_completed(id, data: Array) -> void:
 	for output in data:
 		for node in output:
 			msg["data"].push_back(NodeSerializer.serialize(node))
-	
+
 	_server.send(id, msg)

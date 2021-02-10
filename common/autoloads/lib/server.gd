@@ -43,19 +43,19 @@ func stop() -> void:
 
 
 # By default, Godot limits the packet size to 64kb. We can't ask the users to
-# manually raise that limit in their project settings so we split the packet 
+# manually raise that limit in their project settings so we split the packet
 # in smaller chunks to make sure it's always under 64kb. Format is as follow:
 # {0: stream_id, 1: chunk_id, 2: total_chunk_count, 2: chunk_data}
 func send(client_id: int, data: Dictionary) -> void:
 	var id: int = randi()
 	var msg: String = JSON.print(data)
-	
+
 	# Calculate how many chunks will be sent, leave some margin for the extra
 	# caracters overhead (brackets, comas, digits used for the chunk id and
 	# total count and so on) this probably won't take more than 200 chars.
 	var chunk_size: int = (64 * 1024) - 200
 	var total_chunks: int = msg.length() / chunk_size + 1
-	
+
 	for chunk_id in total_chunks:
 		var chunk = msg.substr(chunk_id * chunk_size, chunk_size)
 		var packet = {
@@ -76,7 +76,7 @@ func _get_possible_ports() -> Array:
 	var port_from_cmd = CommandLine.get_arg("port")
 	if port_from_cmd:
 		return [port_from_cmd] # Port from the command line has priority
-	
+
 	return [434743, 636763] # Return the default ports
 
 
@@ -93,22 +93,22 @@ func _on_client_disconnected(id: int, clean_close := false) -> void:
 func _on_data_received(client_id: int) -> void:
 	var packet: PoolByteArray = _ws.get_peer(client_id).get_packet()
 	var string = packet.get_string_from_utf8()
-	
+
 	var json = JSON.parse(string)
 	if json.error != OK:
 		print("Data was not a valid json object")
 		print("error ", json.error, " ", json.error_string, " at ", json.error_line)
 		return
-	
+
 	var data = DictUtil.fix_types(json.result)
 	var id = int(data[0])
 	var chunk_id = int(data[1])
 	var total_chunks = int(data[2])
 	var chunk = data[3]
-	
+
 	if not id in _incoming:
 		_incoming[id] = {}
-	
+
 	_incoming[id][chunk_id] = chunk
 	if _incoming[id].size() == total_chunks:
 		_decode(id, client_id)
@@ -117,17 +117,17 @@ func _on_data_received(client_id: int) -> void:
 func _decode(id: int, client_id: int) -> void:
 	var keys: Array = _incoming[id].keys()
 	keys.sort()
-	
+
 	var string = ""
 	for chunk_id in keys:
 		string += _incoming[id][chunk_id]
-	
+
 	var json = JSON.parse(string)
 	if json.error != OK:
 		print("Data was not a valid json object")
 		print("error ", json.error, " ", json.error_string, " at ", json.error_line)
 		return
-	
+
 	var data = DictUtil.fix_types(json.result)
 	emit_signal("data_received", client_id, data)
 

@@ -1,4 +1,3 @@
-tool
 extends ProtonNode
 
 
@@ -6,14 +5,14 @@ func _init() -> void:
 	unique_id = "make_multimesh"
 	display_name = "Create MultiMesh"
 	category = "Generators/Meshes"
-	description = "Makes a MultiMeshInstance from a single mesh or MultimeshInstance and a list of transforms"
+	description = "Create a MultiMeshInstance from a mesh and a list of transforms."
 
 	set_input(0, "Source", DataType.NODE_3D)
 	set_input(1, "Transforms", DataType.NODE_3D)
 	set_output(0, "Multimesh", DataType.NODE_3D)
 
 
-func _retrive_multimesh_transforms(multimesh: MultiMeshInstance) -> Array:
+func _retrieve_multimesh_transforms(multimesh: MultiMeshInstance) -> Array:
 	var count = multimesh.multimesh.instance_count
 	var tranforms = []
 	for i in count:
@@ -24,7 +23,7 @@ func _retrive_multimesh_transforms(multimesh: MultiMeshInstance) -> Array:
 
 func _combine_transforms(src_multimesh, transforms) -> Array:
 	var combined_tranforms = []
-	var src_tranforms = _retrive_multimesh_transforms(src_multimesh)
+	var src_tranforms = _retrieve_multimesh_transforms(src_multimesh)
 	var src_count = src_tranforms.size()
 	var count = transforms.size()
 
@@ -48,7 +47,7 @@ func _generate_outputs() -> void:
 		transforms = _combine_transforms(source, transforms)
 		mm = _setup_multi_mesh_from_multimesh(source)
 	else:
-		var mesh = _get_mesh_from_node(source)
+		var mesh = MeshUtil.find_in_tree(source)
 		if not mesh:
 			return
 		mm = _setup_multi_mesh_from_mesh(mesh)
@@ -88,19 +87,3 @@ func _setup_multi_mesh_from_mesh(mesh_instance) -> MultiMeshInstance:
 	mm.multimesh.mesh = mesh_instance.mesh
 	mm.multimesh.transform_format = 1
 	return mm
-
-
-func _get_mesh_from_node(node) -> MeshInstance:
-	if node is MeshInstance:
-		return node
-	if node is CSGShape and node.is_root_shape():
-		add_child(node)	# update_shape doesn't work on node not in the tree
-		node._update_shape()
-		var mesh_instance = MeshInstance.new()
-		mesh_instance.mesh = node.get_meshes()[1]
-		remove_child(node)
-		return mesh_instance
-
-	for c in node.get_children():
-		return _get_mesh_from_node(c)
-	return null

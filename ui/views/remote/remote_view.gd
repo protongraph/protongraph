@@ -24,7 +24,7 @@ func rebuild_ui() -> void:
 	if _peers.empty():
 		_info.visible = true
 		return
-	
+
 	for id in _peers:
 		_create_item(id)
 
@@ -38,7 +38,7 @@ func _create_item(id: int) -> void:
 
 func _on_peer_connected(id: int) -> void:
 	_peers[id] = {
-		"build": false 
+		"build": false
 	}
 	_create_item(id)
 	_info.visible = false
@@ -47,10 +47,10 @@ func _on_peer_connected(id: int) -> void:
 func _on_peer_disconnected(id: int) -> void:
 	if not _peers.has(id):
 		return
-	
+
 	if _peers[id].has("ui"):
 		_root.remove_child(_peers[id]["ui"])
-	
+
 	_peers.erase(id)
 
 
