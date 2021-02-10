@@ -11,6 +11,7 @@
 anchor_right = 1.0
 margin_right = 0.00012207
 margin_bottom = 45.0
+focus_mode = 0
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -56,6 +57,7 @@ margin_left = 1334.0
 margin_right = 1358.0
 margin_bottom = 29.0
 hint_tooltip = "Remove from the file history."
+mouse_filter = 1
 icon = ExtResource( 5 )
 flat = true
 

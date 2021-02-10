@@ -160,7 +160,7 @@ func _update_map() -> void:
 		if (child_color):
 			node_data.node_color = child_color
 
-		_graph_nodes.append(node_data)
+		_graph_nodes.push_back(node_data)
 
 	for connection in graph_edit.get_connection_list():
 		var from_child = graph_edit.get_node_or_null(connection.from)
@@ -185,7 +185,7 @@ func _update_map() -> void:
 		if (to_child_color):
 			line_data.to_color = to_child_color
 
-		_graph_lines.append(line_data)
+		_graph_lines.push_back(line_data)
 
 	update()
 

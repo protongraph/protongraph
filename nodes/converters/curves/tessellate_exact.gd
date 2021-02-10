@@ -23,13 +23,13 @@ func _generate_outputs() -> void:
 		return
 
 	for c in curves:	# c is a Path object here
-		var p = ProtonNodeVectorCurve.new()
+		var p = VectorCurve.new()
 		var points = PoolVector3Array()
 		var curve: Curve3D = c.curve
 
 		for i in range(curve.get_point_count()):
-			points.append(curve.get_point_position(i))
+			points.push_back(curve.get_point_position(i))
 
 		p.points = points
 		p.transform = c.transform
-		output[0].append(p)
+		output[0].push_back(p)

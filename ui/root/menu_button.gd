@@ -12,7 +12,7 @@ var _close_icon = TextureUtil.get_texture("res://ui/icons/icon_close.svg")
 
 
 func _ready() -> void:
-	var popup = get_popup()
+	var popup: PopupMenu = get_popup()
 	popup.connect("id_pressed", self, "_on_id_pressed")
 	popup.add_icon_item(_new_icon, "New", 0)
 	popup.add_icon_item(_load_icon, "Load", 1)
@@ -22,6 +22,7 @@ func _ready() -> void:
 	popup.add_icon_item(_save_icon, "Save All", 14)
 	popup.add_separator()
 	popup.add_icon_item(_settings_icon, "Settings", 20)
+	popup.add_icon_item(_settings_icon, "Remote Tasks", 22)
 	popup.add_separator()
 	popup.add_icon_item(_close_icon, "Quit", 30)
 
@@ -43,5 +44,15 @@ func _on_id_pressed(id) -> void:
 			GlobalEventBus.dispatch("save_all_templates")
 		20:
 			GlobalEventBus.dispatch("open_settings")
+		22:
+			GlobalEventBus.dispatch("open_remote_view")
 		30:
 			GlobalEventBus.dispatch("quit")
+
+
+func _on_editor_tab_changed(is_editor_view: bool) -> void:
+	var disabled: bool = not is_editor_view
+	var popup: PopupMenu = get_popup()
+	popup.set_item_disabled(popup.get_item_index(10), disabled)
+	popup.set_item_disabled(popup.get_item_index(12), disabled)
+	popup.set_item_disabled(popup.get_item_index(14), disabled)

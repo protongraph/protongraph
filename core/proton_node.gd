@@ -9,11 +9,13 @@ signal output_ready
 var unique_id: String
 var description: String
 var ignore := false
+var doc := NodeDocumentation.new()
 var node_pool: NodePool # Injected from template
 var thread_pool: ThreadPool # Injected from template
 var output := {}
+var debug_mode := false
 
-
+var _docs: Dictionary
 var _generation_requested := false # True after calling prepare_output once
 var _output_ready := false # True when the background generation was completed
 
@@ -55,7 +57,7 @@ func reset() -> void:
 	if get_parent():
 		for node in get_parent().get_all_right_nodes(self):
 			node.reset()
-	
+
 	if is_final_output_node():
 		emit_signal("node_changed", self, true)
 
@@ -86,7 +88,7 @@ func get_input(idx: int, default = []) -> Array:
 			if node_output is Array:
 				res += node_output
 			else:
-				res.append(node_output)
+				res.push_back(node_output)
 		return res
 
 	# If no source is connected but the node has a custom gui
@@ -120,7 +122,10 @@ func get_input_single(idx: int, default = null):
 # the results are the same and save some performance
 func get_output(idx: int, default := []) -> Array:
 	if not is_output_ready():
-		_generate_outputs()
+		if debug_mode:
+			_debug_generate_outputs()
+		else:
+			_generate_outputs()
 		_output_ready = true
 		emit_signal("output_ready")
 
@@ -154,7 +159,7 @@ func get_output(idx: int, default := []) -> Array:
 			if not is_final_output_node():
 				register_to_garbage_collection(duplicate)
 
-			duplicates.append(duplicate)
+			duplicates.push_back(duplicate)
 		return duplicates
 
 	# If it's not a node array, it either contains built in types or nested arrays.
@@ -175,6 +180,12 @@ func get_exposed_variables() -> Array:
 	return []
 
 
+func get_remote_input(name: String):
+	if get_parent():
+		return get_parent().get_remote_input(name)
+	return null
+
+
 func is_output_ready() -> bool:
 	return _output_ready
 
@@ -187,13 +198,20 @@ func is_final_output_node() -> bool:
 # Override this function to return true if the outputs of the node should be
 # sent to external applications.
 func is_remote_sync_node() -> bool:
-	return true
+	return false
 
 
 # Overide this function in the derived classes to return something usable.
 # Generate all the outputs for every output slots declared.
 func _generate_outputs() -> void:
 	pass
+
+
+func _debug_generate_outputs() -> void:
+	var start_time = OS.get_ticks_msec()
+	_generate_outputs()
+	var gen_time = OS.get_ticks_msec() - start_time
+	print(display_name + ": " + str(gen_time) + "ms")
 
 
 # Overide this function to customize how the output cache should be cleared. If
@@ -213,7 +231,7 @@ func _reset_output():
 			slot.queue_free()
 
 	output = {}
-	for idx in _outputs.keys():
+	for idx in _outputs:
 		output[idx] = []
 
 

@@ -79,6 +79,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://common/static/dict_util.gd"
 }, {
+"base": "VBoxContainer",
+"class": "DocumentationPanel",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/node_sidebar/documentation/documentation_panel.gd"
+}, {
 "base": "PanelContainer",
 "class": "EditorSettingsView",
 "language": "GDScript",
@@ -142,7 +147,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "IPCServer",
 "language": "GDScript",
-"path": "res://common/autoloads/server/server.gd"
+"path": "res://common/autoloads/lib/server.gd"
 }, {
 "base": "ScrollContainer",
 "class": "InspectorPanel",
@@ -159,10 +164,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/root/components/load_save_dialog.gd"
 }, {
+"base": "Reference",
+"class": "NodeDocumentation",
+"language": "GDScript",
+"path": "res://core/lib/node_documentation.gd"
+}, {
 "base": "Node",
 "class": "NodePool",
 "language": "GDScript",
 "path": "res://core/node_pool.gd"
+}, {
+"base": "Node",
+"class": "NodeSerializer",
+"language": "GDScript",
+"path": "res://common/static/serializer.gd"
 }, {
 "base": "Control",
 "class": "NodeSidebar",
@@ -244,10 +259,25 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/root/components/notifications_center.gd"
 }, {
+"base": "MarginContainer",
+"class": "Paragraph",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/node_sidebar/documentation/paragraph.gd"
+}, {
 "base": "Reference",
 "class": "PathUtil",
 "language": "GDScript",
 "path": "res://common/static/path_util.gd"
+}, {
+"base": "PanelContainer",
+"class": "PeerItem",
+"language": "GDScript",
+"path": "res://ui/views/remote/components/peer_item.gd"
+}, {
+"base": "MeshInstance",
+"class": "PlaceholderMesh",
+"language": "GDScript",
+"path": "res://common/custom_types/placeholders/placeholder_mesh.gd"
 }, {
 "base": "VBoxContainer",
 "class": "Preview2D",
@@ -274,15 +304,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/concept_node_ui.gd"
 }, {
-"base": "Spatial",
-"class": "ProtonNodeVectorCurve",
+"base": "Reference",
+"class": "RemoteInspector",
 "language": "GDScript",
-"path": "res://common/custom_types/vector_curve_3d.gd"
+"path": "res://common/autoloads/lib/remote_inspector.gd"
 }, {
-"base": "Spatial",
-"class": "ProtonNodeVectorCurve2D",
+"base": "Control",
+"class": "RemoteView",
 "language": "GDScript",
-"path": "res://common/custom_types/vector_curve_2d.gd"
+"path": "res://ui/views/remote/remote_view.gd"
 }, {
 "base": "GenericInputComponent",
 "class": "ScalarComponent",
@@ -309,6 +339,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/components/string.gd"
 }, {
+"base": "Reference",
+"class": "StringUtil",
+"language": "GDScript",
+"path": "res://common/static/string_util.gd"
+}, {
 "base": "CustomGraphEdit",
 "class": "Template",
 "language": "GDScript",
@@ -334,6 +369,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/components/vector.gd"
 }, {
+"base": "Spatial",
+"class": "VectorCurve",
+"language": "GDScript",
+"path": "res://common/custom_types/vector_curve_3d.gd"
+}, {
+"base": "Spatial",
+"class": "VectorCurve2D",
+"language": "GDScript",
+"path": "res://common/custom_types/vector_curve_2d.gd"
+}, {
 "base": "Reference",
 "class": "VectorUtil",
 "language": "GDScript",
@@ -353,6 +398,11 @@ _global_script_classes=[ {
 "class": "WATTest",
 "language": "GDScript",
 "path": "res://addons/WAT/core/test/test.gd"
+}, {
+"base": "Control",
+"class": "Warning",
+"language": "GDScript",
+"path": "res://ui/views/editor/components/node_sidebar/documentation/warning.gd"
 }, {
 "base": "PanelContainer",
 "class": "WelcomeView",
@@ -374,6 +424,7 @@ _global_script_class_icons={
 "DataType": "",
 "DialogManager": "",
 "DictUtil": "",
+"DocumentationPanel": "",
 "EditorSettingsView": "",
 "EditorUtil": "",
 "EditorView": "",
@@ -390,7 +441,9 @@ _global_script_class_icons={
 "InspectorPanel": "",
 "JSONBeautifier": "",
 "LoadSaveDialog": "",
+"NodeDocumentation": "",
 "NodePool": "",
+"NodeSerializer": "",
 "NodeSidebar": "",
 "NodeUtil": "",
 "Noise": "",
@@ -407,28 +460,35 @@ _global_script_class_icons={
 "NoiseSubstract": "",
 "Notification": "",
 "NotificationsCenter": "",
+"Paragraph": "",
 "PathUtil": "",
+"PeerItem": "",
+"PlaceholderMesh": "",
 "Preview2D": "",
 "ProtonGraphCurve": "",
 "ProtonGraphSettings": "",
 "ProtonNode": "",
 "ProtonNodeUi": "",
-"ProtonNodeVectorCurve": "",
-"ProtonNodeVectorCurve2D": "",
+"RemoteInspector": "",
+"RemoteView": "",
 "ScalarComponent": "",
 "SidebarProperty": "",
 "SignalManager": "",
 "Signals": "",
 "StringComponent": "",
+"StringUtil": "",
 "Template": "",
 "ThreadPool": "",
 "Turtle": "",
 "UserInterfaceRoot": "",
 "VectorComponent": "",
+"VectorCurve": "",
+"VectorCurve2D": "",
 "VectorUtil": "",
 "ViewContainer": "",
 "WAT": "",
 "WATTest": "",
+"Warning": "",
 "WelcomeView": ""
 }
 
@@ -451,7 +511,7 @@ run/main_scene="res://ui/root/root.tscn"
 boot_splash/image="res://ui/themes/splash.png"
 boot_splash/fullsize=false
 boot_splash/bg_color=Color( 0.1672, 0.17632, 0.19, 1 )
-config/icon="res://ui/icons/icon_concept_graph_shield.svg"
+config/icon="res://ui/icons/icon_proton_graph.svg"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
 
@@ -461,10 +521,13 @@ CommandLine="*res://common/autoloads/command_line_util.gd"
 Settings="*res://common/autoloads/project_settings.gd"
 GlobalEventBus="*res://common/autoloads/event_bus.gd"
 GlobalUndoRedo="*res://common/autoloads/undo_redo.gd"
-Protocol="*res://common/autoloads/server/protocol.gd"
+Protocol="*res://common/autoloads/protocol.gd"
 TextureUtil="*res://common/autoloads/texture_util.gd"
+MeshUtil="*res://common/autoloads/mesh_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
 FileHistory="*res://common/autoloads/file_history.gd"
+RenderTargetsPool="*res://common/autoloads/render_target_pool.gd"
+RemoteManager="*res://common/autoloads/remote_manager.gd"
 
 [debug]
 
@@ -480,11 +543,12 @@ window/size/height=768
 
 [editor_plugins]
 
-enabled=PoolStringArray( "WAT" )
+enabled=PoolStringArray( "WAT", "monitor_overlay" )
 
 [gui]
 
 theme/use_hidpi=true
+timers/tooltip_delay_sec=0.1
 
 [importer_defaults]
 
@@ -549,6 +613,11 @@ editor_toggle_sidebar={
 editor_toggle_viewport={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":86,"unicode":0,"echo":false,"script":null)
+ ]
+}
+editor_toggle_graphedit={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":71,"unicode":0,"echo":false,"script":null)
  ]
 }
 

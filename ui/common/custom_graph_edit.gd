@@ -38,7 +38,7 @@ func _init() -> void:
 
 	_minimap.graph_edit = self
 	call_deferred("add_child", _minimap)
-	
+
 	var scale = EditorUtil.get_editor_scale()
 	snap_distance *= scale
 	add_constant_override("port_grab_distance_vertical", 16 * scale)
@@ -62,7 +62,7 @@ func delete_node(node) -> void:
 	disconnect_active_connections(node)
 	remove_child(node)
 	emit_signal("graph_changed")
-	emit_signal("simulation_outdated")
+	emit_signal("build_outdated")
 	update() # Force the GraphEdit to redraw to hide the old connections to the deleted node
 	emit_signal("node_deleted", node)
 
@@ -71,7 +71,7 @@ func restore_node(node) -> void:
 	connect_node_signals(node)
 	add_child(node, true)
 	emit_signal("graph_changed")
-	emit_signal("simulation_outdated")
+	emit_signal("build_outdated")
 	emit_signal("node_created", node)
 
 
@@ -120,7 +120,7 @@ func backup_connections_for(node: ProtonNodeUi) -> Array:
 	var res = []
 	for c in get_custom_connection_list():
 		if c["from"] == node.name or c["to"] == node.name:
-			res.append(c)
+			res.push_back(c)
 	return res
 
 
@@ -130,7 +130,7 @@ func restore_connections_for(node: ProtonNodeUi, connections: Array) -> void:
 		var to = get_node(c["to"])
 		if not from or not to:
 			continue
-		
+
 		var from_port = from.get_output_index_pos(c["from_port"])
 		var to_port = to.get_input_index_pos(c["to_port"])
 		if from_port != -1 and to_port != -1:
@@ -143,11 +143,11 @@ func get_selected_nodes() -> Array:
 	var nodes = []
 	for c in get_children():
 		if c is GraphNode and c.selected:
-			nodes.append(c)
+			nodes.push_back(c)
 	return nodes
 
 
-# Returns an array of GraphNodes connected to the left of the given slot, 
+# Returns an array of GraphNodes connected to the left of the given slot,
 # including the slot index the connection originates from
 func get_left_nodes(node: GraphNode, slot: int) -> Array:
 	var result = []
@@ -157,7 +157,7 @@ func get_left_nodes(node: GraphNode, slot: int) -> Array:
 				"node": get_node(c["from"]),
 				"slot": c["from_port"]
 			}
-			result.append(data)
+			result.push_back(data)
 	return result
 
 
@@ -166,7 +166,7 @@ func get_right_nodes(node: GraphNode, slot: int) -> Array:
 	var result = []
 	for c in get_connection_list():
 		if c["from"] == node.get_name() and c["from_port"] == slot:
-			result.append(get_node(c["to"]))
+			result.push_back(get_node(c["to"]))
 	return result
 
 
@@ -175,7 +175,7 @@ func get_all_left_nodes(node) -> Array:
 	var result = []
 	for c in get_connection_list():
 		if c["to"] == node.get_name():
-			result.append(get_node(c["from"]))
+			result.push_back(get_node(c["from"]))
 	return result
 
 
@@ -184,7 +184,7 @@ func get_all_right_nodes(node) -> Array:
 	var result = []
 	for c in get_connection_list():
 		if c["from"] == node.get_name():
-			result.append(get_node(c["to"]))
+			result.push_back(get_node(c["to"]))
 	return result
 
 
@@ -197,25 +197,24 @@ func is_node_connected_to_input(node: GraphNode, idx: int) -> bool:
 	return false
 
 
-# TMP hack because GraphEdit just love getting in my way. Update() alone won't 
-# redraw the connections and there's nothing exposed to do that so we force a
-# full redraw by moving the view just enough to invalidate the previous view
-# render but not enough to actually move the view
+# TMP hack because calling update alone doesn't update the connections which
+# are in another layer.
 func force_redraw() -> void:
-	scroll_offset.x += 0.001
+	$CLAYER.update()
+	update()
 
 
 # Same format as get_connection_list() but returns the slot id (defined by
 # set_input and set_output) instead of the slot position.
 func get_custom_connection_list() -> Array:
 	var res := get_connection_list()
-	
+
 	for c in res:
 		var node_from = get_node(c["from"])
 		var node_to = get_node(c["to"])
 		c["from_port"] = node_from.get_output_index_at(c["from_port"])
 		c["to_port"] = node_to.get_input_index_at(c["to_port"])
-	
+
 	return res
 
 
@@ -243,7 +242,7 @@ func _on_connection_request(from_node: String, from_slot: int, to_node: String, 
 	var err = connect_node(from_node, from_slot, to_node, to_slot)
 	if err != OK:
 		print("Error ", err, " - Could not connect node ", from_node, ":", from_slot, " to ", to_node, ":", to_slot)
-	
+
 	emit_signal("graph_changed")
 	emit_signal("connections_updated")
 	get_node(to_node).emit_signal("connection_changed")
@@ -280,7 +279,7 @@ func _on_copy_nodes_request() -> void:
 		var new_node = duplicate_node(node)
 		new_node.name = node.name	# Needed to retrieve active connections later
 		new_node.offset -= scroll_offset
-		_copy_buffer.append(new_node)
+		_copy_buffer.push_back(new_node)
 		node.selected = false
 
 
@@ -293,7 +292,7 @@ func _on_paste_nodes_request() -> void:
 	undo_redo.create_action("Copy " + String(_copy_buffer.size()) + " GraphNode(s)")
 	for node in _copy_buffer:
 		var new_node = duplicate_node(node)
-		tmp.append(new_node)
+		tmp.push_back(new_node)
 		new_node.selected = true
 		new_node.offset += scroll_offset + Vector2(80, 80)
 		undo_redo.add_do_method(self, "restore_node", new_node)

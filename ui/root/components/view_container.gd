@@ -1,9 +1,11 @@
-extends CustomTabContainer
 class_name ViewContainer
+extends CustomTabContainer
 
 
 signal ready_to_quit
 signal quit_canceled
+signal editor_tab_changed
+
 
 export var dialog_manager: NodePath
 
@@ -17,9 +19,11 @@ func _ready() -> void:
 	GlobalEventBus.register_listener(self, "save_template", "_on_save_template")
 	GlobalEventBus.register_listener(self, "save_template_as", "_on_save_template_as")
 	GlobalEventBus.register_listener(self, "open_settings", "_load_settings_view")
+	GlobalEventBus.register_listener(self, "open_remote_view", "_load_remote_view")
 	
 	_dialog_manager = get_node(dialog_manager)
 	Signals.safe_connect(self, "tabs_cleared", self, "_on_tabs_cleared")
+	Signals.safe_connect(self, "tab_changed", self, "_on_tab_changed")
 	Signals.safe_connect(_dialog_manager, "canceled", self, "_on_close_canceled")
 	Signals.safe_connect(_dialog_manager, "discarded", self, "_on_close_discarded")
 	Signals.safe_connect(_dialog_manager, "confirmed", self, "_on_close_confirmed")
@@ -74,8 +78,15 @@ func _load_settings_view():
 	add_tab(settings_view)
 
 
+func _load_remote_view():
+	if _is_view_opened(RemoteView):
+		return
+	var remote_view = preload("res://ui/views/remote/remote_view.tscn").instance()
+	add_tab(remote_view)
+
+
 func _create_template(path: String) -> void:
-	var default_content : String = '{"editor":{"offset_x":-300, "offset_y":-200},"connections":[],"nodes":[{"data":{},"editor":{"offset_x":0,"offset_y":0,"slots":{}},"name":"GraphNode","type":"final_output"}]}'
+	var default_content : String = '{"editor":{"offset_x":-300, "offset_y":-200},"connections":[],"nodes":[{"data":{},"editor":{"offset_x":0,"offset_y":0,"slots":{}},"name":"GraphNode","type":"viewer_3d"}]}'
 	var template_file = File.new()
 	template_file.open(path, File.WRITE)
 	template_file.store_line(default_content)
@@ -120,6 +131,11 @@ func _on_tabs_cleared() -> void:
 		emit_signal("ready_to_quit")
 	else:
 		_load_start_view()
+
+
+func _on_tab_changed(idx: int) -> void:
+	._on_tab_changed(idx)
+	emit_signal("editor_tab_changed", get_child(idx) is EditorView)
 
 
 func _on_create_template(path = null) -> void:

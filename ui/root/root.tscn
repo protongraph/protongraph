@@ -93,3 +93,4 @@ margin_left = 6.0
 margin_top = 4.0
 margin_right = 1360.0
 margin_bottom = 764.0
+[connection signal="editor_tab_changed" from="VBoxContainer/ViewContainer" to="VBoxContainer/TopBar/MenuButton" method="_on_editor_tab_changed"]

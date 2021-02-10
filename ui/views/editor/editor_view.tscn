@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://core/template.gd" type="Script" id=1]
 [ext_resource path="res://ui/views/editor/components/inspector/inspector.tscn" type="PackedScene" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://ui/icons/icon_sidebar.svg" type="Texture" id=15]
 [ext_resource path="res://ui/icons/icon_inspector.svg" type="Texture" id=16]
 [ext_resource path="res://ui/icons/icon_viewport.svg" type="Texture" id=17]
+[ext_resource path="res://ui/icons/icon_graphedit.svg" type="Texture" id=18]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -51,10 +52,16 @@ action = "editor_toggle_inspector"
 shortcut = SubResource( 10 )
 
 [sub_resource type="InputEventAction" id=12]
-action = "editor_toggle_viewport"
+action = "editor_toggle_graphedit"
 
 [sub_resource type="ShortCut" id=13]
 shortcut = SubResource( 12 )
+
+[sub_resource type="InputEventAction" id=14]
+action = "editor_toggle_viewport"
+
+[sub_resource type="ShortCut" id=15]
+shortcut = SubResource( 14 )
 
 [node name="GraphEditorView" type="PanelContainer"]
 anchor_right = 1.0
@@ -144,14 +151,26 @@ icon = ExtResource( 16 )
 script = ExtResource( 11 )
 target = NodePath("../../HSplitContainer/Inspector")
 
-[node name="ToggleViewport" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
+[node name="ToggleGraphEditor" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
 margin_top = 196.0
 margin_right = 28.0
 margin_bottom = 225.0
+hint_tooltip = "(G)
+Enable or disable the graph editor."
+shortcut_in_tooltip = false
+shortcut = SubResource( 13 )
+icon = ExtResource( 18 )
+script = ExtResource( 11 )
+target = NodePath("../../HSplitContainer/HSplitContainer/HBoxContainer")
+
+[node name="ToggleViewport" parent="VBoxContainer/ToolShelf" instance=ExtResource( 12 )]
+margin_top = 233.0
+margin_right = 28.0
+margin_bottom = 262.0
 hint_tooltip = "(V)
 Enable or disable the 3D viewport."
 shortcut_in_tooltip = false
-shortcut = SubResource( 13 )
+shortcut = SubResource( 15 )
 icon = ExtResource( 17 )
 script = ExtResource( 11 )
 target = NodePath("../../HSplitContainer/HSplitContainer/Control")
@@ -191,13 +210,13 @@ anchor_bottom = 0.0
 margin_bottom = 500.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
 
 [node name="TemplateEditor" type="GraphEdit" parent="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer"]
 margin_right = 1056.0
 margin_bottom = 500.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 20.0
 right_disconnects = true
 scroll_offset = Vector2( -321, -268 )
 script = ExtResource( 1 )
@@ -227,6 +246,10 @@ margin_bottom = 400.0
 [connection signal="pressed" from="VBoxContainer/ToolShelf/AddNodes" to="." method="_show_node_dialog_centered"]
 [connection signal="pressed" from="VBoxContainer/ToolShelf/Save" to="." method="save_template"]
 [connection signal="pressed" from="VBoxContainer/ToolShelf/RunGeneration" to="." method="regenerate"]
+[connection signal="build_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="VBoxContainer/ToolShelf/RunGeneration" method="_on_build_completed"]
+[connection signal="build_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_build_completed"]
+[connection signal="build_outdated" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_build_outdated"]
+[connection signal="build_started" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="VBoxContainer/ToolShelf/RunGeneration" method="_on_build_started"]
 [connection signal="exposed_variables_updated" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_exposed_variables_updated"]
 [connection signal="graph_changed" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_graph_changed"]
 [connection signal="input_created" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_input_created"]
@@ -234,7 +257,5 @@ margin_bottom = 400.0
 [connection signal="node_deleted" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/NodeSidebar" method="_on_node_deleted"]
 [connection signal="node_selected" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/NodeSidebar" method="_on_node_selected"]
 [connection signal="popup_request" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_show_node_dialog"]
-[connection signal="simulation_completed" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_simulation_completed"]
-[connection signal="simulation_outdated" from="VBoxContainer/HSplitContainer/HSplitContainer/HBoxContainer/TemplateEditor" to="." method="_on_simulation_outdated"]
 [connection signal="value_changed" from="VBoxContainer/HSplitContainer/Inspector" to="." method="_on_inspector_value_changed"]
 [connection signal="create_node" from="AddNodeDialog" to="." method="_on_create_node_request"]

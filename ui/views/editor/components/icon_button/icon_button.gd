@@ -25,6 +25,7 @@ func _ready() -> void:
 func update_texture(texture: Texture = null) -> void:
 	if not texture:
 		texture = _button.icon
+	_texture_rect.visible = true
 	_texture_rect.texture = texture
 	_button.icon = null
 

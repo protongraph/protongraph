@@ -40,8 +40,6 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var start_time = OS.get_ticks_msec()
-
 	# Node parameters
 	var heightmap: Heightmap = get_input_single(0)
 	
@@ -60,10 +58,8 @@ func _generate_outputs() -> void:
 	
 	var map_size: Vector2 = heightmap.size
 	var lifetime := (map_size.x / 100) * 25
-	print("lifetime: ", lifetime)
 
 	var area = PI * pow(_brush_diameter / 2.0, 2.0)
-	print("area: ", area)
 
 	for i in iterations:
 		# Create a water droplet
@@ -125,10 +121,7 @@ func _generate_outputs() -> void:
 			water *= (1 - evaporate_speed)
 			pos = new_pos
 
-	output[0].append(heightmap)
-
-	var gen_time = OS.get_ticks_msec() - start_time
-	print("Erosion: " + str(gen_time) + "ms")
+	output[0].push_back(heightmap)
 
 
 """

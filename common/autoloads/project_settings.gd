@@ -87,7 +87,7 @@ func load_config() -> void:
 	# Don't override the whole settings dict at once in case the settings file doesn't contain 
 	# all the settings entries. (Happens when we add new settings)
 	var dict = json.result
-	for key in dict.keys():
+	for key in dict:
 		_settings[key] = dict[key]
 
 	# Fix because of wrong defaults set on the 0.6 release

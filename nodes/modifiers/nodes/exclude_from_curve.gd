@@ -42,7 +42,7 @@ func _generate_outputs() -> void:
 			inside = !inside
 
 		if !inside:
-			output[0].append(node)
+			output[0].push_back(node)
 
 
 

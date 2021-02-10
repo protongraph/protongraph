@@ -5,12 +5,13 @@
 [ext_resource path="res://ui/icons/icon_new.svg" type="Texture" id=3]
 [ext_resource path="res://ui/icons/icon_load.svg" type="Texture" id=4]
 [ext_resource path="res://ui/themes/fonts/fira_sans_bold.tres" type="DynamicFont" id=5]
-[ext_resource path="res://ui/icons/icon_concept_graph_shield.svg" type="Texture" id=6]
+[ext_resource path="res://ui/icons/icon_proton_graph.svg" type="Texture" id=6]
 [ext_resource path="res://ui/common/auto_scale.gd" type="Script" id=7]
+
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
-[sub_resource type="StyleBoxLine" id=3]
+[sub_resource type="StyleBoxLine" id=2]
 color = Color( 1, 1, 1, 0.172549 )
 grow_begin = -150.0
 grow_end = -150.0
@@ -58,9 +59,9 @@ margin_bottom = 312.0
 alignment = 2
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/Introduction/VBoxContainer/HBoxContainer"]
-margin_left = 116.0
+margin_left = 147.0
 margin_top = 2.0
-margin_right = 156.0
+margin_right = 187.0
 margin_bottom = 42.0
 rect_min_size = Vector2( 40, 40 )
 size_flags_vertical = 4
@@ -71,11 +72,11 @@ min_size_x = true
 min_size_y = true
 
 [node name="Title" type="Label" parent="HBoxContainer/Introduction/VBoxContainer/HBoxContainer"]
-margin_left = 164.0
+margin_left = 195.0
 margin_right = 407.0
 margin_bottom = 44.0
 custom_fonts/font = ExtResource( 1 )
-text = "Concept Graph"
+text = "ProtonGraph"
 align = 2
 
 [node name="Version" type="Label" parent="HBoxContainer/Introduction/VBoxContainer"]
@@ -131,7 +132,7 @@ expand_icon = true
 margin_left = 455.0
 margin_right = 463.0
 margin_bottom = 768.0
-custom_styles/separator = SubResource( 3 )
+custom_styles/separator = SubResource( 2 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
 margin_left = 471.0

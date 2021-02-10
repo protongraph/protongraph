@@ -17,8 +17,6 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-#	var start_time = OS.get_ticks_msec()
-
 	var map_size: float = get_input_single(0, 64)
 	var mesh_size: float = get_input_single(1, 64)
 	var height_scale: float = get_input_single(2, 16.0)
@@ -33,13 +31,9 @@ func _generate_outputs() -> void:
 	)
 
 	var data = map.data # looping on a local var is faster
-
 	for i in data.size():
 		data[i] = 0.0
 
 	map.data = data
 
-	output[0].append(map)
-
-#	var gen_time = OS.get_ticks_msec() - start_time
-#	print("Heightmap created in " + str(gen_time) + "ms")
+	output[0].push_back(map)

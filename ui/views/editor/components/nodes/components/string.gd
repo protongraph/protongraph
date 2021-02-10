@@ -20,7 +20,7 @@ func create(label_name: String, type: int, opts := {}) -> void:
 		_dropdown.add_stylebox_override("hover", load("res://ui/themes/styles/graphnode_button_hover.tres"))
 		_dropdown.focus_mode = Control.FOCUS_NONE
 		_dropdown.name = "OptionButton"
-		for item in opts["items"].keys():
+		for item in opts["items"]:
 			_dropdown.add_item(item, opts["items"][item])
 
 		Signals.safe_connect(_dropdown, "item_selected", self, "_on_value_changed")
@@ -88,7 +88,7 @@ func _show_file_dialog(opts: Dictionary) -> void:
 	if opts.has("filters"):
 		var filters = PoolStringArray()
 		for filter in opts["filters"]:
-			filters.append(filter)
+			filters.push_back(filter)
 		_file_dialog.set_filters(filters)
 
 	Signals.safe_connect(_file_dialog, "file_selected", self, "_on_file_selected")

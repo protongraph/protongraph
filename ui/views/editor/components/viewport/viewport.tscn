@@ -1,20 +1,17 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://ui/views/editor/components/viewport/default_env.tres" type="Environment" id=1]
-[ext_resource path="res://ui/icons/icon_question_mark.svg" type="Texture" id=2]
-[ext_resource path="res://ui/views/editor/components/icon_button/icon_button.tscn" type="PackedScene" id=3]
-[ext_resource path="res://ui/icons/icon_material_preview_light_2.svg" type="Texture" id=4]
 [ext_resource path="res://ui/views/editor/components/viewport/camera.gd" type="Script" id=5]
 [ext_resource path="res://ui/views/editor/components/viewport/runtime_tree.gd" type="Script" id=6]
 [ext_resource path="res://ui/common/auto_scale.gd" type="Script" id=7]
-[ext_resource path="res://ui/icons/icon_material_preview_light_1.svg" type="Texture" id=8]
 [ext_resource path="res://ui/views/editor/components/viewport/draw_axis.gd" type="Script" id=9]
-[ext_resource path="res://ui/icons/icon_camera.svg" type="Texture" id=10]
 [ext_resource path="res://ui/views/editor/components/viewport/viewport.gd" type="Script" id=11]
 [ext_resource path="res://ui/views/editor/components/viewport/gizmos/move_gizmo.tscn" type="PackedScene" id=12]
 [ext_resource path="res://ui/views/editor/components/viewport/gizmos_manager.gd" type="Script" id=13]
 [ext_resource path="res://ui/views/editor/components/viewport/monitor_local_tree_changes.gd" type="Script" id=14]
 [ext_resource path="res://ui/views/editor/components/viewport/viewport_input.gd" type="Script" id=15]
+[ext_resource path="res://addons/monitor_overlay/monitor_overlay.gd" type="Script" id=16]
+[ext_resource path="res://ui/views/editor/components/viewport/options_button.gd" type="Script" id=17]
 
 [sub_resource type="World" id=1]
 environment = ExtResource( 1 )
@@ -98,7 +95,7 @@ light_specular = 0.0
 [node name="Lighting" type="Spatial" parent="MarginContainer/ViewportContainer/Viewport"]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="MarginContainer/ViewportContainer/Viewport/Lighting"]
-transform = Transform( 0.446463, -0.751037, 0.48643, 0.446463, 0.658088, 0.606293, -0.775463, -0.0535144, 0.629122, 2.00127, 0, -1.33922 )
+transform = Transform( 0.446463, -0.751037, 0.48643, 0.446463, 0.658088, 0.606293, -0.775463, -0.0535142, 0.629122, 2.00127, 0, -1.37944 )
 visible = false
 light_energy = 0.7
 light_specular = 0.0
@@ -141,62 +138,29 @@ margin_bottom = 764.0
 mouse_filter = 2
 
 [node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/ViewportUI/HBoxContainer"]
-margin_right = 948.0
+margin_right = 873.0
 margin_bottom = 760.0
 mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/separation = 6
 
 [node name="DisplayOptions" type="HBoxContainer" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn"]
-margin_right = 143.0
-margin_bottom = 29.0
+margin_right = 24.0
+margin_bottom = 37.0
 rect_min_size = Vector2( 0, 28 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 script = ExtResource( 7 )
 min_size_y = true
 
-[node name="Legend" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
-self_modulate = Color( 1, 1, 1, 0.627451 )
+[node name="Options" type="MenuButton" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions"]
+self_modulate = Color( 1, 1, 1, 0.705882 )
 margin_right = 24.0
-margin_bottom = 29.0
-hint_tooltip = "Display help."
-toggle_mode = true
-icon = ExtResource( 2 )
+margin_bottom = 37.0
+flat = false
+script = ExtResource( 17 )
 
-[node name="ResetCamera" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
-self_modulate = Color( 1, 1, 1, 0.627451 )
-margin_left = 32.0
-margin_right = 56.0
-margin_bottom = 29.0
-hint_tooltip = "Reset camera's position and orientation."
-icon = ExtResource( 10 )
-
-[node name="VSeparator2" type="VSeparator" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions"]
-margin_left = 64.0
-margin_right = 79.0
-margin_bottom = 29.0
-custom_constants/separation = 15
-
-[node name="LightSetup1" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
-self_modulate = Color( 1, 1, 1, 0.627451 )
-margin_left = 87.0
-margin_right = 111.0
-margin_bottom = 29.0
-hint_tooltip = "Use dynamic lighting.
-The light will follow the camera, making the scene always lit no matter the viewing angle."
-icon = ExtResource( 8 )
-
-[node name="LightSetup2" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions" instance=ExtResource( 3 )]
-self_modulate = Color( 1, 1, 1, 0.627451 )
-margin_left = 119.0
-margin_right = 143.0
-margin_bottom = 29.0
-hint_tooltip = "Use static lighting.
-The light remains in a fixed spot allowing you to see the shaded parts of the scene."
-icon = ExtResource( 4 )
-
-[node name="Legend" type="PanelContainer" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn"]
+[node name="HelpPanel" type="PanelContainer" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn"]
 visible = false
 margin_top = 35.0
 margin_right = 268.0
@@ -204,7 +168,7 @@ margin_bottom = 134.0
 size_flags_horizontal = 0
 custom_styles/panel = SubResource( 2 )
 
-[node name="Label" type="Label" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/Legend"]
+[node name="Label" type="Label" parent="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/HelpPanel"]
 margin_left = 6.0
 margin_top = 6.0
 margin_right = 262.0
@@ -215,16 +179,31 @@ Shift + Middle Click: Pan
 Scroll Up / Down: Zoom"
 
 [node name="RightColumn" type="VBoxContainer" parent="MarginContainer/ViewportUI/HBoxContainer"]
-margin_left = 956.0
+margin_left = 881.0
 margin_right = 956.0
 margin_bottom = 760.0
+mouse_filter = 2
 alignment = 2
+
+[node name="MonitorOverlay" type="VBoxContainer" parent="MarginContainer/ViewportUI/HBoxContainer/RightColumn"]
+margin_right = 75.0
+margin_bottom = 760.0
+rect_min_size = Vector2( 75, 0 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 16 )
+plot_graphs = false
+history = 25
+graph_height = 25
+fps = false
+[connection signal="scene_updated" from="." to="Tree" method="_update_tree"]
 [connection signal="node_selected" from="Tree" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_selected"]
 [connection signal="node_added" from="MarginContainer/ViewportContainer/Viewport/Input" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_added"]
 [connection signal="node_removed" from="MarginContainer/ViewportContainer/Viewport/Input" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_removed"]
 [connection signal="node_added" from="MarginContainer/ViewportContainer/Viewport/Output" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_added"]
 [connection signal="node_removed" from="MarginContainer/ViewportContainer/Viewport/Output" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_removed"]
-[connection signal="toggled" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/Legend" to="." method="display_legend"]
-[connection signal="pressed" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/ResetCamera" to="MarginContainer/ViewportContainer/Viewport/Pivot" method="reset_camera"]
-[connection signal="pressed" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/LightSetup1" to="." method="enable_camera_light"]
-[connection signal="pressed" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/LightSetup2" to="." method="enable_static_light"]
+[connection signal="reset_camera" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/Options" to="MarginContainer/ViewportContainer/Viewport/Pivot" method="reset_camera"]
+[connection signal="show_fps" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/Options" to="." method="_on_show_fps"]
+[connection signal="show_keymap" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/Options" to="." method="_on_show_help_panel"]
+[connection signal="use_static_light" from="MarginContainer/ViewportUI/HBoxContainer/LeftColumn/DisplayOptions/Options" to="." method="_on_use_static_light"]

@@ -41,11 +41,6 @@ If you want to build the project from source yourself, you will need a custom ve
 Follow the instructions on this repository: https://github.com/proton-graph/environment
 
 
-## Build from source
-
-If the pre-built binaries doesn't work on your system, you can export the project by following the instructions on this repository: https://github.com/HungryProton/concept_graph_environment
-
-
 ## Social medias
 
 Despite being a very new project, the ConceptGraph community is growing. Head over to the Discord server if you want to ask for help
@@ -60,4 +55,5 @@ and hear about every little update or work in progress. Head over to Youtube or 
 ## Licence
 + Unless stated otherwise, this project is available under the MIT licence.
 + Thirdparties library have their own licence but are all MIT friendly.
-+ Almost every svg icons used comes from the GodotEngine editor and are distributed under the CC-BY 4.0 licence.
++ [The unofficial Godot logo redesign](https://marek95.github.io/godot.html)
+featured on the splash screen is from marek95 and is used with permission.

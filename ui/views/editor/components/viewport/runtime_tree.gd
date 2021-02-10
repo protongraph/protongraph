@@ -15,7 +15,7 @@ func _ready() -> void:
 	_input = get_node(input)
 	_output = get_node(output)
 	_update_tree()
-	connect("item_selected", self, "_on_item_selected")
+	Signals.safe_connect(self, "item_selected", self, "_on_item_selected")
 
 
 func _update_tree() -> void:

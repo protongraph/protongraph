@@ -3,60 +3,52 @@ class_name DataType
 
 # Define the constants used when setting up the GraphNodes slots type. Each of 
 # these values should have an associated color in the COLORS dictionnary.
-
-
-# NEVER CHANGE THE TYPES ORDER or it will break save files
-# TODO : Find a way to fix that because there's obsolete types in there
 enum Types {
-	ANY,
-	BOOLEAN,
-	SCALAR,
-	STRING,
-	MATERIAL,
-	NOISE,
-	HEIGHTMAP,
-	CURVE_FUNC,
-	NODE_2D,
-	BOX_2D,	# Obsolete
-	MESH_2D, # Obsolete
-	CURVE_2D, # Obsolete
-	VECTOR_CURVE_2D, # Obsolete
-	NODE_3D,
-	BOX_3D, # Will become "MASK" later
-	MESH_3D,
-	CURVE_3D,
-	VECTOR_CURVE_3D,
-	VECTOR2,
-	VECTOR3,
-	TEXTURE_2D,
+	ANY = 0,
+	BOOLEAN = 10,
+	SCALAR = 11,
+	STRING = 12,
+	VECTOR2 = 13,
+	VECTOR3 = 14,
+	
+	NODE_2D = 20,
+	TEXTURE_2D = 21,
+	CURVE_FUNC = 22,
+	MATERIAL = 23,
+
+	NODE_3D = 30,
+	MASK_3D = 31,
+	MESH_3D = 32,
+	CURVE_3D = 33,
+	VECTOR_CURVE_3D = 34,
+	
+	NOISE = 40,
+	HEIGHTMAP = 41,
 }
 
 
-# Shorthand so we don't have to type DataType.Types.ANY and skip the Types part
+# Shorthand so we don't have to type "DataType.Types.something" everytime
 const ANY = Types.ANY
 const BOOLEAN = Types.BOOLEAN
 const SCALAR = Types.SCALAR
 const STRING = Types.STRING
-const MATERIAL = Types.MATERIAL
-const NOISE = Types.NOISE
-const HEIGHTMAP = Types.HEIGHTMAP
+const VECTOR2 = Types.VECTOR2
+const VECTOR3 = Types.VECTOR3
 const CURVE_FUNC = Types.CURVE_FUNC
+const MATERIAL = Types.MATERIAL
 
 const NODE_2D = Types.NODE_2D
-const BOX_2D = Types.BOX_2D
-const MESH_2D = Types.MESH_2D
-const CURVE_2D = Types.CURVE_2D
-const VECTOR_CURVE_2D = Types.VECTOR_CURVE_2D
 const TEXTURE_2D = Types.TEXTURE_2D
 
 const NODE_3D = Types.NODE_3D
-const BOX_3D = Types.BOX_3D
+const MASK_3D = Types.MASK_3D
 const MESH_3D = Types.MESH_3D
 const CURVE_3D = Types.CURVE_3D
 const VECTOR_CURVE_3D = Types.VECTOR_CURVE_3D
 
-const VECTOR2 = Types.VECTOR2
-const VECTOR3 = Types.VECTOR3
+const NOISE = Types.NOISE
+const HEIGHTMAP = Types.HEIGHTMAP
+
 
 # Colors are used for slots, connections between slots and frame color
 const color_base_type = Color("3ac5e6")
@@ -82,14 +74,12 @@ const COLORS = {
 	NODE_3D: Color("e9001e"),
 	CURVE_3D: Color("f6450d"),
 	MESH_3D: Color("fb6f10"),
-	BOX_3D: Color("fc9224"), # TODO rename to MASK
+	MASK_3D: Color("fc9224"),
 	VECTOR_CURVE_3D: Color("fdb136"),
 }
 
 
-"""
-Convert graph node category name to color
-"""
+# Convert graph node category name to color
 static func to_category_color(category: String) -> Color:
 	var tokens := category.split("/")
 	tokens.invert()
@@ -98,8 +88,8 @@ static func to_category_color(category: String) -> Color:
 		type = tokens[1]
 
 	match type:
-		"Boxes":
-			return COLORS[BOX_3D]
+		"Masks":
+			return COLORS[MASK_3D]
 		"Curves":
 			return COLORS[CURVE_3D].darkened(0.25)
 		"Vector Curves":
@@ -138,11 +128,9 @@ static func to_category_color(category: String) -> Color:
 			return Color.black
 
 
-"""
-Allows extra connections between different types
-"""
+# Allows extra connections between different types
 static func setup_valid_connection_types(graph_edit: GraphEdit) -> void:
-	graph_edit.add_valid_connection_type(NODE_3D, BOX_3D)
+	graph_edit.add_valid_connection_type(NODE_3D, MASK_3D)
 	graph_edit.add_valid_connection_type(NODE_3D, MESH_3D)
 	graph_edit.add_valid_connection_type(NODE_3D, CURVE_3D)
 	graph_edit.add_valid_connection_type(NODE_3D, VECTOR_CURVE_3D)
@@ -156,10 +144,9 @@ static func setup_valid_connection_types(graph_edit: GraphEdit) -> void:
 		graph_edit.add_valid_connection_type(ANY, type)
 
 
-"""
-Convert our custom defined data type to built in variant type. We make the separation as we don't
-need all of the variant types, and some of them doesn't exists (like the MATERIAL data type).
-"""
+# Convert our custom defined data type to built in variant type. We make the
+# separation as we don't need all of the variant types, and some of them
+# doesn't exists (like the MATERIAL data type).
 static func to_variant_type(type: int) -> int:
 	match type:
 		SCALAR:
@@ -176,15 +163,13 @@ static func to_variant_type(type: int) -> int:
 			return TYPE_OBJECT
 		MATERIAL:
 			return TYPE_OBJECT
-		BOX_2D:
-			return TYPE_RECT2
-		BOX_3D:
-			return TYPE_AABB
+		MASK_3D:
+			return TYPE_OBJECT
 	return TYPE_NIL
 
 
 static func get_type_name(type: int) -> String:
-	var keys = Types.keys()
-	if not keys.has(type):
-		return keys[type].capitalize()
+	for key in Types.keys():
+		if Types[key] == type:
+			return key.capitalize()
 	return ""

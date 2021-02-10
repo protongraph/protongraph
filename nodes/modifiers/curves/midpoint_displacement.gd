@@ -47,7 +47,7 @@ func _generate_outputs() -> void:
 
 			if path.curve.get_point_count() == initial_count:
 				break	# Nothing happened, min size was reached on every segments
-		output[0].append(path)
+		output[0].push_back(path)
 
 
 func _displace(path: Path, factor: float) -> Path:

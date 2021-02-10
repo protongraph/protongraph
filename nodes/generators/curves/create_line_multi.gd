@@ -41,6 +41,6 @@ func _generate_outputs() -> void:
 		path.curve.add_point(start)
 		path.curve.add_point(end)
 		path.transform = o.transform
-		output[0].append(path)
+		output[0].push_back(path)
 
 

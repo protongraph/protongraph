@@ -14,4 +14,4 @@ func _init() -> void:
 func _generate_outputs() -> void:
 	var heightmap: Heightmap = get_input_single(0, null)
 	if heightmap:
-		output[0].append(heightmap.get_image())
+		output[0].push_back(heightmap.get_image())

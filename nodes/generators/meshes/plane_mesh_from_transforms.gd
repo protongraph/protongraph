@@ -101,12 +101,12 @@ func _generate_outputs() -> void:
 	var instance = MeshInstance.new()
 	instance.mesh = array_mesh
 
-	output[0].append(instance)
+	output[0].push_back(instance)
 	if use_collision:
 		var body = StaticBody.new()
 		var colshape = CollisionShape.new()
 		colshape.shape = array_mesh.create_trimesh_shape()
 		body.add_child(colshape)
 		body.hide()
-		output[0].append(body)
+		output[0].push_back(body)
 

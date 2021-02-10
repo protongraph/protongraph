@@ -55,7 +55,7 @@ func _refresh_nodes_list(nodes := [], folder_collapsed := true) -> void:
 	for node in nodes:
 		node_category = _get_node_category(node)
 		if _filter_node(node) and not categories.has(node_category):
-			categories.append(node_category)
+			categories.push_back(node_category)
 	categories.sort()
 
 	if !_search_text:
@@ -71,7 +71,7 @@ func _refresh_nodes_list(nodes := [], folder_collapsed := true) -> void:
 			var item_parent = _get_or_create_category(_get_node_category(node), folder_collapsed)
 			var item: TreeItem = _node_tree.create_item(item_parent)
 			item.set_text(0, node.display_name)
-			item.set_tooltip(0, node.description)
+			item.set_tooltip(0, StringUtil.remove_line_breaks(node.description))
 			item.set_metadata(0, node.unique_id)
 			var color = DataType.to_category_color(node.category)
 			item.set_icon(0, TextureUtil.get_square_texture(color))

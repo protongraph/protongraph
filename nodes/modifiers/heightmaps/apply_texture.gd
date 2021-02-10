@@ -14,7 +14,6 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-#	var start_time = OS.get_ticks_msec()
 	var heightmap: Heightmap = get_input_single(0)
 	var image: Image = get_input_single(1)
 	
@@ -42,10 +41,7 @@ func _generate_outputs() -> void:
 				i += 1
 
 	heightmap.data = data
-	output[0].append(heightmap)
-
-#	var gen_time = OS.get_ticks_msec() - start_time
-#	print("Heightmap created in " + str(gen_time) + "ms")
+	output[0].push_back(heightmap)
 
 
 func get_height(image: Image, x: int, y: int) -> float:

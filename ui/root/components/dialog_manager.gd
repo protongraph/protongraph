@@ -1,5 +1,5 @@
-extends Control
 class_name DialogManager
+extends Control
 
 # The dialog manager is the last thing in the scene tree to make sure the
 # dialogs are always displayed on top of everything else.

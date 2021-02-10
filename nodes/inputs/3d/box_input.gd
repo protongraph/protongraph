@@ -15,7 +15,7 @@ func _init() -> void:
 	set_input(1, "Position", DataType.VECTOR3)
 	set_input(2, "Rotation", DataType.VECTOR3)
 	set_input(3, "Scale", DataType.VECTOR3, {"value": 1})
-	set_output(0, "", DataType.BOX_3D)
+	set_output(0, "", DataType.MASK_3D)
 
 	_box = BoxInput.new()
 	_box.name = "Unnamed Box"

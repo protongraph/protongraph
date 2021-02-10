@@ -69,4 +69,4 @@ func _generate_outputs() -> void:
 				node.look_at_from_position(pos, pos2, up)
 				up = node.transform.basis.y
 
-			output[0].append(node)
+			output[0].push_back(node)

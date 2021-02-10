@@ -1,10 +1,10 @@
 extends ProtonNode
 
-"""
-Generates a curve object made of a single line
-"""
+# Generates a 2D curve in the mathematical sense, as one value on the x
+# axis is paired with one single value on the y axis.
 
 var _curve_widget: Control
+
 
 func _init() -> void:
 	unique_id = "function_curve_editor"
@@ -34,14 +34,16 @@ func restore_custom_data(data: Dictionary) -> void:
 
 
 func _create_curve_widget() -> void:
+	var curve = Curve.new()
 	if _curve_widget:
+		curve = _curve_widget.get_value()
 		remove_child(_curve_widget)
 		_curve_widget.queue_free()
 
 	_curve_widget = preload("res://ui/views/editor/components/inspector/curve/curve_property.tscn").instance()
-	_curve_widget.init("", Curve.new())
+	_curve_widget.init("", curve)
 	add_child(_curve_widget)
-	connect("resize_request", self, "_on_resize")
+	Signals.safe_connect(self, "resize_request", self, "_on_resize")
 	update()
 
 

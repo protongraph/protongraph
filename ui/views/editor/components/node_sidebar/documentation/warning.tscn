@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ui/views/editor/components/node_sidebar/documentation/warning.gd" type="Script" id=1]
+[ext_resource path="res://ui/themes/fonts/fira_sans_regular_small.tres" type="DynamicFont" id=2]
+[ext_resource path="res://ui/icons/warning.svg" type="Texture" id=3]
+
+[node name="Warning" type="MarginContainer"]
+anchor_right = 1.0
+margin_bottom = 642.0
+custom_constants/margin_left = 8
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 8.0
+margin_right = 1366.0
+margin_bottom = 642.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+margin_right = 64.0
+margin_bottom = 642.0
+texture = ExtResource( 3 )
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_left = 72.0
+margin_top = 312.0
+margin_right = 1358.0
+margin_bottom = 330.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+text = "This is the warning label"
+autowrap = true

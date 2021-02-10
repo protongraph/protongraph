@@ -1,4 +1,3 @@
-tool
 extends ProtonNode
 
 

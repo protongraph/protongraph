@@ -51,7 +51,7 @@ func _generate_outputs() -> void:
 		if hit:
 			nodes[i].transform.origin = cg.to_local(hit.position)
 			if discard:
-				result.append(nodes[i])
+				result.push_back(nodes[i])
 
 	if discard:
 		output[0] = result

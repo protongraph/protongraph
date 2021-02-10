@@ -25,10 +25,10 @@ func get_or_create(type: GDScriptNativeClass) -> Node:
 		var available_nodes: Array = _pools[type]["free"]
 		if available_nodes.size() == 0:
 			node = type.new()
-			_pools[type]["used"].append(node)
+			_pools[type]["used"].push_back(node)
 		else:
 			node = available_nodes.pop_front()
-			_pools[type]["used"].append(node)
+			_pools[type]["used"].push_back(node)
 	else:
 		node = type.new()
 		_pools[type] = {
@@ -70,15 +70,15 @@ func release_node(type: GDScriptNativeClass, node) -> void:
 	if script:
 		script._init()	#TODO : not sure that's enough
 
-	_pools[type]["free"].append(node)
+	_pools[type]["free"].push_back(node)
 
 
 """
 Release all nodes
 """
 func release_all_nodes() -> void:
-	for type in _pools.keys():
-		for node in _pools[type]["used"].keys():
+	for type in _pools:
+		for node in _pools[type]["used"]:
 			release_node(type, node)
 
 
@@ -87,8 +87,8 @@ Loop through the dictionary and free every object that doesn't have a parent. If
 the scene tree, it will no longer be managed by the pool node.
 """
 func clear() -> void:
-	for key in _pools.keys():
-		for key2 in _pools[key].keys():
+	for key in _pools:
+		for key2 in _pools[key]:
 			var p = _pools[key][key2]
 			while p.size() > 0:
 				var node = p.pop_front()
