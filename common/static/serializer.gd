@@ -45,7 +45,7 @@ static func deserialize(data: Dictionary) -> Node:
 			res = _deserialize_mesh_instance(data["data"])
 		"multi_mesh":
 			res = _deserialize_multi_mesh(data["data"])
-		"curve":
+		"curve_3d":
 			res = _deserialize_curve_3d(data["data"])
 		_:
 			print("Type ", data["type"], " is not supported")
@@ -147,7 +147,9 @@ static func _deserialize_mesh_instance(data: Dictionary) -> MeshInstance:
 		surface_arrays[Mesh.ARRAY_VERTEX] = _to_pool(source[Mesh.ARRAY_VERTEX])
 		surface_arrays[Mesh.ARRAY_NORMAL] = _to_pool(source[Mesh.ARRAY_NORMAL])
 		surface_arrays[Mesh.ARRAY_TEX_UV] = _to_pool(source[Mesh.ARRAY_TEX_UV])
-		surface_arrays[Mesh.ARRAY_INDEX] = PoolIntArray(source[Mesh.ARRAY_INDEX])
+
+		if source[Mesh.ARRAY_INDEX]:
+			surface_arrays[Mesh.ARRAY_INDEX] = PoolIntArray(source[Mesh.ARRAY_INDEX])
 
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_arrays)
 
@@ -208,6 +210,7 @@ static func _serialize_curve_3d(path: Path) -> Dictionary:
 		point["in"] = _vector_to_array(curve.get_point_in(i))
 		point["out"] = _vector_to_array(curve.get_point_out(i))
 		point["tilt"] = curve.get_point_tilt(i)
+		data["points"].push_back(point)
 
 	return data
 
@@ -216,11 +219,12 @@ static func _deserialize_curve_3d(data: Dictionary) -> Path:
 	var curve = Curve3D.new()
 	for i in data["points"].size():
 		var point = data["points"][i]
-		var p_pos = _extract_vector(point["pos"])
-		var p_in = _extract_vector(point["in"])
-		var p_out = _extract_vector(point["out"])
+		var p_pos = _extract_vector(point["pos"]) if "pos" in point else Vector3.ZERO
+		var p_in = _extract_vector(point["in"]) if "in" in point else Vector3.ZERO
+		var p_out = _extract_vector(point["out"]) if "out" in point else Vector3.ZERO
+		var tilt = point["tilt"] if "tilt" in point else 0.0
 		curve.add_point(p_pos, p_in, p_out)
-		curve.set_point_tilt(i, data["tilt"])
+		curve.set_point_tilt(i, tilt)
 
 	var path = Path.new()
 	path.transform = _deserialize_transform(data)

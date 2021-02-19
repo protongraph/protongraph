@@ -31,7 +31,8 @@ func _set_inputs(tpl: Template, inputs: Array) -> void:
 	if not inputs:
 		return
 	for input in inputs:
-		tpl.set_remote_input(input.name, input)
+		if input:
+			tpl.set_remote_input(input.name, input)
 
 
 func _on_build_requested(id: int, path: String, args: Dictionary) -> void:

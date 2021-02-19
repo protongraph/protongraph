@@ -14,7 +14,7 @@ func _init() -> void:
 	description = "Creates a vector curve from the curve control points only"
 
 	set_input(0, "Curve", DataType.CURVE_3D)
-	set_output(0, "", DataType.VECTOR_CURVE_3D)
+	set_output(0, "", DataType.POLYLINE_3D)
 
 
 func _generate_outputs() -> void:
@@ -23,7 +23,7 @@ func _generate_outputs() -> void:
 		return
 
 	for c in curves:	# c is a Path object here
-		var p = VectorCurve.new()
+		var p = Polyline.new()
 		var points = PoolVector3Array()
 		var curve: Curve3D = c.curve
 

@@ -1,13 +1,12 @@
 extends Spatial
-class_name VectorCurve
+class_name Polyline
 
 
 export var points: Array
 
-"""
-Take the points array (Vector3) and project it to a plane defined by the normal axis.
-Returns an array of Vector2.
-"""
+
+# Take the points array (Vector3) and project it to a plane defined by the
+# normal axis. Returns an array of Vector2.
 func to_pool_vector_2(axis: Vector3, global = true) -> Array:
 	# TODO : Ask the god of Maths to fix this whole mess
 	axis = axis.normalized()
@@ -34,3 +33,10 @@ func to_pool_vector_2(axis: Vector3, global = true) -> Array:
 		res.push_back(Vector2(v.x, v.y))
 	return res
 
+
+func add_point(position: Vector3, index: int) -> void:
+	points.insert(index, position)
+
+
+func get_point_count() -> int:
+	return points.size()

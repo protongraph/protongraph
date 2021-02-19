@@ -12,16 +12,18 @@ func _init() -> void:
 	set_input(2, "Placeholder", DataType.NODE_3D)
 	set_output(0, "", DataType.NODE_3D)
 
+	mirror_slots_type(2, 0)
+
 
 func _generate_outputs() -> void:
 	var name: String = get_input_single(0, "")
 	var children_only: bool = get_input_single(1, false)
 	var placeholder = get_input_single(2)
-	
+
 	var input = get_remote_input(name)
 	if not input:
 		input = placeholder
-	
+
 	if children_only:
 		output[0] = input.get_children()
 	else:

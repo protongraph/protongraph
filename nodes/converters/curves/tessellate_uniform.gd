@@ -18,7 +18,7 @@ func _init() -> void:
 	set_input(1, "Resolution", DataType.SCALAR,
 		{"min": 0.001, "allow_lesser": false, "value": 1.0})
 	set_input(2, "Preserve sharp", DataType.BOOLEAN)
-	set_output(0, "", DataType.VECTOR_CURVE_3D)
+	set_output(0, "", DataType.POLYLINE_3D)
 
 
 func _generate_outputs() -> void:
@@ -31,7 +31,7 @@ func _generate_outputs() -> void:
 
 	for c in curves:
 		var curve = c.curve
-		var p = VectorCurve.new()
+		var p = Polyline.new()
 		p.transform = c.transform
 
 		var length = curve.get_baked_length()

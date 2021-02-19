@@ -1,31 +1,27 @@
-tool
 extends ProtonNode
 
-"""
-Take a point curve in input and creates a Path node from it
-"""
 
 func _init() -> void:
 	unique_id = "convert_points_to_curve"
 	display_name = "To Curve"
-	category = "Converters/Vector Curves"
-	description = "Takes a point curve in input and creates a Path node from it"
+	category = "Converters/Polylines"
+	description = "Converts a polyline to a bezier curve"
 
-	set_input(0, "Vector curve", DataType.VECTOR_CURVE_3D)
+	set_input(0, "Polyline", DataType.POLYLINE_3D)
 	set_output(0, "", DataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:
-	var vcs := get_input(0)
-	if not vcs or vcs.size() == 0:
+	var polylines := get_input(0)
+	if not polylines or polylines.size() == 0:
 		return
 
-	for vc in vcs:
+	for pl in polylines:
 		var path = Path.new()
 		path.curve = Curve3D.new()
 
-		for p in vc.points:
+		for p in pl.points:
 			path.curve.add_point(p)
 
-		path.transform = vc.transform
+		path.transform = pl.transform
 		output[0].push_back(path)

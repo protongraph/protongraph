@@ -200,8 +200,9 @@ func is_node_connected_to_input(node: GraphNode, idx: int) -> bool:
 # TMP hack because calling update alone doesn't update the connections which
 # are in another layer.
 func force_redraw() -> void:
-	$CLAYER.update()
 	update()
+	$CLAYER.update()
+	scroll_offset.x += 0.001
 
 
 # Same format as get_connection_list() but returns the slot id (defined by

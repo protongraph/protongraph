@@ -9,13 +9,12 @@ signal output_ready
 var unique_id: String
 var description: String
 var ignore := false
-var doc := NodeDocumentation.new()
+var doc := NodeDocumentation.new(get_script().get_path())
 var node_pool: NodePool # Injected from template
 var thread_pool: ThreadPool # Injected from template
 var output := {}
 var debug_mode := false
 
-var _docs: Dictionary
 var _generation_requested := false # True after calling prepare_output once
 var _output_ready := false # True when the background generation was completed
 

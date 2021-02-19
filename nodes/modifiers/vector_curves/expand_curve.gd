@@ -8,10 +8,10 @@ func _init() -> void:
 	category = "Modifiers/Vector Curves"
 	description = "Move each point of the curve away from the center. Works best on circular paths."
 
-	set_input(0, "Curves", DataType.VECTOR_CURVE_3D)
+	set_input(0, "Curves", DataType.POLYLINE_3D)
 	set_input(1, "Distance", DataType.SCALAR, {"min": -100, "allow_lesser": true})
 	set_input(2, "Invert", DataType.BOOLEAN, {"value": false})
-	set_output(0, "", DataType.VECTOR_CURVE_3D)
+	set_output(0, "", DataType.POLYLINE_3D)
 
 
 func _generate_outputs() -> void:
@@ -25,20 +25,20 @@ func _generate_outputs() -> void:
 	if invert:
 		dist *= -1
 
-	for vector_curve in vcurves:
-		var point_count = vector_curve.points.size()
+	for polyline in vcurves:
+		var point_count = polyline.points.size()
 		var points := PoolVector3Array()
-		var center: Vector3 = _get_vector_curve_center(vector_curve)
+		var center: Vector3 = _get_vector_curve_center(polyline)
 
 		for j in point_count:
-			var pos = vector_curve.points[j]
+			var pos = polyline.points[j]
 			var dir = (pos - center).normalized()
-			vector_curve.points[j] = pos + (dir * dist)
+			polyline.points[j] = pos + (dir * dist)
 
-		output[0].push_back(vector_curve)
+		output[0].push_back(polyline)
 
 
-func _get_vector_curve_center(v: VectorCurve) -> Vector3:
+func _get_vector_curve_center(v: Polyline) -> Vector3:
 	var res := Vector3.ZERO
 	for p in v.points:
 		res += p

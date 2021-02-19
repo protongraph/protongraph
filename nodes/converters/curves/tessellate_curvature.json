@@ -1,0 +1,23 @@
+{
+    "paragraphs": [
+        {
+            "text": "Converts a bezier curve to a polyline with a curvature controlled point density. That is, the curvier parts will have more points than the straighter parts."
+        },
+        {
+            "text": "This approximation makes straight segments between each point, then subdivides those segments until the resulting shape is similar enough."
+        }
+    ],
+    
+    "parameters": [
+        {
+            "name": "Max Stages",
+            "text": "Controls how many subdivisions a curve segment may face before it is considered approximate enough. Each subdivision splits the segment in half.",
+            "cost": 1
+        },
+        {
+            "name": "Tolerance",
+            "text": "Controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided."
+        }
+    ]
+}
+

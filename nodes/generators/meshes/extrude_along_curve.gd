@@ -10,7 +10,7 @@ func _init() -> void:
 	category = "Generators/Meshes"
 	description = "Extrudes a curve along another curve to create a pipe-like mesh"
 
-	set_input(0, "Cross Section", DataType.VECTOR_CURVE_3D)
+	set_input(0, "Cross Section", DataType.POLYLINE_3D)
 	set_input(1, "Path curve", DataType.CURVE_3D)
 	set_input(2, "Taper curve", DataType.CURVE_FUNC)
 	set_input(3, "Resolution", DataType.SCALAR, {"min": 0.01, "value": 1.0, "allow_lesser": false})
@@ -21,7 +21,7 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var cross_section: VectorCurve = get_input_single(0)	# We extrude this
+	var cross_section: Polyline = get_input_single(0)	# We extrude this
 	var paths := get_input(1)	# following these
 	var taper: Curve = get_input_single(2)	# and vary its scale at each step based on this
 	var step_size: float = 1.0 / get_input_single(3, 1.0)	# at this interval

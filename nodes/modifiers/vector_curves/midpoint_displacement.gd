@@ -1,19 +1,16 @@
-tool
 extends ProtonNode
 
-"""
-Apply the midpoint displacement algorithm to a curve. Useful to randomize an existing curve path
-"""
 
 var _rng: RandomNumberGenerator
+
 
 func _init() -> void:
 	unique_id = "curve_midpoint_displacement"
 	display_name = "Midpoint Displacement"
-	category = "Modifiers/Curves"
-	description = "Randomize a curve using midpoint displacement. This creates new points in the curve."
+	category = "Modifiers/Polylines"
+	description = "Randomize a polyline using midpoint displacement. This creates new points in the curve."
 
-	set_input(0, "Curve", DataType.CURVE_3D)
+	set_input(0, "Curve", DataType.POLYLINE_3D)
 	set_input(1, "Seed", DataType.SCALAR, {"step": 1})
 	set_input(2, "Steps", DataType.SCALAR,
 		{"step": 1, "min": 0, "allow_lesser": false, "value": 1})
@@ -22,12 +19,12 @@ func _init() -> void:
 	set_input(5, "Axis", DataType.VECTOR3)
 	set_input(6, "Min segment size", DataType.SCALAR,
 		{"min": 0.01, "allow_lesser": false, "value": 1})
-	set_output(0, "", DataType.CURVE_3D)
+	set_output(0, "", DataType.POLYLINE_3D)
 
 
 func _generate_outputs() -> void:
-	var paths = get_input(0)
-	if not paths or paths.size() == 0:
+	var polylines = get_input(0)
+	if not polylines or polylines.size() == 0:
 		return
 
 	var random_seed: int = get_input_single(1, 0)
@@ -38,28 +35,30 @@ func _generate_outputs() -> void:
 	_rng = RandomNumberGenerator.new()
 	_rng.seed = random_seed
 
-	for path in paths:
+	for pl in polylines:
 		for i in range(steps):
-			var initial_count = path.curve.get_point_count()
+			var initial_count = pl.get_point_count()
 
-			path = _displace(path, factor)
+			pl = _displace(pl, factor)
 			factor *= attenuation
 
-			if path.curve.get_point_count() == initial_count:
+			if pl.get_point_count() == initial_count:
+				print("skip")
 				break	# Nothing happened, min size was reached on every segments
-		output[0].push_back(path)
+
+		output[0].push_back(pl)
 
 
-func _displace(path: Path, factor: float) -> Path:
-	if path.curve.get_point_count() < 2:
-		return path
+func _displace(pl: Polyline, factor: float) -> Polyline:
+	if pl.get_point_count() < 2:
+		return pl
 
 	var axis: Vector3 = get_input_single(5, Vector3.ZERO)
 	var min_size: float = get_input_single(6, 1.0)
 
 	var i := 1
-	var start: Vector3 = path.curve.get_point_position(0)
-	var end: Vector3 = path.curve.get_point_position(1)
+	var start: Vector3 = pl.points[0]
+	var end: Vector3 = pl.points[1]
 	var done := false
 
 	while not done:
@@ -75,18 +74,18 @@ func _displace(path: Path, factor: float) -> Path:
 			var midpoint = start + (end - start) / 2.0
 			midpoint += dir * _rng.randf_range(-deviation, deviation)
 
-			path.curve.add_point(midpoint, Vector3.ZERO, Vector3.ZERO, i)
+			pl.add_point(midpoint, i)
 			i += 2
 		else:
 			i += 1
 
-		if i < path.curve.get_point_count():
+		if i < pl.get_point_count():
 			start = end
-			end = path.curve.get_point_position(i)
+			end = pl.points[i]
 		else:
 			done = true
 
-	return path
+	return pl
 
 
 func _rand_vector() -> Vector3:

@@ -82,11 +82,13 @@ func set_value(value) -> void:
 		return
 
 	var vector
-	if value is Vector3 or value is Vector2:
+	if value is Vector3 or value is Vector2 or value is Array:
 		vector = value
 	elif value is String:
 		value = value.substr(1, value.length() - 2)
 		vector = value.split(',')
+	else:
+		return
 
 	for i in _count:
 		var spinbox = _vector_box.get_child(i)

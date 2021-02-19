@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://ui/views/editor/components/viewport/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://ui/views/editor/components/viewport/camera.gd" type="Script" id=5]
@@ -10,7 +10,6 @@
 [ext_resource path="res://ui/views/editor/components/viewport/gizmos_manager.gd" type="Script" id=13]
 [ext_resource path="res://ui/views/editor/components/viewport/monitor_local_tree_changes.gd" type="Script" id=14]
 [ext_resource path="res://ui/views/editor/components/viewport/viewport_input.gd" type="Script" id=15]
-[ext_resource path="res://addons/monitor_overlay/monitor_overlay.gd" type="Script" id=16]
 [ext_resource path="res://ui/views/editor/components/viewport/options_button.gd" type="Script" id=17]
 
 [sub_resource type="World" id=1]
@@ -138,7 +137,7 @@ margin_bottom = 764.0
 mouse_filter = 2
 
 [node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/ViewportUI/HBoxContainer"]
-margin_right = 873.0
+margin_right = 948.0
 margin_bottom = 760.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -179,24 +178,11 @@ Shift + Middle Click: Pan
 Scroll Up / Down: Zoom"
 
 [node name="RightColumn" type="VBoxContainer" parent="MarginContainer/ViewportUI/HBoxContainer"]
-margin_left = 881.0
+margin_left = 956.0
 margin_right = 956.0
 margin_bottom = 760.0
 mouse_filter = 2
 alignment = 2
-
-[node name="MonitorOverlay" type="VBoxContainer" parent="MarginContainer/ViewportUI/HBoxContainer/RightColumn"]
-margin_right = 75.0
-margin_bottom = 760.0
-rect_min_size = Vector2( 75, 0 )
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-script = ExtResource( 16 )
-plot_graphs = false
-history = 25
-graph_height = 25
-fps = false
 [connection signal="scene_updated" from="." to="Tree" method="_update_tree"]
 [connection signal="node_selected" from="Tree" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_selected"]
 [connection signal="node_added" from="MarginContainer/ViewportContainer/Viewport/Input" to="MarginContainer/ViewportContainer/Viewport/GizmosManager" method="_on_node_added"]

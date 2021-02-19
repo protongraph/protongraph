@@ -52,7 +52,10 @@ static func format_value(value):
 
 	if value is Array:
 		for i in value.size():
-			value[i] = format_value(value[i])
+			if value[i] is Dictionary:
+				value[i] = fix_types(value[i])
+			else:
+				value[i] = format_value(value[i])
 
 	return value
 

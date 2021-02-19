@@ -19,7 +19,7 @@ var _table := {
 	DataType.TEXTURE_2D: "icon_texture.svg",
 	DataType.VECTOR2: "icon_vector2.svg",
 	DataType.VECTOR3: "icon_vector3.svg",
-	DataType.VECTOR_CURVE_3D: "icon_vector_curve.svg",
+	DataType.POLYLINE_3D: "icon_vector_curve.svg",
 }
 
 var _empty_texture: ImageTexture
@@ -32,26 +32,26 @@ func get_slot_icon(type: int) -> Texture:
 
 	if _table.has(type):
 		path = root + _table[type]
-	
+
 	return get_texture(path)
 
 
 func get_texture(path) -> Texture:
 	if _cache.has(path):
 		return _cache[path]
-	
+
 	var texture = load(path)
 	if not texture is Texture:
 		print(path, " is not a texture")
 		return null
-	
+
 	var scale = EditorUtil.get_editor_scale() / 4.0
 	if scale != 1.0:
 		var image: Image = texture.get_data()
 		image.resize(int(texture.get_width() * scale), int(texture.get_height() * scale))
 		texture = ImageTexture.new()
 		texture.create_from_image(image)
-		
+
 	_cache[path] = texture
 	return texture
 
@@ -61,7 +61,7 @@ func get_texture(path) -> Texture:
 func get_square_texture(color: Color) -> ImageTexture:
 	if _square_textures.has(color):
 		return _square_textures[color]
-	
+
 	var d = 10 * EditorUtil.get_editor_scale()
 	var image = Image.new()
 	image.create(d, d, false, Image.FORMAT_RGBA8)
@@ -78,7 +78,7 @@ func get_square_texture(color: Color) -> ImageTexture:
 func get_input_texture(multi) -> Texture:
 	if multi:
 		return get_texture("res://ui/icons/input_slot_multi.svg")
-	
+
 	return get_texture("res://ui/icons/input_slot.svg")
 
 
@@ -91,9 +91,9 @@ func get_empty_texture() -> ImageTexture:
 	if not _empty_texture:
 		var image = Image.new()
 		image.create(0, 0, false, Image.FORMAT_RGBA8)
-		
+
 		_empty_texture = ImageTexture.new()
 		_empty_texture.create_from_image(image)
 		_empty_texture.resource_name = "cg_empty_texture"
-	
+
 	return _empty_texture

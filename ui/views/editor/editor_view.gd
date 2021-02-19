@@ -31,7 +31,7 @@ func _ready() -> void:
 	_viewport = get_node(viewport_container)
 	_inspector = get_node(inspector)
 	_template.inspector = _inspector
-	
+
 	Signals.safe_connect(self, "template_saved", self, "_on_template_saved")
 	GlobalEventBus.register_listener(self, "settings_updated", "_on_settings_updated")
 	_on_settings_updated(Settings.AUTOSAVE_ENABLED)
@@ -124,12 +124,12 @@ func _on_input_deleted(node: Spatial) -> void:
 func _on_settings_updated(setting: String) -> void:
 	var enabled = Settings.get_setting(Settings.AUTOSAVE_ENABLED)
 	var interval = Settings.get_setting(Settings.AUTOSAVE_INTERVAL)
-	
+
 	# Autosave delay was changed
 	if setting == Settings.AUTOSAVE_INTERVAL and _save_timer:
 		_save_timer.start(interval)
 		return
-	
+
 	if setting == Settings.AUTOSAVE_ENABLED:
 		# Autosave was enabled
 		if enabled and not _save_timer:
@@ -140,7 +140,7 @@ func _on_settings_updated(setting: String) -> void:
 			add_child(_save_timer)
 			_save_timer.start(interval)
 			return
-			
+
 		# Autosave was disabled
 		if not enabled and _save_timer:
 			_save_timer.stop()

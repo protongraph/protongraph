@@ -8,7 +8,7 @@ func _init() -> void:
 	category = "Generators/Meshes"
 	description = "Creates extruded CSG meshes defined by one or multiple polygon curve"
 
-	set_input(0, "Cross section", DataType.VECTOR_CURVE_3D)
+	set_input(0, "Cross section", DataType.POLYLINE_3D)
 	set_input(1, "Depth", DataType.SCALAR)
 	set_input(2, "Smooth faces", DataType.BOOLEAN, {"value": true})
 	set_input(3, "Axis", DataType.VECTOR3)

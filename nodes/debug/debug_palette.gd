@@ -30,5 +30,5 @@ func _init() -> void:
 	set_input(30, "---- 3D Types ----", DataType.NODE_3D)
 	set_input(31, "Bezier Curve", DataType.CURVE_3D)
 	set_input(32, "Mesh", DataType.MESH_3D)
-	set_input(33, "Polygon Curve", DataType.VECTOR_CURVE_3D)
+	set_input(33, "Polygon Curve", DataType.POLYLINE_3D)
 	set_input(34, "Heightmap", DataType.HEIGHTMAP)
