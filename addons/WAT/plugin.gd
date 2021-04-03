@@ -22,7 +22,7 @@ func _enter_tree() -> void:
 	_DockController = DockController.new(self, _ControlPanel)
 	add_child(_DockController)
 
-	
+
 func _exit_tree() -> void:
 	_DockController.free()
 	_ControlPanel.free()

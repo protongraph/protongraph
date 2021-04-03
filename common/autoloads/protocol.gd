@@ -2,9 +2,13 @@ extends Node
 
 
 var _server: IPCServer
+var _node_serializer: NodeSerializer
 
 
 func _ready():
+	if not _node_serializer:
+		_node_serializer = NodeSerializer.new()
+
 	_start_server()
 	GlobalEventBus.register_listener(self, "remote_build_completed", "_on_remote_build_completed")
 
@@ -35,7 +39,7 @@ func _on_remote_build_requested(id, msg: Dictionary) -> void:
 	var inspector: Array = msg["inspector"] if msg.has("inspector") else null
 	var inputs := []
 	if msg.has("inputs"):
-		inputs = NodeSerializer.deserialize_all(msg["inputs"])
+		inputs = _node_serializer.deserialize(msg["inputs"])
 
 	var args := {
 		"inspector": inspector,
@@ -46,9 +50,5 @@ func _on_remote_build_requested(id, msg: Dictionary) -> void:
 
 func _on_remote_build_completed(id, data: Array) -> void:
 	var msg = {"type": "build_completed"}
-	msg["data"] = []
-	for output in data:
-		for node in output:
-			msg["data"].push_back(NodeSerializer.serialize(node))
-
+	msg["data"] = _node_serializer.serialize(data)
 	_server.send(id, msg)

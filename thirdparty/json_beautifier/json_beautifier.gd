@@ -32,7 +32,7 @@ static func beautify_json(json: String, spaces := 0) -> String:
 		# trailing comma.
 		if i == "," and char_position + 1 == json.length():
 			break
-	
+
 		# Avoid formating inside strings.
 		if i == "\"":
 			if quotation_start == -1:
@@ -66,7 +66,7 @@ static func beautify_json(json: String, spaces := 0) -> String:
 			":":
 				json = json.insert(char_position + 1, " ")
 				char_position += 1
-		
+
 		char_position += 1
 
 	for i in [["{", "}"], ["[", "]"]]:

@@ -2,8 +2,8 @@ extends ProtonNode
 
 
 func _init() -> void:
-	unique_id = "placeholder_mesh"
-	display_name = "Placeholder Mesh"
+	unique_id = "remote_placeholder_mesh"
+	display_name = "Remote Placeholder Mesh"
 	category = "Generators/Meshes"
 	description = """This is only useful when building the graph from a remote
 		game engine. To avoid duplicating mesh data, the remote editor will
@@ -15,4 +15,11 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	pass
+	var placeholder = PlaceholderMesh.new()
+	placeholder.id = get_input_single(0, "")
+
+	var debug_mesh: MeshInstance = get_input_single(1)
+	if debug_mesh:
+		placeholder.mesh = debug_mesh.mesh
+
+	output[0].push_back(placeholder)

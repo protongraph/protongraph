@@ -274,10 +274,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/remote/components/peer_item.gd"
 }, {
-"base": "MeshInstance",
+"base": "Mesh",
 "class": "PlaceholderMesh",
 "language": "GDScript",
 "path": "res://common/custom_types/placeholders/placeholder_mesh.gd"
+}, {
+"base": "Spatial",
+"class": "Polyline",
+"language": "GDScript",
+"path": "res://common/custom_types/polyline_3d.gd"
 }, {
 "base": "VBoxContainer",
 "class": "Preview2D",
@@ -369,16 +374,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://ui/views/editor/components/nodes/components/vector.gd"
 }, {
-"base": "Spatial",
-"class": "VectorCurve",
-"language": "GDScript",
-"path": "res://common/custom_types/vector_curve_3d.gd"
-}, {
-"base": "Spatial",
-"class": "VectorCurve2D",
-"language": "GDScript",
-"path": "res://common/custom_types/vector_curve_2d.gd"
-}, {
 "base": "Reference",
 "class": "VectorUtil",
 "language": "GDScript",
@@ -464,6 +459,7 @@ _global_script_class_icons={
 "PathUtil": "",
 "PeerItem": "",
 "PlaceholderMesh": "",
+"Polyline": "",
 "Preview2D": "",
 "ProtonGraphCurve": "",
 "ProtonGraphSettings": "",
@@ -482,8 +478,6 @@ _global_script_class_icons={
 "Turtle": "",
 "UserInterfaceRoot": "",
 "VectorComponent": "",
-"VectorCurve": "",
-"VectorCurve2D": "",
 "VectorUtil": "",
 "ViewContainer": "",
 "WAT": "",
@@ -543,7 +537,7 @@ window/size/height=768
 
 [editor_plugins]
 
-enabled=PoolStringArray( "WAT", "monitor_overlay" )
+enabled=PoolStringArray( "WAT" )
 
 [gui]
 

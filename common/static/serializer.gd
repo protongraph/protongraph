@@ -4,80 +4,107 @@ extends Node
 # Helper to serialize and deserialize node trees to json objects.
 
 
-# Takes a single node and serialize its contents and its children's content
-# into a dictionary
-static func serialize(root: Node) -> Dictionary:
-	var res := {}
-	if not root:
-		return res
-
-	res["name"] = root.name
-
-	if root is MeshInstance:
-		res["type"] = "mesh"
-		res["data"] = _serialize_mesh_instance(root)
-	elif root is MultiMeshInstance:
-		res["type"] = "multi_mesh"
-		res["data"] = _serialize_multi_mesh(root)
-	elif root is Path:
-		res["type"] = "curve_3d"
-		res["data"] = _serialize_curve_3d(root)
-	elif root is Spatial or root is Position3D:
-		res["type"] = "node_3d"
-		res["data"] = _serialize_node_3d(root)
-
-	if root.get_child_count() > 0:
-		res["children"] = []
-		for child in root.get_children():
-			res["children"].append(serialize(child))
-
-	return res
+var _resources: Array
+var _serialized_resources: Dictionary
 
 
-# Takes a dictionnary and recreates the Godot node tree from there. This is
-# the inverse of serialize.
-static func deserialize(data: Dictionary) -> Node:
-	var res
+# -- Public API --
+
+# Takes a list of nodes and serialize them all in a dictionary.
+func serialize(nodes: Array) -> Dictionary:
+	var _resources = []
+	var _serialized_resources = {}
+
+	var result: Dictionary = {
+		"resources": {},
+		"nodes": []
+	}
+
+	for node in nodes:
+		result["nodes"].push_back(_serialize_recursive(node))
+
+	result["resources"] = _serialized_resources
+	return result
+
+
+# Inverse of serialize, takes a dictionary and returns a list of Godot nodes.
+func deserialize(data: Dictionary) -> Array:
+	var result: Array = []
+	_serialized_resources = data["resources"]
+	# Deserialize resources here?
+
+	for node in data["node"]:
+		result.append(_deserialize_recursive(node))
+
+	return result
+
+
+# -- Private API --
+
+func _serialize_recursive(node: Node) -> Dictionary:
+	var dict := {}
+	if not node:
+		return dict
+
+	dict["name"] = node.name
+
+	if node is MeshInstance:
+		dict["type"] = "mesh"
+		dict["data"] = _serialize_node_mesh_instance(node)
+
+	elif node is MultiMeshInstance:
+		dict["type"] = "multi_mesh"
+		dict["data"] = _serialize_node_multi_mesh(node)
+
+	elif node is Path:
+		dict["type"] = "curve_3d"
+		dict["data"] = _serialize_node_curve_3d(node)
+
+	elif node is Spatial or node is Position3D:
+		dict["type"] = "node_3d"
+		dict["data"] = _serialize_node_3d(node)
+
+	if node.get_child_count() > 0:
+		dict["children"] = []
+		for child in node.get_children():
+			var serialized_child: Dictionary = _serialize_recursive(child)
+			if not serialized_child.empty():
+				dict["children"].push_back(serialized_child)
+
+	return dict
+
+
+func _deserialize_recursive(data: Dictionary) -> Node:
+	var node
 	match data["type"]:
 		"node_3d":
-			res = _deserialize_node_3d(data["data"])
+			node = _deserialize_node_3d(data["data"])
 		"mesh":
-			res = _deserialize_mesh_instance(data["data"])
+			node = _deserialize_mesh_instance(data["data"])
 		"multi_mesh":
-			res = _deserialize_multi_mesh(data["data"])
+			node = _deserialize_multi_mesh(data["data"])
 		"curve_3d":
-			res = _deserialize_curve_3d(data["data"])
+			node = _deserialize_curve_3d(data["data"])
 		_:
 			print("Type ", data["type"], " is not supported")
 			return null
 
 	if data.has("children"):
-		for child in data["children"]:
-			res.add_child(deserialize(child))
+		for serialized_child in data["children"]:
+			var child = _deserialize_recursive(serialized_child)
+			if child:
+				node.add_child(child)
 
 	if "name" in data:
-		res.name = data["name"]
+		node.name = data["name"]
 
-	return res
+	return node
 
-
-static func serialize_all(nodes: Array) -> Array:
-	var res = []
-	for node in nodes:
-		res.push_back(serialize(node))
-	return res
-
-
-static func deserialize_all(nodes: Array) -> Array:
-	var res = []
-	for node in nodes:
-		res.push_back(deserialize(node))
-	return res
 
 
 # -- Transform --
 
-static func _serialize_transform(t: Transform) -> Dictionary:
+func _serialize_transform(t: Transform) -> Dictionary:
 	var data := {}
 	var origin = t.origin
 	var basis = t.basis
@@ -91,7 +118,7 @@ static func _serialize_transform(t: Transform) -> Dictionary:
 	return data
 
 
-static func _deserialize_transform(data: Dictionary) -> Transform:
+func _deserialize_transform(data: Dictionary) -> Transform:
 	var t = Transform()
 	if "pos" in data:
 		t.origin = _extract_vector(data["pos"])
@@ -107,35 +134,27 @@ static func _deserialize_transform(data: Dictionary) -> Transform:
 
 # -- Node 3D --
 
-static func _serialize_node_3d(node: Spatial) -> Dictionary:
+func _serialize_node_3d(node: Spatial) -> Dictionary:
 	var data := {}
 	data["transform"] = _serialize_transform(node.transform)
 	return data
 
 
-static func _deserialize_node_3d(data: Dictionary) -> Position3D:
+func _deserialize_node_3d(data: Dictionary) -> Position3D:
 	var node = Position3D.new()
-	node.transform = _deserialize_transform(data)
+	node.transform = _deserialize_transform(data["transform"])
 	return node
 
 
 # -- Mesh --
 
-static func _serialize_mesh_instance(mesh_instance: MeshInstance) -> Dictionary:
+func _serialize_node_mesh_instance(mesh_instance: MeshInstance) -> Dictionary:
 	var data = _serialize_node_3d(mesh_instance)
-	data["mesh"] = {}
-	var mesh = mesh_instance.mesh
-
-	if mesh is PrimitiveMesh:
-		data["mesh"][0] = _format_array(mesh.get_mesh_arrays())
-	else:
-		for i in mesh.get_surface_count():
-			data["mesh"][i] = _format_array(mesh.surface_get_arrays(i))
-
+	data["mesh"] = _serialize_resource_mesh(mesh_instance.mesh)
 	return data
 
 
-static func _deserialize_mesh_instance(data: Dictionary) -> MeshInstance:
+func _deserialize_mesh_instance(data: Dictionary) -> MeshInstance:
 	var mi = MeshInstance.new()
 	mi.transform = _deserialize_transform(data)
 
@@ -153,19 +172,19 @@ static func _deserialize_mesh_instance(data: Dictionary) -> MeshInstance:
 
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_arrays)
 
-	mi.mesh = mesh
+	mi.mesh = _deserialize_resource_mesh(data["mesh"])
 	return mi
 
 
 # -- MultiMesh --
 
-static func _serialize_multi_mesh(mmi: MultiMeshInstance) -> Dictionary:
+func _serialize_node_multi_mesh(mmi: MultiMeshInstance) -> Dictionary:
 	var data: Dictionary = _serialize_node_3d(mmi)
 	var multimesh: MultiMesh = mmi.multimesh
 
 	var mesh_instance = MeshInstance.new()
 	mesh_instance.mesh = multimesh.mesh
-	data["mesh"] = _serialize_mesh_instance(mesh_instance)
+	data["mesh"] = _serialize_node_mesh_instance(mesh_instance)
 
 	var count: int = multimesh.instance_count
 	data["count"] = count
@@ -177,7 +196,7 @@ static func _serialize_multi_mesh(mmi: MultiMeshInstance) -> Dictionary:
 	return data
 
 
-static func _deserialize_multi_mesh(data: Dictionary) -> Dictionary:
+func _deserialize_multi_mesh(data: Dictionary) -> Dictionary:
 	var count = data["count"]
 
 	var multimesh := MultiMesh.new()
@@ -199,7 +218,7 @@ static func _deserialize_multi_mesh(data: Dictionary) -> Dictionary:
 
 # -- Curve 3D --
 
-static func _serialize_curve_3d(path: Path) -> Dictionary:
+func _serialize_node_curve_3d(path: Path) -> Dictionary:
 	var data = _serialize_node_3d(path)
 	data["points"] = []
 
@@ -215,7 +234,7 @@ static func _serialize_curve_3d(path: Path) -> Dictionary:
 	return data
 
 
-static func _deserialize_curve_3d(data: Dictionary) -> Path:
+func _deserialize_curve_3d(data: Dictionary) -> Path:
 	var curve = Curve3D.new()
 	for i in data["points"].size():
 		var point = data["points"][i]
@@ -232,9 +251,55 @@ static func _deserialize_curve_3d(data: Dictionary) -> Path:
 	return path
 
 
+# -- Resources --
+
+func _serialize_resource_mesh(mesh: Mesh) -> Dictionary:
+	var data = {}
+	data = {
+		"surfaces": [],
+		"name": mesh.resource_name
+	}
+
+	if mesh is PlaceholderMesh:
+		data["placeholder_id"] = mesh.id
+	elif mesh is PrimitiveMesh:
+		data["surfaces"].push_back({
+			"material": null,
+			"geometry": _format_array(mesh.get_mesh_arrays())
+		})
+	else:
+		for i in mesh.get_surface_count():
+			data["surfaces"].push_back({
+			"material": null,
+			"geometry": _format_array(mesh.surface_get_arrays(i))
+		})
+
+	return data
+
+
+func _deserialize_resource_mesh(data: Dictionary) -> Mesh:
+	var mesh = ArrayMesh.new()
+	mesh.resource_name = data["name"] if "name" in data else ""
+
+	for surface in data["surfaces"]:
+		var geometry = surface["geometry"]
+		var surface_arrays = []
+		surface_arrays.resize(Mesh.ARRAY_MAX)
+		surface_arrays[Mesh.ARRAY_VERTEX] = _to_pool(geometry[Mesh.ARRAY_VERTEX])
+		surface_arrays[Mesh.ARRAY_NORMAL] = _to_pool(geometry[Mesh.ARRAY_NORMAL])
+		surface_arrays[Mesh.ARRAY_TEX_UV] = _to_pool(geometry[Mesh.ARRAY_TEX_UV])
+
+		if geometry[Mesh.ARRAY_INDEX]:
+			surface_arrays[Mesh.ARRAY_INDEX] = PoolIntArray(geometry[Mesh.ARRAY_INDEX])
+
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_arrays)
+
+	return mesh
+
+
 # -- Utility functions
 
-static func _extract_vector(data: Array) -> Vector3:
+func _extract_vector(data: Array) -> Vector3:
 	var v = null
 	if data.size() == 3:
 		v = Vector3.ZERO
@@ -250,21 +315,21 @@ static func _extract_vector(data: Array) -> Vector3:
 	return v
 
 
-static func _format_array(array: Array) -> Array:
+func _format_array(array: Array) -> Array:
 	for i in array.size():
 		if array[i] is PoolVector2Array or array[i] is PoolVector3Array:
 			array[i] = _format_pool_vector_array(array[i])
 	return array
 
 
-static func _format_pool_vector_array(array) -> Array:
+func _format_pool_vector_array(array) -> Array:
 	var res = []
 	for vec in array:
 		res.append(_vector_to_array(vec))
 	return res
 
 
-static func _vector_to_array(vec) -> Array:
+func _vector_to_array(vec) -> Array:
 	if vec is Vector3:
 		return [vec.x, vec.y, vec.z]
 	if vec is Vector2:
@@ -272,7 +337,7 @@ static func _vector_to_array(vec) -> Array:
 	return []
 
 
-static func _to_pool(array: Array):
+func _to_pool(array: Array):
 	var tmp = []
 	for vec in array:
 		tmp.append(_extract_vector(vec))

@@ -1,5 +1,5 @@
 class_name PlaceholderMesh
-extends MeshInstance
+extends Mesh
 
 
 var id: String

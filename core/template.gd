@@ -351,7 +351,8 @@ func get_output() -> Array:
 func get_remote_output() -> Array:
 	var res = []
 	for node in _sync_nodes:
-		res.push_back(node.get_output(0))
+		if node:
+			res += node.get_output(0)
 	return res
 
 
