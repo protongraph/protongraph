@@ -12,7 +12,9 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
+	print("in the remote_sync _generate_outputs function")
 	output[0] = get_input(0)
+	print(output[0])
 
 
 func is_final_output_node() -> bool:

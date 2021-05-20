@@ -28,6 +28,7 @@ func _generate_outputs() -> void:
 	if not origins:
 		return
 
+	print("in create multiple lines, printing origins")
 	for o in origins:
 		var start = Vector3.ZERO
 		var end = axis * length
@@ -42,5 +43,6 @@ func _generate_outputs() -> void:
 		path.curve.add_point(end)
 		path.transform = o.transform
 		output[0].push_back(path)
-
+	#print("in _generate_outputs for Create line multi node")
+	#print(output[0])
 

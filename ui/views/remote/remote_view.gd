@@ -55,8 +55,11 @@ func _on_peer_disconnected(id: int) -> void:
 
 
 func _on_build_started(id: int) -> void:
+	print("in the _on_build_started function")
 	pass # Update peer status
 
 
 func _on_build_completed(id: int, _res) -> void:
+	print("in the _on_build_completed function")
+	print(_res)
 	pass # Update peer status

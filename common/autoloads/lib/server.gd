@@ -77,7 +77,7 @@ func _get_possible_ports() -> Array:
 	if port_from_cmd:
 		return [port_from_cmd] # Port from the command line has priority
 
-	return [434743, 636763] # Return the default ports
+	return [4347, 6367] # Return the default ports
 
 
 func _on_client_connected(id: int, protocol: String) -> void:
@@ -101,6 +101,9 @@ func _on_data_received(client_id: int) -> void:
 		return
 
 	var data = DictUtil.fix_types(json.result)
+
+	#print("received data")
+	#print(data)
 	var id = int(data[0])
 	var chunk_id = int(data[1])
 	var total_chunks = int(data[2])

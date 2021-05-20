@@ -15,7 +15,7 @@ func _init() -> void:
 	var spacing_opts = {"min": 0.001, "allow_lesser": false, "value": 1.0}
 	var range_opts = {"min": 0, "max": 1, "allow_lesser": false, "allow_higher": false, "steps": 0.001, "value": 0.0}
 
-	set_input(0, "Curve", DataType.CURVE_3D)
+	set_input(0, "Paths", DataType.CURVE_3D) # not really a CURVE_3D object, contains it as a property as p.curve.
 	set_input(1, "Spacing", DataType.SCALAR, spacing_opts)
 	set_input(2, "Start", DataType.SCALAR, range_opts)
 	range_opts["value"] = 1.0
@@ -40,12 +40,18 @@ func _generate_outputs() -> void:
 		end = tmp
 
 	for p in paths:
+		#print("iterating through paths")
+		#print(p.curve)
 		var curve: Curve3D = p.curve
 		var length = curve.get_baked_length()
+		#print("curve length")
+		#print(length)
 		var offset_start = start * length
 		var offset_end = end * length
 		var effective_length = offset_end - offset_start
 		var steps = floor(effective_length / spacing)
+		#print("number of steps")
+		#print(steps)
 		var up = Vector3(0, 1, 0)
 
 		for i in range(steps):
@@ -70,3 +76,5 @@ func _generate_outputs() -> void:
 				up = node.transform.basis.y
 
 			output[0].push_back(node)
+	#print("in _generate_outputs for Sample Along Curve node")
+	#print(output[0])

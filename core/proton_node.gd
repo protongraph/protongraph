@@ -184,6 +184,10 @@ func get_remote_input(name: String):
 		return get_parent().get_remote_input(name)
 	return null
 
+func get_remote_resource(name: String):
+	if get_parent():
+		return get_parent().get_remote_resource(name)
+	return null
 
 func is_output_ready() -> bool:
 	return _output_ready

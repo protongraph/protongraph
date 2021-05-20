@@ -7,35 +7,69 @@ extends Node
 var _resources: Array
 var _serialized_resources: Dictionary
 
+# _node_metadata consists of an array of Dictionaries of the form [ { fence_planks: <fence_planks_node_path> }, { Path: <Path_node_path> }]
+var _node_metadata: Array
+# _serialized_node_metadata consists of an output Dictionary of Dictionaries looking something like (tbc)
+# {
+#	fence_planks: { callback: { fence_planks: <fence_planks_node_path> }, generated_nodes: [ fence_plank_1, fence_plank_2, fence_plank_3 ]},
+#   Path: { ... }
+# }
+# The purpose of the structure of this data is so that the client can then render meshes based on the callback at the generated_nodes
+# associated to said input node in { fence_planks, Path } per this example.
+var _serialized_node_metadata: Dictionary
 
 # -- Public API --
 
-# Takes a list of nodes and serialize them all in a dictionary.
-func serialize(nodes: Array) -> Dictionary:
+# Takes data of the form
+#[{nodes:[list_of_nodes], resources:[list_of_resource_references]}]
+# where a resource_reference is of the form {child_transversal:[node_traversal_sequence], remote_resource_path:path_to_resource_in_client}
+# and serializes it into a dictionary.
+#
+# ## Example data:
+# [{nodes:[fence_planks:[Position3D:5697], fence_planks:[Position3D:5701], fence_planks:[Position3D:5705]], resource_references:[{child_transversal:[fence_planks, tmpParent, fence_planks], remote_resource_path:res://assets/fences/models/fence_planks.glb}]
+# ## Example output:
+# {
+#	"resources": []
+#	"nodes": [fence_planks:[Position3D:5697], fence_planks:[Position3D:5701], fence_planks:[Position3D:5705]]
+#   "resource_references": [{child_transversal:[fence_planks, tmpParent, fence_planks], remote_resource_path:res://assets/fences/models/fence_planks.glb}]
+# }
+func serialize(nodes_with_references: Array) -> Dictionary:
+	print("in the serialize function")
+	print(nodes_with_references)
 	var _resources = []
 	var _serialized_resources = {}
 
 	var result: Dictionary = {
-		"resources": {},
+		"resources": [],
+		"resource_references": [],
 		"nodes": []
 	}
 
-	for node in nodes:
+	for node in nodes_with_references[0]["nodes"]:
 		result["nodes"].push_back(_serialize_recursive(node))
-
-	result["resources"] = _serialized_resources
+	
+	result["resource_references"].push_back(nodes_with_references[0]["resource_references"][0])
 	return result
 
 
 # Inverse of serialize, takes a dictionary and returns a list of Godot nodes.
 func deserialize(data: Dictionary) -> Array:
+	#print("in the node_serializer#deserialize function")
+	#print(data)
 	var result: Array = []
+	_resources = []
 	_serialized_resources = data["resources"]
 	# Deserialize resources here?
 
 	for node in data["node"]:
-		result.append(_deserialize_recursive(node))
+		#print("Deserializing. Node name is:", node.name)
+		#print("Deserializing. Node path is:", node.node_path_input)
+		_node_metadata.append(node.node_path_input)
+		result.append(_deserialize_recursive(node, _resources))
 
+	#print("finished deserialising")
+	#print(_resources)
+	#print(result)
 	return result
 
 
@@ -73,13 +107,16 @@ func _serialize_recursive(node: Node) -> Dictionary:
 
 	return dict
 
-
-func _deserialize_recursive(data: Dictionary) -> Node:
+func _deserialize_recursive(data: Dictionary, resource_parent: Array) -> Node:
 	var node
+	var resource = {}
+	resource["name"] = data["name"]
+	resource["children"] = []
 	match data["type"]:
 		"node_3d":
 			node = _deserialize_node_3d(data["data"])
 		"mesh":
+			resource["resource_path"] = data["data"]["resource_path"]
 			node = _deserialize_mesh_instance(data["data"])
 		"multi_mesh":
 			node = _deserialize_multi_mesh(data["data"])
@@ -89,12 +126,17 @@ func _deserialize_recursive(data: Dictionary) -> Node:
 			print("Type ", data["type"], " is not supported")
 			return null
 
+	# Important for callback within Godot Client after procedural generation
+	# of scenetree for associated Protongraph template.
+	resource_parent.append(resource)
+
 	if data.has("children"):
 		for serialized_child in data["children"]:
-			var child = _deserialize_recursive(serialized_child)
+			var child = _deserialize_recursive(serialized_child, resource["children"])
 			if child:
 				node.add_child(child)
 
+	#print("in node_serializer#_deserialize_recursive")
 	if "name" in data:
 		node.name = data["name"]
 

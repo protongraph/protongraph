@@ -21,6 +21,7 @@ enum Types {
 	MESH_3D = 32,
 	CURVE_3D = 33,
 	POLYLINE_3D = 34,
+	p_RESOURCE = 35,
 
 	NOISE = 40,
 	HEIGHTMAP = 41,
@@ -45,6 +46,7 @@ const MASK_3D = Types.MASK_3D
 const MESH_3D = Types.MESH_3D
 const CURVE_3D = Types.CURVE_3D
 const POLYLINE_3D = Types.POLYLINE_3D
+const p_RESOURCE = Types.p_RESOURCE
 
 const NOISE = Types.NOISE
 const HEIGHTMAP = Types.HEIGHTMAP
@@ -72,6 +74,7 @@ const COLORS = {
 	HEIGHTMAP: Color("fecf46"),
 
 	NODE_3D: Color("e9001e"),
+	p_RESOURCE: Color("e9001e"),
 	CURVE_3D: Color("f6450d"),
 	MESH_3D: Color("fb6f10"),
 	MASK_3D: Color("fc9224"),
@@ -164,6 +167,8 @@ static func to_variant_type(type: int) -> int:
 		MATERIAL:
 			return TYPE_OBJECT
 		MASK_3D:
+			return TYPE_OBJECT
+		p_RESOURCE:
 			return TYPE_OBJECT
 	return TYPE_NIL
 
