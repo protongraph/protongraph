@@ -13,6 +13,3 @@
 [submodule "native/thirdparty/mesh_optimizer/lib"]
 	path = native/thirdparty/mesh_optimizer/lib
 	url = https://github.com/zeux/meshoptimizer
-[submodule "addons/monitor_overlay"]
-	path = addons/monitor_overlay
-	url = https://github.com/HungryProton/monitor_overlay.git

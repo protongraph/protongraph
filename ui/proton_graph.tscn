@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://cix67ygu2d5u5"]
+
+[node name="ProtonGraph" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopBar" type="HBoxContainer" parent="VBoxContainer"]
+offset_right = 1024.0
+offset_bottom = 29.0
+script = null
+
+[node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
+offset_right = 12.0
+offset_bottom = 29.0
+expand_icon = true
+items = []
+script = null
+
+[node name="TabBar" type="TabBar" parent="VBoxContainer/TopBar"]
+offset_left = 16.0
+offset_right = 1024.0
+offset_bottom = 29.0
+size_flags_horizontal = 3
+script = null
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
+offset_top = 33.0
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tab_align = 0
+script = null

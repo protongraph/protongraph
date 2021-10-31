@@ -1,7 +1,0 @@
-[gd_resource type="NativeScript" load_steps=2 format=2]
-
-[ext_resource path="res://native/thirdparty/mesh_optimizer/mesh_optimizer.tres" type="GDNativeLibrary" id=1]
-
-[resource]
-class_name = "MeshOptimizer"
-library = ExtResource( 1 )

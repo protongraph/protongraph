@@ -14,13 +14,13 @@ func _exit_tree() -> void:
 
 
 func get_available_nodes() -> Array:
-	if not _nodes:
+	if _nodes.is_empty():
 		refresh_list()
 	return _nodes.values()
 
 
 func get_index_list() -> Dictionary:
-	if not _node_search_index:
+	if _node_search_index.is_empty():
 		refresh_list()
 	return _node_search_index
 
@@ -31,7 +31,7 @@ func clear() -> void:
 
 
 func create(type: String) -> ProtonNode:
-	if not _node_search_index:
+	if _node_search_index.is_empty():
 		refresh_list()
 
 	if _nodes.has(type):
@@ -41,8 +41,8 @@ func create(type: String) -> ProtonNode:
 
 
 func refresh_list() -> void:
-	_node_search_index = Dictionary()
 	clear()
+	_node_search_index = Dictionary()
 	_nodes = Dictionary()
 	_find_all_nodes("res://nodes/")
 
@@ -52,52 +52,60 @@ func refresh_list() -> void:
 func _find_all_nodes(path) -> void:
 	var dir = Directory.new()
 	dir.open(path)
-	dir.list_dir_begin(true, true)
+	dir.list_dir_begin(false, true)
 	var path_root = dir.get_current_dir() + "/"
 
 	while true:
 		var file = dir.get_next()
 		if file == "":
 			break
+
 		if dir.current_is_dir():
 			_find_all_nodes(path_root + file)
 			continue
+
 		if not file.ends_with(".gd") and not file.ends_with(".gdc"):
 			continue
 
 		var full_path = path_root + file
 		var script = load(full_path)
-		if not script or not script.can_instance():
+		if not script:
 			print("Error: Failed to load script ", file)
 			continue
 
 		var node = script.new()
-		if not node is ProtonNode:
-			continue
-
-		if node.ignore:
+		if not _is_node_valid(node):
 			node.queue_free()
 			continue
 
-		var name = node.display_name
-		var id = node.unique_id
-
-		# ProtonNode is abstract, don't add it to the list
-		if not (node is ProtonNode) or name == "ProtonNode":
-			continue
-
 		# If the interface is defined in a separate file, load it instead
-		if node.has_custom_gui():
-			var scene = load(path_root + file.replace(".gd", ".tscn"))
-			if not scene is PackedScene:
-				continue # Scene file does not exists
-			node = scene.instance()
+		# TODO: Redo this later. It's not the ProtonNode responsibility to provide this info
+#		if node.has_custom_gui():
+#			var scene = load(path_root + file.replace(".gd", ".tscn"))
+#			if not scene is PackedScene:
+#				continue # Scene file does not exists
+#			node = scene.instantiate()
 
-		if _nodes.has(id):
-			print("Warning: Node ", name, " has duplicate id ", full_path)
-		else:
-			node.name = id
-			_nodes[id] = node
-			_node_search_index[node.display_name] = id
+		node.name = node.unique_id
+		_nodes[node.unique_id] = node
+		_node_search_index[node.display_name] = node.unique_id
 
 	dir.list_dir_end()
+
+
+func _is_node_valid(node) -> bool:
+		if not node is ProtonNode:
+			return false
+
+		if node.ignore:
+			return false
+
+		# Abstract node, don't add this to the list
+		if node.display_name == "ProtonNode":
+			return false
+
+		if _nodes.has(node.unique_id):
+			printerr("Node ", node.display_name, " has duplicate id ", node.get_script().resource_path)
+			return false
+
+		return true
