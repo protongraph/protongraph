@@ -2,6 +2,9 @@ class_name NodeGraph
 extends Resource
 
 
+signal graph_changed
+
+
 class Connection:
 	var from: String
 	var to: String
@@ -26,7 +29,34 @@ func clear() -> void:
 	_registry = {}
 
 
-func create_node(type: String, data := {}) -> ProtonNode:
-	var node
+func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
+	var new_node: ProtonNode = NodeFactory.create(type_id)
+	if not new_node:
+		return null
 
-	return node
+	if "position" in data:
+		new_node.external_data.position = data.position
+
+	if "name" in data:
+		new_node.unique_name = data.name
+	else:
+		new_node.unique_name = _get_unique_name(new_node)
+		
+	nodes[new_node.unique_name] = new_node
+	
+	if notify:
+		graph_changed.emit()
+
+	#_on_node_created(new_node)
+	print("new node: ", new_node)
+	return new_node
+
+
+func _get_unique_name(node: ProtonNode) -> String:
+	var unique_name := node.type_id
+	var counter := 0
+	while unique_name in nodes: 
+		counter += 1
+		unique_name = node.type_id + str(counter)
+	
+	return unique_name

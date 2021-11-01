@@ -10,6 +10,16 @@ config_version=4
 
 _global_script_classes=[{
 "base": "RefCounted",
+"class": &"DataType",
+"language": &"GDScript",
+"path": "res://common/static/data_type.gd"
+}, {
+"base": "Node",
+"class": &"EventBus",
+"language": &"GDScript",
+"path": "res://common/autoloads/event_bus.gd"
+}, {
+"base": "RefCounted",
 "class": &"MemoryUtil",
 "language": &"GDScript",
 "path": "res://common/static/memory_util.gd"
@@ -24,25 +34,36 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://core/node_graph.gd"
 }, {
+"base": "GraphEdit",
+"class": &"NodeGraphEditor",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/graph_editor.gd"
+}, {
 "base": "Resource",
 "class": &"ProtonNode",
 "language": &"GDScript",
 "path": "res://core/proton_node.gd"
 }]
 _global_script_class_icons={
+"DataType": "",
+"EventBus": "",
 "MemoryUtil": "",
 "NodeDocumentation": "",
 "NodeGraph": "",
+"NodeGraphEditor": "",
 "ProtonNode": ""
 }
 
 [application]
 
 config/name="ProtonGraph"
+run/main_scene="res://ui/proton_graph.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
+GlobalEventBus="*res://common/autoloads/event_bus.gd"
+ProtonGraphSettings="*res://common/autoloads/project_settings.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
 
 [rendering]

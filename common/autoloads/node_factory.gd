@@ -26,16 +26,15 @@ func get_index_list() -> Dictionary:
 
 
 func clear() -> void:
-	for node in _nodes.values():
-		node.queue_free()
+	_nodes.clear()
 
 
-func create(type: String) -> ProtonNode:
+func create(type_id: String) -> ProtonNode:
 	if _node_search_index.is_empty():
 		refresh_list()
 
-	if _nodes.has(type):
-		return _nodes[type].duplicate(7)
+	if type_id in _nodes:
+		return _nodes[type_id].duplicate(true)
 
 	return null
 
@@ -75,7 +74,7 @@ func _find_all_nodes(path) -> void:
 
 		var node = script.new()
 		if not _is_node_valid(node):
-			node.queue_free()
+			MemoryUtil.free(node)
 			continue
 
 		# If the interface is defined in a separate file, load it instead
@@ -86,9 +85,8 @@ func _find_all_nodes(path) -> void:
 #				continue # Scene file does not exists
 #			node = scene.instantiate()
 
-		node.name = node.unique_id
-		_nodes[node.unique_id] = node
-		_node_search_index[node.display_name] = node.unique_id
+		_nodes[node.type_id] = node
+		_node_search_index[node.title] = node.type_id
 
 	dir.list_dir_end()
 
@@ -101,11 +99,11 @@ func _is_node_valid(node) -> bool:
 			return false
 
 		# Abstract node, don't add this to the list
-		if node.display_name == "ProtonNode":
+		if node.title == "ProtonNode":
 			return false
 
-		if _nodes.has(node.unique_id):
-			printerr("Node ", node.display_name, " has duplicate id ", node.get_script().resource_path)
+		if _nodes.has(node.type_id):
+			printerr("Node ", node.title, " has duplicate id ", node.get_script().resource_path)
 			return false
 
 		return true

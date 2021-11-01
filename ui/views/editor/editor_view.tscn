@@ -1,9 +1,12 @@
-[gd_scene format=3 uid="uid://br7vjmahwgjin"]
+[gd_scene load_steps=3 format=3 uid="uid://br7vjmahwgjin"]
+
+[ext_resource type="PackedScene" uid="uid://dlc0aaiewp0tx" path="res://ui/views/editor/components/graph_editor/graph_editor.tscn" id="1_8i43s"]
+[ext_resource type="Script" path="res://ui/views/editor/editor_view.gd" id="1_rpw2x"]
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = null
+script = ExtResource( "1_rpw2x" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -16,14 +19,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GraphEdit" type="GraphEdit" parent="HBoxContainer"]
+[node name="NodeGraphEditor" parent="HBoxContainer" instance=ExtResource( "1_8i43s" )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_right = 1024.0
 offset_bottom = 600.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-right_disconnects = true
-zoom_min = 0.25
-zoom_max = 2.0
-zoom_step = 1.08
-show_zoom_label = true
-script = null

@@ -3,12 +3,16 @@ extends Resource
 
 
 @export var external_data: Dictionary
+@export var unique_name: String
 
-var sub_graph_id: int
-var unique_id: String
-var display_name: String
+
+var type_id: String
+var title: String
 var description: String
+var category: String
 var documentation: NodeDocumentation
+var ignore := false
+var sub_graph_id: int
 
 var _inputs: Dictionary
 var _outputs: Dictionary
@@ -32,6 +36,23 @@ func create_output(idx, name: String, type: int, options := {}) -> void:
 	}
 
 
+func get_input(idx, default := []) -> Array:
+	return default
+
+
+# By default, every input and output is an array. This is just a short hand with
+# all the necessary checks that returns the first value of the input.
+func get_input_single(idx, default = null):
+	var input := get_input(idx)
+	if input.is_empty() or input[0] == null:
+		return default
+	return input[0]
+
+
+func set_output(idx, value) -> void:
+	if idx in _outputs:
+		_outputs[idx].value = value
+
 # Overide this function in the derived classes to return something usable.
 # Generates all the outputs for every declared outputs.
 func _generate_outputs() -> void:
@@ -50,6 +71,3 @@ func _clear_outputs():
 		MemoryUtil.free(_outputs.idx.value)
 		_outputs.idx.value = null
 
-
-func get_input(idx):
-	pass

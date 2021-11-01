@@ -1,6 +1,8 @@
-[gd_scene format=3 uid="uid://cix67ygu2d5u5"]
+[gd_scene load_steps=2 format=3 uid="uid://cix67ygu2d5u5"]
 
-[node name="ProtonGraph" type="Control"]
+[ext_resource type="Texture2D" uid="uid://cbbh53a0sbqka" path="res://ui/icons/icon_menu.svg" id="1_lh0uq"]
+
+[node name="ProtonGraph" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = null
@@ -11,6 +13,7 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme_override_constants/separation = 0
 script = null
 __meta__ = {
 "_edit_use_anchors_": false
@@ -18,28 +21,56 @@ __meta__ = {
 
 [node name="TopBar" type="HBoxContainer" parent="VBoxContainer"]
 offset_right = 1024.0
-offset_bottom = 29.0
+offset_bottom = 30.0
 script = null
 
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
-offset_right = 12.0
-offset_bottom = 29.0
+offset_right = 30.0
+offset_bottom = 30.0
+rect_min_size = Vector2(30, 30)
+icon = ExtResource( "1_lh0uq" )
 expand_icon = true
 items = []
 script = null
 
 [node name="TabBar" type="TabBar" parent="VBoxContainer/TopBar"]
-offset_left = 16.0
+offset_left = 34.0
 offset_right = 1024.0
-offset_bottom = 29.0
+offset_bottom = 30.0
 size_flags_horizontal = 3
+tab_close_display_policy = 1
+drag_to_rearrange_enabled = true
 script = null
 
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
-offset_top = 33.0
+offset_top = 30.0
 offset_right = 1024.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 tab_align = 0
+tabs_visible = false
+script = null
+
+[node name="Child1" type="Label" parent="VBoxContainer/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 8.0
+offset_right = -4.0
+offset_bottom = -4.0
+text = "label1"
+structured_text_bidi_override_options = []
+script = null
+
+[node name="Child2" type="Label" parent="VBoxContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 8.0
+offset_right = -4.0
+offset_bottom = -4.0
+text = "label2"
+structured_text_bidi_override_options = []
 script = null
