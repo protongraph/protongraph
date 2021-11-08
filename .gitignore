@@ -13,6 +13,9 @@ script_templates/
 .mono/
 # data_*/
 
+builds/
+godot*
+
 *.o
 *.os
 *.so
