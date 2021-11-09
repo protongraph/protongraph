@@ -21,7 +21,7 @@ func _generate_outputs() -> void:
 	var placeholder = get_input_single(2)
 
 	var input = get_remote_resource(name)
-	# input = [{child_transversal:[fence_planks, tmpParent], remote_resource_path:res://assets/fences/models/fence_planks.glb}]
+	# input = [{child_transversal:[fence_planks, tmpParent], remote_resource_path:res://assets/fences/models/fence_planks.glb::2}]
 	# i.e. fence_planks (Position3D) -> tmpParent (Position3D) -> fence_planks (MeshInstance)
 	# we need to pass all of this information back to the client.
 

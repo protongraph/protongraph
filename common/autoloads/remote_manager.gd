@@ -34,7 +34,7 @@ func _set_inputs(tpl: Template, inputs: Array) -> void:
 		if input:
 			tpl.set_remote_input(input.name, input)
 
-# resource_references: [{children:[], name:Path}, {children:[{children:[{children:[], name:fence_planks, resource_path:res://assets/fences/models/fence_planks.glb}], name:tmpParent}], name:fence_planks}]
+# resource_references: [{children:[], name:Path}, {children:[{children:[{children:[], name:fence_planks, resource_path:res://assets/fences/models/fence_planks.glb::2}], name:tmpParent}], name:fence_planks}]
 # inputs: [Path:[Path:3492], fence_planks:[Position3D:3494]]
 func _set_resource_references(tpl: Template, inputs: Array, resource_references: Array, child_transversal: Array = []) -> void:
 	if not inputs:

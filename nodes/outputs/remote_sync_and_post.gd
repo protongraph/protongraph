@@ -6,7 +6,7 @@ func _init() -> void:
 	display_name = "Remote Sync and Post"
 	category = "Output"
 	description = "Sends the data to a remote program like a game engine or anything else."
-	# input = [{child_transversal:[fence_planks, tmpParent], remote_resource_path:res://assets/fences/models/fence_planks.glb}]
+	# input = [{child_transversal:[fence_planks, tmpParent], remote_resource_path:res://assets/fences/models/fence_planks.glb::2}]
 	set_input(0, "Resource Pointers", DataType.p_RESOURCE)
 	set_input(1, "3D Objects", DataType.NODE_3D)
 	enable_multiple_connections_on_slot(0)

@@ -6,7 +6,7 @@ func _init() -> void:
 	display_name = "Remote Post"
 	category = "Output"
 	description = "Sends metadata for 3D objects to a remote program like a game engine or anything else."
-	# input = [{child_transversal:[fence_planks, tmpParent], remote_resource_path:res://assets/fences/models/fence_planks.glb}]
+	# input = [{child_transversal:[fence_planks, tmpParent], remote_resource_path:res://assets/fences/models/fence_planks.glb::2}]
 	set_input(0, "Resource Pointers", DataType.p_RESOURCE)
 	enable_multiple_connections_on_slot(0)
 
