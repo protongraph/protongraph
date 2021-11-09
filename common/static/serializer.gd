@@ -126,7 +126,6 @@ func _deserialize_recursive(data: Dictionary, resource_parent: Array) -> Node:
 			if child:
 				node.add_child(child)
 
-	#print("in node_serializer#_deserialize_recursive")
 	if "name" in data:
 		node.name = data["name"]
 

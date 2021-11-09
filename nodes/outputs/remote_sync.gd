@@ -13,8 +13,6 @@ func _init() -> void:
 
 func _generate_outputs() -> void:
 	output[0] = get_input(0)
-	print(output[0])
-
 
 func is_final_output_node() -> bool:
 	return true

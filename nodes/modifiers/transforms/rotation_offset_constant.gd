@@ -16,7 +16,6 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	#print("in _generate_outputs for Rotate Transforms node")
 	var nodes := get_input(0)
 	var amount: Vector3 = get_input_single(1, Vector3.ZERO)
 	var local_space: bool = get_input_single(2, true)
@@ -44,7 +43,4 @@ func _generate_outputs() -> void:
 			n.rotate(Vector3.FORWARD, r.z)
 
 	output[0] = nodes
-	#print("Rotate Transforms node#NodesInput %s" % str(get_input(0)))
-	#print("Rotate Transforms node#OffsetInput %s" % str(get_input(1)))
-	#print("Rotate Transforms node#LocalSpaceInput %s" % str(get_input(2)))
-	#print("Rotate Transforms node#output %s" % str(output[0]))
+

@@ -40,18 +40,12 @@ func _generate_outputs() -> void:
 		end = tmp
 
 	for p in paths:
-		#print("iterating through paths")
-		#print(p.curve)
 		var curve: Curve3D = p.curve
 		var length = curve.get_baked_length()
-		#print("curve length")
-		#print(length)
 		var offset_start = start * length
 		var offset_end = end * length
 		var effective_length = offset_end - offset_start
 		var steps = floor(effective_length / spacing)
-		#print("number of steps")
-		#print(steps)
 		var up = Vector3(0, 1, 0)
 
 		for i in range(steps):
@@ -76,5 +70,3 @@ func _generate_outputs() -> void:
 				up = node.transform.basis.y
 
 			output[0].push_back(node)
-	#print("in _generate_outputs for Sample Along Curve node")
-	#print(output[0])

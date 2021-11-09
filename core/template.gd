@@ -424,7 +424,6 @@ func _run_generation_threaded(_var = null) -> void:
 			call_deferred("emit_signal", "thread_completed")
 			return
 
-	print("in _run_generation_threaded")
 	_output = []
 	var node_output
 	for node in _output_nodes:

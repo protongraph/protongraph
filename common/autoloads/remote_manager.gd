@@ -57,13 +57,11 @@ func _on_build_requested(id: int, path: String, args: Dictionary) -> void:
 	var tpl: Template
 	if _peers.has(id):
 		tpl = _peers[id]["template"]
-		print(tpl)
 	else:
 		tpl = Template.new()
 		add_child(tpl)
 		_peers[id] = {}
 		_peers[id]["template"] = tpl
-		print(tpl)
 
 	if tpl._loaded_template_path != path:
 		tpl.load_from_file(path)

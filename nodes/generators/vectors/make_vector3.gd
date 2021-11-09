@@ -15,10 +15,8 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	#print("in _generate_outputs for Create Vector3 node")
 	var x: float = get_input_single(0, 0)
 	var y: float = get_input_single(1, 0)
 	var z: float = get_input_single(2, 0)
 
 	output[0] = Vector3(x, y, z)
-	#print(output[0])

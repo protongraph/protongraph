@@ -102,8 +102,6 @@ func _on_data_received(client_id: int) -> void:
 
 	var data = DictUtil.fix_types(json.result)
 
-	#print("received data")
-	#print(data)
 	var id = int(data[0])
 	var chunk_id = int(data[1])
 	var total_chunks = int(data[2])

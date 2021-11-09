@@ -28,5 +28,3 @@ func _generate_outputs() -> void:
 		output[0] = input.get_children()
 	else:
 		output[0] = input
-	#print("in _generate_outputs for Remote Input Curve 3D node with name: %s" % get_input(0))
-	#print(output[0])

@@ -31,4 +31,3 @@ func _generate_outputs() -> void:
 
 		n.transform = t.transform
 		output[0].push_back(n)
-	#print("spawnDuplicates#output %s" % str(output[0]))
