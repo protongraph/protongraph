@@ -52,8 +52,6 @@ func _set_resource_references(tpl: Template, inputs: Array, resource_references:
 
 
 func _on_build_requested(id: int, path: String, args: Dictionary) -> void:
-	#print("in the remote_manager#_on_build_requested function")
-	#print(args)
 	var tpl: Template
 	if _peers.has(id):
 		tpl = _peers[id]["template"]

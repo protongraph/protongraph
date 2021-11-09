@@ -52,8 +52,6 @@ func _on_remote_build_requested(id, msg: Dictionary) -> void:
 
 
 func _on_remote_build_completed(id, data: Array) -> void:
-	#print("in the protocol#_on_remote_build_completed function")
-	#print(data)
 	var msg = {"type": "build_completed"}
 	msg["data"] = _node_serializer.serialize(data)
 	_server.send(id, msg)
