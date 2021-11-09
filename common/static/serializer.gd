@@ -34,8 +34,6 @@ var _serialized_node_metadata: Dictionary
 #   "resource_references": [{child_transversal:[fence_planks, tmpParent, fence_planks], remote_resource_path:res://assets/fences/models/fence_planks.glb}]
 # }
 func serialize(nodes_with_references: Array) -> Dictionary:
-	print("in the serialize function")
-	print(nodes_with_references)
 	var _resources = []
 	var _serialized_resources = {}
 
@@ -54,22 +52,14 @@ func serialize(nodes_with_references: Array) -> Dictionary:
 
 # Inverse of serialize, takes a dictionary and returns a list of Godot nodes.
 func deserialize(data: Dictionary) -> Array:
-	#print("in the node_serializer#deserialize function")
-	#print(data)
 	var result: Array = []
 	_resources = []
 	_serialized_resources = data["resources"]
 	# Deserialize resources here?
 
 	for node in data["node"]:
-		#print("Deserializing. Node name is:", node.name)
-		#print("Deserializing. Node path is:", node.node_path_input)
 		_node_metadata.append(node.node_path_input)
 		result.append(_deserialize_recursive(node, _resources))
-
-	#print("finished deserialising")
-	#print(_resources)
-	#print(result)
 	return result
 
 

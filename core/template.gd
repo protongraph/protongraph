@@ -367,26 +367,19 @@ func get_remote_input(name: String):
 	return null
 
 func get_remote_resource(name: String):
-	#print("in the get_remote_resource function")
-	#print(_remote_resources)
-	#print(name)
 	if name in _remote_resources:
 		return _remote_resources[name]
 	return null
 
 func set_remote_input(name: String, value):
-	#print("in the set_remote_input function")
 	_remote_inputs[name] = value
 
 # make sure that we record where in the input tree the resource sits
 func set_remote_resource(name: String, child_transversal: Array, remote_resource_path: String):
-	#print("in the set_remote_resource function")
 	var remote_resource = {}
 	remote_resource["child_transversal"] = child_transversal
 	remote_resource["remote_resource_path"] = remote_resource_path
 	_remote_resources[name] = remote_resource
-	#print(_remote_resources)
-
 
 # Makes sure there's no active thread running before starting a new generation.
 # Called from _timer (on timeout event).
@@ -419,12 +412,9 @@ func _run_generation_threaded(_var = null) -> void:
 			return
 	
 	for remote_input in _remote_inputs:
-		#print("setting data in input_node")
-		#print(remote_input)
 		if not remote_input:
 			_remote_inputs.erase(remote_input)
 			continue
-		# todo handle setting data in _input_nodes
 		# we need the index of the input as well as the data for it.
 
 
@@ -438,8 +428,6 @@ func _run_generation_threaded(_var = null) -> void:
 	_output = []
 	var node_output
 	for node in _output_nodes:
-		#print("getting data from output_node")
-		#print(node.name)
 		if not node:
 			_output_nodes.erase(node)
 			continue

@@ -12,7 +12,6 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	print("in the remote_post _generate_outputs function")
 	output[0] = get_input(0)
 	print(output[0])
 

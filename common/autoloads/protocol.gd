@@ -32,8 +32,6 @@ func _on_data_received(id: int , data: Dictionary) -> void:
 
 
 func _on_remote_build_requested(id, msg: Dictionary) -> void:
-	#print("in _on_remote_build_requested")
-	#print(msg["inputs"])
 	if not msg.has("path"):
 		return
 
@@ -54,8 +52,8 @@ func _on_remote_build_requested(id, msg: Dictionary) -> void:
 
 
 func _on_remote_build_completed(id, data: Array) -> void:
-	print("in the protocol#_on_remote_build_completed function")
-	print(data)
+	#print("in the protocol#_on_remote_build_completed function")
+	#print(data)
 	var msg = {"type": "build_completed"}
 	msg["data"] = _node_serializer.serialize(data)
 	_server.send(id, msg)

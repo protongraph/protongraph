@@ -16,9 +16,6 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	#print("in the _generate_outputs node for create duplicates")
-	#print("spawnDuplicates#source %s" % str(get_input(0)))
-	#print("spawnDuplicates#transforms %s" % str(get_input(1)))
 	var source: Spatial = get_input_single(0)
 	var transforms := get_input(1)
 
