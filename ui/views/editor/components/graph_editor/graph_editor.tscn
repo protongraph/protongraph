@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dlc0aaiewp0tx"]
+[gd_scene load_steps=2 format=3 uid="uid://dlc0aaiewp0tx"]
 
 [ext_resource type="Script" path="res://ui/views/editor/components/graph_editor/graph_editor.gd" id="1_qf2ha"]
-[ext_resource type="PackedScene" uid="uid://jpc3n4jhgqtw" path="res://ui/views/editor/components/graph_editor/components/add_node_popup.tscn" id="2_qgwma"]
 
 [node name="NodeGraphEditor" type="GraphEdit"]
 anchor_right = 1.0
@@ -10,12 +9,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 right_disconnects = true
 zoom_min = 0.25
-zoom_max = 2.0
+zoom_max = 2.16
 zoom_step = 1.08
 show_zoom_label = true
 script = ExtResource( "1_qf2ha" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="AddNodePopup" parent="." instance=ExtResource( "2_qgwma" )]

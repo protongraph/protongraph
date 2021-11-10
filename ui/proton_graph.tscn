@@ -1,11 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://cix67ygu2d5u5"]
+[gd_scene load_steps=8 format=3 uid="uid://cix67ygu2d5u5"]
 
 [ext_resource type="Texture2D" uid="uid://cbbh53a0sbqka" path="res://ui/icons/icon_menu.svg" id="1_lh0uq"]
+[ext_resource type="Theme" uid="uid://iqe2mb5f3yen" path="res://ui/themes/dark.tres" id="1_y01vt"]
+[ext_resource type="Script" path="res://ui/proton_graph.gd" id="2_aiyx6"]
+[ext_resource type="Script" path="res://ui/root/menu_button.gd" id="3_llsfr"]
+[ext_resource type="PackedScene" uid="uid://krqgsakt0ufw" path="res://ui/views/welcome/welcome_view.tscn" id="4_3anom"]
+[ext_resource type="Script" path="res://ui/root/view_container.gd" id="4_fkmym"]
+[ext_resource type="PackedScene" uid="uid://b32pjn02ks4oc" path="res://ui/root/save_load_dialogs/save_load_manager.tscn" id="7_hhjai"]
 
 [node name="ProtonGraph" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = null
+theme = ExtResource( "1_y01vt" )
+script = ExtResource( "2_aiyx6" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -14,63 +21,52 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 0
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TopBar" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
 offset_right = 1024.0
-offset_bottom = 30.0
-script = null
+offset_bottom = 4.0
+
+[node name="TopBar" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 4.0
+offset_right = 1024.0
+offset_bottom = 35.0
 
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
 offset_right = 30.0
-offset_bottom = 30.0
+offset_bottom = 31.0
 rect_min_size = Vector2(30, 30)
 icon = ExtResource( "1_lh0uq" )
 expand_icon = true
-items = []
-script = null
+script = ExtResource( "3_llsfr" )
 
 [node name="TabBar" type="TabBar" parent="VBoxContainer/TopBar"]
-offset_left = 34.0
+offset_left = 30.0
 offset_right = 1024.0
-offset_bottom = 30.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
+tab_align = 0
 tab_close_display_policy = 1
 drag_to_rearrange_enabled = true
-script = null
 
-[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
-offset_top = 30.0
+[node name="ViewContainer" type="TabContainer" parent="VBoxContainer"]
+offset_top = 35.0
 offset_right = 1024.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 tab_align = 0
 tabs_visible = false
-script = null
+script = ExtResource( "4_fkmym" )
+tab_bar = NodePath("../TopBar/TabBar")
 
-[node name="Child1" type="Label" parent="VBoxContainer/TabContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="WelcomeView" parent="VBoxContainer/ViewContainer" instance=ExtResource( "4_3anom" )]
 offset_left = 4.0
-offset_top = 8.0
+offset_top = 6.0
 offset_right = -4.0
 offset_bottom = -4.0
-text = "label1"
-structured_text_bidi_override_options = []
-script = null
 
-[node name="Child2" type="Label" parent="VBoxContainer/TabContainer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 8.0
-offset_right = -4.0
-offset_bottom = -4.0
-text = "label2"
-structured_text_bidi_override_options = []
-script = null
+[node name="SaveLoadManager" parent="." instance=ExtResource( "7_hhjai" )]

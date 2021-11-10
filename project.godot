@@ -9,15 +9,70 @@
 config_version=4
 
 _global_script_classes=[{
+"base": "GenericInputComponent",
+"class": &"BooleanComponent",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/components/nodes/boolean.gd"
+}, {
+"base": "Popup",
+"class": &"ConfirmDialog",
+"language": &"GDScript",
+"path": "res://ui/root/save_load_dialogs/confirm_dialog.gd"
+}, {
+"base": "ProgressBar",
+"class": &"CustomSpinBox",
+"language": &"GDScript",
+"path": "res://ui/common/spinbox/spinbox.gd"
+}, {
+"base": "TabContainer",
+"class": &"CustomTabContainer",
+"language": &"GDScript",
+"path": "res://ui/common/custom_tab_container.gd"
+}, {
 "base": "RefCounted",
 "class": &"DataType",
 "language": &"GDScript",
 "path": "res://common/static/data_type.gd"
 }, {
+"base": "RefCounted",
+"class": &"EditorUtil",
+"language": &"GDScript",
+"path": "res://common/static/editor_util.gd"
+}, {
+"base": "Control",
+"class": &"EditorView",
+"language": &"GDScript",
+"path": "res://ui/views/editor/editor_view.gd"
+}, {
 "base": "Node",
 "class": &"EventBus",
 "language": &"GDScript",
 "path": "res://common/autoloads/event_bus.gd"
+}, {
+"base": "GraphNodeUiComponent",
+"class": &"GenericInputComponent",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/components/nodes/generic_input.gd"
+}, {
+"base": "GraphNodeUiComponent",
+"class": &"GenericOutputComponent",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/components/nodes/generic_output.gd"
+}, {
+"base": "GraphNode",
+"class": &"GraphNodeUi",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/components/nodes/graph_node_ui.gd"
+}, {
+"base": "MarginContainer",
+"class": &"GraphNodeUiComponent",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/components/nodes/graph_node_ui_component.gd"
+}, {
+"base": "Control",
+"class": &"LoadSaveManager",
+"language": &"GDScript",
+"path": "res://ui/root/save_load_dialogs/save_load_manager.gd"
 }, {
 "base": "RefCounted",
 "class": &"MemoryUtil",
@@ -39,19 +94,78 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/graph_editor.gd"
 }, {
+"base": "RefCounted",
+"class": &"PathUtil",
+"language": &"GDScript",
+"path": "res://common/static/path_util.gd"
+}, {
+"base": "Panel",
+"class": &"ProtonGraphApp",
+"language": &"GDScript",
+"path": "res://ui/proton_graph.gd"
+}, {
 "base": "Resource",
 "class": &"ProtonNode",
 "language": &"GDScript",
 "path": "res://core/proton_node.gd"
+}, {
+"base": "FileDialog",
+"class": &"SaveLoadDialog",
+"language": &"GDScript",
+"path": "res://ui/root/save_load_dialogs/save_load_dialog.gd"
+}, {
+"base": "GenericInputComponent",
+"class": &"ScalarComponent",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/components/nodes/number.gd"
+}, {
+"base": "GenericInputComponent",
+"class": &"StringComponent",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/components/nodes/string.gd"
+}, {
+"base": "RefCounted",
+"class": &"UserInterfaceUtil",
+"language": &"GDScript",
+"path": "res://common/static/ui_util.gd"
+}, {
+"base": "GraphNodeUiComponent",
+"class": &"VectorComponent",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/components/nodes/vector.gd"
+}, {
+"base": "CustomTabContainer",
+"class": &"ViewContainer",
+"language": &"GDScript",
+"path": "res://ui/root/view_container.gd"
 }]
 _global_script_class_icons={
+"BooleanComponent": "",
+"ConfirmDialog": "",
+"CustomSpinBox": "",
+"CustomTabContainer": "",
 "DataType": "",
+"EditorUtil": "",
+"EditorView": "",
 "EventBus": "",
+"GenericInputComponent": "",
+"GenericOutputComponent": "",
+"GraphNodeUi": "",
+"GraphNodeUiComponent": "",
+"LoadSaveManager": "",
 "MemoryUtil": "",
 "NodeDocumentation": "",
 "NodeGraph": "",
 "NodeGraphEditor": "",
-"ProtonNode": ""
+"PathUtil": "",
+"ProtonGraphApp": "",
+"ProtonNode": "",
+"SaveLoadDialog": "",
+"ScalarComponent": "",
+"StringComponent": "",
+"UserInterfaceUtil": "",
+"VectorComponent": "",
+"ViewContainer": ""
 }
 
 [application]
@@ -63,7 +177,9 @@ config/icon="res://icon.png"
 [autoload]
 
 GlobalEventBus="*res://common/autoloads/event_bus.gd"
-ProtonGraphSettings="*res://common/autoloads/project_settings.gd"
+GlobalUndoRedo="*res://common/autoloads/undo_redo.gd"
+Settings="*res://common/autoloads/project_settings.gd"
+TextureUtil="*res://common/autoloads/texture_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
 
 [rendering]

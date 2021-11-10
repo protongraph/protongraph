@@ -41,22 +41,38 @@ func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
 		new_node.unique_name = data.name
 	else:
 		new_node.unique_name = _get_unique_name(new_node)
-		
+
 	nodes[new_node.unique_name] = new_node
-	
+
 	if notify:
 		graph_changed.emit()
 
 	#_on_node_created(new_node)
-	print("new node: ", new_node)
+	print("new node: ", new_node.unique_name)
 	return new_node
+
+
+func connect_node(from: StringName, from_port: int, to: StringName, to_port: int) -> void:
+	var c := Connection.new()
+	c.from = from
+	c.from_port = from_port
+	c.to = to
+	c.to_port = to_port
+	connections.push_back(c)
+
+
+func disconnect_node(from: StringName, from_port: int, to: StringName, to_port: int) -> void:
+	for c in connections:
+		if c.from == from and c.from_port == from_port and c.to == to and c.to_port == to_port:
+			connections.erase(c)
+			return
 
 
 func _get_unique_name(node: ProtonNode) -> String:
 	var unique_name := node.type_id
 	var counter := 0
-	while unique_name in nodes: 
+	while unique_name in nodes:
 		counter += 1
 		unique_name = node.type_id + str(counter)
-	
+
 	return unique_name

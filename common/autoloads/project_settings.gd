@@ -1,30 +1,52 @@
 extends Node
 
 
-const MULTITHREAD_ENABLED = "enable_multithreading"
-const GENERATION_DELAY = "delay_before_generation"
-const INLINE_VECTOR_FIELDS = "inline_vector_fields"
-const GROUP_NODES_BY_TYPE = "group_nodes_by_type"
-const AUTOSAVE_ENABLED = "enable_autosave"
-const AUTOSAVE_INTERVAL = "autosave_interval"
-const EDITOR_SCALE = "editor_scale"
-const TOUCHPAD_NAVIGATION = "touchpad_navigation"
+const EDITOR_SCALE = {
+	"category": "editor",
+	"id": "editor_scale",
+	"title": "Editor UI scale",
+	"description": 
+		"""Increase this number if the text appears too small.
+		Decrease it if the text appears too large.""",
+	}
+const AUTOSAVE_ENABLED = {
+	"category": "editor",
+	"id": "enable_autosave",
+	"title": "Enable Autosave",
+	"description": "Automatically save the edited graph at regular intervals.",
+}
+const AUTOSAVE_INTERVAL = {
+	"category": "editor",
+	"id": "autosave_interval",
+	"title": "Autosave interval",
+	"description":
+		"""Save edited templates every X seconds.
+		Only applicable when autosave is enabled.""",
+}
+const GROUP_NODES_BY_TYPE = {
+	"category": "editor",
+	"id": "group_nodes_by_type",
+	"title": "Group nodes by type",
+	"description": 
+		"""In the "Add node" popup, by default nodes are grouped by purpose (Generators, Modifiers...).
+		Turn this setting on to group them by data type (Meshes, Curves ...).""",
+}
 
-var _path = "user://config.json"
+var _path = "user://config.cfg"
 var _initialized := false
-var _json = JSON.new()
+var _list := [
+	EDITOR_SCALE,
+	AUTOSAVE_ENABLED,
+	AUTOSAVE_INTERVAL,
+	GROUP_NODES_BY_TYPE,
+]
 
-
-# Default settings
-var _settings = {
-	MULTITHREAD_ENABLED: true,
-	GENERATION_DELAY: 75,
-	INLINE_VECTOR_FIELDS: false,
+# Default settings values
+var _values = {
 	GROUP_NODES_BY_TYPE: false,
 	AUTOSAVE_ENABLED: true,
-	AUTOSAVE_INTERVAL: 300,
-	EDITOR_SCALE: 100,
-	TOUCHPAD_NAVIGATION: false
+	AUTOSAVE_INTERVAL: 30,
+	EDITOR_SCALE: 1.0,
 }
 
 var _require_restart := [
@@ -33,34 +55,35 @@ var _require_restart := [
 
 
 func _ready() -> void:
-	load_or_create_config()
+	load_or_create_config_file()
 
 
-func has(setting: String) -> bool:
-	return _settings.has(setting)
+func has(setting) -> bool:
+	return _values.has(setting)
 
 
-func get_setting(setting: String):
+func get_setting(setting, default = null):
 	if not _initialized:
-		load_or_create_config()
+		load_or_create_config_file()
 	
-	if _settings.has(setting):
-		return _settings[setting]
+	if _values.has(setting):
+		return _values[setting]
 	
-	return null
+	return default
 
 
 func update_setting(setting: String, value) -> void:
-	var old_value = _settings[setting]
-	_settings[setting] = value
+	var old_value = _values[setting]
+	_values[setting] = value
 	save_config()
-	GlobalEventBus.settings_updated.emit(setting)
 
 	if _require_restart.has(setting): # Keep using the old value until the user restarts the application
-		_settings[setting] = old_value
+		_values[setting] = old_value
+	else:
+		GlobalEventBus.settings_updated.emit(setting)
 
 
-func load_or_create_config() -> void:
+func load_or_create_config_file() -> void:
 	var dir = Directory.new()
 	dir.open("user://")
 	if dir.file_exists(_path):
@@ -74,26 +97,17 @@ func load_or_create_config() -> void:
 
 
 func load_config() -> void:
-	var file = File.new()
-	file.open(_path, File.READ)
-	if not _json.parse(file.get_as_text()):
-		print("Failed to parse the configuration file ", _path)
-		print(_json.get_error_message(), " l", _json.get_error_line())
+	var config = ConfigFile.new()
+	if config.load(_path) != OK:
+		print("Failed to load the configuration file ", _path)
 		return
 
-	# Don't override the whole settings dict at once in case the settings file doesn't contain 
-	# all the settings entries. (Happens when we add new settings)
-	var dict = _json.get_data()
-	for key in dict:
-		_settings[key] = dict[key]
-
-	# Fix because of wrong defaults set on the 0.6 release
-	if _settings[EDITOR_SCALE] < 75 or _settings[EDITOR_SCALE] > 400:
-		_settings[EDITOR_SCALE] = 100
+	for setting in _list:
+		_values[setting] = config.get_value(setting.category, setting.id, _values[setting])
 
 
 func save_config() -> void:
-	var file = File.new()
-	file.open(_path, File.WRITE)
-	file.store_string(_json.stringify(_settings))
-	file.close()
+	var config = ConfigFile.new()
+	for setting in _list:
+		config.set_value(setting.category, setting.id, _values[setting])
+	config.save(_path)

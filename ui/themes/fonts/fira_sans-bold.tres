@@ -1,0 +1,6 @@
+[gd_resource type="Font" load_steps=2 format=3 uid="uid://e6wbubtpp7ve"]
+
+[ext_resource type="FontData" uid="uid://20yqkoa0c2hi" path="res://ui/themes/fonts/FiraSans-Bold.ttf" id="1_vewd3"]
+
+[resource]
+data/0 = ExtResource( "1_vewd3" )

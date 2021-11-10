@@ -24,3 +24,4 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 offset_right = 1024.0
 offset_bottom = 600.0
+scroll_offset = Vector2(-14, 0)

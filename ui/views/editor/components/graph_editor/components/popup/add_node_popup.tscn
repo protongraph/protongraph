@@ -1,0 +1,144 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbnesvlod3m68"]
+
+[ext_resource type="Script" path="res://ui/views/editor/components/graph_editor/components/popup/add_node_popup.gd" id="1_pu2oj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7q7an"]
+
+[node name="AddNodePopup" type="Popup"]
+title = "Add node"
+size = Vector2i(400, 400)
+transient = false
+unresizable = false
+borderless = false
+script = ExtResource( "1_pu2oj" )
+
+[node name="PopupUi" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource( "StyleBoxEmpty_7q7an" )
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="PopupUi"]
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mode = 1
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="PopupUi"]
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_bottom = 14
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupUi/MarginContainer"]
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 1010.0
+offset_bottom = 586.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PopupUi/MarginContainer/VBoxContainer"]
+offset_right = 996.0
+offset_bottom = 33.0
+theme_override_constants/separation = 8
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Search" type="LineEdit" parent="PopupUi/MarginContainer/VBoxContainer/HBoxContainer"]
+offset_right = 838.0
+offset_bottom = 33.0
+size_flags_horizontal = 3
+clear_button_enabled = true
+placeholder_text = "Search node"
+caret_blink = true
+caret_blink_speed = 0.5
+script = null
+
+[node name="VSeparator" type="VSeparator" parent="PopupUi/MarginContainer/VBoxContainer/HBoxContainer"]
+offset_left = 846.0
+offset_right = 850.0
+offset_bottom = 33.0
+script = null
+
+[node name="CheckBox" type="CheckBox" parent="PopupUi/MarginContainer/VBoxContainer/HBoxContainer"]
+offset_left = 858.0
+offset_right = 996.0
+offset_bottom = 33.0
+focus_mode = 0
+pressed = true
+text = "Group by type"
+script = null
+
+[node name="NodeTree" type="Tree" parent="PopupUi/MarginContainer/VBoxContainer"]
+offset_top = 41.0
+offset_right = 996.0
+offset_bottom = 447.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+hide_root = true
+script = null
+
+[node name="DescriptionText" type="Label" parent="PopupUi/MarginContainer/VBoxContainer"]
+offset_top = 455.0
+offset_right = 996.0
+offset_bottom = 535.0
+rect_min_size = Vector2(0, 80)
+size_flags_vertical = 1
+text = "Select a node from 
+the list to see a description"
+valign = 1
+script = null
+
+[node name="ActionContainer" type="HBoxContainer" parent="PopupUi/MarginContainer/VBoxContainer"]
+offset_top = 543.0
+offset_right = 996.0
+offset_bottom = 572.0
+rect_min_size = Vector2(0, 24)
+size_flags_horizontal = 3
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CancelButton" type="Button" parent="PopupUi/MarginContainer/VBoxContainer/ActionContainer"]
+offset_right = 62.0
+offset_bottom = 29.0
+rect_min_size = Vector2(24, 24)
+size_flags_horizontal = 2
+text = "Cancel"
+script = null
+
+[node name="CreateButton" type="Button" parent="PopupUi/MarginContainer/VBoxContainer/ActionContainer"]
+offset_left = 891.0
+offset_right = 996.0
+offset_bottom = 29.0
+rect_min_size = Vector2(24, 24)
+disabled = true
+text = "Create node"
+script = null

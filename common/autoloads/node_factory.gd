@@ -34,7 +34,7 @@ func create(type_id: String) -> ProtonNode:
 		refresh_list()
 
 	if type_id in _nodes:
-		return _nodes[type_id].duplicate(true)
+		return _nodes[type_id].duplicate()
 
 	return null
 

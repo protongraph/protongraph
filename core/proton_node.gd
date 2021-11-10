@@ -12,14 +12,13 @@ var description: String
 var category: String
 var documentation: NodeDocumentation
 var ignore := false
-var sub_graph_id: int
 
-var _inputs: Dictionary
-var _outputs: Dictionary
+var inputs: Dictionary
+var outputs: Dictionary
 
 
 func create_input(idx, name: String, type: int, options := {}) -> void:
-	_inputs[idx] = {
+	inputs[idx] = {
 		"name": name,
 		"type": type,
 		"local_value": null,
@@ -28,7 +27,7 @@ func create_input(idx, name: String, type: int, options := {}) -> void:
 
 
 func create_output(idx, name: String, type: int, options := {}) -> void:
-	_outputs[idx] = {
+	outputs[idx] = {
 		"name": name,
 		"type": type,
 		"value": null,
@@ -50,8 +49,8 @@ func get_input_single(idx, default = null):
 
 
 func set_output(idx, value) -> void:
-	if idx in _outputs:
-		_outputs[idx].value = value
+	if idx in outputs:
+		outputs[idx].value = value
 
 # Overide this function in the derived classes to return something usable.
 # Generates all the outputs for every declared outputs.
@@ -67,7 +66,7 @@ func _clear_cache():
 
 # Clear previously generated outputs
 func _clear_outputs():
-	for idx in _outputs.keys():
-		MemoryUtil.free(_outputs.idx.value)
-		_outputs.idx.value = null
+	for idx in outputs.keys():
+		MemoryUtil.free(outputs.idx.value)
+		outputs.idx.value = null
 

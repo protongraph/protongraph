@@ -1,3 +1,4 @@
+class_name EditorView
 extends Control
 
 
@@ -7,9 +8,7 @@ var _graph: NodeGraph
 
 
 func _ready() -> void:
-	# TMP, for testing purposes
-	var tmp_node_graph = NodeGraph.new()
-	edit(tmp_node_graph)
+	pass
 
 
 func edit(graph: NodeGraph) -> void:

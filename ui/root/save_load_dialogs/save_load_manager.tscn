@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://b32pjn02ks4oc"]
+
+[ext_resource type="Script" path="res://ui/root/save_load_dialogs/save_load_manager.gd" id="1_l5m65"]
+[ext_resource type="PackedScene" uid="uid://dshk2tsjj4esn" path="res://ui/root/save_load_dialogs/confirm_dialog.tscn" id="2_k6vhn"]
+[ext_resource type="PackedScene" uid="uid://dx7hu34l8e5vh" path="res://ui/root/save_load_dialogs/save_load_dialog.tscn" id="3_khfo4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77edb"]
+bg_color = Color(0, 0, 0, 0.27451)
+
+[node name="SaveLoadManager" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( "1_l5m65" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BlackOverlay" type="Panel" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource( "StyleBoxFlat_77edb" )
+
+[node name="ConfirmDialog" parent="." instance=ExtResource( "2_k6vhn" )]
+visible = false
+transient = false
+
+[node name="SaveLoadDialog" parent="." instance=ExtResource( "3_khfo4" )]
