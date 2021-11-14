@@ -43,3 +43,4 @@ func _generate_outputs() -> void:
 			n.rotate(Vector3.FORWARD, r.z)
 
 	output[0] = nodes
+

@@ -15,7 +15,7 @@ func _init() -> void:
 	var spacing_opts = {"min": 0.001, "allow_lesser": false, "value": 1.0}
 	var range_opts = {"min": 0, "max": 1, "allow_lesser": false, "allow_higher": false, "steps": 0.001, "value": 0.0}
 
-	set_input(0, "Curve", DataType.CURVE_3D)
+	set_input(0, "Paths", DataType.CURVE_3D) # not really a CURVE_3D object, contains it as a property as p.curve.
 	set_input(1, "Spacing", DataType.SCALAR, spacing_opts)
 	set_input(2, "Start", DataType.SCALAR, range_opts)
 	range_opts["value"] = 1.0
