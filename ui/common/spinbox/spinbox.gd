@@ -9,8 +9,8 @@ class_name CustomSpinBox
 		style = val
 		_update_style()
 
-@onready var _name_label: Label = $HBoxContainer/Label
-@onready var _line_edit: LineEdit = $HBoxContainer/Label/LineEdit
+@onready var _name_label: Label = $HBoxContainer/Control/Label
+@onready var _line_edit: LineEdit = $HBoxContainer/Control/LineEdit
 @onready var _increase_button: Button = $HBoxContainer/Increase
 @onready var _decrease_button: Button = $HBoxContainer/Decrease
 @onready var _edit_popup: PopupPanel = $EditPopup
@@ -114,8 +114,8 @@ func _create_undo_redo_action(new, old) -> void:
 
 
 func _show_extra_controls() -> void:
-	var pos = get_global_transform().origin
-	pos.y -= _edit_popup.size.y / 2.0 - rect_size.y / 2.0
+	var pos := get_tree().get_root().position + Vector2i(get_global_transform().origin)
+	pos.y -= _edit_popup.size.y / 2 - int(rect_size.y / 2)
 	pos.x -= _edit_popup.size.x
 	_edit_popup.position = pos
 	_edit_popup.popup()

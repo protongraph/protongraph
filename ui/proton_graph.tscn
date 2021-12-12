@@ -35,20 +35,27 @@ offset_top = 4.0
 offset_right = 1024.0
 offset_bottom = 35.0
 
-[node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
-offset_right = 30.0
+[node name="Control" type="Control" parent="VBoxContainer/TopBar"]
+offset_right = 4.0
 offset_bottom = 31.0
-rect_min_size = Vector2(30, 30)
+rect_min_size = Vector2(4, 0)
+
+[node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
+offset_left = 4.0
+offset_right = 34.0
+offset_bottom = 31.0
+rect_min_size = Vector2(30, 28)
+theme_override_font_sizes/font_size = 16
 icon = ExtResource( "1_lh0uq" )
 expand_icon = true
 script = ExtResource( "3_llsfr" )
 
 [node name="TabBar" type="TabBar" parent="VBoxContainer/TopBar"]
-offset_left = 30.0
+offset_left = 34.0
 offset_right = 1024.0
 offset_bottom = 31.0
 size_flags_horizontal = 3
-tab_align = 0
+tab_alignment = 0
 tab_close_display_policy = 1
 drag_to_rearrange_enabled = true
 
@@ -58,7 +65,6 @@ offset_right = 1024.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-tab_align = 0
 tabs_visible = false
 script = ExtResource( "4_fkmym" )
 tab_bar = NodePath("../TopBar/TabBar")

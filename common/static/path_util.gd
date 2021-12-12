@@ -10,8 +10,8 @@ static func get_relative_path(absolute_path: String, origin: String) -> String:
 	var t2: Array = origin.split("/")
 
 	while t1[0] == t2[0]:
-		t1.remove(0)
-		t2.remove(0)
+		t1.remove_at(0)
+		t2.remove_at(0)
 
 	for i in t2.size() - 1: # -1 to remove the file name
 		relative_path += "../"
@@ -30,11 +30,11 @@ static func get_absolute_path(relative_path: String, origin: String):
 
 	var t1: Array = relative_path.split("/")
 	var t2: Array = origin.split("/")
-	t2.remove(t2.size() - 1) # remove the file name
+	t2.remove_at(t2.size() - 1) # remove the file name
 
 	while t1[0] == "..":
-		t1.remove(0)
-		t2.remove(t2.size() - 1)
+		t1.remove_at(0)
+		t2.remove_at(t2.size() - 1)
 
 	for token in t2:
 		absolute_path += token + "/"

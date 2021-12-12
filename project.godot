@@ -6,7 +6,7 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
+config_version=5
 
 _global_script_classes=[{
 "base": "GenericInputComponent",
@@ -59,20 +59,10 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/generic_output.gd"
 }, {
-"base": "GraphNode",
-"class": &"GraphNodeUi",
-"language": &"GDScript",
-"path": "res://ui/views/editor/components/graph_editor/components/nodes/graph_node_ui.gd"
-}, {
 "base": "MarginContainer",
 "class": &"GraphNodeUiComponent",
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/graph_node_ui_component.gd"
-}, {
-"base": "Control",
-"class": &"LoadSaveManager",
-"language": &"GDScript",
-"path": "res://ui/root/save_load_dialogs/save_load_manager.gd"
 }, {
 "base": "RefCounted",
 "class": &"MemoryUtil",
@@ -109,10 +99,20 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://core/proton_node.gd"
 }, {
+"base": "GraphNode",
+"class": &"ProtonNodeUi",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/components/nodes/proton_node_ui.gd"
+}, {
 "base": "FileDialog",
 "class": &"SaveLoadDialog",
 "language": &"GDScript",
 "path": "res://ui/root/save_load_dialogs/save_load_dialog.gd"
+}, {
+"base": "Control",
+"class": &"SaveLoadManager",
+"language": &"GDScript",
+"path": "res://ui/root/save_load_dialogs/save_load_manager.gd"
 }, {
 "base": "GenericInputComponent",
 "class": &"ScalarComponent",
@@ -150,9 +150,7 @@ _global_script_class_icons={
 "EventBus": "",
 "GenericInputComponent": "",
 "GenericOutputComponent": "",
-"GraphNodeUi": "",
 "GraphNodeUiComponent": "",
-"LoadSaveManager": "",
 "MemoryUtil": "",
 "NodeDocumentation": "",
 "NodeGraph": "",
@@ -160,7 +158,9 @@ _global_script_class_icons={
 "PathUtil": "",
 "ProtonGraphApp": "",
 "ProtonNode": "",
+"ProtonNodeUi": "",
 "SaveLoadDialog": "",
+"SaveLoadManager": "",
 "ScalarComponent": "",
 "StringComponent": "",
 "UserInterfaceUtil": "",
@@ -173,6 +173,7 @@ _global_script_class_icons={
 config/name="ProtonGraph"
 run/main_scene="res://ui/proton_graph.tscn"
 config/icon="res://icon.png"
+config/features=PackedStringArray("4.0")
 
 [autoload]
 
@@ -181,6 +182,10 @@ GlobalUndoRedo="*res://common/autoloads/undo_redo.gd"
 Settings="*res://common/autoloads/project_settings.gd"
 TextureUtil="*res://common/autoloads/texture_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
+
+[display]
+
+window/subwindows/embed_subwindows=false
 
 [rendering]
 

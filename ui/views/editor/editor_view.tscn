@@ -14,7 +14,6 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }

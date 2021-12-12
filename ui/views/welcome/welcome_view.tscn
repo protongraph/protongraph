@@ -81,6 +81,7 @@ theme_override_constants/separation = 12
 [node name="New" type="Button" parent="LeftContainer/VBoxContainer/Buttons/VBoxContainer"]
 offset_right = 90.0
 offset_bottom = 29.0
+theme_override_font_sizes/font_size = 16
 text = "New"
 icon = ExtResource( "3_psv6x" )
 align = 2

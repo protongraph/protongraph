@@ -50,8 +50,10 @@ func refresh_list() -> void:
 # them in the dictionnary
 func _find_all_nodes(path) -> void:
 	var dir = Directory.new()
+	dir.include_hidden = false
+	dir.include_navigational = false
 	dir.open(path)
-	dir.list_dir_begin(false, true)
+	dir.list_dir_begin()
 	var path_root = dir.get_current_dir() + "/"
 
 	while true:

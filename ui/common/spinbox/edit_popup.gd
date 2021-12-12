@@ -12,6 +12,10 @@ signal edit_value
 @export var ep01: NodePath
 @export var ep001: NodePath
 
+var delta := 0.0
+
+@onready var label: Label = $VBoxContainer/Label
+
 
 func _ready():
 	size = Vector2.ZERO
@@ -49,3 +53,8 @@ func _on_edit_value_ended() -> void:
 
 func _on_edit_value(step) -> void:
 	edit_value.emit(step)
+	delta += step
+	if delta >= 0:
+		label.text = "+" + str(delta)
+	else:
+		label.text = str(delta)

@@ -21,11 +21,15 @@ border_color = Color(1, 1, 1, 0.588235)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hhi5r"]
 
 [node name="Spinbox" type="ProgressBar"]
+anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_bottom = 31.0
-rect_min_size = Vector2(100, 32)
+offset_left = -473.5
+offset_top = -16.0
+offset_right = 473.5
+offset_bottom = 16.0
+rect_min_size = Vector2(50, 24)
 theme_override_styles/fg = ExtResource( "7" )
 theme_override_styles/bg = ExtResource( "1" )
 value = 50.0
@@ -38,7 +42,6 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -52,35 +55,48 @@ theme_override_styles/pressed = ExtResource( "10" )
 theme_override_styles/normal = ExtResource( "9" )
 icon = ExtResource( "4" )
 expand_icon = true
-script = null
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Control" type="Control" parent="HBoxContainer"]
 offset_left = 20.0
-offset_top = 3.0
-offset_right = 1004.0
-offset_bottom = 29.0
+offset_right = 927.0
+offset_bottom = 32.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
 text = "Label"
-script = null
+vertical_alignment = 1
+text_overrun_behavior = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer/Label"]
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
+theme_override_font_sizes/font_size = 16
 theme_override_styles/focus = SubResource( "StyleBoxFlat_bcu1a" )
 theme_override_styles/normal = SubResource( "StyleBoxEmpty_hhi5r" )
 text = "50"
-align = 2
+alignment = 2
 context_menu_enabled = false
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Increase" type="Button" parent="HBoxContainer"]
-offset_left = 1008.0
-offset_right = 1024.0
+offset_left = 931.0
+offset_right = 947.0
 offset_bottom = 32.0
 rect_min_size = Vector2(16, 0)
 theme_override_styles/hover = ExtResource( "11" )
@@ -88,6 +104,5 @@ theme_override_styles/pressed = ExtResource( "2" )
 theme_override_styles/normal = ExtResource( "8" )
 icon = ExtResource( "5" )
 expand_icon = true
-script = null
 
 [node name="EditPopup" parent="." instance=ExtResource( "12_ava0u" )]

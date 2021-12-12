@@ -5,16 +5,10 @@ extends Resource
 signal graph_changed
 
 
-class Connection:
-	var from: String
-	var to: String
-	var from_port: int
-	var to_port: int
-
-
 @export var nodes: Dictionary
 @export var connections: Array
-@export var save_file_path: String
+
+var save_file_path: String
 
 var _registry: Dictionary # Holds a reference to special types of nodes from _nodes
 
@@ -53,7 +47,7 @@ func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
 
 
 func connect_node(from: StringName, from_port: int, to: StringName, to_port: int) -> void:
-	var c := Connection.new()
+	var c := {}
 	c.from = from
 	c.from_port = from_port
 	c.to = to

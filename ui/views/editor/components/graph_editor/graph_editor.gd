@@ -24,6 +24,7 @@ func _ready() -> void:
 
 func set_node_graph(graph: NodeGraph) -> void:
 	_graph = graph
+	rebuild_ui()
 
 
 func clear() -> void:
@@ -39,7 +40,7 @@ func rebuild_ui() -> void:
 
 	for n in _graph.nodes.values():
 		var proton_node = n as ProtonNode
-		var graph_node := GraphNodeUi.new()
+		var graph_node := ProtonNodeUi.new()
 		add_child(graph_node)
 		graph_node.proton_node = proton_node
 		graph_node.name = proton_node.unique_name
@@ -54,13 +55,13 @@ func rebuild_ui() -> void:
 	scroll_offset = _previous_scroll_offset
 
 
-func _show_add_node_popup(position: Vector2) -> void:
+func _show_add_node_popup(position: Vector2i) -> void:
 	if not is_instance_valid(_add_node_popup):
 		_add_node_popup = AddNodePopup.instantiate()
 		add_child(_add_node_popup)
 		_add_node_popup.create_node_request.connect(_on_create_node_request)
 
-	_right_click_position = position
+	_right_click_position = position - get_tree().get_root().position
 	_add_node_popup.position = position
 	_add_node_popup.popup()
 

@@ -3,7 +3,6 @@ extends Popup
 
 # Generic confirmation dialog with three buttons (Cancel, Discard, Confirm)
 
-
 signal cancelled
 signal discarded
 signal confirmed

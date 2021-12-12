@@ -12,8 +12,10 @@ extends Node
 signal create_graph
 signal current_view_changed
 signal file_history_changed
+signal graph_loaded
+signal graph_saved
 signal load_graph
-signal message
+signal notify
 signal open_settings
 signal quit
 signal remove_from_file_history
@@ -21,8 +23,5 @@ signal settings_updated
 signal save_all
 signal save_graph_as
 signal save_graph
-signal graph_loaded
-signal graph_saved
-
 
 # warning-ignore-all:UNUSED_SIGNAL

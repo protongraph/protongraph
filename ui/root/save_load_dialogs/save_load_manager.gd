@@ -1,4 +1,4 @@
-class_name LoadSaveManager
+class_name SaveLoadManager
 extends Control
 
 # The dialog manager is the last thing in the scene tree to make sure the
@@ -27,15 +27,24 @@ func _ready():
 	_file_dialog.cancelled.connect(_hide_overlay)
 
 
-func show_file_dialog(mode) -> void:
-	_show_overlay()
-	_file_dialog.dialog_mode = mode
-	_file_dialog.show_dialog()
+func show_load_dialog() -> void:
+	_file_dialog.dialog_mode = SaveLoadDialog.DialogMode.LOAD
+	_show_file_dialog()
+
+
+func show_save_dialog() -> void:
+	_file_dialog.dialog_mode = SaveLoadDialog.DialogMode.SAVE
+	_show_file_dialog()
 
 
 func show_confirm_dialog() -> void:
 	_show_overlay()
 	_confirm_dialog.popup_centered()
+
+
+func _show_file_dialog() -> void:
+	_show_overlay()
+	_file_dialog.show_dialog()
 
 
 func _show_overlay() -> void:

@@ -5,15 +5,13 @@ extends FileDialog
 enum DialogMode {
 	LOAD,
 	SAVE,
-	SAVE_AS,
 }
 
 var dialog_mode: DialogMode = DialogMode.LOAD
 
-var _save_title := "Create a new template"
-var _save_as_title := "Save the template as"
-var _load_title := "Load an existing template"
-var _default_file_suggestion := "new_template.tpgn"
+var _save_as_title := "Save the node graph as"
+var _load_title := "Load an existing graph"
+var _default_file_suggestion := "new_graph.tpgn"
 
 
 func _ready() -> void:
@@ -23,39 +21,28 @@ func _ready() -> void:
 func show_dialog() -> void:
 	match dialog_mode:
 		DialogMode.LOAD:
-			_load_template()
+			_load_graph()
 		DialogMode.SAVE:
-			_create_template()
-		DialogMode.SAVE_AS:
-			_save_template_as()
+			_save_graph_as()
 
 
-func _create_template() -> void:
-	title = _save_title
-	mode = FileDialog.FILE_MODE_SAVE_FILE
-	current_file = _default_file_suggestion
-	popup_centered()
-
-
-func _load_template() -> void:
+func _load_graph() -> void:
 	title = _load_title
-	mode = FileDialog.FILE_MODE_OPEN_FILE
+	file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	current_file = ""
 	popup_centered()
 
 
-func _save_template_as(opened_file := "") -> void:
+func _save_graph_as(suggestion := "") -> void:
 	title = _save_as_title
-	mode = FileDialog.FILE_MODE_SAVE_FILE
-	current_file = opened_file
+	file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	current_file = suggestion if not suggestion.is_empty() else _default_file_suggestion
 	popup_centered()
 
 
 func _on_file_selected(path: String) -> void:
 	match dialog_mode:
 		DialogMode.LOAD:
-			GlobalEventBus.load_template.emit(path)
+			GlobalEventBus.load_graph.emit(path)
 		DialogMode.SAVE:
-			GlobalEventBus.create_template.emit(path)
-		DialogMode.SAVE_AS:
-			GlobalEventBus.save_template_as.emit(path)
+			GlobalEventBus.save_graph_as.emit(path)

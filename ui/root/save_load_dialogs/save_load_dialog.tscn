@@ -3,11 +3,13 @@
 [ext_resource type="Script" path="res://ui/root/save_load_dialogs/save_load_dialog.gd" id="1_trlth"]
 
 [node name="SaveLoadDialog" type="FileDialog"]
+title = "Open a File"
 size = Vector2i(601, 450)
 transient = false
 always_on_top = true
 min_size = Vector2i(200, 450)
 dialog_hide_on_ok = true
+file_mode = 0
 access = 2
 current_dir = "/home/hungryproton/Work/Games/ConceptGraph"
 current_path = "/home/hungryproton/Work/Games/ConceptGraph/"

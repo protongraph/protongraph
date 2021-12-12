@@ -1,4 +1,4 @@
-class_name GraphNodeUi
+class_name ProtonNodeUi
 extends GraphNode
 
 # Takes a ProtonNode resource as input and recreate the corresponding UI

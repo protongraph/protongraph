@@ -27,3 +27,4 @@ visible = false
 transient = false
 
 [node name="SaveLoadDialog" parent="." instance=ExtResource( "3_khfo4" )]
+mode_overrides_title = false

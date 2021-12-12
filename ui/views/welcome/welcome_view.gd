@@ -1,16 +1,18 @@
 extends Control
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+@onready var new_button: Button = $LeftContainer/VBoxContainer/Buttons/VBoxContainer/New
+@onready var load_button: Button = $LeftContainer/VBoxContainer/Buttons/VBoxContainer/Load
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func _ready() -> void:
+	new_button.connect("pressed", _on_new_button_pressed)
+	load_button.connect("pressed", _on_load_button_pressed)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _on_new_button_pressed() -> void:
+	GlobalEventBus.create_graph.emit()
+
+
+func _on_load_button_pressed() -> void:
+	GlobalEventBus.load_graph.emit()
