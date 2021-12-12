@@ -46,6 +46,14 @@ func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
 	return new_node
 
 
+func delete_node(node: ProtonNode) -> void:
+	nodes.erase(node.unique_name)
+	for c in connections:
+		if c.from == node.unique_name or c.to == node.unique_name:
+			connections.erase(c)
+	graph_changed.emit()
+
+
 func connect_node(from: StringName, from_port: int, to: StringName, to_port: int) -> void:
 	var c := {}
 	c.from = from

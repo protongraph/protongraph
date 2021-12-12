@@ -1,6 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://ddl1a7jcx4sgv"]
+[gd_scene load_steps=14 format=3 uid="uid://ddl1a7jcx4sgv"]
 
-[ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/progress_bar_bg.tres" id="1"]
+[ext_resource type="StyleBox" uid="uid://bhjedwfhyr2c1" path="res://ui/common/spinbox/styles/progress_bar_bg.tres" id="1"]
 [ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_right_pressed.tres" id="2"]
 [ext_resource type="Script" path="res://ui/common/spinbox/spinbox.gd" id="3"]
 [ext_resource type="Texture2D" uid="uid://c4oqjrt71kha2" path="res://ui/icons/icon_decrease.svg" id="4"]
@@ -12,11 +12,6 @@
 [ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_left_pressed.tres" id="10"]
 [ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_right_hover.tres" id="11"]
 [ext_resource type="PackedScene" uid="uid://bgo7smjjxdrys" path="res://ui/common/spinbox/edit_popup.tscn" id="12_ava0u"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bcu1a"]
-draw_center = false
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.588235)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hhi5r"]
 
@@ -85,7 +80,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
 theme_override_font_sizes/font_size = 16
-theme_override_styles/focus = SubResource( "StyleBoxFlat_bcu1a" )
 theme_override_styles/normal = SubResource( "StyleBoxEmpty_hhi5r" )
 text = "50"
 alignment = 2

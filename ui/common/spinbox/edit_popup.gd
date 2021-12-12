@@ -40,6 +40,7 @@ func popup(bounds := Rect2(0, 0, 0, 0)) -> void:
 	# Force the popup to always use as little space as possible because the
 	# control size flags doesn't work in this case
 	size = Vector2.ZERO
+	delta = 0.0
 	super(bounds)
 
 
@@ -54,6 +55,7 @@ func _on_edit_value_ended() -> void:
 func _on_edit_value(step) -> void:
 	edit_value.emit(step)
 	delta += step
+	delta = snapped(delta, 0.001)
 	if delta >= 0:
 		label.text = "+" + str(delta)
 	else:

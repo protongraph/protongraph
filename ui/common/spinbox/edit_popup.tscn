@@ -21,8 +21,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = -890.0
-offset_bottom = -356.0
+offset_right = 134.0
+offset_bottom = 244.0
 rect_min_size = Vector2(130, 0)
 theme_override_constants/separation = 4
 __meta__ = {
@@ -57,7 +57,8 @@ offset_right = 130.0
 offset_bottom = 133.0
 size_flags_horizontal = 3
 text = "+0"
-align = 1
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
 offset_top = 137.0

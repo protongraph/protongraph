@@ -14,6 +14,7 @@ func _ready() -> void:
 	popup_request.connect(_show_add_node_popup)
 	connection_request.connect(_on_connection_request)
 	disconnection_request.connect(_on_disconnection_request)
+	delete_nodes_request.connect(_on_delete_nodes_request)
 
 	# Setup connections types
 	var c = DataType.get_valid_connections()
@@ -62,6 +63,7 @@ func rebuild_ui() -> void:
 		var proton_node = n as ProtonNode
 		var graph_node := ProtonNodeUi.new()
 		add_child(graph_node)
+		graph_node.close_request.connect(_on_close_request.bind(graph_node))
 		graph_node.proton_node = proton_node
 		graph_node.name = proton_node.unique_name
 		graph_node.rebuild_ui()
@@ -72,6 +74,19 @@ func rebuild_ui() -> void:
 
 	await(get_tree().process_frame)
 	scroll_offset = _previous_scroll_offset
+
+
+# TMP hack because calling update alone doesn't update the connections which
+# are in another layer.
+func force_redraw() -> void:
+	$CLAYER.update()
+	update()
+
+
+func delete_node(node: ProtonNodeUi) -> void:
+	remove_child(node)
+	_graph.delete_node(node.proton_node)
+	force_redraw()
 
 
 func _show_add_node_popup(position: Vector2i) -> void:
@@ -119,3 +134,12 @@ func _on_connection_request(from, from_slot: int, to, to_slot: int) -> void:
 func _on_disconnection_request(from: StringName, from_slot: int, to: StringName, to_slot: int) -> void:
 	self.disconnect_node(from, from_slot, to, to_slot)
 	_graph.disconnect_node(from, from_slot, to, to_slot)
+
+
+func _on_delete_nodes_request(selected = null) -> void:
+	if not selected:
+		return
+
+
+func _on_close_request(node: GraphNode) -> void:
+	delete_node(node)

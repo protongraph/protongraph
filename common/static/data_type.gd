@@ -29,24 +29,23 @@ const color_vector = Color("3ac5e6")
 
 const COLORS = {
 	ANY: Color.WHITE,
-	BOOLEAN: color_base_type,
-	NUMBER: color_base_type,
-	STRING: color_base_type,
-	VECTOR2: color_vector,
-	VECTOR3: color_vector,
-	
-	NODE_2D: Color("7c42ba"),
-	TEXTURE_2D: Color("6b64c6"),
-	CURVE_FUNC: Color("5d7fcf"),
-	MATERIAL: Color("5197d7"),
+	BOOLEAN: Color("2DE4FF"),
+	NUMBER: Color("2EB7FF"),
+	STRING: Color("2988FF"),
+	VECTOR2: Color("7D2BFF"),
+	VECTOR3: Color("BA24FF"),
+
+	NODE_2D: Color("B6FF63"),
+	TEXTURE_2D: Color("69EB63"),
+	CURVE_FUNC: Color("6BFF9F"),
+	MATERIAL: Color("6BFFD9"),
+	NOISE: Color("4ce0a0"),
 
 	NODE_3D: Color("e9001e"),
 	CURVE_3D: Color("f6450d"),
 	MESH_3D: Color("fb6f10"),
 	MASK_3D: Color("fc9224"),
 	POLYLINE_3D: Color("fdb136"),
-	
-	NOISE: Color("4ce0a0"),
 	HEIGHTMAP: Color("fecf46"),
 }
 
@@ -57,7 +56,7 @@ const NAMES = {
 	STRING: "String",
 	VECTOR2: "Vector2",
 	VECTOR3: "Vector3",
-	
+
 	NODE_2D: "Node2D",
 	TEXTURE_2D: "Texture",
 	CURVE_FUNC: "Curve",
@@ -68,7 +67,7 @@ const NAMES = {
 	MESH_3D: "Mesh",
 	MASK_3D: "Mask",
 	POLYLINE_3D: "Polyline",
-	
+
 	NOISE: "Noise",
 	HEIGHTMAP: "Heightmap",
 }
