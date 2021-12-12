@@ -25,11 +25,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -473.5
+offset_left = -473.0
 offset_top = -16.0
-offset_right = 473.5
+offset_right = 473.0
 offset_bottom = 16.0
-rect_min_size = Vector2(50, 24)
+rect_min_size = Vector2(100, 32)
 theme_override_styles/fg = ExtResource( "7" )
 theme_override_styles/bg = ExtResource( "1" )
 value = 50.0
@@ -58,7 +58,7 @@ expand_icon = true
 
 [node name="Control" type="Control" parent="HBoxContainer"]
 offset_left = 20.0
-offset_right = 927.0
+offset_right = 926.0
 offset_bottom = 32.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -95,8 +95,8 @@ __meta__ = {
 }
 
 [node name="Increase" type="Button" parent="HBoxContainer"]
-offset_left = 931.0
-offset_right = 947.0
+offset_left = 930.0
+offset_right = 946.0
 offset_bottom = 32.0
 rect_min_size = Vector2(16, 0)
 theme_override_styles/hover = ExtResource( "11" )

@@ -13,6 +13,7 @@ var _previous_scroll_offset: Vector2
 func _ready() -> void:
 	popup_request.connect(_show_add_node_popup)
 	connection_request.connect(_on_connection_request)
+	disconnection_request.connect(_on_disconnection_request)
 
 	# Setup connections types
 	var c = DataType.get_valid_connections()
@@ -20,6 +21,25 @@ func _ready() -> void:
 		var sources = c[target]
 		for source in sources:
 			add_valid_connection_type(source, target)
+
+
+# Overriding parent functions.
+func connect_node(from, from_port, to, to_port):
+	var err = super(from, from_port, to, to_port)
+	if err == OK:
+		var from_node = get_node(NodePath(from))
+		var to_node = get_node(NodePath(to))
+		from_node.notify_output_connection_changed(int(from_port), true)
+		to_node.notify_input_connection_changed(int(to_port), true)
+	return err
+
+
+func disconnect_node(from, from_port, to, to_port):
+	super(from, from_port, to, to_port)
+	var from_node = get_node(NodePath(from))
+	var to_node = get_node(NodePath(to))
+	from_node.notify_output_connection_changed(int(from_port), false)
+	to_node.notify_input_connection_changed(int(to_port), false)
 
 
 func set_node_graph(graph: NodeGraph) -> void:
@@ -47,9 +67,8 @@ func rebuild_ui() -> void:
 		graph_node.rebuild_ui()
 
 	for c in _graph.connections:
-		var err = connect_node(c.from, c.from_port, c.to, c.to_port)
-		print("Connect err ", err)
-		print("from ", c.from, " to ", c.to)
+		var _err = self.connect_node(c.from, c.from_port, c.to, c.to_port)
+
 
 	await(get_tree().process_frame)
 	scroll_offset = _previous_scroll_offset
@@ -86,10 +105,10 @@ func _on_connection_request(from, from_slot: int, to, to_slot: int) -> void:
 	if not node.is_multiple_connections_enabled_on_slot(to_slot):
 		for c in get_connection_list():
 			if c.to == to and c.to_port == to_slot:
-				disconnect_node(c.from, c.from_port, c.to, c.to_port)
+				self.disconnect_node(c.from, c.from_port, c.to, c.to_port)
 				break
 
-	var err = connect_node(from, from_slot, to, to_slot)
+	var err = self.connect_node(from, from_slot, to, to_slot)
 	if err != OK:
 		print("Error ", err, " - Could not connect node ", from, ":", from_slot, " to ", to, ":", to_slot)
 		return
@@ -98,5 +117,5 @@ func _on_connection_request(from, from_slot: int, to, to_slot: int) -> void:
 
 
 func _on_disconnection_request(from: StringName, from_slot: int, to: StringName, to_slot: int) -> void:
-	disconnect_node(from, from_slot, to, to_slot)
+	self.disconnect_node(from, from_slot, to, to_slot)
 	_graph.disconnect_node(from, from_slot, to, to_slot)

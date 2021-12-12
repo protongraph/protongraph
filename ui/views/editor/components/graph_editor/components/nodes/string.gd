@@ -28,8 +28,6 @@ func create(label_name: String, type: int, opts := {}) -> void:
 	else:
 		_line_edit = LineEdit.new()
 		add_ui(_line_edit)
-		_line_edit.add_stylebox_override("normal", load("res://ui/themes/styles/graphnode_button_normal.tres"))
-		_line_edit.add_stylebox_override("focus", load("res://ui/themes/styles/graphnode_line_edit_focus.tres"))
 		_line_edit.rect_min_size.x = 120
 		_line_edit.size_flags_horizontal = SIZE_EXPAND_FILL
 		_line_edit.name = "LineEdit"
@@ -41,8 +39,6 @@ func create(label_name: String, type: int, opts := {}) -> void:
 
 		if opts.has("file_dialog"):
 			var folder_button = Button.new()
-			folder_button.add_stylebox_override("normal", load("res://ui/themes/styles/graphnode_button_normal.tres"))
-			folder_button.add_stylebox_override("hover", load("res://ui/themes/styles/graphnode_button_hover.tres"))
 			folder_button.icon = TextureUtil.get_texture("res://ui/icons/icon_folder.svg")
 			folder_button.connect("pressed", _show_file_dialog.bind(opts["file_dialog"]))
 			add_ui(folder_button)
@@ -51,7 +47,7 @@ func create(label_name: String, type: int, opts := {}) -> void:
 func get_value():
 	if _line_edit:
 		return _line_edit.text
-	
+
 	if _dropdown:
 		return _dropdown.get_item_text(_dropdown.selected)
 
@@ -59,7 +55,7 @@ func get_value():
 func get_value_for_export():
 	if _dropdown:
 		return _dropdown.get_item_id(_dropdown.selected)
-	
+
 	return get_value()
 
 
@@ -69,7 +65,7 @@ func set_value(value) -> void:
 	# to be put back at position 0 automatically.
 	if _line_edit and _line_edit.text != value:
 		_line_edit.text = value
-	
+
 	elif _dropdown:
 		_dropdown.selected = _dropdown.get_item_index(int(value))
 

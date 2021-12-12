@@ -26,6 +26,18 @@ func rebuild_ui() -> void:
 	_setup_connection_slots()
 
 
+func notify_input_connection_changed(slot: int, connected: bool) -> void:
+	var row: Control = get_child(slot)
+	var ui_component: GraphNodeUiComponent = row.get_child(0)
+	ui_component.notify_connection_changed(connected)
+
+
+func notify_output_connection_changed(slot: int, connected: bool) -> void:
+	var row: Control = get_child(slot)
+	var ui_component: GraphNodeUiComponent = row.get_child(1)
+	ui_component.notify_connection_changed(connected)
+
+
 func is_multiple_connections_enabled_on_slot(idx) -> bool:
 	if not idx in proton_node.inputs:
 		return false
@@ -41,18 +53,24 @@ func _populate_rows():
 	var rows_count = max(inputs_count, outputs_count)
 	for i in rows_count:
 		var hbox := HBoxContainer.new()
+		hbox.rect_min_size.y = 24
 		add_child(hbox)
 
-	for i in proton_node.inputs.size():
-		var input = proton_node.inputs[i]
+	var current_row = 0 # Needed because the dictionary keys aren't continuous.
+
+	for key in proton_node.inputs.keys():
+		var input = proton_node.inputs[key]
 		var ui = _create_component_for(input)
-		get_child(i).add_child(ui)
+		get_child(current_row).add_child(ui)
+		current_row += 1
 		ui.visible = input.options.hidden if "hidden" in input.options else true
 
-	for i in proton_node.outputs.size():
-		var output = proton_node.outputs[i]
+	current_row = 0
+	for key in proton_node.outputs.keys():
+		var output = proton_node.outputs[key]
 		var ui = _create_component_for(output, false)
-		get_child(i).add_child(ui)
+		get_child(current_row).add_child(ui)
+		current_row += 1
 		ui.visible = output.options.hidden if "hidden" in output.options else true
 
 
@@ -83,6 +101,7 @@ func _create_component_for(io: Dictionary, is_input := true) -> GraphNodeUiCompo
 		component.size_flags_horizontal = SIZE_EXPAND_FILL
 	else:
 		component.name = "Output"
+	component.notify_connection_changed(false)
 	return component
 
 
@@ -95,18 +114,22 @@ func _reset_connection_slots() -> void:
 
 func _setup_connection_slots() -> void:
 	_reset_connection_slots()
+	var current_row = 0
 
-	for i in proton_node.inputs.size():
-		var input = proton_node.inputs[i]
-		set_slot_enabled_left(i, true)
-		set_slot_type_left(i, input.type)
-		set_slot_color_left(i, DataType.COLORS[input.type])
+	for key in proton_node.inputs.keys():
+		var input = proton_node.inputs[key]
+		set_slot_enabled_left(current_row, true)
+		set_slot_type_left(current_row, input.type)
+		set_slot_color_left(current_row, DataType.COLORS[input.type])
+		current_row += 1
 
-	for i in proton_node.outputs.size():
-		var output = proton_node.outputs[i]
-		set_slot_enabled_right(i, true)
-		set_slot_type_right(i, output.type)
-		set_slot_color_right(i, DataType.COLORS[output.type])
+	current_row = 0
+	for key in proton_node.outputs.keys():
+		var output = proton_node.outputs[key]
+		set_slot_enabled_right(current_row, true)
+		set_slot_type_right(current_row, output.type)
+		set_slot_color_right(current_row, DataType.COLORS[output.type])
+		current_row += 1
 
 
 func _on_position_offset_changed() -> void:

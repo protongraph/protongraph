@@ -16,4 +16,5 @@ static func create_spinbox(label_name: String, opts := {}) -> CustomSpinBox:
 	spinbox.allow_greater = opts["allow_greater"] if opts.has("allow_greater") else true
 	spinbox.allow_lesser = opts["allow_lesser"] if opts.has("allow_lesser") else true
 	spinbox.rounded = opts["rounded"] if opts.has("rounded") else false
+	spinbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL if opts.has("expand") else Control.SIZE_FILL
 	return spinbox
