@@ -110,7 +110,7 @@ func _read(system: String) -> Array:
 	command.args = []
 	system = system.right(1)
 
-	# Check if there's additionnal parameters
+	# Check if there's additional parameters
 	if system.length() > 0 and system[0] == "(":
 		system = system.right(1)
 		var tokens = system.split(")")

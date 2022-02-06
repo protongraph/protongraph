@@ -2,7 +2,7 @@ extends Node
 
 # Autoload
 # Parses the command line arguments passed when this project was started.
-# Stores everything in a dictionnary for later access without have to parse
+# Stores everything in a dictionary for later access without have to parse
 # everything again.
 
 var _args = {}

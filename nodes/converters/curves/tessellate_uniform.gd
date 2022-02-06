@@ -10,7 +10,7 @@ curve.
 
 func _init() -> void:
 	unique_id = "curve_tesselate_regular"
-	display_name = "Tesselate (Uniform)"
+	display_name = "Tessellate (Uniform)"
 	category = "Converters/Curves"
 	description = "Creates a vector curve with the same density along the curve"
 

@@ -1,7 +1,7 @@
 extends WAT.Test
 
 # Proxy nodes are utility nodes linking one part of the graph to another
-# branch, usually far appart but still within the same Template.
+# branch, usually far apart but still within the same Template.
 # ProxyIn takes anything in input, and exposes it to ProxyOut.
 # Proxies are named and that how they find each others.
 

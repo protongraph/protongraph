@@ -26,8 +26,8 @@ func _enter_tree() -> void:
 	Signals.safe_connect(self, "gui_value_changed", self, "_on_value_changed")
 
 
-# Because we're saving the tree to a json file, we need each node to explicitely
-# specify the data to save. It's also the node responsability to restore it
+# Because we're saving the tree to a json file, we need each node to explicitly
+# specify the data to save. It's also the node responsibility to restore it
 # when we load the file. Most nodes won't need this but it could be useful for
 # nodes that allows the user to type in raw values directly if nothing is
 # connected to a slot.
@@ -201,7 +201,7 @@ func is_remote_sync_node() -> bool:
 	return false
 
 
-# Overide this function in the derived classes to return something usable.
+# Override this function in the derived classes to return something usable.
 # Generate all the outputs for every output slots declared.
 func _generate_outputs() -> void:
 	pass
@@ -214,7 +214,7 @@ func _debug_generate_outputs() -> void:
 	print(display_name + ": " + str(gen_time) + "ms")
 
 
-# Overide this function to customize how the output cache should be cleared. If
+# Override this function to customize how the output cache should be cleared. If
 # you have memory to free or anything else, that's where you should define it.
 func _clear_cache():
 	pass

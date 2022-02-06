@@ -34,7 +34,7 @@ static func serialize(root: Node) -> Dictionary:
 	return res
 
 
-# Takes a dictionnary and recreates the Godot node tree from there. This is
+# Takes a dictionary and recreates the Godot node tree from there. This is
 # the inverse of serialize.
 static func deserialize(data: Dictionary) -> Node:
 	var res

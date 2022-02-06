@@ -12,7 +12,7 @@ for 3D models generation.
 ## Current Status
 
 ProtonGraph is currently going through **a lot of refactoring** and a rebrand. As a result, **it's not usable
-right now**, but the next major update is due soon and will break backward compatiblity. Therefore I suggest
+right now**, but the next major update is due soon and will break backward compatibility. Therefore I suggest
 you to wait until it's released. 
 Release announcement will be made here and on the social media listed below.
 
@@ -25,7 +25,7 @@ a valid domain name and you won't mix it up with conceptual graphs which are com
 
 ## Roadmap
 
-ProtonGraph is a standalone software but it's a lot more convienient to drive the content generation from
+ProtonGraph is a standalone software but it's a lot more convenient to drive the content generation from
 you engine of choice. So the immediate priority is to get a sync plugin running for the Godot engine as 
 a proof of concept. 
 

@@ -2,7 +2,7 @@ class_name DataType
 
 
 # Define the constants used when setting up the GraphNodes slots type. Each of 
-# these values should have an associated color in the COLORS dictionnary.
+# these values should have an associated color in the COLORS dictionary.
 enum Types {
 	ANY = 0,
 	BOOLEAN = 10,

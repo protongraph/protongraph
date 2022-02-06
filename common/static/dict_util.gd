@@ -31,7 +31,7 @@ static func fix_types(dict: Dictionary) -> Dictionary:
 
 
 # Takes an arbitrary value and try to recover the base type. Returns the
-# original value if nothing can be infered.
+# original value if nothing can be inferred.
 # This is not directly related to the DictUtil class but it's mostly used from
 # fix_types() above and I don't know where else to define this function.
 static func format_value(value):
@@ -58,7 +58,7 @@ static func format_value(value):
 
 
 # Converts a string like this "(0.0, 1.1, 0.5)" into a Vector object
-# Detects wether it's a Vector2 or Vector3 automatically.
+# Detects whether it's a Vector2 or Vector3 automatically.
 static func string_to_vector(string: String):
 	if not string.begins_with('(') or not string.ends_with(')'):
 		return null

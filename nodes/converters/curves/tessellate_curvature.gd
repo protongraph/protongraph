@@ -3,7 +3,7 @@ extends ProtonNode
 
 func _init() -> void:
 	unique_id = "curve_tesselate_curvature"
-	display_name = "Tesselate (Curvature)"
+	display_name = "Tessellate (Curvature)"
 	category = "Converters/Curves"
 	description = "Creates a vector curve with a curvature controlled point density"
 
