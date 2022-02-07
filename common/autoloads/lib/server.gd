@@ -51,7 +51,7 @@ func send(client_id: int, data: Dictionary) -> void:
 	var msg: String = JSON.print(data)
 
 	# Calculate how many chunks will be sent, leave some margin for the extra
-	# caracters overhead (brackets, comas, digits used for the chunk id and
+	# characters overhead (brackets, comas, digits used for the chunk id and
 	# total count and so on) this probably won't take more than 200 chars.
 	var chunk_size: int = (64 * 1024) - 200
 	var total_chunks: int = msg.length() / chunk_size + 1

@@ -48,7 +48,7 @@ func refresh_list() -> void:
 
 
 # Recursively search all the scripts that inherits from ProtonNode and store
-# them in the dictionnary
+# them in the dictionary
 func _find_all_nodes(path) -> void:
 	var dir = Directory.new()
 	dir.open(path)

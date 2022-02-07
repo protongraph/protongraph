@@ -82,7 +82,7 @@ func _generate_outputs() -> void:
 
 		var offset = 0.0
 
-		# Muzz: iterate over all the verticies, literally doesn't matter which, this is deterministic
+		# Muzz: iterate over all the vertices, literally doesn't matter which, this is deterministic
 		for i in range(vertex_count):
 			var vert = mesh_data_tool.get_vertex(i)
 			var normal = mesh_data_tool.get_vertex_normal(i)

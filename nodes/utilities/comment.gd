@@ -29,7 +29,7 @@ func _on_default_gui_ready() -> void:
 		add_child(_line_edit_comment)
 
 
-# Emmit signal for saving data, when comment was changed
+# Emit signal for saving data, when comment was changed
 func _on_LineEditComment_text_changed(new_text: String) -> void:
 	emit_signal("node_changed", self, false)
 

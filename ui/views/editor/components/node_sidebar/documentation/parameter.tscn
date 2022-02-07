@@ -60,5 +60,5 @@ margin_right = 1360.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 2
-text = "This is a long and detailled explaination about how this parameter is useful and how changing this value affects the result."
+text = "This is a long and detailed explanation about how this parameter is useful and how changing this value affects the result."
 autowrap = true

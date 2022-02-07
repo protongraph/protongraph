@@ -2,7 +2,7 @@ tool
 extends ProtonNode
 
 """
-Instanciate a node in the graph
+Instantiate a node in the graph
 """
 
 
