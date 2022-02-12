@@ -56,10 +56,6 @@ Protongraph has two modes of operation being Default responder mode, and Kafka p
 
 In Kafka producer mode, Protongraph writes messages it receives via a Websocket connection to a Kafka topic instead.  This mode is useful for instance if Protongraph is deployed to the cloud, and there are up to several additional network hops between the running Godot game and Protongraph, eg Godot game -> Signalling server -> Kafka topic -> Kafka consumer -> Protongraph.  In this instance, the output work from Protongraph would return to the Godot game in potentially a 1 to many relationship via eg Protongraph -> Kafka topic -> Signalling server -> { set of networked clients running the Godot game }.
 
-To build for Default responder mode, run `make` or `make all`.
-
-To build for Kafka producer mode, run `make kafka`.  Note that for this mode you'll need configuration files, see config/Readme.md for more information.
-
 ## Social medias
 
 Despite being a very new project, the ConceptGraph community is growing. Head over to the Discord server if you want to ask for help
