@@ -12,3 +12,8 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     godot::Godot::nativescript_init(handle);
     godot::register_class<godot::MeshOptimizer>();
 }
+
+extern "C" void GDN_EXPORT godot_nativescript_terminate(void *handle) {
+    godot::Godot::nativescript_terminate(handle);
+    godot::register_class<godot::MeshOptimizer>();
+}
