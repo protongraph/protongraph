@@ -58,7 +58,7 @@ In Kafka producer mode, Protongraph writes messages it receives via a Websocket 
 
 ## Social medias
 
-Despite being a very new project, the ConceptGraph community is growing. Head over to the Discord server if you want to ask for help
+Despite being a very new project, the Protongraph community is growing. Head over to the Discord server if you want to ask for help
 and hear about every little update or work in progress. Head over to Youtube or LBRY to access video tutorials.
 
 + **Discord server:** https://discord.gg/utUtB5r
