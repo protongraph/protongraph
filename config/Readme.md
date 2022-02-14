@@ -1,6 +1,14 @@
+## Kafka support
+
+### Preamble
+
+Protongraph has two modes of operation being Default responder mode, and Kafka producer mode.  Default responder mode responds along the Websocket connection that sync-godot establishes with Protongraph via the Godot engine client.  In this mode, packets are sent back and forth directly between the Godot engine and Protongraph via Websocket.
+
+In Kafka producer mode, Protongraph writes messages it receives via a Websocket connection to a Kafka topic instead.  This mode is useful for instance if Protongraph is deployed to the cloud, and there are up to several additional network hops between the running Godot game and Protongraph, eg Godot game -> Signalling server -> Kafka topic -> Kafka consumer -> Protongraph.  In this instance, the output work from Protongraph would return to the Godot game in potentially a 1 to many relationship via eg Protongraph -> Kafka topic -> Signalling server -> { set of networked clients running the Godot game }.
+
 ### Producer Configuration
 
-If you want to compile Protongraph in Kafka Producer mode, i.e. `make kafka` from the root directory, you'll want to read this section.
+If you want Protongraph to be able to operate in Kafka Producer mode, you'll want to read this section.
 
 In particular, this folder should contain the secrets and configuration for connection to your Kafka VM.
 
@@ -11,8 +19,11 @@ In particular, within this path, you'll want to place
 This file should take the form
 ```
 # kafka.config
+DOMAIN=your.broker.com # the domain on which your broker resides
 BROKER=your.broker.com:port # the url of your broker; this could be localhost:9092 or otherwise. Note, port defaults to 9092.
-TOPICS=hello # a list of topics to produce to
+TOPICS=hello # a command separated list of topics to produce to
+BROKER_PASSWORD=yourpreferredsupersecretpassword # the secret password to your broker
+SECURED=true # whether or not your Kafka broker is secured
 ```
 
 2. if you are connecting to a secured Kafka VM, you will also need a folder called secrets, with the following files within it

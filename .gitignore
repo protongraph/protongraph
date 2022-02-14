@@ -22,11 +22,15 @@ script_templates/
 .mono/
 # data_*/
 
+# Build specific ignores
 bin/*
 builds/osx/*.app
 builds/godot.*
 builds/osx/release.dmg
 godot*
+librdkafka.tres
+librdkafka.gdns
+!native/thirdparty/librdkafka/librdkafka.*
 
 *.o
 *.os

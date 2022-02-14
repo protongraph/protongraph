@@ -37,24 +37,8 @@ on how to actually use the software, tutorials and example files.
 
 
 ## Build from source
-
-### Read me first
-
-If you want to build the project from source yourself, first read the instructions on this repository: https://github.com/proton-graph/environment.  Note: Originally Protongraph required a custom build of the Godot game engine, but this is no longer required as of Godot 3.4.x.  You will still need to build the engine from source though if you want to compile from command line, see [here](https://docs.godotengine.org/en/stable/development/compiling/index.html) for a guide on how to do this.
-
-(Note that as of writing Protongraph supports building for Godot 3.4.2, and work to migrate Protongraph to Godot 4 is currently in progress.)
-
-Once you have a built Godot binary you'll want to move it to the root of the Protongraph directory.  Currently the project Makefile assumes that this binary will be labelled `godot.osx.3.4.2-stable.tools.64`.  Note that `make` will not work unless you have this binary available.
-
-You'll also want the export templates for 3.4.2 as well, you can find them [here](https://downloads.tuxfamily.org/godotengine/3.4.2/).  These templates should be placed in the build folder.
-
-Downloading a built version of the Godot binary will not work as the officially compiled versions do not have tools enabled, you will need either to build from source yourself or source the file from an unofficial build repository.
-
-### Making the project
-
-Protongraph has two modes of operation being Default responder mode, and Kafka producer mode.  Default responder mode responds along the Websocket connection that sync-godot establishes with Protongraph via the Godot engine client.  In this mode, packets are sent back and forth directly between the Godot engine and Protongraph via Websocket.
-
-In Kafka producer mode, Protongraph writes messages it receives via a Websocket connection to a Kafka topic instead.  This mode is useful for instance if Protongraph is deployed to the cloud, and there are up to several additional network hops between the running Godot game and Protongraph, eg Godot game -> Signalling server -> Kafka topic -> Kafka consumer -> Protongraph.  In this instance, the output work from Protongraph would return to the Godot game in potentially a 1 to many relationship via eg Protongraph -> Kafka topic -> Signalling server -> { set of networked clients running the Godot game }.
+If you want to build the project from source yourself, you will need a custom version of the engine.
+Follow the instructions on this repository: https://github.com/proton-graph/environment.
 
 ## Social medias
 
