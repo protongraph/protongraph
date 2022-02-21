@@ -3,7 +3,11 @@ extends Node
 
 var _server: IPCServer
 var _node_serializer: NodeSerializer
+var librdkafka
 
+func _init():
+	librdkafka = load("res://librdkafka.gdns").new()
+	librdkafka.produce("look at me i'm writing to kafka")
 
 func _ready():
 	if not _node_serializer:
@@ -54,4 +58,18 @@ func _on_remote_build_requested(id, msg: Dictionary) -> void:
 func _on_remote_build_completed(id, data: Array) -> void:
 	var msg = {"type": "build_completed"}
 	msg["data"] = _node_serializer.serialize(data)
-	_server.send(id, msg)
+	# Based on whether Protongraph is operating in Kafka mode or not,
+	# either respond to the request via the WebSocket / IPC Server connection or
+	# produce a message on the configured Kafka topic.
+	#
+	# We determine whether Protongraph is operating in Kafka mode by checking
+	# for the existence of kafka.config being set during object instantiation.
+	#
+	# In the case for osx, the kafka.config and secrets will sit within the app bundle
+	# and be moved there during the Make process.
+	if librdkafka.has_config():
+		print("Kafka config found, producing to specified topic on Kafka broker.")
+		librdkafka.produce(msg)
+	else:
+		print("Kafka config not found, falling back to default responder mode.")
+		_server.send(id, msg)

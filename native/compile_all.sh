@@ -20,10 +20,20 @@ if [ -z "$3" ]
 fi
 
 
-
+# Compile the gdnative bindings
 cd godot-cpp
 scons -j${threads} bits=64 generate_bindings=yes debug_symbols=no platform=$platform target=$target
 
-cd ../thirdparty/mesh_optimizer
+# Add kafka client support so that we can consume and produce to kafka topics on a (secured) kafka cluster or vm.
+cd ../thirdparty/librdkafka
+scons -j${threads} platform=$platform bits=64 debug_symbols=no target=$target
+# We'll need to repoint a dependency within the dynamic library to point to the relative path to wherever we are
+# executing the project.  At present I have set this relative to the root.  When eventually this is compiled to an
+# osx bundle we'll need to change this to be relative to the root of the bundle.
+cp lib/src/librdkafka.1.dylib bin/osx/librdkafka.1.dylib
+install_name_tool -change /usr/local/lib/librdkafka.1.dylib @executable_path/native/thirdparty/librdkafka/bin/osx/librdkafka.1.dylib bin/osx/librdkafka.dylib
+
+# Make sure that we add the mesh optimizer.  nb, not sure that this is required any more? https://github.com/godotengine/godot/pull/47764 , https://github.com/protongraph/protongraph/issues/101
+cd ../mesh_optimizer
 scons -j${threads} platform=$platform bits=64 debug_symbols=no target=$target
 

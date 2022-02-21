@@ -38,12 +38,11 @@ on how to actually use the software, tutorials and example files.
 
 ## Build from source
 If you want to build the project from source yourself, you will need a custom version of the engine.
-Follow the instructions on this repository: https://github.com/proton-graph/environment
-
+Follow the instructions on this repository: https://github.com/proton-graph/environment.
 
 ## Social medias
 
-Despite being a very new project, the ConceptGraph community is growing. Head over to the Discord server if you want to ask for help
+Despite being a very new project, the Protongraph community is growing. Head over to the Discord server if you want to ask for help
 and hear about every little update or work in progress. Head over to Youtube or LBRY to access video tutorials.
 
 + **Discord server:** https://discord.gg/utUtB5r

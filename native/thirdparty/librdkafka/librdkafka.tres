@@ -1,0 +1,9 @@
+[gd_resource type="GDNativeLibrary" format=2]
+
+[resource]
+entry/OSX.64 = "res://librdkafka.dylib"
+entry/Windows.64 = "res://librdkafka.dll"
+entry/X11.64 = "res://librdkafka.so"
+dependency/OSX.64 = [  ]
+dependency/Windows.64 = [  ]
+dependency/X11.64 = [  ]

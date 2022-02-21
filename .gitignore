@@ -1,3 +1,12 @@
+# kafka config
+config/kafka.config
+config/secrets/*.*
+
+# mklove
+Makefile.config
+config.log*
+config.cache
+config.h
 
 # Godot-specific ignores
 .import/
@@ -13,8 +22,15 @@ script_templates/
 .mono/
 # data_*/
 
-builds/
+# Build specific ignores
+bin/*
+builds/osx/*.app
+builds/godot.*
+builds/osx/release.dmg
 godot*
+librdkafka.tres
+librdkafka.gdns
+!native/thirdparty/librdkafka/librdkafka.*
 
 *.o
 *.os
