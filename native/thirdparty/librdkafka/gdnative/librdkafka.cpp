@@ -7,10 +7,12 @@
 #include <fstream>
 #include <sstream>
 #include "./utility.h"
+#include <atomic>
+#include <csignal>
 
 using namespace godot;
 
-static volatile sig_atomic_t run = 1;
+static volatile std::atomic_uint32_t run = 1;
 
 void sigterm(int sig) {
   run = 0;
@@ -141,6 +143,7 @@ retry:
 }
 
 void LibRdKafka::set_config() {
+  std::cout << "Reading variables from config file.\n" << std::endl;
   std::string config_file_name = "config/kafka.config";
   std::ifstream config_file(config_file_name.c_str());
   std::string line;
@@ -175,10 +178,11 @@ void LibRdKafka::set_config() {
     // We should indicate that there is no configuration set for Kafka.
     pw_config_not_found = true;
   }
-  std::cout << "Broker: " << pw_broker << std::endl;
-  std::cout << "Broker Password: " << pw_broker_password << std::endl;
-  std::cout << "Topic: " << pw_topic << std::endl;
-  std::cout << "Domain: " << pw_domain << std::endl;
+  // The following lines for debugging purposes only.
+  // std::cout << "Broker: " << pw_broker << std::endl;
+  // std::cout << "Broker Password: " << pw_broker_password << std::endl;
+  // std::cout << "Topic: " << pw_topic << std::endl;
+  // std::cout << "Domain: " << pw_domain << std::endl;
 }
 
 void LibRdKafka::set_secrets() {

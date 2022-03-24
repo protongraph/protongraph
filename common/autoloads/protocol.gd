@@ -6,8 +6,9 @@ var _node_serializer: NodeSerializer
 var librdkafka
 
 func _init():
-	librdkafka = load("res://librdkafka.gdns").new()
-	librdkafka.produce("look at me i'm writing to kafka")
+	librdkafka = load("res://native/thirdparty/librdkafka/librdkafka.gdns").new()
+	# If you'd like to test producing to Kafka, try this:
+	# librdkafka.produce("look at me i'm writing to kafka")
 
 func _ready():
 	if not _node_serializer:

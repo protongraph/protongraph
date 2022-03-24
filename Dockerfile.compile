@@ -1,0 +1,22 @@
+FROM gcc:latest
+
+# Basic packages
+RUN apt-get -y -o Acquire::ForceIPv4=true update
+RUN apt-get install -y make scons g++
+RUN apt-get install -y wget unzip vim
+RUN apt-get install -y binutils elfutils patchelf
+
+# Set working directory
+RUN mkdir -p /usr/src/myapp
+WORKDIR /usr/src/myapp
+
+# We need these for compilation
+RUN wget https://downloads.tuxfamily.org/godotengine/3.4.2/Godot_v3.4.2-stable_linux_headless.64.zip && unzip Godot_v3.4.2-stable_linux_headless.64.zip && mv Godot_v3.4.2-stable_linux_headless.64 godot.linux.3.4.2-stable.headless.64
+RUN wget https://downloads.tuxfamily.org/godotengine/3.4.2/Godot_v3.4.2-stable_export_templates.tpz && unzip Godot_v3.4.2-stable_export_templates.tpz
+RUN mkdir -p ~/.local/share/godot/templates/3.4.2.stable
+RUN cd templates && cp * ~/.local/share/godot/templates/3.4.2.stable && cd -
+
+# Copy the native resources
+COPY native/thirdparty/librdkafka/librdkafka.gdns librdkafka.gdns
+COPY native/thirdparty/librdkafka/librdkafka.tres librdkafka.prod.tres
+
