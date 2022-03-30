@@ -7,6 +7,8 @@
 #
 # To shutdown the running container, run "docker ps -a" and "docker rm -f <container_id>"
 
+# Obtain binaries (which are required to build the project or develop against it locally) if not present
+./scripts/obtain_binaries.sh
 # Build the compile image for compilation
 docker build -f Dockerfile.compile . -t gcc-build
 # Run the compile image in order to build the required headless binary

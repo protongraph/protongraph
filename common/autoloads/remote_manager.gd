@@ -44,7 +44,7 @@ func _set_resource_references(tpl: Template, inputs: Array, resource_references:
 	for input in inputs:
 		if input:
 			for resource_reference in resource_references:
-				if resource_reference && resource_reference["name"] == input.name && resource_reference["resource_path"]:
+				if resource_reference && resource_reference["name"] == input.name && "resource_path" in resource_reference:
 					tpl.set_remote_resource(input.name, child_transversal + [resource_reference.name], resource_reference["resource_path"])
 				else:
 					# Why "else" condition here at present? Decided a maximum of only one resource_reference per top level input for now (which is admittedly potentially unrealistic for advanced usecases); can be revised later.

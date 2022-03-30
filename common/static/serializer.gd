@@ -5,7 +5,7 @@ extends Node
 
 
 var _resources: Array
-var _serialized_resources: Dictionary
+var _serialized_resources: Array
 
 # _node_metadata consists of an array of Dictionaries of the form [ { fence_planks: <fence_planks_node_path> }, { Path: <Path_node_path> }]
 var _node_metadata: Array
@@ -35,7 +35,7 @@ var _serialized_node_metadata: Dictionary
 # }
 func serialize(nodes_with_references: Array) -> Dictionary:
 	var _resources = []
-	var _serialized_resources = {}
+	var _serialized_resources = []
 
 	var result: Dictionary = {
 		"resources": [],
@@ -286,24 +286,27 @@ func _deserialize_curve_3d(data: Dictionary) -> Path:
 
 func _serialize_resource_mesh(mesh: Mesh) -> Dictionary:
 	var data = {}
-	data = {
-		"surfaces": [],
-		"name": mesh.resource_name
-	}
+	if "resource_name" in mesh:
+		data = {
+			"surfaces": [],
+			"name": mesh.resource_name
+		}
 
-	if mesh is PlaceholderMesh:
-		data["placeholder_id"] = mesh.id
-	elif mesh is PrimitiveMesh:
-		data["surfaces"].push_back({
-			"material": null,
-			"geometry": _format_array(mesh.get_mesh_arrays())
-		})
-	else:
-		for i in mesh.get_surface_count():
+		if mesh is PlaceholderMesh:
+			data["placeholder_id"] = mesh.id
+		elif mesh is PrimitiveMesh:
 			data["surfaces"].push_back({
-			"material": null,
-			"geometry": _format_array(mesh.surface_get_arrays(i))
-		})
+				"material": null,
+				"geometry": _format_array(mesh.get_mesh_arrays())
+			})
+		else:
+			for i in mesh.get_surface_count():
+				data["surfaces"].push_back({
+				"material": null,
+				"geometry": _format_array(mesh.surface_get_arrays(i))
+			})
+	else:
+		print("WARNING: Mesh resource is missing resource name")
 
 	return data
 
@@ -312,18 +315,21 @@ func _deserialize_resource_mesh(data: Dictionary) -> Mesh:
 	var mesh = ArrayMesh.new()
 	mesh.resource_name = data["name"] if "name" in data else ""
 
-	for surface in data["surfaces"]:
-		var geometry = surface["geometry"]
-		var surface_arrays = []
-		surface_arrays.resize(Mesh.ARRAY_MAX)
-		surface_arrays[Mesh.ARRAY_VERTEX] = _to_pool(geometry[Mesh.ARRAY_VERTEX])
-		surface_arrays[Mesh.ARRAY_NORMAL] = _to_pool(geometry[Mesh.ARRAY_NORMAL])
-		surface_arrays[Mesh.ARRAY_TEX_UV] = _to_pool(geometry[Mesh.ARRAY_TEX_UV])
+	if "surfaces" in data:
+		for surface in data["surfaces"]:
+			var geometry = surface["geometry"]
+			var surface_arrays = []
+			surface_arrays.resize(Mesh.ARRAY_MAX)
+			surface_arrays[Mesh.ARRAY_VERTEX] = _to_pool(geometry[Mesh.ARRAY_VERTEX])
+			surface_arrays[Mesh.ARRAY_NORMAL] = _to_pool(geometry[Mesh.ARRAY_NORMAL])
+			surface_arrays[Mesh.ARRAY_TEX_UV] = _to_pool(geometry[Mesh.ARRAY_TEX_UV])
 
-		if geometry[Mesh.ARRAY_INDEX]:
-			surface_arrays[Mesh.ARRAY_INDEX] = PoolIntArray(geometry[Mesh.ARRAY_INDEX])
+			if geometry[Mesh.ARRAY_INDEX]:
+				surface_arrays[Mesh.ARRAY_INDEX] = PoolIntArray(geometry[Mesh.ARRAY_INDEX])
 
-		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_arrays)
+			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_arrays)
+	else:
+		print("WARNING: No surfaces in mesh")
 
 	return mesh
 

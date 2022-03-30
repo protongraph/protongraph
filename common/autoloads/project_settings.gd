@@ -35,7 +35,7 @@ var _require_restart := [
 
 
 func _ready() -> void:
-	pass
+	load_or_create_config()
 
 func has(setting: String) -> bool:
 	return _settings.has(setting)

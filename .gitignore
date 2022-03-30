@@ -38,6 +38,8 @@ librdkafka.prod.gdns
 librdkafka.prod.tres
 */**/librdkafka.so.1
 librdkafka.so.1
+linux.zip
+osx.zip
 
 *.o
 *.os

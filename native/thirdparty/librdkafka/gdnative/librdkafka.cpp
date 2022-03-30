@@ -56,7 +56,7 @@ void LibRdKafka::produce(String gd_message) {
   char *message = (char *)gd_message.alloc_c_string();
 
   std::cout << "Producing to Kafka ..." << std::endl;
-  std::cout << "Message from front-end: " << message << std::endl;
+  // std::cout << "Message from front-end: " << message << std::endl;
 
   size_t len = strlen(message);
   rd_kafka_resp_err_t err;
