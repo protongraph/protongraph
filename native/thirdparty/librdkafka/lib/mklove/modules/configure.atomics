@@ -137,7 +137,7 @@ int64_t foo (int64_t i) {
 
 
     if [[ ! -z $_libs ]]; then
-        mkl_mkvar_append LDFLAGS LDFLAGS "-Wl,--as-needed"
+        mkl_mkvar_append LDFLAGS LDFLAGS "-Wl,-rpath,'\$\$ORIGIN',-Wl,-z,origin,--as-needed"
         mkl_mkvar_append LIBS LIBS "$_libs"
     fi
 

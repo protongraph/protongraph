@@ -3,6 +3,7 @@ class_name StringComponent
 
 
 var template_path: String
+var template_content: String
 
 var _line_edit: LineEdit
 var _dropdown: OptionButton

@@ -11,7 +11,11 @@ var _incoming = {}
 
 
 func _ready() -> void:
-	_ws.set_bind_ip("127.0.0.1")
+	# If we set this to localhost then when running headlessly in docker we can't connect to it
+	# from outside the running container, so leave as default wildcard IP instead.
+	# ref: https://docs.godotengine.org/en/stable/classes/class_websocketserver.html#property-descriptions
+	# ref: https://stackoverflow.com/a/54102318/1979000
+	# _ws.set_bind_ip("127.0.0.1")
 	Signals.safe_connect(_ws, "client_connected", self, "_on_client_connected")
 	Signals.safe_connect(_ws, "client_disconnected", self, "_on_client_disconnected")
 	Signals.safe_connect(_ws, "client_close_request", self, "_on_client_close_request")

@@ -6,8 +6,9 @@ var _node_serializer: NodeSerializer
 var librdkafka
 
 func _init():
-	librdkafka = load("res://librdkafka.gdns").new()
-	librdkafka.produce("look at me i'm writing to kafka")
+	librdkafka = load("res://native/thirdparty/librdkafka/librdkafka.gdns").new()
+	# If you'd like to test producing to Kafka, try this:
+	# librdkafka.produce("look at me i'm writing to kafka")
 
 func _ready():
 	if not _node_serializer:
@@ -34,12 +35,21 @@ func _on_data_received(id: int , data: Dictionary) -> void:
 		"build":
 			_on_remote_build_requested(id, data)
 
-
+# See doc/payload.md for an example format of the payload
 func _on_remote_build_requested(id, msg: Dictionary) -> void:
-	if not msg.has("path"):
+	print("[IPC] Remote build requested")
+	print(msg)
+	var path: String
+	var tpgn: String
+	if not msg.has("path") and not msg.has("tpgn"):
+		print("[IPC] Remote build requested, but missing path and tpgn")
 		return
-
-	var path: String = msg["path"]
+	if msg.has("tpgn"):
+		tpgn = msg["tpgn"]
+		path = ""
+	elif msg.has("path"):
+		path = msg["path"]
+		tpgn = ""
 	var inspector: Array = msg["inspector"] if msg.has("inspector") else null
 	var generator_payload_data_array := []
 	var generator_resources_data_array := []
@@ -52,7 +62,7 @@ func _on_remote_build_requested(id, msg: Dictionary) -> void:
 		"generator_payload_data_array": generator_payload_data_array,
 		"generator_resources_data_array": generator_resources_data_array
 	}
-	GlobalEventBus.dispatch("build_for_remote", [id, path, args])
+	GlobalEventBus.dispatch("build_for_remote", [id, path, tpgn, args])
 
 
 func _on_remote_build_completed(id, data: Array) -> void:
