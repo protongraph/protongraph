@@ -51,7 +51,7 @@ func _set_resource_references(tpl: Template, inputs: Array, resource_references:
 					_set_resource_references(tpl, inputs, resource_reference["children"], child_transversal + [resource_reference.name])
 
 
-func _on_build_requested(id: int, path: String, args: Dictionary) -> void:
+func _on_build_requested(id: int, path: String, tpgn: String, args: Dictionary) -> void:
 	var tpl: Template
 	if _peers.has(id):
 		tpl = _peers[id]["template"]
@@ -61,7 +61,12 @@ func _on_build_requested(id: int, path: String, args: Dictionary) -> void:
 		_peers[id] = {}
 		_peers[id]["template"] = tpl
 
-	if tpl._loaded_template_path != path:
+	# When Protongraph is deployed to the cloud, the idea is to pass in the entire template as a string,
+	# else if we're running locally, we'd like to pass in the template's path.
+	# (Passing in the local path is helpful when we are running Protongraph as an interactive application.)
+	if tpgn != "":
+		tpl.load_from_tpgn(tpgn)
+	elif path != "" and tpl._loaded_template_path != path:
 		tpl.load_from_file(path)
 
 	if not tpl._template_loaded:
