@@ -53,7 +53,7 @@ func _populate_rows():
 	var rows_count = max(inputs_count, outputs_count)
 	for i in rows_count:
 		var hbox := HBoxContainer.new()
-		hbox.rect_min_size.y = 24
+		hbox.minimum_size.y = 24
 		add_child(hbox)
 
 	var current_row = 0 # Needed because the dictionary keys aren't continuous.
