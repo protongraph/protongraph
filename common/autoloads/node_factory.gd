@@ -78,7 +78,7 @@ func _find_all_nodes(path) -> void:
 		if not _is_node_valid(node):		
 			if node is Node:
 				node.queue_free()
-			elif obj is Object:
+			elif node is Object:
 				node.free()
 			continue
 
