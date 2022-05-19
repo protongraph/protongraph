@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cix67ygu2d5u5"]
 
-[ext_resource type="Texture2D" uid="uid://cbbh53a0sbqka" path="res://ui/icons/icon_menu.svg" id="1_lh0uq"]
+[ext_resource type="Texture2D" uid="uid://vfxvngwmlkfc" path="res://ui/icons/icon_menu.svg" id="1_lh0uq"]
 [ext_resource type="Theme" uid="uid://iqe2mb5f3yen" path="res://ui/themes/dark.tres" id="1_y01vt"]
 [ext_resource type="Script" path="res://ui/proton_graph.gd" id="2_aiyx6"]
 [ext_resource type="Script" path="res://ui/root/menu_button.gd" id="3_llsfr"]
@@ -13,17 +13,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( "1_y01vt" )
 script = ExtResource( "2_aiyx6" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 modulate = Color(1, 1, 1, 0)
@@ -33,34 +27,29 @@ offset_bottom = 4.0
 [node name="TopBar" type="HBoxContainer" parent="VBoxContainer"]
 offset_top = 4.0
 offset_right = 1024.0
-offset_bottom = 35.0
+offset_bottom = 12.0
 
 [node name="Control" type="Control" parent="VBoxContainer/TopBar"]
-offset_right = 4.0
-offset_bottom = 31.0
-rect_min_size = Vector2(4, 0)
+offset_bottom = 8.0
 
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/TopBar"]
-offset_left = 4.0
-offset_right = 34.0
-offset_bottom = 31.0
-rect_min_size = Vector2(30, 28)
+offset_right = 8.0
+offset_bottom = 8.0
 theme_override_font_sizes/font_size = 16
 icon = ExtResource( "1_lh0uq" )
 expand_icon = true
 script = ExtResource( "3_llsfr" )
 
 [node name="TabBar" type="TabBar" parent="VBoxContainer/TopBar"]
-offset_left = 34.0
+offset_left = 8.0
 offset_right = 1024.0
-offset_bottom = 31.0
+offset_bottom = 8.0
 size_flags_horizontal = 3
-tab_alignment = 0
 tab_close_display_policy = 1
 drag_to_rearrange_enabled = true
 
 [node name="ViewContainer" type="TabContainer" parent="VBoxContainer"]
-offset_top = 35.0
+offset_top = 12.0
 offset_right = 1024.0
 offset_bottom = 600.0
 size_flags_horizontal = 3

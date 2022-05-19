@@ -36,7 +36,7 @@ func _ready():
 		box.edit_value.connect(_on_edit_value)
 
 
-func popup(bounds := Rect2(0, 0, 0, 0)) -> void:
+func popup(bounds := Rect2i(0, 0, 0, 0)) -> void:
 	# Force the popup to always use as little space as possible because the
 	# control size flags doesn't work in this case
 	size = Vector2.ZERO

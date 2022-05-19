@@ -64,8 +64,8 @@ func set_label_text(text) -> void:
 	spinbox_name = text if text is String else String(text)
 	if _name_label:
 		_name_label.text = spinbox_name
-		rect_min_size.x = spinbox_name.length() * 8 + 80
-		rect_min_size.x *= EditorUtil.get_editor_scale()
+		minimum_size.x = spinbox_name.length() * 8 + 80
+		minimum_size.x *= EditorUtil.get_editor_scale()
 
 
 func get_label_text() -> String:
@@ -115,7 +115,7 @@ func _create_undo_redo_action(new, old) -> void:
 
 func _show_extra_controls() -> void:
 	var pos := get_tree().get_root().position + Vector2i(get_global_transform().origin)
-	pos.y -= _edit_popup.size.y / 2 - int(rect_size.y / 2)
+	pos.y -= _edit_popup.size.y / 2 - int(size.y / 2)
 	pos.x -= _edit_popup.size.x
 	_edit_popup.position = pos
 	_edit_popup.popup()

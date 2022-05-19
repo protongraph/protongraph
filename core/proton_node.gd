@@ -67,6 +67,10 @@ func _clear_cache():
 # Clear previously generated outputs
 func _clear_outputs():
 	for idx in outputs.keys():
-		MemoryUtil.free(outputs.idx.value)
+		var obj = outputs.idx.value	
+		if obj is Node:
+			obj.queue_free()
+		elif obj is Object:
+			obj.free()
 		outputs.idx.value = null
 

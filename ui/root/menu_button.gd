@@ -25,8 +25,8 @@ func _ready() -> void:
 	popup.add_separator()
 	popup.add_icon_item(_close_icon, "Quit", 30)
 
-	var l = max(rect_size.x, rect_size.y)
-	rect_min_size = Vector2(l, l)
+	var l = max(size.x, size.y)
+	minimum_size = Vector2(l, l)
 
 	GlobalEventBus.current_view_changed.connect(_on_view_changed)
 

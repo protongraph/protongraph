@@ -30,7 +30,7 @@ func _ready() -> void:
 
 	_create_button.disabled = true
 	_default_description = _description_label.text
-	_grouping_button.pressed = Settings.get_setting(Settings.GROUP_NODES_BY_TYPE, false)
+	_grouping_button.button_pressed = Settings.get_setting(Settings.GROUP_NODES_BY_TYPE, false)
 
 	_initialized = true
 
@@ -39,7 +39,7 @@ func _refresh_nodes_list(nodes := [], folder_collapsed := true) -> void:
 	if not _initialized:
 		return
 
-	_group_by_type = _grouping_button.pressed
+	_group_by_type = _grouping_button.button_pressed
 
 	_node_tree.clear()
 	var root = _node_tree.create_item()
@@ -133,7 +133,7 @@ func _hide_popup() -> void:
 
 
 func _filter_node(node) -> bool:
-	return _search_text.is_subsequence_ofi(node.title)
+	return _search_text.is_subsequence_ofn(node.title)
 
 
 func _sort_nodes_by_title(a, b):
