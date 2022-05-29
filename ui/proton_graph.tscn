@@ -49,6 +49,7 @@ tab_close_display_policy = 1
 drag_to_rearrange_enabled = true
 
 [node name="ViewContainer" type="TabContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
 offset_top = 12.0
 offset_right = 1024.0
 offset_bottom = 600.0
@@ -58,10 +59,8 @@ tabs_visible = false
 script = ExtResource( "4_fkmym" )
 tab_bar = NodePath("../TopBar/TabBar")
 
-[node name="WelcomeView" parent="VBoxContainer/ViewContainer" instance=ExtResource( "4_3anom" )]
-offset_left = 4.0
-offset_top = 6.0
-offset_right = -4.0
-offset_bottom = -4.0
+[node name="Welcome" parent="VBoxContainer/ViewContainer" instance=ExtResource( "4_3anom" )]
+offset_top = 3.0
 
 [node name="SaveLoadManager" parent="." instance=ExtResource( "7_hhjai" )]
+unique_name_in_owner = true

@@ -41,8 +41,6 @@ func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
 	if notify:
 		graph_changed.emit()
 
-	#_on_node_created(new_node)
-	print("new node: ", new_node.unique_name)
 	return new_node
 
 
@@ -68,6 +66,11 @@ func disconnect_node(from: StringName, from_port: int, to: StringName, to_port: 
 		if c.from == from and c.from_port == from_port and c.to == to and c.to_port == to_port:
 			connections.erase(c)
 			return
+
+
+func rebuild() -> void:
+	pass
+
 
 
 func _get_unique_name(node: ProtonNode) -> String:

@@ -1,0 +1,101 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3nl2ur2fan6g"]
+
+[ext_resource type="Script" path="res://ui/views/editor/components/sidebar/sidebar.gd" id="1_xncfe"]
+
+[node name="SideBar" type="Control"]
+clip_children = true
+offset_right = 1024.0
+offset_bottom = 600.0
+script = ExtResource( "1_xncfe" )
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
+clip_children = true
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DefaultContent" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="InfoLabel" type="Label" parent="ScrollContainer/MarginContainer/DefaultContent"]
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Select a node to display its local properties here. "
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Properties" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+offset_right = 1024.0
+offset_bottom = 600.0
+
+[node name="NameLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
+unique_name_in_owner = true
+offset_right = 1024.0
+offset_bottom = 26.0
+text = "[Node name]"
+
+[node name="InputsLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
+unique_name_in_owner = true
+offset_top = 30.0
+offset_right = 1024.0
+offset_bottom = 56.0
+text = "Inputs"
+
+[node name="Inputs" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Properties"]
+unique_name_in_owner = true
+offset_top = 60.0
+offset_right = 1024.0
+offset_bottom = 60.0
+
+[node name="OutputsLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
+unique_name_in_owner = true
+offset_top = 64.0
+offset_right = 1024.0
+offset_bottom = 90.0
+text = "Outputs"
+
+[node name="Outputs" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Properties"]
+unique_name_in_owner = true
+offset_top = 94.0
+offset_right = 1024.0
+offset_bottom = 94.0
+
+[node name="ExtrasLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
+unique_name_in_owner = true
+offset_top = 98.0
+offset_right = 1024.0
+offset_bottom = 124.0
+text = "Extras"
+
+[node name="Extras" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Properties"]
+unique_name_in_owner = true
+offset_top = 128.0
+offset_right = 1024.0
+offset_bottom = 128.0
+
+[node name="DocumentationLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
+unique_name_in_owner = true
+offset_top = 132.0
+offset_right = 1024.0
+offset_bottom = 158.0
+text = "Documentation"

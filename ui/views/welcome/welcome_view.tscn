@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://krqgsakt0ufw"]
+[gd_scene load_steps=6 format=3 uid="uid://krqgsakt0ufw"]
 
 [ext_resource type="Script" path="res://ui/views/welcome/welcome_view.gd" id="1_ekqb2"]
 [ext_resource type="Texture2D" uid="uid://dj1xrh5y4wdf4" path="res://ui/icons/icon_proton_graph.svg" id="1_mptb5"]
@@ -6,113 +6,93 @@
 [ext_resource type="Texture2D" uid="uid://dqvgam553soqh" path="res://ui/icons/icon_load.svg" id="3_0q7ki"]
 [ext_resource type="Texture2D" uid="uid://cqaq3jxuddo8a" path="res://ui/icons/icon_new.svg" id="3_psv6x"]
 
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_1vufm"]
-color = Color(1, 1, 1, 0.196078)
-grow_begin = -100.0
-grow_end = -100.0
-vertical = true
-
-[node name="WelcomeView" type="HBoxContainer"]
+[node name="Welcome" type="HBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 16
-alignment = 1
 script = ExtResource( "1_ekqb2" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="Spacer" type="Control" parent="."]
-offset_right = 109.0
+[node name="PanelContainer" type="PanelContainer" parent="."]
+offset_right = 336.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.2
 
-[node name="LeftContainer" type="MarginContainer" parent="."]
-offset_left = 125.0
-offset_right = 312.0
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+offset_left = 62.0
+offset_right = 273.0
 offset_bottom = 600.0
+size_flags_horizontal = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="LeftContainer"]
-offset_right = 187.0
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+offset_right = 211.0
 offset_bottom = 600.0
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="TitleBar" type="HBoxContainer" parent="LeftContainer/VBoxContainer"]
-offset_top = 233.0
-offset_right = 187.0
-offset_bottom = 273.0
+[node name="TitleBar" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+offset_top = 219.0
+offset_right = 211.0
+offset_bottom = 283.0
 theme_override_constants/separation = 8
 alignment = 2
 
-[node name="Icon" type="TextureRect" parent="LeftContainer/VBoxContainer/TitleBar"]
-offset_right = 40.0
-offset_bottom = 40.0
-rect_min_size = Vector2(40, 40)
+[node name="Icon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/TitleBar"]
+offset_right = 64.0
+offset_bottom = 64.0
 texture = ExtResource( "1_mptb5" )
-expand = true
 stretch_mode = 6
 
-[node name="Title" type="Label" parent="LeftContainer/VBoxContainer/TitleBar"]
-offset_left = 48.0
-offset_top = 3.0
-offset_right = 187.0
-offset_bottom = 36.0
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/TitleBar"]
+offset_left = 72.0
+offset_top = 15.0
+offset_right = 211.0
+offset_bottom = 48.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource( "2_j4th4" )
 theme_override_font_sizes/font_size = 24
 text = "ProtonGraph"
-valign = 1
 
-[node name="Buttons" type="HBoxContainer" parent="LeftContainer/VBoxContainer"]
-offset_top = 297.0
-offset_right = 187.0
-offset_bottom = 367.0
+[node name="Buttons" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+offset_top = 307.0
+offset_right = 211.0
+offset_bottom = 381.0
 alignment = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="LeftContainer/VBoxContainer/Buttons"]
-offset_left = 97.0
-offset_right = 187.0
-offset_bottom = 70.0
-rect_min_size = Vector2(90, 0)
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons"]
+offset_left = 131.0
+offset_right = 211.0
+offset_bottom = 74.0
 theme_override_constants/separation = 12
 
-[node name="New" type="Button" parent="LeftContainer/VBoxContainer/Buttons/VBoxContainer"]
-offset_right = 90.0
-offset_bottom = 29.0
+[node name="New" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer"]
+unique_name_in_owner = true
+minimum_size = Vector2(80, 0)
+offset_right = 80.0
+offset_bottom = 31.0
 theme_override_font_sizes/font_size = 16
 text = "New"
 icon = ExtResource( "3_psv6x" )
-align = 2
 expand_icon = true
 
-[node name="Load" type="Button" parent="LeftContainer/VBoxContainer/Buttons/VBoxContainer"]
-offset_top = 41.0
-offset_right = 90.0
-offset_bottom = 70.0
+[node name="Load" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer"]
+unique_name_in_owner = true
+offset_top = 43.0
+offset_right = 80.0
+offset_bottom = 74.0
 text = "Load"
 icon = ExtResource( "3_0q7ki" )
-align = 2
 expand_icon = true
 
-[node name="VSeparator" type="VSeparator" parent="."]
-offset_left = 328.0
-offset_right = 332.0
-offset_bottom = 600.0
-theme_override_styles/separator = SubResource( "StyleBoxLine_1vufm" )
-
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-offset_left = 348.0
-offset_right = 898.0
+offset_left = 352.0
+offset_right = 1024.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
 follow_focus = true
-scroll_horizontal_enabled = false
-scroll_horizontal_visible = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
-offset_right = 550.0
+offset_right = 672.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -120,18 +100,11 @@ alignment = 1
 
 [node name="Label" type="Label" parent="ScrollContainer/VBoxContainer"]
 offset_top = 283.0
-offset_right = 550.0
+offset_right = 672.0
 offset_bottom = 309.0
 text = "Recent files"
 
 [node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 offset_top = 313.0
-offset_right = 550.0
+offset_right = 672.0
 offset_bottom = 317.0
-
-[node name="Spacer2" type="Control" parent="."]
-offset_left = 914.0
-offset_right = 1024.0
-offset_bottom = 600.0
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.2

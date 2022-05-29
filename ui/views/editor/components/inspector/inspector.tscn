@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://gn4rn1qlyjng"]
+
+[ext_resource type="Script" path="res://ui/views/editor/components/inspector/inspector.gd" id="1_hjjfa"]
+
+[node name="Inspector" type="Control"]
+clip_children = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( "1_hjjfa" )
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "INSPECTOR"
+horizontal_alignment = 1
+vertical_alignment = 1

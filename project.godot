@@ -44,6 +44,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/editor_view.gd"
 }, {
+"base": "Control",
+"class": &"EditorViewport",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/viewport/viewport.gd"
+}, {
 "base": "Node",
 "class": &"EventBus",
 "language": &"GDScript",
@@ -64,6 +69,16 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/graph_node_ui_component.gd"
 }, {
+"base": "Control",
+"class": &"Inspector",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/inspector/inspector.gd"
+}, {
+"base": "RefCounted",
+"class": &"MemoryUtil",
+"language": &"GDScript",
+"path": "res://common/static/memory_util.gd"
+}, {
 "base": "RefCounted",
 "class": &"NodeDocumentation",
 "language": &"GDScript",
@@ -79,6 +94,16 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/graph_editor.gd"
 }, {
+"base": "Control",
+"class": &"NodeSideBar",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/sidebar/sidebar.gd"
+}, {
+"base": "RefCounted",
+"class": &"NodeUtil",
+"language": &"GDScript",
+"path": "res://common/static/node_util.gd"
+}, {
 "base": "RefCounted",
 "class": &"PathUtil",
 "language": &"GDScript",
@@ -93,6 +118,11 @@ _global_script_classes=[{
 "class": &"ProtonNode",
 "language": &"GDScript",
 "path": "res://core/proton_node.gd"
+}, {
+"base": "RefCounted",
+"class": &"ProtonNodeSlot",
+"language": &"GDScript",
+"path": "res://core/lib/proton_node_slot.gd"
 }, {
 "base": "GraphNode",
 "class": &"ProtonNodeUi",
@@ -114,10 +144,20 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/number.gd"
 }, {
+"base": "HBoxContainer",
+"class": &"SidebarProperty",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/sidebar/property.gd"
+}, {
 "base": "GenericInputComponent",
 "class": &"StringComponent",
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/string.gd"
+}, {
+"base": "VBoxContainer",
+"class": &"Toolbar",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/toolbar/toolbar.gd"
 }, {
 "base": "RefCounted",
 "class": &"UserInterfaceUtil",
@@ -142,21 +182,29 @@ _global_script_class_icons={
 "DataType": "",
 "EditorUtil": "",
 "EditorView": "",
+"EditorViewport": "",
 "EventBus": "",
 "GenericInputComponent": "",
 "GenericOutputComponent": "",
 "GraphNodeUiComponent": "",
+"Inspector": "",
+"MemoryUtil": "",
 "NodeDocumentation": "",
 "NodeGraph": "",
 "NodeGraphEditor": "",
+"NodeSideBar": "",
+"NodeUtil": "",
 "PathUtil": "",
 "ProtonGraphApp": "",
 "ProtonNode": "",
+"ProtonNodeSlot": "",
 "ProtonNodeUi": "",
 "SaveLoadDialog": "",
 "SaveLoadManager": "",
 "ScalarComponent": "",
+"SidebarProperty": "",
 "StringComponent": "",
+"Toolbar": "",
 "UserInterfaceUtil": "",
 "VectorComponent": "",
 "ViewContainer": ""
@@ -180,6 +228,44 @@ NodeFactory="*res://common/autoloads/node_factory.gd"
 [display]
 
 window/subwindows/embed_subwindows=false
+
+[input]
+
+rebuild={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":true,"pressed":false,"keycode":0,"physical_keycode":82,"unicode":0,"echo":false,"script":null)
+]
+}
+add_node={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":true,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":0,"physical_keycode":81,"unicode":0,"echo":false,"script":null)
+]
+}
+save={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":true,"pressed":false,"keycode":0,"physical_keycode":83,"unicode":0,"echo":false,"script":null)
+]
+}
+toggle_sidebar={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":0,"physical_keycode":84,"unicode":0,"echo":false,"script":null)
+]
+}
+toggle_viewport={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":0,"physical_keycode":86,"unicode":0,"echo":false,"script":null)
+]
+}
+toggle_inspector={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":0,"physical_keycode":78,"unicode":0,"echo":false,"script":null)
+]
+}
+toggle_graph_editor={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":0,"physical_keycode":71,"unicode":0,"echo":false,"script":null)
+]
+}
 
 [rendering]
 

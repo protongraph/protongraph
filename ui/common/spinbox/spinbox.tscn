@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://ui/common/spinbox/spinbox.gd" id="3"]
 [ext_resource type="Texture2D" uid="uid://c4oqjrt71kha2" path="res://ui/icons/icon_decrease.svg" id="4"]
 [ext_resource type="Texture2D" uid="uid://bro217glp7a2f" path="res://ui/icons/icon_increase.svg" id="5"]
-[ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_left_hover.tres" id="6"]
+[ext_resource type="StyleBox" uid="uid://b4hd62prbx443" path="res://ui/common/spinbox/styles/spinbox_button_left_hover.tres" id="6"]
 [ext_resource type="StyleBox" uid="uid://df4nuewmrwl3r" path="res://ui/common/spinbox/styles/progress_bar_fg.tres" id="7"]
 [ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_right.tres" id="8"]
 [ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_left.tres" id="9"]
@@ -24,43 +24,32 @@ offset_left = -473.0
 offset_top = -16.0
 offset_right = 473.0
 offset_bottom = 16.0
-rect_min_size = Vector2(100, 32)
-theme_override_styles/fg = ExtResource( "7" )
 theme_override_styles/bg = ExtResource( "1" )
+theme_override_styles/fg = ExtResource( "7" )
 value = 50.0
 percent_visible = false
 script = ExtResource( "3" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Decrease" type="Button" parent="HBoxContainer"]
-offset_right = 16.0
+offset_right = 4.0
 offset_bottom = 32.0
-rect_min_size = Vector2(16, 0)
+theme_override_styles/normal = ExtResource( "9" )
 theme_override_styles/hover = ExtResource( "6" )
 theme_override_styles/pressed = ExtResource( "10" )
-theme_override_styles/normal = ExtResource( "9" )
 icon = ExtResource( "4" )
 expand_icon = true
 
 [node name="Control" type="Control" parent="HBoxContainer"]
-offset_left = 20.0
-offset_right = 926.0
+offset_left = 8.0
+offset_right = 938.0
 offset_bottom = 32.0
-mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="HBoxContainer/Control"]
 anchor_right = 1.0
@@ -71,9 +60,6 @@ theme_override_font_sizes/font_size = 16
 text = "Label"
 vertical_alignment = 1
 text_overrun_behavior = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="LineEdit" type="LineEdit" parent="HBoxContainer/Control"]
 anchor_right = 1.0
@@ -84,18 +70,14 @@ theme_override_styles/normal = SubResource( "StyleBoxEmpty_hhi5r" )
 text = "50"
 alignment = 2
 context_menu_enabled = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Increase" type="Button" parent="HBoxContainer"]
-offset_left = 930.0
+offset_left = 942.0
 offset_right = 946.0
 offset_bottom = 32.0
-rect_min_size = Vector2(16, 0)
+theme_override_styles/normal = ExtResource( "8" )
 theme_override_styles/hover = ExtResource( "11" )
 theme_override_styles/pressed = ExtResource( "2" )
-theme_override_styles/normal = ExtResource( "8" )
 icon = ExtResource( "5" )
 expand_icon = true
 

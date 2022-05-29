@@ -89,14 +89,17 @@ func delete_node(node: ProtonNodeUi) -> void:
 	force_redraw()
 
 
-func _show_add_node_popup(position: Vector2i) -> void:
+func _show_add_node_popup(click_position: Vector2i) -> void:
 	if not is_instance_valid(_add_node_popup):
 		_add_node_popup = AddNodePopup.instantiate()
 		add_child(_add_node_popup)
 		_add_node_popup.create_node_request.connect(_on_create_node_request)
 
-	_right_click_position = position - get_tree().get_root().position
-	_add_node_popup.position = position
+	var window_position := get_tree().get_root().position
+	var graph_edit_position := Vector2i(global_position)
+
+	# Necessary because sub windows are not embedded
+	_add_node_popup.position = click_position + window_position + graph_edit_position
 	_add_node_popup.popup()
 
 

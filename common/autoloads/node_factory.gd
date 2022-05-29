@@ -75,11 +75,8 @@ func _find_all_nodes(path) -> void:
 			continue
 
 		var node = script.new()
-		if not _is_node_valid(node):		
-			if node is Node:
-				node.queue_free()
-			elif node is Object:
-				node.free()
+		if not _is_node_valid(node):
+			MemoryUtil.safe_free(node)
 			continue
 
 		# If the interface is defined in a separate file, load it instead

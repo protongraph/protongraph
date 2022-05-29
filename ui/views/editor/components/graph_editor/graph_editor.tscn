@@ -13,6 +13,3 @@ zoom_max = 2.16
 zoom_step = 1.08
 show_zoom_label = true
 script = ExtResource( "1_qf2ha" )
-__meta__ = {
-"_edit_use_anchors_": false
-}

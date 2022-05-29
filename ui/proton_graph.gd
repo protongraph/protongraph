@@ -4,8 +4,8 @@ extends Panel
 
 const EditorViewScene = preload("res://ui/views/editor/editor_view.tscn")
 
-@onready var _view_container: ViewContainer = $VBoxContainer/ViewContainer
-@onready var _save_load_manager: SaveLoadManager = $SaveLoadManager
+@onready var _view_container: ViewContainer = $"%ViewContainer"
+@onready var _save_load_manager: SaveLoadManager = $"%SaveLoadManager"
 
 
 func _ready():

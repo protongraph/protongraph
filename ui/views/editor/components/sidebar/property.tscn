@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://bab88o2d5xerh"]
+
+[ext_resource type="Script" path="res://ui/views/editor/components/sidebar/property.gd" id="1_0xf8k"]
+
+[node name="Property" type="HBoxContainer"]
+size_flags_horizontal = 5
+size_flags_vertical = 5
+script = ExtResource( "1_0xf8k" )
+
+[node name="VSeparator" type="VSeparator" parent="."]
+offset_right = 4.0
+offset_bottom = 24.0
+
+[node name="Component" type="MarginContainer" parent="."]
+offset_left = 8.0
+offset_right = 8.0
+offset_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="VisibilityBox" type="CheckBox" parent="."]
+offset_left = 12.0
+offset_right = 36.0
+offset_bottom = 24.0

@@ -1,26 +1,82 @@
-[gd_scene load_steps=3 format=3 uid="uid://br7vjmahwgjin"]
+[gd_scene load_steps=7 format=3 uid="uid://br7vjmahwgjin"]
 
 [ext_resource type="PackedScene" uid="uid://dlc0aaiewp0tx" path="res://ui/views/editor/components/graph_editor/graph_editor.tscn" id="1_8i43s"]
 [ext_resource type="Script" path="res://ui/views/editor/editor_view.gd" id="1_rpw2x"]
+[ext_resource type="PackedScene" uid="uid://cmgx4u6v8yx1p" path="res://ui/views/editor/components/toolbar/toolbar.tscn" id="2_qga80"]
+[ext_resource type="PackedScene" uid="uid://c3nl2ur2fan6g" path="res://ui/views/editor/components/sidebar/sidebar.tscn" id="3_ech34"]
+[ext_resource type="PackedScene" uid="uid://djeep1msjomu8" path="res://ui/views/editor/components/viewport/viewport.tscn" id="5_lr66y"]
+[ext_resource type="PackedScene" uid="uid://gn4rn1qlyjng" path="res://ui/views/editor/components/inspector/inspector.tscn" id="6_wd7w2"]
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( "1_rpw2x" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
-[node name="NodeGraphEditor" parent="HBoxContainer" instance=ExtResource( "1_8i43s" )]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1020.0
+offset_bottom = 596.0
+theme_override_constants/separation = 4
+
+[node name="Toolbar" parent="MarginContainer/HBoxContainer" instance=ExtResource( "2_qga80" )]
+unique_name_in_owner = true
+anchor_bottom = 0.0
+offset_right = 30.0
+offset_bottom = 592.0
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/HBoxContainer"]
+offset_left = 34.0
+offset_right = 1016.0
+offset_bottom = 592.0
+size_flags_horizontal = 3
+split_offset = 200
+
+[node name="SideBar" parent="MarginContainer/HBoxContainer/HSplitContainer" instance=ExtResource( "3_ech34" )]
+unique_name_in_owner = true
+offset_right = 200.0
+offset_bottom = 592.0
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/HBoxContainer/HSplitContainer"]
+offset_left = 212.0
+offset_right = 982.0
+offset_bottom = 592.0
+split_offset = -200
+
+[node name="VSplitContainer" type="VSplitContainer" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer"]
+offset_right = 558.0
+offset_bottom = 592.0
+size_flags_horizontal = 3
+split_offset = -200
+
+[node name="NodeGraphEditor" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer/VSplitContainer" instance=ExtResource( "1_8i43s" )]
+unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_right = 1024.0
-offset_bottom = 600.0
-scroll_offset = Vector2(-14, 0)
+offset_right = 558.0
+offset_bottom = 380.0
+scroll_offset = Vector2(-212, -46)
+
+[node name="Viewport" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer/VSplitContainer" instance=ExtResource( "5_lr66y" )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 392.0
+offset_right = 558.0
+offset_bottom = 592.0
+
+[node name="Inspector" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer" instance=ExtResource( "6_wd7w2" )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 570.0
+offset_right = 770.0
+offset_bottom = 592.0
