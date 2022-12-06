@@ -8,13 +8,20 @@
 [ext_resource type="PackedScene" uid="uid://gn4rn1qlyjng" path="res://ui/views/editor/components/inspector/inspector.tscn" id="6_wd7w2"]
 
 [node name="EditorView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( "1_rpw2x" )
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rpw2x")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
@@ -27,21 +34,26 @@ offset_right = 1276.0
 offset_bottom = 716.0
 theme_override_constants/separation = 4
 
-[node name="Toolbar" parent="MarginContainer/HBoxContainer" instance=ExtResource( "2_qga80" )]
+[node name="Toolbar" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_qga80")]
 unique_name_in_owner = true
+anchors_preset = 0
 anchor_bottom = 0.0
-offset_right = 30.0
+offset_right = 32.0
 offset_bottom = 712.0
+grow_vertical = 2
 
 [node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/HBoxContainer"]
-offset_left = 34.0
+offset_left = 36.0
 offset_right = 1272.0
 offset_bottom = 712.0
 size_flags_horizontal = 3
 split_offset = 250
 
-[node name="SideBar" parent="MarginContainer/HBoxContainer/HSplitContainer" instance=ExtResource( "3_ech34" )]
+[node name="SideBar" parent="MarginContainer/HBoxContainer/HSplitContainer" instance=ExtResource("3_ech34")]
 unique_name_in_owner = true
+clip_children = 1
+layout_mode = 3
+anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_right = 250.0
@@ -49,36 +61,42 @@ offset_bottom = 712.0
 
 [node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/HBoxContainer/HSplitContainer"]
 offset_left = 262.0
-offset_right = 1238.0
+offset_right = 1236.0
 offset_bottom = 712.0
 split_offset = -250
 
 [node name="VSplitContainer" type="VSplitContainer" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer"]
-offset_right = 714.0
+offset_right = 712.0
 offset_bottom = 712.0
 size_flags_horizontal = 3
 split_offset = -200
 
-[node name="NodeGraphEditor" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer/VSplitContainer" instance=ExtResource( "1_8i43s" )]
+[node name="NodeGraphEditor" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer/VSplitContainer" instance=ExtResource("1_8i43s")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_right = 714.0
+offset_right = 712.0
 offset_bottom = 500.0
 scroll_offset = Vector2(-212, -46)
 
-[node name="Viewport" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer/VSplitContainer" instance=ExtResource( "5_lr66y" )]
+[node name="Viewport" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer/VSplitContainer" instance=ExtResource("5_lr66y")]
 unique_name_in_owner = true
+clip_children = 1
+layout_mode = 3
+anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_top = 512.0
-offset_right = 714.0
+offset_right = 712.0
 offset_bottom = 712.0
 
-[node name="Inspector" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer" instance=ExtResource( "6_wd7w2" )]
+[node name="Inspector" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer" instance=ExtResource("6_wd7w2")]
 unique_name_in_owner = true
+clip_children = 1
+layout_mode = 3
+anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 726.0
-offset_right = 976.0
+offset_left = 724.0
+offset_right = 974.0
 offset_bottom = 712.0

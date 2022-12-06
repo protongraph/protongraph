@@ -109,7 +109,7 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://common/static/path_util.gd"
 }, {
-"base": "Panel",
+"base": "Node",
 "class": &"ProtonGraphApp",
 "language": &"GDScript",
 "path": "res://ui/proton_graph.gd"
@@ -229,13 +229,14 @@ NodeFactory="*res://common/autoloads/node_factory.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/size/transparent=true
 window/subwindows/embed_subwindows=false
 
 [input]
 
 rebuild={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":82,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":82,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 add_node={
@@ -245,7 +246,7 @@ add_node={
 }
 save={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 toggle_sidebar={
@@ -271,4 +272,5 @@ toggle_graph_editor={
 
 [rendering]
 
+transparent_background=true
 environment/defaults/default_environment="res://default_env.tres"

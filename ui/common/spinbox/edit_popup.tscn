@@ -4,61 +4,87 @@
 [ext_resource type="Script" path="res://ui/common/spinbox/edit_popup.gd" id="2"]
 
 [node name="EditPopup" type="PopupPanel"]
-size = Vector2i(144, 294)
-visible = true
+size = Vector2i(150, 294)
 transient = false
 exclusive = true
 script = ExtResource("2")
-e100 = NodePath("VBoxContainer/EditValueBox")
-e10 = NodePath("VBoxContainer/EditValueBox2")
-e1 = NodePath("VBoxContainer/EditValueBox3")
-ep1 = NodePath("VBoxContainer/EditValueBox4")
-ep01 = NodePath("VBoxContainer/EditValueBox5")
-ep001 = NodePath("VBoxContainer/EditValueBox6")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
 offset_left = 4.0
 offset_top = 4.0
-offset_right = -1140.0
-offset_bottom = -430.0
+offset_right = 146.0
+offset_bottom = 290.0
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(130, 0)
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 136.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 4
 
-[node name="EditValueBox" parent="VBoxContainer" instance=ExtResource("1")]
-layout_mode = 2
+[node name="e100" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
+unique_name_in_owner = true
+offset_right = 130.0
 step = 100.0
 
-[node name="EditValueBox2" parent="VBoxContainer" instance=ExtResource("1")]
-layout_mode = 2
+[node name="e10" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
+unique_name_in_owner = true
+offset_top = 35.0
+offset_right = 130.0
+offset_bottom = 66.0
 step = 10.0
 
-[node name="EditValueBox3" parent="VBoxContainer" instance=ExtResource("1")]
-layout_mode = 2
+[node name="e1" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
+unique_name_in_owner = true
+offset_top = 70.0
+offset_right = 130.0
+offset_bottom = 101.0
 step = 1.0
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
-layout_mode = 2
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+offset_top = 105.0
+offset_right = 130.0
+offset_bottom = 109.0
 
-[node name="Label" type="Label" parent="VBoxContainer"]
-layout_mode = 2
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+offset_top = 113.0
+offset_right = 130.0
+offset_bottom = 139.0
 size_flags_horizontal = 3
 text = "+0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
-layout_mode = 2
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+offset_top = 143.0
+offset_right = 130.0
+offset_bottom = 147.0
 
-[node name="EditValueBox4" parent="VBoxContainer" instance=ExtResource("1")]
-layout_mode = 2
+[node name="ep1" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
+unique_name_in_owner = true
+offset_top = 151.0
+offset_right = 130.0
+offset_bottom = 182.0
 step = 0.1
 
-[node name="EditValueBox5" parent="VBoxContainer" instance=ExtResource("1")]
-layout_mode = 2
+[node name="ep01" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
+unique_name_in_owner = true
+offset_top = 186.0
+offset_right = 130.0
+offset_bottom = 217.0
 step = 0.01
 
-[node name="EditValueBox6" parent="VBoxContainer" instance=ExtResource("1")]
-layout_mode = 2
+[node name="ep001" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
+unique_name_in_owner = true
+offset_top = 221.0
+offset_right = 130.0
+offset_bottom = 252.0
 step = 0.001

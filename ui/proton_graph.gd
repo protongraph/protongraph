@@ -1,5 +1,5 @@
 class_name ProtonGraphApp
-extends Panel
+extends Node
 
 
 const EditorViewScene = preload("res://ui/views/editor/editor_view.tscn")

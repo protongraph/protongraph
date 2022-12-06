@@ -13,131 +13,115 @@
 action = &"add_node"
 
 [sub_resource type="Shortcut" id="Shortcut_7a4a0"]
-events = [SubResource( "InputEventAction_h3goc" )]
+events = [SubResource("InputEventAction_h3goc")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_kncu0"]
 action = &"rebuild"
 
 [sub_resource type="Shortcut" id="Shortcut_u82ac"]
-events = [SubResource( "InputEventAction_kncu0" )]
+events = [SubResource("InputEventAction_kncu0")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_j4vte"]
 action = &"save"
 
 [sub_resource type="Shortcut" id="Shortcut_t10ax"]
-events = [SubResource( "InputEventAction_j4vte" )]
+events = [SubResource("InputEventAction_j4vte")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_c5p7s"]
 action = &"toggle_sidebar"
 
 [sub_resource type="Shortcut" id="Shortcut_qvlb1"]
-events = [SubResource( "InputEventAction_c5p7s" )]
+events = [SubResource("InputEventAction_c5p7s")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_2xh30"]
 action = &"toggle_inspector"
 
 [sub_resource type="Shortcut" id="Shortcut_5mcor"]
-events = [SubResource( "InputEventAction_2xh30" )]
+events = [SubResource("InputEventAction_2xh30")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_uqlvn"]
 action = &"toggle_graph_editor"
 
 [sub_resource type="Shortcut" id="Shortcut_noixo"]
-events = [SubResource( "InputEventAction_uqlvn" )]
+events = [SubResource("InputEventAction_uqlvn")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_t5j78"]
 action = &"toggle_viewport"
 
 [sub_resource type="Shortcut" id="Shortcut_03n1u"]
-events = [SubResource( "InputEventAction_t5j78" )]
+events = [SubResource("InputEventAction_t5j78")]
 
 [node name="Toolbar" type="VBoxContainer"]
+anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 20.0
-script = ExtResource( "1_nv6t2" )
+offset_right = 8.0
+script = ExtResource("1_nv6t2")
 
 [node name="Create" type="Button" parent="."]
-minimum_size = Vector2(30, 30)
-offset_right = 30.0
-offset_bottom = 30.0
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
 focus_mode = 0
-shortcut = SubResource( "Shortcut_7a4a0" )
-icon = ExtResource( "1_3snf8" )
+shortcut = SubResource("Shortcut_7a4a0")
+icon = ExtResource("1_3snf8")
 icon_alignment = 1
 expand_icon = true
 
 [node name="Rebuild" type="Button" parent="."]
-minimum_size = Vector2(30, 30)
-offset_top = 34.0
-offset_right = 30.0
-offset_bottom = 64.0
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
 focus_mode = 0
-shortcut = SubResource( "Shortcut_u82ac" )
-icon = ExtResource( "3_hmxyg" )
+shortcut = SubResource("Shortcut_u82ac")
+icon = ExtResource("3_hmxyg")
 icon_alignment = 1
 expand_icon = true
 
 [node name="HSeparator" type="HSeparator" parent="."]
-offset_top = 68.0
-offset_right = 30.0
-offset_bottom = 72.0
+layout_mode = 2
 
 [node name="Save" type="Button" parent="."]
-minimum_size = Vector2(30, 30)
-offset_top = 76.0
-offset_right = 30.0
-offset_bottom = 106.0
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
 focus_mode = 0
-shortcut = SubResource( "Shortcut_t10ax" )
-icon = ExtResource( "2_on6in" )
+shortcut = SubResource("Shortcut_t10ax")
+icon = ExtResource("2_on6in")
 icon_alignment = 1
 expand_icon = true
 
 [node name="HSeparator2" type="HSeparator" parent="."]
-offset_top = 110.0
-offset_right = 30.0
-offset_bottom = 114.0
+layout_mode = 2
 
 [node name="ToggleSidebar" type="Button" parent="."]
-minimum_size = Vector2(30, 30)
-offset_top = 118.0
-offset_right = 30.0
-offset_bottom = 148.0
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
 focus_mode = 0
-shortcut = SubResource( "Shortcut_qvlb1" )
-icon = ExtResource( "4_kshbb" )
+shortcut = SubResource("Shortcut_qvlb1")
+icon = ExtResource("4_kshbb")
 icon_alignment = 1
 expand_icon = true
 
 [node name="ToggleInspector" type="Button" parent="."]
-minimum_size = Vector2(30, 30)
-offset_top = 152.0
-offset_right = 30.0
-offset_bottom = 182.0
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
 focus_mode = 0
-shortcut = SubResource( "Shortcut_5mcor" )
-icon = ExtResource( "5_gt8pn" )
+shortcut = SubResource("Shortcut_5mcor")
+icon = ExtResource("5_gt8pn")
 icon_alignment = 1
 expand_icon = true
 
 [node name="ToggleGraphEditor" type="Button" parent="."]
-minimum_size = Vector2(30, 30)
-offset_top = 186.0
-offset_right = 30.0
-offset_bottom = 216.0
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
 focus_mode = 0
-shortcut = SubResource( "Shortcut_noixo" )
-icon = ExtResource( "6_efu6l" )
+shortcut = SubResource("Shortcut_noixo")
+icon = ExtResource("6_efu6l")
 icon_alignment = 1
 expand_icon = true
 
 [node name="ToggleViewport" type="Button" parent="."]
-minimum_size = Vector2(30, 30)
-offset_top = 220.0
-offset_right = 30.0
-offset_bottom = 250.0
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
 focus_mode = 0
-shortcut = SubResource( "Shortcut_03n1u" )
-icon = ExtResource( "7_8e4pu" )
+shortcut = SubResource("Shortcut_03n1u")
+icon = ExtResource("7_8e4pu")
 icon_alignment = 1
 expand_icon = true

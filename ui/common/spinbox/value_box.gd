@@ -23,8 +23,10 @@ func _on_gui_input(event) -> void:
 		_acc = 0.0
 		if _clicked:
 			edit_value_started.emit()
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		else:
 			edit_value_ended.emit()
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 	elif event is InputEventMouseMotion and _clicked:
 		if sign(_acc) != sign(event.relative.x):

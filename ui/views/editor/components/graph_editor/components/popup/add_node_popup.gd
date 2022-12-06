@@ -7,11 +7,11 @@ extends Popup
 signal create_node_request
 
 
-@onready var _node_tree: Tree = $PopupUi/MarginContainer/VBoxContainer/NodeTree
-@onready var _create_button: Button = $PopupUi/MarginContainer/VBoxContainer/ActionContainer/CreateButton
-@onready var _cancel_button: Button = $PopupUi/MarginContainer/VBoxContainer/ActionContainer/CancelButton
-@onready var _description_label: Label = $PopupUi/MarginContainer/VBoxContainer/DescriptionText
-@onready var _grouping_button: CheckBox = $PopupUi/MarginContainer/VBoxContainer/HBoxContainer/CheckBox
+@onready var _node_tree: Tree = $%NodeTree
+@onready var _create_button: Button = $%CreateButton
+@onready var _cancel_button: Button = $%CancelButton
+@onready var _description_label: Label = $%DescriptionText
+@onready var _grouping_button: CheckBox = $%CheckBox
 
 var _default_description: String
 var _search_text := ""

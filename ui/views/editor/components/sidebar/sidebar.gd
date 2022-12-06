@@ -38,6 +38,8 @@ func clear() -> void:
 
 
 func display_node(node: ProtonNodeUi) -> void:
+	clear()
+
 	if not node:
 		return
 
@@ -45,7 +47,6 @@ func display_node(node: ProtonNodeUi) -> void:
 		_proton_node_ui.value_changed.disconnect(_on_node_value_changed)
 		_proton_node_ui.connection_changed.disconnect(_on_node_connection_changed)
 
-	clear()
 	_proton_node_ui = node
 	_proton_node = node.proton_node
 	_rebuild_ui()
