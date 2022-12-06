@@ -33,7 +33,7 @@ func create(label_name: String, type: int, opts := {}):
 	mouse_filter = Control.MOUSE_FILTER_PASS
 
 	if type != -1:
-		label.hint_tooltip = DataType.get_type_name(type)
+		label.tooltip_text = DataType.get_type_name(type)
 		icon.texture = TextureUtil.get_slot_icon(type)
 		icon.modulate = DataType.COLORS[type]
 

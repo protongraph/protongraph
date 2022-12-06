@@ -1,110 +1,84 @@
-[gd_scene load_steps=6 format=3 uid="uid://krqgsakt0ufw"]
+[gd_scene load_steps=2 format=3 uid="uid://krqgsakt0ufw"]
 
 [ext_resource type="Script" path="res://ui/views/welcome/welcome_view.gd" id="1_ekqb2"]
-[ext_resource type="Texture2D" uid="uid://dj1xrh5y4wdf4" path="res://ui/icons/icon_proton_graph.svg" id="1_mptb5"]
-[ext_resource type="Font" uid="uid://e6wbubtpp7ve" path="res://ui/themes/fonts/fira_sans-bold.tres" id="2_j4th4"]
-[ext_resource type="Texture2D" uid="uid://dqvgam553soqh" path="res://ui/icons/icon_load.svg" id="3_0q7ki"]
-[ext_resource type="Texture2D" uid="uid://cqaq3jxuddo8a" path="res://ui/icons/icon_new.svg" id="3_psv6x"]
 
 [node name="Welcome" type="HBoxContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 16
-script = ExtResource( "1_ekqb2" )
+script = ExtResource("1_ekqb2")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-offset_right = 336.0
-offset_bottom = 600.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-offset_left = 62.0
-offset_right = 273.0
-offset_bottom = 600.0
+layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
-offset_right = 211.0
-offset_bottom = 600.0
+layout_mode = 2
 theme_override_constants/separation = 24
 alignment = 1
 
 [node name="TitleBar" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-offset_top = 219.0
-offset_right = 211.0
-offset_bottom = 283.0
+layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 2
 
 [node name="Icon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/TitleBar"]
-offset_right = 64.0
-offset_bottom = 64.0
-texture = ExtResource( "1_mptb5" )
+layout_mode = 2
 stretch_mode = 6
 
 [node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/TitleBar"]
-offset_left = 72.0
-offset_top = 15.0
-offset_right = 211.0
-offset_bottom = 48.0
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource( "2_j4th4" )
 theme_override_font_sizes/font_size = 24
 text = "ProtonGraph"
 
 [node name="Buttons" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-offset_top = 307.0
-offset_right = 211.0
-offset_bottom = 381.0
+layout_mode = 2
 alignment = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons"]
-offset_left = 131.0
-offset_right = 211.0
-offset_bottom = 74.0
+layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="New" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer"]
 unique_name_in_owner = true
-minimum_size = Vector2(80, 0)
-offset_right = 80.0
-offset_bottom = 31.0
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "New"
-icon = ExtResource( "3_psv6x" )
 expand_icon = true
 
 [node name="Load" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer"]
 unique_name_in_owner = true
-offset_top = 43.0
-offset_right = 80.0
-offset_bottom = 74.0
+layout_mode = 2
 text = "Load"
-icon = ExtResource( "3_0q7ki" )
 expand_icon = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-offset_left = 352.0
-offset_right = 1024.0
-offset_bottom = 600.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 follow_focus = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
-offset_right = 672.0
-offset_bottom = 600.0
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer"]
-offset_top = 283.0
-offset_right = 672.0
-offset_bottom = 309.0
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
 text = "Recent files"
 
-[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
-offset_top = 313.0
-offset_right = 672.0
-offset_bottom = 317.0
+[node name="HSeparator" type="HSeparator" parent="ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2

@@ -28,7 +28,7 @@ func create(label_name: String, type: int, opts := {}) -> void:
 	else:
 		_line_edit = LineEdit.new()
 		add_ui(_line_edit)
-		_line_edit.minimum_size.x = 120
+		_line_edit.custom_minimum_size.x = 120
 		_line_edit.size_flags_horizontal = SIZE_EXPAND_FILL
 		_line_edit.name = "LineEdit"
 		_line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
@@ -76,7 +76,7 @@ func _show_file_dialog(opts: Dictionary) -> void:
 		_file_dialog = FileDialog.new()
 		add_child(_file_dialog)
 
-	_file_dialog.minimum_size = Vector2(500, 500)
+	_file_dialog.custom_minimum_size = Vector2(500, 500)
 	_file_dialog.mode = opts["mode"] if opts.has("mode") else FileDialog.MODE_SAVE_FILE
 	_file_dialog.resizable = true
 	_file_dialog.access = FileDialog.ACCESS_FILESYSTEM

@@ -1,14 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://bgo7smjjxdrys"]
 
-[ext_resource type="PackedScene" path="res://ui/common/spinbox/value_box.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://sd5cty6xi2so" path="res://ui/common/spinbox/value_box.tscn" id="1"]
 [ext_resource type="Script" path="res://ui/common/spinbox/edit_popup.gd" id="2"]
 
 [node name="EditPopup" type="PopupPanel"]
-size = Vector2i(138, 248)
-script = ExtResource( "2" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+size = Vector2i(144, 294)
+visible = true
+transient = false
+exclusive = true
+script = ExtResource("2")
 e100 = NodePath("VBoxContainer/EditValueBox")
 e10 = NodePath("VBoxContainer/EditValueBox2")
 e1 = NodePath("VBoxContainer/EditValueBox3")
@@ -17,68 +17,48 @@ ep01 = NodePath("VBoxContainer/EditValueBox5")
 ep001 = NodePath("VBoxContainer/EditValueBox6")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 134.0
-offset_bottom = 244.0
-rect_min_size = Vector2(130, 0)
+offset_right = -1140.0
+offset_bottom = -430.0
 theme_override_constants/separation = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="EditValueBox" parent="VBoxContainer" instance=ExtResource( "1" )]
-offset_right = 130.0
-offset_bottom = 29.0
+[node name="EditValueBox" parent="VBoxContainer" instance=ExtResource("1")]
+layout_mode = 2
 step = 100.0
 
-[node name="EditValueBox2" parent="VBoxContainer" instance=ExtResource( "1" )]
-offset_top = 33.0
-offset_right = 130.0
-offset_bottom = 62.0
+[node name="EditValueBox2" parent="VBoxContainer" instance=ExtResource("1")]
+layout_mode = 2
 step = 10.0
 
-[node name="EditValueBox3" parent="VBoxContainer" instance=ExtResource( "1" )]
-offset_top = 66.0
-offset_right = 130.0
-offset_bottom = 95.0
+[node name="EditValueBox3" parent="VBoxContainer" instance=ExtResource("1")]
+layout_mode = 2
 step = 1.0
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
-offset_top = 99.0
-offset_right = 130.0
-offset_bottom = 103.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer"]
-offset_top = 107.0
-offset_right = 130.0
-offset_bottom = 133.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "+0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
-offset_top = 137.0
-offset_right = 130.0
-offset_bottom = 141.0
+layout_mode = 2
 
-[node name="EditValueBox4" parent="VBoxContainer" instance=ExtResource( "1" )]
-offset_top = 145.0
-offset_right = 130.0
-offset_bottom = 174.0
+[node name="EditValueBox4" parent="VBoxContainer" instance=ExtResource("1")]
+layout_mode = 2
 step = 0.1
 
-[node name="EditValueBox5" parent="VBoxContainer" instance=ExtResource( "1" )]
-offset_top = 178.0
-offset_right = 130.0
-offset_bottom = 207.0
+[node name="EditValueBox5" parent="VBoxContainer" instance=ExtResource("1")]
+layout_mode = 2
 step = 0.01
 
-[node name="EditValueBox6" parent="VBoxContainer" instance=ExtResource( "1" )]
-offset_top = 211.0
-offset_right = 130.0
-offset_bottom = 240.0
+[node name="EditValueBox6" parent="VBoxContainer" instance=ExtResource("1")]
+layout_mode = 2
 step = 0.001

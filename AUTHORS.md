@@ -1,6 +1,6 @@
-# ConceptGraph authors
+# ProtonGraph authors
 
-ConceptGraph is developed by a community of voluntary contributors.
+ProtonGraph is developed by a community of voluntary contributors.
 GitHub usernames are indicated in parentheses, or as sole entry when no other
 name is available, sorted in alphabetical order.
 

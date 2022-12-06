@@ -49,10 +49,13 @@ func refresh_list() -> void:
 # Recursively search all the scripts that inherits from ProtonNode and store
 # them in the dictionnary
 func _find_all_nodes(path) -> void:
-	var dir = Directory.new()
+	var dir := DirAccess.open(path)
+	if not dir:
+		print_debug("Could not open ", path)
+		return
+
 	dir.include_hidden = false
 	dir.include_navigational = false
-	dir.open(path)
 	dir.list_dir_begin()
 	var path_root = dir.get_current_dir() + "/"
 

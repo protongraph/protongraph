@@ -21,7 +21,7 @@ func create(label_name: String, type: int, opts := {}) -> void:
 	_col.add_child(_label_box)
 
 	_vector_box = VBoxContainer.new()
-	_vector_box.minimum_size.x = 120 #Constants.get_vector_width()
+	_vector_box.custom_minimum_size.x = 120 #Constants.get_vector_width()
 	_vector_box.size_flags_horizontal = Control.SIZE_EXPAND
 
 	_vector_box.add_theme_constant_override("separation", 0)

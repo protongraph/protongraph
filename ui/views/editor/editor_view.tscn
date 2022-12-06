@@ -23,37 +23,39 @@ theme_override_constants/margin_bottom = 4
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 1020.0
-offset_bottom = 596.0
+offset_right = 1276.0
+offset_bottom = 716.0
 theme_override_constants/separation = 4
 
 [node name="Toolbar" parent="MarginContainer/HBoxContainer" instance=ExtResource( "2_qga80" )]
 unique_name_in_owner = true
 anchor_bottom = 0.0
 offset_right = 30.0
-offset_bottom = 592.0
+offset_bottom = 712.0
 
 [node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/HBoxContainer"]
 offset_left = 34.0
-offset_right = 1016.0
-offset_bottom = 592.0
+offset_right = 1272.0
+offset_bottom = 712.0
 size_flags_horizontal = 3
-split_offset = 200
+split_offset = 250
 
 [node name="SideBar" parent="MarginContainer/HBoxContainer/HSplitContainer" instance=ExtResource( "3_ech34" )]
 unique_name_in_owner = true
-offset_right = 200.0
-offset_bottom = 592.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 250.0
+offset_bottom = 712.0
 
 [node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/HBoxContainer/HSplitContainer"]
-offset_left = 212.0
-offset_right = 982.0
-offset_bottom = 592.0
-split_offset = -200
+offset_left = 262.0
+offset_right = 1238.0
+offset_bottom = 712.0
+split_offset = -250
 
 [node name="VSplitContainer" type="VSplitContainer" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer"]
-offset_right = 558.0
-offset_bottom = 592.0
+offset_right = 714.0
+offset_bottom = 712.0
 size_flags_horizontal = 3
 split_offset = -200
 
@@ -61,22 +63,22 @@ split_offset = -200
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_right = 558.0
-offset_bottom = 380.0
+offset_right = 714.0
+offset_bottom = 500.0
 scroll_offset = Vector2(-212, -46)
 
 [node name="Viewport" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer/VSplitContainer" instance=ExtResource( "5_lr66y" )]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 392.0
-offset_right = 558.0
-offset_bottom = 592.0
+offset_top = 512.0
+offset_right = 714.0
+offset_bottom = 712.0
 
 [node name="Inspector" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer" instance=ExtResource( "6_wd7w2" )]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 570.0
-offset_right = 770.0
-offset_bottom = 592.0
+offset_left = 726.0
+offset_right = 976.0
+offset_bottom = 712.0

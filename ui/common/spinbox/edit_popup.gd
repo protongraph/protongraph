@@ -35,13 +35,15 @@ func _ready():
 		box.edit_value_ended.connect(_on_edit_value_ended)
 		box.edit_value.connect(_on_edit_value)
 
+	about_to_popup.connect(_on_about_to_popup)
 
-func popup(bounds := Rect2i(0, 0, 0, 0)) -> void:
+
+func _on_about_to_popup() -> void:
 	# Force the popup to always use as little space as possible because the
 	# control size flags doesn't work in this case
 	size = Vector2.ZERO
 	delta = 0.0
-	super(bounds)
+	label.text = str(delta)
 
 
 func _on_edit_value_started() -> void:

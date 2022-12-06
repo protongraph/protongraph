@@ -5,7 +5,7 @@ const EDITOR_SCALE = {
 	"category": "editor",
 	"id": "editor_scale",
 	"title": "Editor UI scale",
-	"description": 
+	"description":
 		"""Increase this number if the text appears too small.
 		Decrease it if the text appears too large.""",
 	}
@@ -27,7 +27,7 @@ const GROUP_NODES_BY_TYPE = {
 	"category": "editor",
 	"id": "group_nodes_by_type",
 	"title": "Group nodes by type",
-	"description": 
+	"description":
 		"""In the "Add node" popup, by default nodes are grouped by purpose (Generators, Modifiers...).
 		Turn this setting on to group them by data type (Meshes, Curves ...).""",
 }
@@ -65,10 +65,10 @@ func has(setting) -> bool:
 func get_setting(setting, default = null):
 	if not _initialized:
 		load_or_create_config_file()
-	
+
 	if _values.has(setting):
 		return _values[setting]
-	
+
 	return default
 
 
@@ -84,8 +84,11 @@ func update_setting(setting: String, value) -> void:
 
 
 func load_or_create_config_file() -> void:
-	var dir = Directory.new()
-	dir.open("user://")
+	var dir := DirAccess.open("user://")
+	if not dir:
+		print_debug("Could not open user://")
+		return
+
 	if dir.file_exists(_path):
 		print(_path, " already exists, loading config")
 		load_config()

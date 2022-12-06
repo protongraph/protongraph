@@ -26,7 +26,7 @@ func _ready() -> void:
 	popup.add_icon_item(_close_icon, "Quit", 30)
 
 	var l = max(size.x, size.y)
-	minimum_size = Vector2(l, l)
+	custom_minimum_size = Vector2(l, l)
 
 	GlobalEventBus.current_view_changed.connect(_on_view_changed)
 

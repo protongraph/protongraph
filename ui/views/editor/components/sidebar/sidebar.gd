@@ -41,7 +41,7 @@ func display_node(node: ProtonNodeUi) -> void:
 	if not node:
 		return
 
-	if _proton_node_ui:
+	if is_instance_valid(_proton_node_ui):
 		_proton_node_ui.value_changed.disconnect(_on_node_value_changed)
 		_proton_node_ui.connection_changed.disconnect(_on_node_connection_changed)
 

@@ -1,5 +1,5 @@
-extends ProgressBar
 class_name CustomSpinBox
+extends ProgressBar
 
 
 @export var spinbox_name: String
@@ -9,10 +9,10 @@ class_name CustomSpinBox
 		style = val
 		_update_style()
 
-@onready var _name_label: Label = $HBoxContainer/Control/Label
-@onready var _line_edit: LineEdit = $HBoxContainer/Control/LineEdit
-@onready var _increase_button: Button = $HBoxContainer/Increase
-@onready var _decrease_button: Button = $HBoxContainer/Decrease
+@onready var _name_label: Label = $"%Label"
+@onready var _line_edit: LineEdit = $"%LineEdit"
+@onready var _increase_button: Button = $"%Increase"
+@onready var _decrease_button: Button = $"%Decrease"
 @onready var _edit_popup: PopupPanel = $EditPopup
 
 
@@ -36,8 +36,8 @@ func _ready() -> void:
 	value_changed.connect(_update_line_edit_value)
 
 	# Connect the two < and > buttons clicks
-	_increase_button.connect("pressed", _on_button_pressed, [true])
-	_decrease_button.connect("pressed", _on_button_pressed, [false])
+	_increase_button.pressed.connect(_on_button_pressed.bind(true))
+	_decrease_button.pressed.connect(_on_button_pressed.bind(false))
 
 	# Listen to the line_edit changes to sync the progress bar value
 	_line_edit.text_submitted.connect(_on_line_edit_changed)
@@ -64,8 +64,8 @@ func set_label_text(text) -> void:
 	spinbox_name = text if text is String else String(text)
 	if _name_label:
 		_name_label.text = spinbox_name
-		minimum_size.x = spinbox_name.length() * 8 + 80
-		minimum_size.x *= EditorUtil.get_editor_scale()
+		custom_minimum_size.x = spinbox_name.length() * 8 + 80
+		custom_minimum_size.x *= EditorUtil.get_editor_scale()
 
 
 func get_label_text() -> String:

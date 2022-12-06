@@ -43,7 +43,7 @@ func save_current() -> void:
 		ResourceSaver.FLAG_BUNDLE_RESOURCES && \
 		ResourceSaver.FLAG_CHANGE_PATH && \
 		ResourceSaver.FLAG_REPLACE_SUBRESOURCE_PATHS
-	ResourceSaver.save(_graph.save_file_path, _graph, flags)
+	ResourceSaver.save(_graph, _graph.save_file_path, flags)
 
 
 func save_current_as(path: String) -> void:

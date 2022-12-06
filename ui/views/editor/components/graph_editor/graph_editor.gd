@@ -6,7 +6,7 @@ const AddNodePopup = preload("./components/popup/add_node_popup.tscn")
 
 var _graph: NodeGraph
 var _add_node_popup: Popup
-var _right_click_position: Vector2
+var _new_node_position: Vector2
 var _previous_scroll_offset: Vector2
 
 
@@ -79,8 +79,8 @@ func rebuild_ui() -> void:
 # TMP hack because calling update alone doesn't update the connections which
 # are in another layer.
 func force_redraw() -> void:
-	$CLAYER.update()
-	update()
+	$CLAYER.queue_redraw()
+	queue_redraw()
 
 
 func delete_node(node: ProtonNodeUi) -> void:
@@ -102,10 +102,12 @@ func _show_add_node_popup(click_position: Vector2i) -> void:
 	_add_node_popup.position = click_position + window_position + graph_edit_position
 	_add_node_popup.popup()
 
+	_new_node_position = graph_edit_position + click_position
+
 
 func _on_create_node_request(node_type_id: String) -> void:
 	var node_position: Vector2 = -get_global_transform().origin
-	node_position += scroll_offset + _right_click_position
+	node_position += scroll_offset + _new_node_position
 	node_position /= get_zoom()
 	var data = {
 		"position": node_position

@@ -1,0 +1,45 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://ckiydn4300lug"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1af3k"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.5, 0.5, 0.5, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_15lyb"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lpriw"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[resource]
+Button/font_sizes/font_size = 14
+Label/font_sizes/font_size = 14
+LineEdit/font_sizes/font_size = 14
+MarginContainer/constants/margin_bottom = 4
+MarginContainer/constants/margin_left = 4
+MarginContainer/constants/margin_right = 4
+MarginContainer/constants/margin_top = 4
+MenuButton/styles/hover = SubResource("StyleBoxFlat_1af3k")
+MenuButton/styles/normal = SubResource("StyleBoxFlat_15lyb")
+MenuButton/styles/pressed = SubResource("StyleBoxFlat_lpriw")
+Tree/colors/children_hl_line_color = Color(1, 1, 1, 0.156863)
+Tree/colors/guide_color = Color(0.698039, 0.698039, 0.698039, 0)
+Tree/colors/relationship_line_color = Color(1, 1, 1, 0.156863)
+Tree/constants/draw_guides = 0
+Tree/constants/draw_relationship_lines = 1
+Tree/font_sizes/font_size = 14

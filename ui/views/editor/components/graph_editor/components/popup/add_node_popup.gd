@@ -67,7 +67,7 @@ func _refresh_nodes_list(nodes := [], folder_collapsed := true) -> void:
 			var item_parent = _get_or_create_category(_get_node_category(node), folder_collapsed)
 			var item: TreeItem = _node_tree.create_item(item_parent)
 			item.set_text(0, node.title)
-			item.set_tooltip(0, node.description.strip_escapes())
+			item.set_tooltip_text(0, node.description.strip_escapes())
 			item.set_metadata(0, node.type_id)
 			var color = DataType.get_category_color(node.category)
 			item.set_icon(0, TextureUtil.get_square_texture(color))
@@ -148,7 +148,7 @@ func _on_item_selected() -> void:
 		_on_nothing_selected()
 		return
 	_create_button.disabled = false
-	_description_label.text = item.get_tooltip(0)
+	_description_label.text = item.get_tooltip_text(0)
 
 
 func _on_nothing_selected() -> void:
