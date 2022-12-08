@@ -121,7 +121,7 @@ func _on_connection_request(from, from_slot: int, to, to_slot: int) -> void:
 		return
 
 	# Disconnect any existing connection to the input slot first unless multi connection is enabled
-	var node = get_node(to)
+	var node = get_node(NodePath(to))
 	if not node.is_multiple_connections_enabled_on_slot(to_slot):
 		for c in get_connection_list():
 			if c.to == to and c.to_port == to_slot:
@@ -130,7 +130,7 @@ func _on_connection_request(from, from_slot: int, to, to_slot: int) -> void:
 
 	var err = self.connect_node(from, from_slot, to, to_slot)
 	if err != OK:
-		print("Error ", err, " - Could not connect node ", from, ":", from_slot, " to ", to, ":", to_slot)
+		print_debug("Error ", err, " - Could not connect node ", from, ":", from_slot, " to ", to, ":", to_slot)
 		return
 
 	_graph.connect_node(from, from_slot, to, to_slot)

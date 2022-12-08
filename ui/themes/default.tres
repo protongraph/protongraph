@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=63 format=3 uid="uid://ckiydn4300lug"]
+[gd_resource type="Theme" load_steps=68 format=3 uid="uid://ckiydn4300lug"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fofou"]
 
@@ -98,6 +98,71 @@ content_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7s2o6"]
 bg_color = Color(0.137255, 0.156863, 0.180392, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ortmm"]
+bg_color = Color(0.68, 0.781333, 1, 0.156863)
+corner_radius_top_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvvkm"]
+bg_color = Color(0.72, 0.808667, 1, 0.156863)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.678431, 0.780392, 1, 0.509804)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nljh6"]
+content_margin_left = 8.0
+content_margin_top = 38.0
+content_margin_right = 8.0
+bg_color = Color(0.137255, 0.156863, 0.180392, 0.705882)
+border_width_left = 2
+border_width_top = 32
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.462745, 0.462745, 0.462745, 0.705882)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ltc8"]
+content_margin_left = 8.0
+content_margin_top = 38.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.0235294, 0.0235294, 0.0313726, 0.784314)
+border_width_left = 2
+border_width_top = 32
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.462745, 0.462745, 0.462745, 0.705882)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r4gy3"]
+content_margin_left = 8.0
+content_margin_top = 38.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.077, 0.0885, 0.1, 0.784314)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.462745, 0.462745, 0.462745, 0.705882)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0.678431, 0.780392, 1, 0.0784314)
+shadow_size = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nidw8"]
 bg_color = Color(0.678431, 0.780392, 1, 0.470588)
@@ -483,6 +548,16 @@ FileDialog/colors/file_disabled_color = Color(1, 1, 1, 0.25)
 FileDialog/colors/file_icon_color = Color(1, 1, 1, 1)
 FileDialog/colors/folder_icon_color = Color(1, 1, 1, 1)
 GraphEdit/styles/bg = SubResource("StyleBoxFlat_7s2o6")
+GraphEditMinimap/styles/bg = SubResource("StyleBoxFlat_ortmm")
+GraphEditMinimap/styles/camera = SubResource("StyleBoxFlat_vvvkm")
+GraphNode/constants/close_h_offset = 0
+GraphNode/constants/close_offset = 24
+GraphNode/constants/port_offset = -10
+GraphNode/constants/separation = 6
+GraphNode/constants/title_offset = 26
+GraphNode/styles/comment = SubResource("StyleBoxFlat_nljh6")
+GraphNode/styles/frame = SubResource("StyleBoxFlat_2ltc8")
+GraphNode/styles/selected_frame = SubResource("StyleBoxFlat_r4gy3")
 HBoxContainer/constants/separation = 6
 HScrollBar/styles/grabber = SubResource("StyleBoxFlat_nidw8")
 HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_ikxk8")

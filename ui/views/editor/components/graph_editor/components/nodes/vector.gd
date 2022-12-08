@@ -8,11 +8,8 @@ var _vector_box: Container
 var _count := 2
 
 
-func create(label_name: String, type: int, opts: SlotOptions = null) -> void:
+func create(label_name: String, type: int, opts := SlotOptions.new()) -> void:
 	super(label_name, type, opts)
-
-	if not opts:
-		opts = SlotOptions.new()
 
 	_col = VBoxContainer.new()
 	add_child(_col)

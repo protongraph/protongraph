@@ -9,15 +9,16 @@ var type_id: String
 var title: String
 var description: String
 var category: String
-var documentation: NodeDocumentation
+var documentation: DocumentationData
 var ignore := false
 
+# Dictionary format: { idx : ProtonNodeSlot }
 var inputs: Dictionary
 var outputs: Dictionary
 var extras: Dictionary
 
 
-func create_input(idx, name: String, type: int, options: SlotOptions = null) -> void:
+func create_input(idx, name: String, type: int, options := SlotOptions.new()) -> void:
 	var input = ProtonNodeSlot.new()
 	input.name = name
 	input.type = type
@@ -26,7 +27,7 @@ func create_input(idx, name: String, type: int, options: SlotOptions = null) -> 
 	inputs[idx] = input
 
 
-func create_output(idx, name: String, type: int, options: SlotOptions = null) -> void:
+func create_output(idx, name: String, type: int, options := SlotOptions.new()) -> void:
 	var output = ProtonNodeSlot.new()
 	output.name = name
 	output.type = type

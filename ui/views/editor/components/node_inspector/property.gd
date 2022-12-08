@@ -23,7 +23,7 @@ func _ready() -> void:
 	_visibility_box.toggled.connect(_on_visibility_box_toggled)
 
 
-func create_input(name: String, type: int, value, idx: int, opts: SlotOptions = null) -> void:
+func create_input(name: String, type: int, value, idx: int, opts := SlotOptions.new()) -> void:
 	match type:
 		DataType.BOOLEAN:
 			_ui = BooleanComponent.new()

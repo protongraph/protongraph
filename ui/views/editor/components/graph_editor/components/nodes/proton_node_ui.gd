@@ -15,6 +15,7 @@ var _output_connections: Dictionary = {}
 
 func _ready() -> void:
 	position_offset_changed.connect(_on_position_offset_changed)
+	_update_frame_stylebox()
 
 
 func clear() -> void:
@@ -117,7 +118,7 @@ func _create_component_for(io: ProtonNodeSlot, is_input := true) -> GraphNodeUiC
 		component.name = "Input"
 	else:
 		component.name = "Output"
-		component.size_flags_horizontal = SIZE_FILL
+		component.size_flags_stretch_ratio = 0.1
 
 	component.notify_connection_changed(false)
 	return component
@@ -148,6 +149,17 @@ func _setup_connection_slots() -> void:
 		set_slot_type_right(current_row, output.type)
 		set_slot_color_right(current_row, DataType.COLORS[output.type])
 		current_row += 1
+
+
+func _update_frame_stylebox():
+	var current_theme := ThemeManager.get_current_theme()
+	var frame_style := current_theme.get_stylebox("frame", "GraphNode").duplicate()
+	frame_style.border_color = DataType.get_category_color(proton_node.category)
+	add_theme_stylebox_override("frame", frame_style)
+
+	var selected_frame_style := current_theme.get_stylebox("selected_frame", "GraphNode").duplicate()
+	selected_frame_style.border_color = frame_style.border_color
+	add_theme_stylebox_override("selected_frame", selected_frame_style)
 
 
 func _on_position_offset_changed() -> void:

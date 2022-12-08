@@ -3,21 +3,17 @@
 [ext_resource type="Script" path="res://ui/views/editor/components/graph_editor/components/popup/add_node_popup.gd" id="1_pu2oj"]
 
 [node name="AddNodePopup" type="PopupPanel"]
+disable_3d = true
+transparent_bg = true
 title = "Add node"
 size = Vector2i(400, 400)
+visible = true
 transient = false
 unresizable = false
 borderless = false
+always_on_top = true
+transparent = true
 script = ExtResource("1_pu2oj")
-
-[node name="Panel" type="Panel" parent="."]
-visible = false
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 396.0
-offset_bottom = 396.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 offset_left = 4.0
@@ -32,23 +28,18 @@ theme_override_constants/margin_right = 14
 theme_override_constants/margin_bottom = 14
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-offset_left = 14.0
-offset_top = 14.0
-offset_right = 378.0
-offset_bottom = 378.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-offset_right = 364.0
-offset_bottom = 31.0
+layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="Search" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
-offset_right = 206.0
-offset_bottom = 31.0
+layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Search node"
 clear_button_enabled = true
@@ -56,53 +47,40 @@ caret_blink = true
 caret_blink_interval = 0.5
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-offset_left = 214.0
-offset_right = 218.0
-offset_bottom = 31.0
+layout_mode = 2
 
 [node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
-offset_left = 226.0
-offset_right = 364.0
-offset_bottom = 31.0
+layout_mode = 2
 focus_mode = 0
 text = "Group by type"
 
 [node name="NodeTree" type="Tree" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-offset_top = 39.0
-offset_right = 364.0
-offset_bottom = 265.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 hide_root = true
 
 [node name="DescriptionText" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-offset_top = 273.0
-offset_right = 364.0
-offset_bottom = 325.0
+layout_mode = 2
 size_flags_vertical = 1
 text = "Select a node from 
 the list to see a description"
 
 [node name="ActionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-offset_top = 333.0
-offset_right = 364.0
-offset_bottom = 364.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/ActionContainer"]
 unique_name_in_owner = true
-offset_right = 60.0
-offset_bottom = 31.0
+layout_mode = 2
 size_flags_horizontal = 2
 text = "Cancel"
 
 [node name="CreateButton" type="Button" parent="MarginContainer/VBoxContainer/ActionContainer"]
 unique_name_in_owner = true
-offset_left = 261.0
-offset_right = 364.0
-offset_bottom = 31.0
+layout_mode = 2
 disabled = true
 text = "Create node"

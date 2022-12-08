@@ -9,54 +9,24 @@ const EditorViewScene = preload("res://ui/views/editor/editor_view.tscn")
 
 func _ready():
 	GlobalEventBus.create_graph.connect(_on_create_graph)
-	GlobalEventBus.load_graph.connect(_on_load_graph)
-	GlobalEventBus.save_graph.connect(_on_save_graph)
-	GlobalEventBus.save_graph_as.connect(_on_save_graph_as)
+	GlobalEventBus.graph_loaded.connect(edit_graph)
 	GlobalEventBus.open_settings.connect(_on_open_settings)
 
 
 func edit_graph(graph: NodeGraph) -> void:
 	var editor = EditorViewScene.instantiate()
+
+	if graph.save_file_path.is_empty():
+		editor.name = "Untitled Graph"
+	else:
+		editor.name = graph.save_file_path.get_file().get_basename()
+
 	_view_container.add_tab(editor)
 	editor.edit(graph)
 
 
 func _on_create_graph() -> void:
 	edit_graph(NodeGraph.new())
-
-
-func _on_load_graph(path: String = "") -> void:
-	# No path provided, open the file dialog to pick a graph file
-	if path.is_empty():
-		SaveLoadManager.show_load_dialog()
-		return
-
-	# Path provided, load it if not already opened
-	if _view_container.is_graph_loaded(path):
-		_view_container.focus(path)
-	else:
-		var graph: NodeGraph = load(path)
-		print(graph)
-		print(graph.connections)
-
-		graph.save_file_path = path
-		edit_graph(graph)
-
-
-func _on_save_graph() -> void:
-	var view = _view_container.get_current_view()
-	if view is EditorView:
-		view.save_current()
-
-
-func _on_save_graph_as() -> void:
-	var view = _view_container.get_current_view()
-	if not view is EditorView:
-		return
-
-	var graph: NodeGraph = view.get_edited_graph()
-	graph.save_file_path = ""
-	SaveLoadManager.save_graph(graph)
 
 
 func _on_open_settings(path) -> void:

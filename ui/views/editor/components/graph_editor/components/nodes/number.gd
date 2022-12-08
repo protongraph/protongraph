@@ -5,8 +5,9 @@ extends GenericInputComponent
 var _spinbox: CustomSpinBox
 
 
-func create(label_name: String, type: int, opts: SlotOptions = null) -> void:
+func create(label_name: String, type: int, opts := SlotOptions.new()) -> void:
 	super(label_name, type, opts)
+
 	opts.expand = true
 	_spinbox = UserInterfaceUtil.create_spinbox(label_name, opts)
 	add_ui(_spinbox)

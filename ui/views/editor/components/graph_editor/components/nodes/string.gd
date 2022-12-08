@@ -10,13 +10,10 @@ var _file_dialog: FileDialog
 var _compact_display := false	# TODO: only show the file name in the unselected line_edit if this is true
 
 
-func create(label_name: String, type: int, opts: SlotOptions = null) -> void:
+func create(label_name: String, type: int, opts := SlotOptions.new()) -> void:
 	super(label_name, type, opts)
 
-	if not opts:
-		opts = SlotOptions.new()
-
-	if opts.dropdown:
+	if opts.has_dropdown():
 		_dropdown = OptionButton.new()
 		add_ui(_dropdown)
 		_dropdown.add_stylebox_override("normal", load("res://ui/themes/styles/graphnode_button_normal.tres"))

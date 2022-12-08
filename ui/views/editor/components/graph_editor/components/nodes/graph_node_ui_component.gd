@@ -15,7 +15,7 @@ var icon_container: CenterContainer
 var index: int
 
 
-func create(label_name: String, type: int, opts: SlotOptions = null):
+func create(label_name: String, type: int, opts := SlotOptions.new()):
 	if not label:
 		label = Label.new()
 

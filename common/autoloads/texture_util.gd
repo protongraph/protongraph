@@ -32,26 +32,26 @@ func get_slot_icon(type: int) -> Texture2D:
 
 	if _table.has(type):
 		path = root + _table[type]
-	
+
 	return get_texture(path)
 
 
 func get_texture(path) -> Texture2D:
 	if _cache.has(path):
 		return _cache[path]
-	
+
 	var texture = load(path)
 	if not texture is Texture2D:
 		print(path, " is not a texture")
 		return null
-	
+
 	var scale = EditorUtil.get_editor_scale() / 4.0
 	if scale != 1.0:
 		var image: Image = texture.get_image()
 		image.resize(int(texture.get_width() * scale), int(texture.get_height() * scale))
 		texture = ImageTexture.new()
 		texture.create_from_image(image)
-		
+
 	_cache[path] = texture
 	return texture
 
@@ -61,14 +61,12 @@ func get_texture(path) -> Texture2D:
 func get_square_texture(color: Color) -> ImageTexture:
 	if _square_textures.has(color):
 		return _square_textures[color]
-	
+
 	var d := int(10 * EditorUtil.get_editor_scale())
-	var image = Image.new()
-	image.create(d, d, false, Image.FORMAT_RGBA8)
+	var image = Image.create(d, d, false, Image.FORMAT_RGBA8)
 	image.fill(color)
 
-	var image_texture = ImageTexture.new()
-	image_texture.create_from_image(image)
+	var image_texture = ImageTexture.create_from_image(image)
 	image_texture.resource_name = "square " + str(color.to_rgba32())
 	_square_textures[color] = image_texture
 
@@ -78,7 +76,7 @@ func get_square_texture(color: Color) -> ImageTexture:
 func get_input_texture(multi) -> Texture2D:
 	if multi:
 		return get_texture("res://ui/icons/input_slot_multi.svg")
-	
+
 	return get_texture("res://ui/icons/input_slot.svg")
 
 
@@ -89,11 +87,9 @@ func get_output_texture() -> Texture2D:
 # Returns a 0x0 texture. Used by the ProtonNode class to hide the slots.
 func get_empty_texture() -> ImageTexture:
 	if not _empty_texture:
-		var image = Image.new()
-		image.create(0, 0, false, Image.FORMAT_RGBA8)
-		
-		_empty_texture = ImageTexture.new()
-		_empty_texture.create_from_image(image)
+		var image = Image.create(0, 0, false, Image.FORMAT_RGBA8)
+
+		_empty_texture = ImageTexture.create_from_image(image)
 		_empty_texture.resource_name = "cg_empty_texture"
-	
+
 	return _empty_texture

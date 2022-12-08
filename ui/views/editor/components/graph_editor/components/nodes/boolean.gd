@@ -5,11 +5,8 @@ extends GenericInputComponent
 var _checkbox: CheckBox
 
 
-func create(label_name: String, type: int, opts: SlotOptions = null):
+func create(label_name: String, type: int, opts := SlotOptions.new()):
 	super(label_name, type, opts)
-
-	if not opts:
-		opts = SlotOptions.new()
 
 	_checkbox = CheckBox.new()
 	_checkbox.focus_mode = Control.FOCUS_NONE

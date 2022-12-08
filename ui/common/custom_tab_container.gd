@@ -25,7 +25,7 @@ func _ready():
 
 
 func add_tab(view, set_current := true) -> void:
-	add_child(view)
+	add_child(view, true)
 	_tabs.add_tab(view.get_name())
 	if set_current:
 		var tab_id = get_child_count() - 1

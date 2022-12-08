@@ -10,6 +10,8 @@ var _save_icon = TextureUtil.get_texture("res://ui/icons/icon_save.svg")
 var _settings_icon = TextureUtil.get_texture("res://ui/icons/icon_cog.svg")
 var _close_icon = TextureUtil.get_texture("res://ui/icons/icon_close.svg")
 
+var _current_graph: NodeGraph
+
 
 func _ready() -> void:
 	var popup: PopupMenu = get_popup()
@@ -38,9 +40,9 @@ func _on_id_pressed(id) -> void:
 		1:
 			GlobalEventBus.load_graph.emit()
 		10:
-			GlobalEventBus.save_graph.emit()
+			GlobalEventBus.save_graph.emit(_current_graph)
 		12:
-			GlobalEventBus.save_graph_as.emit()
+			GlobalEventBus.save_graph_as.emit(_current_graph)
 		14:
 			GlobalEventBus.save_all.emit()
 		20:

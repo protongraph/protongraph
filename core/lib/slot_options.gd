@@ -67,3 +67,7 @@ func get_vector_index_options(index: String) -> SlotOptions:
 			if vec_z != null:
 				return vec_z
 	return self
+
+
+func has_dropdown() -> bool:
+	return not dropdown_items.is_empty()

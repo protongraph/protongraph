@@ -17,7 +17,7 @@ _global_script_classes=[{
 "base": "Popup",
 "class": &"ConfirmDialog",
 "language": &"GDScript",
-"path": "res://common/autoloads/save_load_manager/unsaved_changes_dialog.gd"
+"path": "res://common/autoloads/save_load_manager/ui/unsaved_changes_dialog.gd"
 }, {
 "base": "ProgressBar",
 "class": &"CustomSpinBox",
@@ -33,6 +33,11 @@ _global_script_classes=[{
 "class": &"DataType",
 "language": &"GDScript",
 "path": "res://common/static/data_type.gd"
+}, {
+"base": "RefCounted",
+"class": &"DocumentationData",
+"language": &"GDScript",
+"path": "res://core/lib/documentation_data.gd"
 }, {
 "base": "RefCounted",
 "class": &"EditorUtil",
@@ -79,11 +84,6 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://common/static/memory_util.gd"
 }, {
-"base": "RefCounted",
-"class": &"NodeDocumentation",
-"language": &"GDScript",
-"path": "res://core/lib/node_documentation.gd"
-}, {
 "base": "Resource",
 "class": &"NodeGraph",
 "language": &"GDScript",
@@ -114,6 +114,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/proton_graph.gd"
 }, {
+"base": "ArrayMesh",
+"class": &"ProtonMesh",
+"language": &"GDScript",
+"path": "res://core/lib/proton_mesh.gd"
+}, {
 "base": "Resource",
 "class": &"ProtonNode",
 "language": &"GDScript",
@@ -132,7 +137,7 @@ _global_script_classes=[{
 "base": "FileDialog",
 "class": &"SaveLoadDialog",
 "language": &"GDScript",
-"path": "res://common/autoloads/save_load_manager/save_load_dialog.gd"
+"path": "res://common/autoloads/save_load_manager/ui/save_load_dialog.gd"
 }, {
 "base": "GenericInputComponent",
 "class": &"ScalarComponent",
@@ -153,6 +158,11 @@ _global_script_classes=[{
 "class": &"StringComponent",
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/string.gd"
+}, {
+"base": "RefCounted",
+"class": &"StringUtil",
+"language": &"GDScript",
+"path": "res://common/static/string_util.gd"
 }, {
 "base": "VBoxContainer",
 "class": &"Toolbar",
@@ -180,6 +190,7 @@ _global_script_class_icons={
 "CustomSpinBox": "",
 "CustomTabContainer": "",
 "DataType": "",
+"DocumentationData": "",
 "EditorUtil": "",
 "EditorView": "",
 "EditorViewport": "",
@@ -189,13 +200,13 @@ _global_script_class_icons={
 "GraphInspector": "",
 "GraphNodeUiComponent": "",
 "MemoryUtil": "",
-"NodeDocumentation": "",
 "NodeGraph": "",
 "NodeGraphEditor": "",
 "NodeInspector": "",
 "NodeUtil": "",
 "PathUtil": "",
 "ProtonGraphApp": "",
+"ProtonMesh": "",
 "ProtonNode": "",
 "ProtonNodeSlot": "",
 "ProtonNodeUi": "",
@@ -204,6 +215,7 @@ _global_script_class_icons={
 "SidebarProperty": "",
 "SlotOptions": "",
 "StringComponent": "",
+"StringUtil": "",
 "Toolbar": "",
 "UserInterfaceUtil": "",
 "VectorComponent": "",
@@ -221,10 +233,12 @@ config/icon="res://icon.png"
 
 GlobalEventBus="*res://common/autoloads/event_bus.gd"
 GlobalUndoRedo="*res://common/autoloads/undo_redo.gd"
+GlobalDirectory="*res://common/autoloads/global_directory.gd"
 Settings="*res://common/autoloads/project_settings.gd"
 TextureUtil="*res://common/autoloads/texture_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
 SaveLoadManager="*res://common/autoloads/save_load_manager/save_load_manager.gd"
+ThemeManager="*res://common/autoloads/theme_manager.gd"
 
 [display]
 

@@ -5,10 +5,7 @@ const SpinboxScene := preload("res://ui/common/spinbox/spinbox.tscn")
 
 # Creates a default spinbox. Don't use CustomSpinBox.new() or it won't use the
 # custom scene associated with this class. There's probably a better way though.
-static func create_spinbox(label_name: String, opts: SlotOptions = null) -> CustomSpinBox:
-	if not opts:
-		opts = SlotOptions.new()
-
+static func create_spinbox(label_name: String, opts := SlotOptions.new()) -> CustomSpinBox:
 	var spinbox = SpinboxScene.instantiate()
 
 	spinbox.set_label_text(label_name)
