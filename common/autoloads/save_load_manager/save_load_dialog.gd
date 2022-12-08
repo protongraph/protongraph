@@ -10,12 +10,13 @@ enum DialogMode {
 var dialog_mode: DialogMode = DialogMode.LOAD
 
 var _save_as_title := "Save the node graph as"
-var _load_title := "Load an existing graph"
+var _load_title := "Load a node graph"
 var _default_file_suggestion := "new_graph.tpgn"
 
 
 func _ready() -> void:
 	file_selected.connect(_on_file_selected)
+	_remove_theme_overrides_recursive(self)
 
 
 func show_dialog() -> void:
@@ -38,6 +39,14 @@ func _save_graph_as(suggestion := "") -> void:
 	file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	current_file = suggestion if not suggestion.is_empty() else _default_file_suggestion
 	popup_centered()
+
+
+func _remove_theme_overrides_recursive(node) -> void:
+	for c in node.get_children(true):
+		if c is Panel:
+			c.remove_theme_stylebox_override("panel")
+
+		_remove_theme_overrides_recursive(c)
 
 
 func _on_file_selected(path: String) -> void:

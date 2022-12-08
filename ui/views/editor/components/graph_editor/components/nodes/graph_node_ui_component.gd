@@ -15,9 +15,12 @@ var icon_container: CenterContainer
 var index: int
 
 
-func create(label_name: String, type: int, opts := {}):
+func create(label_name: String, type: int, opts: SlotOptions = null):
 	if not label:
 		label = Label.new()
+
+	if not opts:
+		opts = SlotOptions.new()
 
 	if not icon:
 		icon = TextureRect.new()
@@ -27,7 +30,7 @@ func create(label_name: String, type: int, opts := {}):
 	label.text = label_name
 	label.mouse_filter = Control.MOUSE_FILTER_PASS
 	icon.mouse_filter = Control.MOUSE_FILTER_PASS
-	icon.visible = opts.show_type_icon if "show_type_icon" in opts else true
+	icon.visible = opts.show_type_icon
 
 	size_flags_horizontal = SIZE_EXPAND_FILL
 	mouse_filter = Control.MOUSE_FILTER_PASS

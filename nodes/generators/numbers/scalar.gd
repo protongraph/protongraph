@@ -2,18 +2,18 @@ extends ProtonNode
 
 
 func _init() -> void:
-	type_id = "value_number"
+	type_id = "create_number"
 	title = "Create Number"
 	category = "Generators/Numbers"
 	description = "Returns a number"
 
-	var opts = {
-		"max_value": 1000,
-		"min_value": -1000,
-		"allow_greater": true,
-		"allow_lesser": true,
-	}
+	var opts = SlotOptions.new()
+	opts.max_value = 1000
+	opts.min_value = -1000
+	opts.allow_greater = true
+	opts.allow_lesser = true
 	create_input(0, "", DataType.NUMBER, opts)
+
 	create_output(0, "", DataType.NUMBER)
 
 

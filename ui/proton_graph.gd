@@ -5,7 +5,6 @@ extends Node
 const EditorViewScene = preload("res://ui/views/editor/editor_view.tscn")
 
 @onready var _view_container: ViewContainer = $"%ViewContainer"
-@onready var _save_load_manager: SaveLoadManager = $"%SaveLoadManager"
 
 
 func _ready():
@@ -29,7 +28,7 @@ func _on_create_graph() -> void:
 func _on_load_graph(path: String = "") -> void:
 	# No path provided, open the file dialog to pick a graph file
 	if path.is_empty():
-		_save_load_manager.show_load_dialog()
+		SaveLoadManager.show_load_dialog()
 		return
 
 	# Path provided, load it if not already opened
@@ -50,16 +49,14 @@ func _on_save_graph() -> void:
 		view.save_current()
 
 
-func _on_save_graph_as(path: String = "") -> void:
+func _on_save_graph_as() -> void:
 	var view = _view_container.get_current_view()
 	if not view is EditorView:
 		return
 
-	if path.is_empty():
-		_save_load_manager.show_save_dialog()
-		return
-
-	view.save_current_as(path)
+	var graph: NodeGraph = view.get_edited_graph()
+	graph.save_file_path = ""
+	SaveLoadManager.save_graph(graph)
 
 
 func _on_open_settings(path) -> void:

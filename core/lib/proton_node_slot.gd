@@ -7,7 +7,7 @@ extends RefCounted
 # General properties
 var name: String
 var type: int
-var options: Dictionary
+var options: SlotOptions
 
 # Visual properties
 var visible := true

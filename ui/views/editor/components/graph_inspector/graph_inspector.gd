@@ -1,4 +1,4 @@
-class_name Inspector
+class_name GraphInspector
 extends Control
 
 

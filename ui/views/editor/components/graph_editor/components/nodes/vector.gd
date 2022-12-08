@@ -8,8 +8,11 @@ var _vector_box: Container
 var _count := 2
 
 
-func create(label_name: String, type: int, opts := {}) -> void:
+func create(label_name: String, type: int, opts: SlotOptions = null) -> void:
 	super(label_name, type, opts)
+
+	if not opts:
+		opts = SlotOptions.new()
 
 	_col = VBoxContainer.new()
 	add_child(_col)
@@ -36,12 +39,10 @@ func create(label_name: String, type: int, opts := {}) -> void:
 	for i in item_indexes.size():
 		var s: CustomSpinBox
 
-		# Check if there's per attribute option when creating the spinboxes
+		# Create spinbox using per index vector options if available.
 		var vector_index = item_indexes[i]
-		if opts.has(vector_index):
-			s = UserInterfaceUtil.create_spinbox(vector_index, opts[vector_index])
-		else:
-			s = UserInterfaceUtil.create_spinbox(vector_index, opts)
+		s = UserInterfaceUtil.create_spinbox(vector_index, opts.get_vector_index_options(vector_index))
+
 		_vector_box.add_child(s)
 		s.value_changed.connect(_on_value_changed)
 

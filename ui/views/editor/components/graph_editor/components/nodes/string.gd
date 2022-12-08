@@ -10,18 +10,21 @@ var _file_dialog: FileDialog
 var _compact_display := false	# TODO: only show the file name in the unselected line_edit if this is true
 
 
-func create(label_name: String, type: int, opts := {}) -> void:
+func create(label_name: String, type: int, opts: SlotOptions = null) -> void:
 	super(label_name, type, opts)
 
-	if opts.has("type") and opts["type"] == "dropdown":
+	if not opts:
+		opts = SlotOptions.new()
+
+	if opts.dropdown:
 		_dropdown = OptionButton.new()
 		add_ui(_dropdown)
 		_dropdown.add_stylebox_override("normal", load("res://ui/themes/styles/graphnode_button_normal.tres"))
 		_dropdown.add_stylebox_override("hover", load("res://ui/themes/styles/graphnode_button_hover.tres"))
 		_dropdown.focus_mode = Control.FOCUS_NONE
 		_dropdown.name = "OptionButton"
-		for item in opts["items"]:
-			_dropdown.add_item(item, opts["items"][item])
+		for item in opts.dropdown_items:
+			_dropdown.add_item(item.label, item.id)
 
 		_dropdown.item_selected.connect(_on_value_changed)
 
@@ -31,16 +34,16 @@ func create(label_name: String, type: int, opts := {}) -> void:
 		_line_edit.custom_minimum_size.x = 120
 		_line_edit.size_flags_horizontal = SIZE_EXPAND_FILL
 		_line_edit.name = "LineEdit"
-		_line_edit.placeholder_text = opts["placeholder"] if opts.has("placeholder") else "Text"
-		_line_edit.expand_to_text_length = opts["expand"] if opts.has("expand") else false
-		_line_edit.text = opts["text"] if opts.has("text") else ""
-		_compact_display = opts["compact_display"] if opts.has("compact_display") else false
+		_line_edit.placeholder_text = opts.placeholder
+		_line_edit.expand_to_text_length = opts.expand
+		_line_edit.text = opts.value if opts.value is String else ""
+		_compact_display = opts.compact_display
 		_line_edit.text_changed.connect(_on_value_changed)
 
-		if opts.has("file_dialog"):
+		if opts.dialog_options:
 			var folder_button = Button.new()
 			folder_button.icon = TextureUtil.get_texture("res://ui/icons/icon_folder.svg")
-			folder_button.connect("pressed", _show_file_dialog.bind(opts["file_dialog"]))
+			folder_button.pressed.connect(_show_file_dialog.bind(opts.dialog_options))
 			add_ui(folder_button)
 
 
@@ -71,21 +74,16 @@ func set_value(value) -> void:
 
 
 # Shows a FileDialog window and write the selected path to the line_edit.
-func _show_file_dialog(opts: Dictionary) -> void:
+func _show_file_dialog(opts: SlotOptions.DialogOptions) -> void:
 	if not _file_dialog:
 		_file_dialog = FileDialog.new()
 		add_child(_file_dialog)
 
 	_file_dialog.custom_minimum_size = Vector2(500, 500)
-	_file_dialog.mode = opts["mode"] if opts.has("mode") else FileDialog.MODE_SAVE_FILE
+	_file_dialog.mode = opts.mode
 	_file_dialog.resizable = true
 	_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
-
-	if opts.has("filters"):
-		var filters = PackedStringArray()
-		for filter in opts["filters"]:
-			filters.push_back(filter)
-		_file_dialog.set_filters(filters)
+	_file_dialog.set_filters(opts.filters)
 
 	_file_dialog.file_selected.connect(_on_file_selected)
 	_file_dialog.popup_centered()

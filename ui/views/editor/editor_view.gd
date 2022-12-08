@@ -11,19 +11,19 @@ extends Control
 var _graph: NodeGraph
 
 
-@onready var _toolbar: Toolbar = $"%Toolbar"
-@onready var _graph_editor: NodeGraphEditor = $"%NodeGraphEditor"
-@onready var _viewport: EditorViewport = $"%Viewport"
-@onready var _inspector: Inspector = $"%Inspector"
-@onready var _side_bar: NodeSideBar = $"%SideBar"
+@onready var _toolbar: Toolbar = $%Toolbar
+@onready var _graph_editor: NodeGraphEditor = $%NodeGraphEditor
+@onready var _viewport: EditorViewport = $%Viewport
+@onready var _node_inspector: NodeInspector = $%NodeInspector
+@onready var _graph_inspector: GraphInspector = $%GraphInspector
 
 
 func _ready() -> void:
 	_graph_editor.node_selected.connect(_on_node_selected)
 	_graph_editor.node_deselected.connect(_on_node_deselected)
-	_toolbar.save_graph.connect(save_current)
-	_toolbar.toggle_sidebar.connect(_toggle_panel.bind(_side_bar))
-	_toolbar.toggle_inspector.connect(_toggle_panel.bind(_inspector))
+	_toolbar.save_graph.connect(_on_save_button_pressed)
+	_toolbar.toggle_node_inspector.connect(_toggle_panel.bind(_node_inspector))
+	_toolbar.toggle_graph_inspector.connect(_toggle_panel.bind(_graph_inspector))
 	_toolbar.toggle_graph_editor.connect(_toggle_panel.bind(_graph_editor))
 	_toolbar.toggle_viewport.connect(_toggle_panel.bind(_viewport))
 
@@ -34,24 +34,8 @@ func edit(graph: NodeGraph) -> void:
 	_toolbar.rebuild.connect(_graph.rebuild)
 
 
-func save_current() -> void:
-	if _graph.save_file_path.is_empty():
-		GlobalEventBus.save_graph_as.emit()
-		return
-
-	var flags = \
-		ResourceSaver.FLAG_BUNDLE_RESOURCES && \
-		ResourceSaver.FLAG_CHANGE_PATH && \
-		ResourceSaver.FLAG_REPLACE_SUBRESOURCE_PATHS
-	ResourceSaver.save(_graph, _graph.save_file_path, flags)
-
-
-func save_current_as(path: String) -> void:
-	if path.is_empty():
-		return
-
-	_graph.save_file_path = path
-	save_current()
+func get_edited_graph() -> NodeGraph:
+	return _graph
 
 
 func get_edited_file_path() -> String:
@@ -63,8 +47,12 @@ func _toggle_panel(panel: Control) -> void:
 
 
 func _on_node_selected(node: ProtonNodeUi) -> void:
-	_side_bar.display_node(node)
+	_node_inspector.display_node(node)
 
 
 func _on_node_deselected(_node: ProtonNodeUi) -> void:
-	_side_bar.clear()
+	_node_inspector.clear()
+
+
+func _on_save_button_pressed() -> void:
+	GlobalEventBus.save_graph.emit(_graph)

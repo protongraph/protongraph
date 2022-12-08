@@ -1,4 +1,4 @@
-class_name NodeSideBar
+class_name NodeInspector
 extends Control
 
 # The Node sidebar displays the selected node inputs, outputs and documentation.

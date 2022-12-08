@@ -5,13 +5,16 @@ extends GenericInputComponent
 var _checkbox: CheckBox
 
 
-func create(label_name: String, type: int, opts := {}):
+func create(label_name: String, type: int, opts: SlotOptions = null):
 	super(label_name, type, opts)
+
+	if not opts:
+		opts = SlotOptions.new()
 
 	_checkbox = CheckBox.new()
 	_checkbox.focus_mode = Control.FOCUS_NONE
 	_checkbox.name = "CheckBox"
-	_checkbox.button_pressed = opts["value"] if "value" in opts else false
+	_checkbox.button_pressed = opts.get_default_value(false)
 	add_ui(_checkbox)
 	_checkbox.toggled.connect(_on_value_changed)
 

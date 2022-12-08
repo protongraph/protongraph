@@ -55,6 +55,7 @@ events = [SubResource("InputEventAction_t5j78")]
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 8.0
+grow_vertical = 2
 script = ExtResource("1_nv6t2")
 
 [node name="Create" type="Button" parent="."]
@@ -90,7 +91,7 @@ expand_icon = true
 [node name="HSeparator2" type="HSeparator" parent="."]
 layout_mode = 2
 
-[node name="ToggleSidebar" type="Button" parent="."]
+[node name="ToggleGraphInspector" type="Button" parent="."]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 focus_mode = 0
@@ -99,7 +100,7 @@ icon = ExtResource("4_kshbb")
 icon_alignment = 1
 expand_icon = true
 
-[node name="ToggleInspector" type="Button" parent="."]
+[node name="ToggleNodeInspector" type="Button" parent="."]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 focus_mode = 0

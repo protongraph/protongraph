@@ -8,7 +8,7 @@ func _init() -> void:
 	description = "Display the 3d output in the viewport"
 
 	create_input(0, "3D Objects", DataType.NODE_3D)
-	#enable_multiple_connections_on_slot(0)
+	allow_multiple_connections_on_input_slot(0)
 
 
 func _generate_outputs() -> void:

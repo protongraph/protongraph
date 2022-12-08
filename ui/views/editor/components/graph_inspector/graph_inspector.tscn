@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://ko6nqm7qnae"]
+
+[ext_resource type="Script" path="res://ui/views/editor/components/graph_inspector/graph_inspector.gd" id="1_hjjfa"]
+
+[node name="GraphInspector" type="Control"]
+clip_children = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hjjfa")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Graph Inspector
+
+Named properties from the graph will appear here."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

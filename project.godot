@@ -17,7 +17,7 @@ _global_script_classes=[{
 "base": "Popup",
 "class": &"ConfirmDialog",
 "language": &"GDScript",
-"path": "res://ui/root/save_load_dialogs/confirm_dialog.gd"
+"path": "res://common/autoloads/save_load_manager/unsaved_changes_dialog.gd"
 }, {
 "base": "ProgressBar",
 "class": &"CustomSpinBox",
@@ -64,15 +64,15 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/generic_output.gd"
 }, {
+"base": "Control",
+"class": &"GraphInspector",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_inspector/graph_inspector.gd"
+}, {
 "base": "MarginContainer",
 "class": &"GraphNodeUiComponent",
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/graph_node_ui_component.gd"
-}, {
-"base": "Control",
-"class": &"Inspector",
-"language": &"GDScript",
-"path": "res://ui/views/editor/components/inspector/inspector.gd"
 }, {
 "base": "RefCounted",
 "class": &"MemoryUtil",
@@ -95,9 +95,9 @@ _global_script_classes=[{
 "path": "res://ui/views/editor/components/graph_editor/graph_editor.gd"
 }, {
 "base": "Control",
-"class": &"NodeSideBar",
+"class": &"NodeInspector",
 "language": &"GDScript",
-"path": "res://ui/views/editor/components/sidebar/sidebar.gd"
+"path": "res://ui/views/editor/components/node_inspector/node_inspector.gd"
 }, {
 "base": "RefCounted",
 "class": &"NodeUtil",
@@ -132,12 +132,7 @@ _global_script_classes=[{
 "base": "FileDialog",
 "class": &"SaveLoadDialog",
 "language": &"GDScript",
-"path": "res://ui/root/save_load_dialogs/save_load_dialog.gd"
-}, {
-"base": "Control",
-"class": &"SaveLoadManager",
-"language": &"GDScript",
-"path": "res://ui/root/save_load_dialogs/save_load_manager.gd"
+"path": "res://common/autoloads/save_load_manager/save_load_dialog.gd"
 }, {
 "base": "GenericInputComponent",
 "class": &"ScalarComponent",
@@ -147,7 +142,12 @@ _global_script_classes=[{
 "base": "HBoxContainer",
 "class": &"SidebarProperty",
 "language": &"GDScript",
-"path": "res://ui/views/editor/components/sidebar/property.gd"
+"path": "res://ui/views/editor/components/node_inspector/property.gd"
+}, {
+"base": "RefCounted",
+"class": &"SlotOptions",
+"language": &"GDScript",
+"path": "res://core/lib/slot_options.gd"
 }, {
 "base": "GenericInputComponent",
 "class": &"StringComponent",
@@ -186,13 +186,13 @@ _global_script_class_icons={
 "EventBus": "",
 "GenericInputComponent": "",
 "GenericOutputComponent": "",
+"GraphInspector": "",
 "GraphNodeUiComponent": "",
-"Inspector": "",
 "MemoryUtil": "",
 "NodeDocumentation": "",
 "NodeGraph": "",
 "NodeGraphEditor": "",
-"NodeSideBar": "",
+"NodeInspector": "",
 "NodeUtil": "",
 "PathUtil": "",
 "ProtonGraphApp": "",
@@ -200,9 +200,9 @@ _global_script_class_icons={
 "ProtonNodeSlot": "",
 "ProtonNodeUi": "",
 "SaveLoadDialog": "",
-"SaveLoadManager": "",
 "ScalarComponent": "",
 "SidebarProperty": "",
+"SlotOptions": "",
 "StringComponent": "",
 "Toolbar": "",
 "UserInterfaceUtil": "",
@@ -224,6 +224,7 @@ GlobalUndoRedo="*res://common/autoloads/undo_redo.gd"
 Settings="*res://common/autoloads/project_settings.gd"
 TextureUtil="*res://common/autoloads/texture_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
+SaveLoadManager="*res://common/autoloads/save_load_manager/save_load_manager.gd"
 
 [display]
 

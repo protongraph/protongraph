@@ -17,7 +17,7 @@ var outputs: Dictionary
 var extras: Dictionary
 
 
-func create_input(idx, name: String, type: int, options := {}) -> void:
+func create_input(idx, name: String, type: int, options: SlotOptions = null) -> void:
 	var input = ProtonNodeSlot.new()
 	input.name = name
 	input.type = type
@@ -26,7 +26,7 @@ func create_input(idx, name: String, type: int, options := {}) -> void:
 	inputs[idx] = input
 
 
-func create_output(idx, name: String, type: int, options := {}) -> void:
+func create_output(idx, name: String, type: int, options: SlotOptions = null) -> void:
 	var output = ProtonNodeSlot.new()
 	output.name = name
 	output.type = type

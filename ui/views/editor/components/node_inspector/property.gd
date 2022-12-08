@@ -23,7 +23,7 @@ func _ready() -> void:
 	_visibility_box.toggled.connect(_on_visibility_box_toggled)
 
 
-func create_input(name: String, type: int, value, idx: int, opts := {}) -> void:
+func create_input(name: String, type: int, value, idx: int, opts: SlotOptions = null) -> void:
 	match type:
 		DataType.BOOLEAN:
 			_ui = BooleanComponent.new()
@@ -52,7 +52,7 @@ func create_input(name: String, type: int, value, idx: int, opts := {}) -> void:
 func create_generic(name: String, type: int) -> void:
 	name = _sanitize_name(name, type)
 	var ui = GenericInputComponent.new()
-	ui.create(name, type, {})
+	ui.create(name, type, null)
 	_root.add_child(ui)
 
 

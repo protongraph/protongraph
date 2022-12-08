@@ -72,7 +72,6 @@ func rebuild() -> void:
 	pass
 
 
-
 func _get_unique_name(node: ProtonNode) -> String:
 	var unique_name := node.type_id
 	var counter := 0

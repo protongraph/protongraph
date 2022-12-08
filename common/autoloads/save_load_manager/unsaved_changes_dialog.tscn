@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dshk2tsjj4esn"]
+[gd_scene load_steps=3 format=3 uid="uid://3tsarfbiqkdy"]
 
-[ext_resource type="Script" path="res://ui/root/save_load_dialogs/confirm_dialog.gd" id="1"]
+[ext_resource type="Script" path="res://common/autoloads/save_load_manager/unsaved_changes_dialog.gd" id="1_ev8en"]
 
 [sub_resource type="StyleBoxFlat" id="1"]
 bg_color = Color(0.478431, 0.027451, 0.027451, 1)
@@ -13,9 +13,10 @@ corner_radius_bottom_left = 3
 transparent_bg = true
 title = "Confirm"
 size = Vector2i(336, 125)
+visible = true
 always_on_top = true
 transparent = true
-script = ExtResource("1")
+script = ExtResource("1_ev8en")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -23,54 +24,47 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 332.0
-offset_bottom = 121.0
+offset_right = -948.0
+offset_bottom = -599.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-offset_top = 20.0
-offset_right = 328.0
-offset_bottom = 97.0
+layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
-offset_right = 328.0
-offset_bottom = 26.0
+unique_name_in_owner = true
+layout_mode = 2
 text = "Save changes before closing the template?"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-offset_top = 46.0
-offset_right = 328.0
-offset_bottom = 77.0
+layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
 [node name="Cancel" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-offset_left = 53.0
-offset_right = 113.0
-offset_bottom = 31.0
+unique_name_in_owner = true
+layout_mode = 2
 focus_mode = 0
 text = "Cancel"
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-offset_left = 123.0
-offset_right = 143.0
-offset_bottom = 31.0
+layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="Discard" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-offset_left = 153.0
-offset_right = 220.0
-offset_bottom = 31.0
+unique_name_in_owner = true
+layout_mode = 2
 focus_mode = 0
 theme_override_styles/hover = SubResource("1")
 text = "Discard"
 
 [node name="Confirm" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-offset_left = 230.0
-offset_right = 274.0
-offset_bottom = 31.0
+unique_name_in_owner = true
+layout_mode = 2
 focus_mode = 0
 text = "Save"
