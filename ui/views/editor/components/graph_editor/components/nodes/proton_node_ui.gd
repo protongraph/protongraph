@@ -7,21 +7,28 @@ signal value_changed(value, slot)
 signal connection_changed
 
 
-var proton_node: ProtonNode
+var proton_node: ProtonNode:
+	set(val):
+		proton_node = val
+		_update_frame_stylebox()
 
-var _input_connections: Dictionary = {}
-var _output_connections: Dictionary = {}
+var _input_connections := {}
+var _output_connections := {}
+var _input_component_map := {}
 
 
 func _ready() -> void:
 	position_offset_changed.connect(_on_position_offset_changed)
-	_update_frame_stylebox()
 
 
 func clear() -> void:
 	for c in get_children():
 		remove_child(c)
 		c.queue_free()
+
+	_input_component_map.clear()
+	_input_connections.clear()
+	_output_connections.clear()
 
 
 func rebuild_ui() -> void:
@@ -31,6 +38,16 @@ func rebuild_ui() -> void:
 	show_close = true
 	_populate_rows()
 	_setup_connection_slots()
+
+	var custom_ui = proton_node.get_custom_ui()
+	if not custom_ui:
+		return
+
+	var parent = custom_ui.get_parent()
+	if parent:
+		parent.remove_child(custom_ui)
+
+	add_child(custom_ui)
 
 
 func notify_input_connection_changed(slot: int, connected: bool) -> void:
@@ -47,6 +64,11 @@ func notify_output_connection_changed(slot: int, connected: bool) -> void:
 	ui_component.notify_connection_changed(connected)
 	_output_connections[ui_component.index] = connected
 	connection_changed.emit()
+
+
+func set_local_value(idx, value) -> void:
+	if idx in _input_component_map:
+		_input_component_map[idx].set_value(value)
 
 
 func is_multiple_connections_enabled_on_slot(idx) -> bool:
@@ -78,6 +100,8 @@ func _populate_rows():
 	for idx in proton_node.inputs:
 		var input: ProtonNodeSlot = proton_node.inputs[idx]
 		var ui = _create_component_for(input)
+		ui.index = idx
+		_input_component_map[idx] = ui
 		get_child(current_row).add_child(ui)
 		current_row += 1
 		ui.visible = input.visible
@@ -87,6 +111,7 @@ func _populate_rows():
 	for idx in proton_node.outputs:
 		var output: ProtonNodeSlot = proton_node.outputs[idx]
 		var ui = _create_component_for(output, false)
+		ui.index = idx
 		get_child(current_row).add_child(ui)
 		current_row += 1
 		ui.visible = output.visible
@@ -114,6 +139,10 @@ func _create_component_for(io: ProtonNodeSlot, is_input := true) -> GraphNodeUiC
 		component = GenericOutputComponent.new()
 
 	component.create(io.name, io.type, io.options)
+
+	if io.local_value != null:
+		component.set_value(io.local_value)
+
 	if is_input:
 		component.name = "Input"
 	else:
@@ -152,6 +181,9 @@ func _setup_connection_slots() -> void:
 
 
 func _update_frame_stylebox():
+	if not proton_node:
+		return
+
 	var current_theme := ThemeManager.get_current_theme()
 	var frame_style := current_theme.get_stylebox("frame", "GraphNode").duplicate()
 	frame_style.border_color = DataType.get_category_color(proton_node.category)
@@ -167,4 +199,5 @@ func _on_position_offset_changed() -> void:
 
 
 func _on_local_value_changed(value, idx) -> void:
+	proton_node.set_local_value(idx, value)
 	value_changed.emit(value, idx)

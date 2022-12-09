@@ -37,6 +37,7 @@ func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
 		new_node.unique_name = _get_unique_name(new_node)
 
 	nodes[new_node.unique_name] = new_node
+	new_node.graph = self
 
 	if notify:
 		graph_changed.emit()
@@ -70,6 +71,11 @@ func disconnect_node(from: StringName, from_port: int, to: StringName, to_port: 
 
 func rebuild() -> void:
 	pass
+	# loop trhough final nodes
+	# make sure inputs are done
+	# 	-> if not, generate inputs
+	# 	-> recursively
+	#
 
 
 func _get_unique_name(node: ProtonNode) -> String:

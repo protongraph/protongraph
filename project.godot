@@ -79,6 +79,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/graph_node_ui_component.gd"
 }, {
+"base": "HBoxContainer",
+"class": &"InspectorProperty",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/node_inspector/property.gd"
+}, {
 "base": "RefCounted",
 "class": &"MemoryUtil",
 "language": &"GDScript",
@@ -144,11 +149,6 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/number.gd"
 }, {
-"base": "HBoxContainer",
-"class": &"SidebarProperty",
-"language": &"GDScript",
-"path": "res://ui/views/editor/components/node_inspector/property.gd"
-}, {
 "base": "RefCounted",
 "class": &"SlotOptions",
 "language": &"GDScript",
@@ -183,6 +183,11 @@ _global_script_classes=[{
 "class": &"ViewContainer",
 "language": &"GDScript",
 "path": "res://ui/root/view_container.gd"
+}, {
+"base": "Node3D",
+"class": &"ViewportCamera",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/viewport/components/camera.gd"
 }]
 _global_script_class_icons={
 "BooleanComponent": "",
@@ -199,6 +204,7 @@ _global_script_class_icons={
 "GenericOutputComponent": "",
 "GraphInspector": "",
 "GraphNodeUiComponent": "",
+"InspectorProperty": "",
 "MemoryUtil": "",
 "NodeGraph": "",
 "NodeGraphEditor": "",
@@ -212,14 +218,14 @@ _global_script_class_icons={
 "ProtonNodeUi": "",
 "SaveLoadDialog": "",
 "ScalarComponent": "",
-"SidebarProperty": "",
 "SlotOptions": "",
 "StringComponent": "",
 "StringUtil": "",
 "Toolbar": "",
 "UserInterfaceUtil": "",
 "VectorComponent": "",
-"ViewContainer": ""
+"ViewContainer": "",
+"ViewportCamera": ""
 }
 
 [application]

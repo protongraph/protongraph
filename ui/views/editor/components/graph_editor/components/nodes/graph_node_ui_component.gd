@@ -12,7 +12,7 @@ signal value_changed
 var label: Label
 var icon: TextureRect
 var icon_container: CenterContainer
-var index: int
+var index
 
 
 func create(label_name: String, type: int, opts := SlotOptions.new()):

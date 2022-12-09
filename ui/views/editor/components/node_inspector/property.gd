@@ -1,4 +1,4 @@
-class_name SidebarProperty
+class_name InspectorProperty
 extends HBoxContainer
 
 
@@ -23,7 +23,7 @@ func _ready() -> void:
 	_visibility_box.toggled.connect(_on_visibility_box_toggled)
 
 
-func create_input(name: String, type: int, value, idx: int, opts := SlotOptions.new()) -> void:
+func create_input(p_name: String, type: int, value, idx: int, opts := SlotOptions.new()) -> void:
 	match type:
 		DataType.BOOLEAN:
 			_ui = BooleanComponent.new()
@@ -36,12 +36,12 @@ func create_input(name: String, type: int, value, idx: int, opts := SlotOptions.
 		DataType.VECTOR3:
 			_ui = VectorComponent.new()
 		_:
-			create_generic(name, type)
+			create_generic(p_name, type)
 			return
 
 	_root.add_child(_ui)
-	name = _sanitize_name(name, type)
-	_ui.create(name, type, opts)
+	p_name = _sanitize_name(p_name, type)
+	_ui.create(p_name, type, opts)
 	if value:
 		_ui.set_value(value)
 	_ui.notify_connection_changed(false)
@@ -49,10 +49,10 @@ func create_input(name: String, type: int, value, idx: int, opts := SlotOptions.
 	_ui.value_changed.connect(_on_value_changed)
 
 
-func create_generic(name: String, type: int) -> void:
-	name = _sanitize_name(name, type)
+func create_generic(p_name: String, type: int) -> void:
+	p_name = _sanitize_name(p_name, type)
 	var ui = GenericInputComponent.new()
-	ui.create(name, type, null)
+	ui.create(p_name, type, null)
 	_root.add_child(ui)
 
 
@@ -70,9 +70,9 @@ func set_property_visibility(v: bool) -> void:
 	_on_visibility_box_toggled(_visibility_box.button_pressed)
 
 
-func _sanitize_name(name: String, type: int) -> String:
-	if name != null and name != "":
-		return name
+func _sanitize_name(p_name: String, type: int) -> String:
+	if p_name != null and p_name != "":
+		return p_name
 
 	# Empty name, often happens with outputs. Show the type name instead.
 	return DataType.get_type_name(type)

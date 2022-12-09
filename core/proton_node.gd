@@ -12,6 +12,8 @@ var category: String
 var documentation: DocumentationData
 var ignore := false
 
+var graph: NodeGraph
+
 # Dictionary format: { idx : ProtonNodeSlot }
 var inputs: Dictionary
 var outputs: Dictionary
@@ -36,6 +38,21 @@ func create_output(idx, name: String, type: int, options := SlotOptions.new()) -
 	outputs[idx] = output
 
 
+# Override in child class
+func export_custom_data() -> Dictionary:
+	return {}
+
+
+func restore_custom_data(data: Dictionary) -> void:
+	pass
+
+
+# Override in child class if they have custom controls to display on the
+# graph node itself
+func get_custom_ui():
+	return null
+
+
 # Automatically change the output type to mirror the type of what's
 # connected to the input slot
 func enable_type_mirroring_on_slot(input_idx, output_idx) -> void:
@@ -58,8 +75,32 @@ func allow_multiple_connections_on_input_slot(idx: int, enabled := true) -> void
 		inputs[idx].allow_multiple_connections = enabled
 
 
-func get_input(idx, default := []) -> Array:
-	return default
+func set_local_value(idx, value) -> void:
+	if idx in inputs:
+		inputs[idx].local_value = value
+
+
+func get_local_value(idx) -> Variant:
+	if idx in inputs:
+		return inputs[idx].local_value
+	return null
+
+
+# Returns the associated data to the given input index. It either comes from a
+# connected input node, or from a local control field in the case of a simple
+# type (float, string)
+func get_input(idx: int, default = []) -> Array:
+
+	# Check for connected nodes
+	# TODO
+
+	# If no source is connected but the node has a gui component attached where
+	# the user can enter a local value
+	var local_value = get_local_value(idx)
+	if local_value != null:
+		return [local_value]
+
+	return default # No local value and no source connected
 
 
 # By default, every input and output is an array. This is just a short hand with

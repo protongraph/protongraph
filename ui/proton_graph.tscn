@@ -17,56 +17,46 @@ theme = ExtResource("1_ay0nm")
 script = ExtResource("2_aiyx6")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-offset_right = 1280.0
-offset_bottom = 720.0
+layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 modulate = Color(1, 1, 1, 0)
-offset_right = 1280.0
-offset_bottom = 4.0
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-offset_top = 4.0
-offset_right = 1280.0
-offset_bottom = 36.0
+layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
 [node name="TopBar" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
-offset_left = 4.0
-offset_right = 1280.0
-offset_bottom = 32.0
+layout_mode = 2
 
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/MarginContainer/TopBar"]
 custom_minimum_size = Vector2(32, 32)
-offset_right = 32.0
-offset_bottom = 32.0
+layout_mode = 2
 theme_override_font_sizes/font_size = 16
 icon = ExtResource("1_lh0uq")
 expand_icon = true
 script = ExtResource("3_llsfr")
 
 [node name="TabBar" type="TabBar" parent="VBoxContainer/MarginContainer/TopBar"]
-offset_left = 38.0
-offset_right = 1276.0
-offset_bottom = 32.0
+layout_mode = 2
 size_flags_horizontal = 3
 tab_close_display_policy = 1
 drag_to_rearrange_enabled = true
 
 [node name="ViewContainer" type="TabContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
-offset_top = 36.0
-offset_right = 1280.0
-offset_bottom = 720.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+clip_tabs = false
 tabs_visible = false
 script = ExtResource("4_fkmym")
 tab_bar = NodePath("../MarginContainer/TopBar/TabBar")
 
 [node name="Welcome" parent="VBoxContainer/ViewContainer" instance=ExtResource("4_3anom")]
-offset_top = 3.0
+layout_mode = 2

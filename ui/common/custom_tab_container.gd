@@ -58,6 +58,7 @@ func _on_tab_changed(tab: int) -> void:
 
 func _on_remote_tab_changed(tab: int) -> void:
 	set_current_tab(tab)
+	GlobalEventBus.current_view_changed.emit(get_child(tab))
 
 
 func _on_tab_moved(to_tab: int) -> void:

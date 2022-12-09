@@ -74,11 +74,11 @@ func _rebuild_ui() -> void:
 	_properties.visible = true
 	_name_label.text = _proton_node.title
 
-	# Create a new SidebarProperty object for each slots. They rely on the
+	# Create a new InspectorProperty object for each slots. They rely on the
 	# same GraphNodeComponents used by the ProtonNodeUi class.
 	for idx in _proton_node.inputs:
 		var input: ProtonNodeSlot = _proton_node.inputs[idx]
-		var ui: SidebarProperty = PropertyScene.instantiate()
+		var ui: InspectorProperty = PropertyScene.instantiate()
 		_inputs.add_child(ui)
 
 		# Don't display the local value if something is connected to the input slot
@@ -88,13 +88,13 @@ func _rebuild_ui() -> void:
 			ui.create_input(input.name, input.type, input.local_value, idx, input.options)
 
 		ui.set_property_visibility(input.visible)
-		ui.value_changed.connect(_on_sidebar_value_changed)
+		ui.value_changed.connect(_on_inspector_value_changed)
 		ui.property_visibility_changed.connect(_on_input_property_visibility_changed.bind(idx))
 
 	# Outputs are simpler and only require the name and type.
 	for idx in _proton_node.outputs:
 		var output: ProtonNodeSlot = _proton_node.outputs[idx]
-		var ui: SidebarProperty = PropertyScene.instantiate()
+		var ui: InspectorProperty = PropertyScene.instantiate()
 		_outputs.add_child(ui)
 		ui.create_generic(output.name, output.type)
 		ui.set_property_visibility(output.visible)
@@ -104,7 +104,7 @@ func _rebuild_ui() -> void:
 	# the previous categories. We just display a name.
 	for idx in _proton_node.extras:
 		var extra = _proton_node.extras[idx]
-		var ui: SidebarProperty = PropertyScene.instantiate()
+		var ui: InspectorProperty = PropertyScene.instantiate()
 		_extras.add_child(ui)
 		ui.create_generic(extra.name, -1)
 		ui.set_property_visibility(extra.visible)
@@ -126,7 +126,7 @@ func _on_node_deleted(node) -> void:
 # Sync changes from the graph node to the side bar
 func _on_node_value_changed(value, idx: int) -> void:
 	for child in _inputs.get_children():
-		if child is SidebarProperty and child.get_slot_index() == idx:
+		if child is InspectorProperty and child.get_slot_index() == idx:
 			child.set_value(value)
 			return
 
@@ -138,11 +138,10 @@ func _on_node_connection_changed() -> void:
 	call_deferred("_rebuild_ui")
 
 
-# Sync changes from the sidebar to the graphnode
-func _on_sidebar_value_changed(value, idx: int) -> void:
-	if not _proton_node:
-		return
-	_proton_node.inputs[idx].local_value = value
+# Sync changes from the node inspector to the graphnode
+func _on_inspector_value_changed(value, idx: int) -> void:
+	if _proton_node_ui:
+		_proton_node_ui.set_local_value(idx, value)
 
 
 func _on_input_property_visibility_changed(visible: bool, index: int) -> void:

@@ -54,6 +54,8 @@ func _on_load_graph_requested(path: String = "") -> void:
 
 
 func _on_save_graph_requested(graph: NodeGraph) -> void:
+	if not graph:
+		return
 
 	# No path assigned to the graph, open the file selection popup
 	if graph.save_file_path.is_empty():
@@ -64,6 +66,9 @@ func _on_save_graph_requested(graph: NodeGraph) -> void:
 
 
 func _on_save_graph_as_requested(graph: NodeGraph) -> void:
+	if not graph:
+		return
+
 	_file_dialog.show_save_dialog()
 	var new_path = await _file_dialog.path_selected
 
@@ -81,12 +86,23 @@ func _save_graph(graph: NodeGraph) -> void:
 		return
 
 	var file := ConfigFile.new()
-	# Extract data
 
-	# Store to file
-	# Write file
+	file.set_value("graph_node", "version", 1)
+	file.set_value("graph_node", "connections", graph.connections)
+
+	for node_name in graph.nodes:
+		var node: ProtonNode = graph.nodes[node_name]
+
+		var local_values := {}
+		for idx in node.inputs:
+			local_values[idx] = node.get_local_value(idx)
+
+		file.set_value(node_name, "type_id", node.type_id)
+		file.set_value(node_name, "local_values", local_values)
+		file.set_value(node_name, "custom_data", node.export_custom_data())
+		file.set_value(node_name, "external_data", node.external_data)
+
 	file.save(graph.save_file_path)
-
 	GlobalEventBus.graph_saved.emit(graph)
 
 
@@ -96,5 +112,19 @@ func _load_graph(path: String) -> void:
 
 	var graph = NodeGraph.new()
 	graph.save_file_path = path
+
+	for node_name in file.get_sections():
+		var type_id = file.get_value(node_name, "type_id", "")
+		if type_id.is_empty():
+			continue
+
+		var data: Dictionary = file.get_value(node_name, "external_data", {})
+		data.name = node_name
+		var node := graph.create_node(type_id, data, false)
+		var local_values: Dictionary = file.get_value(node_name, "local_values", {})
+		for idx in local_values:
+			node.set_local_value(idx, local_values[idx])
+
+	graph.connections = file.get_value("graph_node", "connections", [])
 
 	GlobalEventBus.graph_loaded.emit(graph)
