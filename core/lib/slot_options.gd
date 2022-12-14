@@ -45,7 +45,11 @@ var placeholder := "Text"
 class DialogOptions:
 	var mode: FileDialog.FileMode
 	var filters: PackedStringArray
+
 var dialog_options: DialogOptions = null
+
+# Custom UI
+var custom_ui: Control
 
 
 # Helper methods
@@ -71,3 +75,10 @@ func get_vector_index_options(index: String) -> SlotOptions:
 
 func has_dropdown() -> bool:
 	return not dropdown_items.is_empty()
+
+
+func add_dropdown_item(id, label: String) -> void:
+	var item = DropdownItem.new()
+	item.id = id
+	item.label = label
+	dropdown_items.push_back(item)

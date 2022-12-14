@@ -23,6 +23,10 @@ const POLYLINE_3D := 34
 const NOISE := 40
 const HEIGHTMAP := 41
 
+const MISC_CUSTOM_UI := 100
+const MISC_PREVIEW_2D := 101
+
+
 # Colors are used for slots, connections between slots and frame color
 const color_base_type = Color("3ac5e6")
 const color_vector = Color("3ac5e6")

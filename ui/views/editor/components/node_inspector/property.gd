@@ -12,7 +12,7 @@ signal value_changed
 signal property_visibility_changed
 
 
-var _slot_index: int
+var _index
 var _ui
 
 @onready var _root: Control = $Component
@@ -23,7 +23,7 @@ func _ready() -> void:
 	_visibility_box.toggled.connect(_on_visibility_box_toggled)
 
 
-func create_input(p_name: String, type: int, value, idx: int, opts := SlotOptions.new()) -> void:
+func create_input(p_name: String, type: int, value, idx, opts := SlotOptions.new()) -> void:
 	match type:
 		DataType.BOOLEAN:
 			_ui = BooleanComponent.new()
@@ -41,18 +41,20 @@ func create_input(p_name: String, type: int, value, idx: int, opts := SlotOption
 
 	_root.add_child(_ui)
 	p_name = _sanitize_name(p_name, type)
-	_ui.create(p_name, type, opts)
-	if value:
+	_ui.initialize(p_name, type, opts)
+
+	if value != null:
 		_ui.set_value(value)
+
 	_ui.notify_connection_changed(false)
-	_slot_index = idx
+	_index = idx
 	_ui.value_changed.connect(_on_value_changed)
 
 
 func create_generic(p_name: String, type: int) -> void:
 	p_name = _sanitize_name(p_name, type)
 	var ui = GenericInputComponent.new()
-	ui.create(p_name, type, null)
+	ui.initialize(p_name, type, null)
 	_root.add_child(ui)
 
 
@@ -61,8 +63,8 @@ func set_value(value) -> void:
 		_ui.set_value(value)
 
 
-func get_slot_index() -> int:
-	return _slot_index
+func get_slot_index() -> Variant:
+	return _index
 
 
 func set_property_visibility(v: bool) -> void:
@@ -79,7 +81,7 @@ func _sanitize_name(p_name: String, type: int) -> String:
 
 
 func _on_value_changed(value) -> void:
-	value_changed.emit(value, _slot_index)
+	value_changed.emit(value, _index)
 
 
 func _on_visibility_box_toggled(pressed: bool) -> void:

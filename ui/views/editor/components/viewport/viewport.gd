@@ -2,11 +2,22 @@ class_name EditorViewport
 extends Control
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+var _output_root: Node3D = $SubViewportContainer/SubViewport/OutputRoot
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func _ready() -> void:
+	GlobalDirectory.register(self, "EditorViewport3D")
+
+
+func clear() -> void:
+	for c in _output_root.get_children():
+		c.queue_free()
+
+
+func display(output: Array) -> void:
+	if not _output_root:
+		return
+
+	for node in output:
+		if node is Node3D:
+			_output_root.add_child(node)

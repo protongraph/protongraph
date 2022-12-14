@@ -12,6 +12,11 @@ func _init() -> void:
 	create_input(1, "Boolean", DataType.BOOLEAN)
 	create_input(2, "Number", DataType.NUMBER)
 	create_input(3, "String", DataType.STRING)
+
+	var opts := SlotOptions.new()
+	opts.add_dropdown_item(0, "Option 1")
+	opts.add_dropdown_item(1, "Option 2")
+	create_input("dropdown", "DropDown", DataType.STRING, opts)
 	create_input(4, "Vector2", DataType.VECTOR2)
 	create_input(5, "Vector3", DataType.VECTOR3)
 

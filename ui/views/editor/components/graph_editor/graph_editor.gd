@@ -60,17 +60,14 @@ func rebuild_ui() -> void:
 	clear()
 
 	for n in _graph.nodes.values():
-		var proton_node = n as ProtonNode
-		var graph_node := ProtonNodeUi.new()
-		add_child(graph_node)
-		graph_node.close_request.connect(_on_close_request.bind(graph_node))
-		graph_node.proton_node = proton_node
-		graph_node.name = proton_node.unique_name
-		graph_node.rebuild_ui()
+		_create_proton_node_ui(n)
 
 	for c in _graph.connections:
-		var _err = self.connect_node(c.from, c.from_port, c.to, c.to_port)
-
+		var from: ProtonNodeUi = get_node(NodePath(c.from))
+		var from_port := from.output_idx_to_slot(c.from_idx)
+		var to: ProtonNodeUi = get_node(NodePath(c.to))
+		var to_port := to.input_idx_to_slot(c.to_idx)
+		connect_node(c.from, from_port, c.to, to_port)
 
 	await(get_tree().process_frame)
 	scroll_offset = _previous_scroll_offset
@@ -87,6 +84,15 @@ func delete_node(node: ProtonNodeUi) -> void:
 	remove_child(node)
 	_graph.delete_node(node.proton_node)
 	force_redraw()
+
+
+func _create_proton_node_ui(proton_node: ProtonNode) -> void:
+	var graph_node := ProtonNodeUi.new()
+	add_child(graph_node)
+	graph_node.close_request.connect(_on_close_request.bind(graph_node))
+	graph_node.proton_node = proton_node
+	graph_node.name = proton_node.unique_name
+	graph_node.rebuild_ui()
 
 
 func _show_add_node_popup(click_position: Vector2i) -> void:
@@ -112,17 +118,22 @@ func _on_create_node_request(node_type_id: String) -> void:
 	var data = {
 		"position": node_position
 	}
-	_graph.create_node(node_type_id, data)
-	rebuild_ui()
+	var node := _graph.create_node(node_type_id, data)
+	_create_proton_node_ui(node)
 
 
 func _on_connection_request(from, from_slot: int, to, to_slot: int) -> void:
 	if from == to:
 		return
 
+	var from_node: ProtonNodeUi = get_node_or_null(NodePath(from))
+	var to_node: ProtonNodeUi = get_node_or_null(NodePath(to))
+
+	if not from_node or not to_node:
+		return
+
 	# Disconnect any existing connection to the input slot first unless multi connection is enabled
-	var node = get_node(NodePath(to))
-	if not node.is_multiple_connections_enabled_on_slot(to_slot):
+	if not to_node.is_multiple_connections_enabled_on_slot(to_slot):
 		for c in get_connection_list():
 			if c.to == to and c.to_port == to_slot:
 				self.disconnect_node(c.from, c.from_port, c.to, c.to_port)
@@ -133,7 +144,9 @@ func _on_connection_request(from, from_slot: int, to, to_slot: int) -> void:
 		print_debug("Error ", err, " - Could not connect node ", from, ":", from_slot, " to ", to, ":", to_slot)
 		return
 
-	_graph.connect_node(from, from_slot, to, to_slot)
+	var from_idx = from_node.output_slot_to_idx(from_slot)
+	var to_idx = to_node.input_slot_to_idx(to_slot)
+	_graph.connect_node(from, from_idx, to, to_idx)
 
 
 func _on_disconnection_request(from: StringName, from_slot: int, to: StringName, to_slot: int) -> void:

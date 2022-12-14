@@ -124,7 +124,7 @@ func _on_node_deleted(node) -> void:
 
 
 # Sync changes from the graph node to the side bar
-func _on_node_value_changed(value, idx: int) -> void:
+func _on_node_value_changed(value, idx: Variant) -> void:
 	for child in _inputs.get_children():
 		if child is InspectorProperty and child.get_slot_index() == idx:
 			child.set_value(value)

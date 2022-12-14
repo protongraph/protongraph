@@ -5,7 +5,7 @@ extends GraphNodeUiComponent
 var _row: HBoxContainer
 
 
-func create(label_name: String, type: int, opts := SlotOptions.new()):
+func initialize(label_name: String, type: int, opts := SlotOptions.new()):
 	super(label_name, type, opts)
 
 	_row = HBoxContainer.new()

@@ -1,12 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://djeep1msjomu8"]
+[gd_scene load_steps=8 format=3 uid="uid://djeep1msjomu8"]
 
 [ext_resource type="Script" path="res://ui/views/editor/components/viewport/viewport.gd" id="1_mdwbn"]
 [ext_resource type="Script" path="res://ui/views/editor/components/viewport/components/camera.gd" id="2_it4fl"]
+[ext_resource type="Texture2D" uid="uid://de2387csdhf47" path="res://ui/views/editor/components/viewport/components/t_panorama_sky.png" id="2_p0kfs"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kt3mf"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ymbai"]
+panorama = ExtResource("2_p0kfs")
 
 [sub_resource type="Sky" id="Sky_rbhip"]
-sky_material = SubResource("ProceduralSkyMaterial_kt3mf")
+sky_material = SubResource("PanoramaSkyMaterial_ymbai")
+process_mode = 3
 
 [sub_resource type="Environment" id="Environment_s5dt0"]
 background_mode = 2
@@ -20,6 +23,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_mdwbn")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
@@ -32,7 +37,9 @@ grow_vertical = 2
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
 size = Vector2i(1280, 720)
+render_target_update_mode = 4
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport"]
 environment = SubResource("Environment_s5dt0")
@@ -42,6 +49,10 @@ mesh = SubResource("BoxMesh_br8pn")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport"]
 transform = Transform3D(0.807497, -0.27144, 0.523707, 0, 0.887832, 0.460167, -0.589871, -0.371584, 0.716922, 2.09483, 1.84067, 2.86769)
+shadow_enabled = true
 
 [node name="ViewportCamera" type="Node3D" parent="SubViewportContainer/SubViewport"]
 script = ExtResource("2_it4fl")
+
+[node name="OutputRoot" type="Marker3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true

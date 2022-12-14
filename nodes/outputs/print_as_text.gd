@@ -4,7 +4,9 @@ extends ProtonNode
 
 #const PrintUi :=
 
-var _custom_ui := preload("./print_as_text.tscn").instantiate()
+const PrintAsTextUi := preload("./print_as_text.tscn")
+
+var _ui := PrintAsTextUi.instantiate()
 
 
 func _init() -> void:
@@ -12,19 +14,13 @@ func _init() -> void:
 	title = "Print"
 	category = "Output"
 	description = "Print the data as text"
-	#resizable = true
+	leaf_node = true
 
 	create_input(0, "Any", DataType.ANY)
 
-	#_custom_ui = PrintUi.instantiate()
-
-
-func get_custom_ui():
-	return _custom_ui
-
-
-func is_final_output_node() -> bool:
-	return true
+	var opts = SlotOptions.new()
+	opts.custom_ui = _ui
+	create_extra(0, "TextArea", DataType.MISC_CUSTOM_UI, opts)
 
 
 func _generate_outputs() -> void:
@@ -32,6 +28,6 @@ func _generate_outputs() -> void:
 	var text: String = ""
 
 	for object in input:
-		text += String(object) + "\n"
+		text += str(object) + "\n"
 
-	_custom_ui.set_text(text)
+	_ui.set_text(text)

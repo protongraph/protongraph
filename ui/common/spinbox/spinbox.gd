@@ -76,8 +76,8 @@ func set_value_no_undo(new_value) -> void:
 	value = new_value
 
 
-func _update_line_edit_value(value) -> void:
-	_line_edit.text = str(value)
+func _update_line_edit_value(val) -> void:
+	_line_edit.text = str(val)
 
 
 func _update_style() -> void:
@@ -115,7 +115,7 @@ func _create_undo_redo_action(new, old) -> void:
 
 func _show_extra_controls() -> void:
 	var pos := get_tree().get_root().position + Vector2i(get_global_transform().origin)
-	pos.y -= _edit_popup.size.y / 2 - int(size.y / 2)
+	pos.y -= int(_edit_popup.size.y / 2.0) - int(size.y / 2.0)
 	pos.x -= _edit_popup.size.x
 	_edit_popup.position = pos
 	_edit_popup.popup()
@@ -192,11 +192,11 @@ func _on_edit_value_ended() -> void:
 
 
 # Called when the value is updated from the extra controls
-func _on_edit_value(step: float) -> void:
+func _on_edit_value(custom_step: float) -> void:
 	if not _is_edited: # + or - button was clicked
-		_create_undo_redo_action(value + step, value)
+		_create_undo_redo_action(value + custom_step, value)
 	else:
-		value += step
+		value += custom_step
 
 
 func _on_gui_input(event):

@@ -15,18 +15,27 @@ var proton_node: ProtonNode:
 var _input_connections := {}
 var _output_connections := {}
 var _input_component_map := {}
+var _output_component_map := {}
+var _extras_ui := []
 
 
 func _ready() -> void:
 	position_offset_changed.connect(_on_position_offset_changed)
 
 
+func _exit_tree():
+	_remove_extra_ui()
+
+
 func clear() -> void:
+	_remove_extra_ui()
+
 	for c in get_children():
 		remove_child(c)
 		c.queue_free()
 
 	_input_component_map.clear()
+	_output_component_map.clear()
 	_input_connections.clear()
 	_output_connections.clear()
 
@@ -38,16 +47,6 @@ func rebuild_ui() -> void:
 	show_close = true
 	_populate_rows()
 	_setup_connection_slots()
-
-	var custom_ui = proton_node.get_custom_ui()
-	if not custom_ui:
-		return
-
-	var parent = custom_ui.get_parent()
-	if parent:
-		parent.remove_child(custom_ui)
-
-	add_child(custom_ui)
 
 
 func notify_input_connection_changed(slot: int, connected: bool) -> void:
@@ -71,7 +70,9 @@ func set_local_value(idx, value) -> void:
 		_input_component_map[idx].set_value(value)
 
 
-func is_multiple_connections_enabled_on_slot(idx) -> bool:
+func is_multiple_connections_enabled_on_slot(slot: int) -> bool:
+	var idx = input_slot_to_idx(slot)
+
 	if not idx in proton_node.inputs:
 		return false
 
@@ -79,17 +80,45 @@ func is_multiple_connections_enabled_on_slot(idx) -> bool:
 	return input.options.multi if "multi" in input.options else false
 
 
-func is_input_slot_connected(idx) -> bool:
+func is_input_slot_connected(idx: Variant) -> bool:
 	if idx in _input_connections:
 		return _input_connections[idx]
 	return false
+
+
+func input_idx_to_slot(idx: Variant) -> int:
+	if idx in _input_component_map:
+		return _input_component_map[idx].slot
+	return -1
+
+
+func output_idx_to_slot(idx: Variant) -> int:
+	if idx in _output_component_map:
+		return _output_component_map[idx].slot
+	return -1
+
+
+func input_slot_to_idx(slot: int) -> Variant:
+	for idx in _input_component_map:
+		if _input_component_map[idx].slot == slot:
+			return idx
+	return null
+
+
+func output_slot_to_idx(slot: int) -> Variant:
+	for idx in _output_component_map:
+		if _output_component_map[idx].slot == slot:
+			return idx
+	return null
 
 
 func _populate_rows():
 	# Create an HBoxContainer for each row
 	var inputs_count = proton_node.inputs.size()
 	var outputs_count = proton_node.outputs.size()
-	var rows_count = max(inputs_count, outputs_count)
+	var extras_count = proton_node.extras.size()
+	var rows_count = max(inputs_count, outputs_count) + extras_count
+
 	for i in rows_count:
 		var hbox := HBoxContainer.new()
 		hbox.custom_minimum_size.y = 24
@@ -101,6 +130,7 @@ func _populate_rows():
 		var input: ProtonNodeSlot = proton_node.inputs[idx]
 		var ui = _create_component_for(input)
 		ui.index = idx
+		ui.slot = current_row
 		_input_component_map[idx] = ui
 		get_child(current_row).add_child(ui)
 		current_row += 1
@@ -110,17 +140,34 @@ func _populate_rows():
 	current_row = 0
 	for idx in proton_node.outputs:
 		var output: ProtonNodeSlot = proton_node.outputs[idx]
-		var ui = _create_component_for(output, false)
+		var ui = _create_component_for(output, true)
 		ui.index = idx
+		ui.slot = current_row
+		_output_component_map[idx] = ui
 		get_child(current_row).add_child(ui)
 		current_row += 1
 		ui.visible = output.visible
 
+	current_row = max(inputs_count, outputs_count)
+	for idx in proton_node.extras:
+		var extra: ProtonNodeSlot = proton_node.extras[idx]
+		var ui
+		if extra.type == DataType.MISC_CUSTOM_UI:
+			ui = extra.options.custom_ui
+			_extras_ui.push_back(ui)
+		else:
+			ui = _create_component_for(extra)
 
-func _create_component_for(io: ProtonNodeSlot, is_input := true) -> GraphNodeUiComponent:
+		get_child(current_row).add_child(ui)
+		current_row += 1
+
+
+func _create_component_for(io: ProtonNodeSlot, is_output := false) -> GraphNodeUiComponent:
 	var component: GraphNodeUiComponent
 
-	if is_input:
+	if is_output:
+		component = GenericOutputComponent.new()
+	else:
 		match io.type:
 			DataType.BOOLEAN:
 				component = BooleanComponent.new()
@@ -135,19 +182,17 @@ func _create_component_for(io: ProtonNodeSlot, is_input := true) -> GraphNodeUiC
 				component = VectorComponent.new()
 			_:
 				component = GenericInputComponent.new()
-	else:
-		component = GenericOutputComponent.new()
 
-	component.create(io.name, io.type, io.options)
+	component.initialize(io.name, io.type, io.options)
 
 	if io.local_value != null:
 		component.set_value(io.local_value)
 
-	if is_input:
-		component.name = "Input"
-	else:
+	if is_output:
 		component.name = "Output"
 		component.size_flags_stretch_ratio = 0.1
+	else:
+		component.name = "Input"
 
 	component.notify_connection_changed(false)
 	return component
@@ -192,6 +237,16 @@ func _update_frame_stylebox():
 	var selected_frame_style := current_theme.get_stylebox("selected_frame", "GraphNode").duplicate()
 	selected_frame_style.border_color = frame_style.border_color
 	add_theme_stylebox_override("selected_frame", selected_frame_style)
+
+
+# Custom UI provided by the create_extras() must not be freed, so they are
+# removed from the tree before their parents are deleted.
+func _remove_extra_ui() -> void:
+	for ui in _extras_ui:
+		var parent = ui.get_parent()
+		parent.remove_child(ui)
+
+	_extras_ui.clear()
 
 
 func _on_position_offset_changed() -> void:

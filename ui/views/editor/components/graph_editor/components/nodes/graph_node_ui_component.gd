@@ -12,10 +12,11 @@ signal value_changed
 var label: Label
 var icon: TextureRect
 var icon_container: CenterContainer
-var index
+var index # As defined in the ProtonNode
+var slot: int # The actual GraphEdit slot
 
 
-func create(label_name: String, type: int, opts := SlotOptions.new()):
+func initialize(label_name: String, type: int, opts := SlotOptions.new()):
 	if not label:
 		label = Label.new()
 

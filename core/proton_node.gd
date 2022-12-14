@@ -2,16 +2,15 @@ class_name ProtonNode
 extends Resource
 
 
-@export var external_data: Dictionary
-@export var unique_name: String
-
+var external_data: Dictionary
+var unique_name: String
 var type_id: String
 var title: String
 var description: String
 var category: String
 var documentation: DocumentationData
 var ignore := false
-
+var leaf_node := false
 var graph: NodeGraph
 
 # Dictionary format: { idx : ProtonNodeSlot }
@@ -34,8 +33,15 @@ func create_output(idx, name: String, type: int, options := SlotOptions.new()) -
 	output.name = name
 	output.type = type
 	output.options = options
-	output.computed_value = null
 	outputs[idx] = output
+
+
+func create_extra(idx, name: String, type: int, options := SlotOptions.new()) -> void:
+	var extra = ProtonNodeSlot.new()
+	extra.name = name
+	extra.type = type
+	extra.options = options
+	extras[idx] = extra
 
 
 # Override in child class
@@ -43,14 +49,8 @@ func export_custom_data() -> Dictionary:
 	return {}
 
 
-func restore_custom_data(data: Dictionary) -> void:
+func restore_custom_data(_data: Dictionary) -> void:
 	pass
-
-
-# Override in child class if they have custom controls to display on the
-# graph node itself
-func get_custom_ui():
-	return null
 
 
 # Automatically change the output type to mirror the type of what's
@@ -89,13 +89,15 @@ func get_local_value(idx) -> Variant:
 # Returns the associated data to the given input index. It either comes from a
 # connected input node, or from a local control field in the case of a simple
 # type (float, string)
-func get_input(idx: int, default = []) -> Array:
+func get_input(idx: Variant, default = []) -> Array:
+	if not idx in inputs:
+		return []
 
-	# Check for connected nodes
-	# TODO
+	# Check if connected nodes on this input provided something.
+	if inputs[idx].computed_value_ready:
+		return inputs[idx].computed_value
 
-	# If no source is connected but the node has a gui component attached where
-	# the user can enter a local value
+	# If no source is connected check the local value provided by the slot gui
 	var local_value = get_local_value(idx)
 	if local_value != null:
 		return [local_value]
@@ -113,8 +115,37 @@ func get_input_single(idx, default = null):
 
 
 func set_output(idx, value) -> void:
+	if not value is Array:
+		value = [value]
+
 	if idx in outputs:
 		outputs[idx].computed_value = value
+		outputs[idx].computed_value_ready = true
+
+
+func clear_values() -> void:
+	for idx in inputs:
+		inputs[idx].computed_value.clear()
+		inputs[idx].computed_value_ready = false
+
+	for idx in outputs:
+		outputs[idx].computed_value.clear()
+		outputs[idx].computed_value_ready = false
+
+
+func is_output_ready(idx = null) -> bool:
+	if outputs.is_empty():
+		return false
+
+	if idx in outputs:
+		return outputs[idx].computed_value_ready
+
+	# No index provided, check them all
+	for i in outputs:
+		if not outputs[i].computed_value_ready:
+			return false
+
+	return true
 
 
 func set_input_slot_visibility(idx, visible: bool) -> void:
@@ -144,11 +175,4 @@ func _generate_outputs() -> void:
 # calls to _generate_outputs.
 func _clear_cache():
 	pass
-
-
-# Clear previously generated outputs
-func _clear_outputs():
-	for idx in outputs:
-		MemoryUtil.safe_free(outputs[idx].computed_value)
-		outputs[idx].computed_value = null
 

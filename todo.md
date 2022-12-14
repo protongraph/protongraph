@@ -5,5 +5,7 @@
 + port back all the nodes
 + Use a custom ProtonMesh to store mesh data (instead of mesh instance)
 	- required for vertex attributes and other features
-+ Editing a property in the node inspector doesn't edit the actual node
-+
+
+## Bugs
++ Vector (2 & 3) ui component are not synced with the inspector
++ String / int comparison because idx is a variant
