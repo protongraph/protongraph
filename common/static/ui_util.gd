@@ -1,7 +1,9 @@
 class_name UserInterfaceUtil
 extends RefCounted
 
+
 const SpinboxScene := preload("res://ui/common/spinbox/spinbox.tscn")
+
 
 # Creates a default spinbox. Don't use CustomSpinBox.new() or it won't use the
 # custom scene associated with this class. There's probably a better way though.

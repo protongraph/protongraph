@@ -26,6 +26,9 @@ static func get_child_by_name(node: Node, child_name: String) -> Node:
 
 # Remove all children of a given node and free them by default.
 static func remove_children(node: Node, free := true) -> void:
+	if not node:
+		return
+
 	for child in node.get_children():
 		node.remove_child(child)
 		if free:

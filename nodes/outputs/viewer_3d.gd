@@ -13,6 +13,4 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var viewport: EditorViewport = GlobalDirectory.get_registered_node("EditorViewport3D")
-	if viewport:
-		viewport.display(get_input(0))
+	GlobalEventBus.show_on_viewport.emit(get_input(0))

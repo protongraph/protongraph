@@ -2,16 +2,15 @@ class_name EditorViewport
 extends Control
 
 
-var _output_root: Node3D = $SubViewportContainer/SubViewport/OutputRoot
+@onready var _output_root: Node3D = $SubViewportContainer/SubViewport/OutputRoot
 
 
 func _ready() -> void:
-	GlobalDirectory.register(self, "EditorViewport3D")
+	GlobalEventBus.show_on_viewport.connect(display)
 
 
 func clear() -> void:
-	for c in _output_root.get_children():
-		c.queue_free()
+	NodeUtil.remove_children(_output_root)
 
 
 func display(output: Array) -> void:

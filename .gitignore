@@ -31,3 +31,4 @@ native/logs
 .vscode
 
 tmp/
+bin/

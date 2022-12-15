@@ -11,6 +11,8 @@ var _count := 2
 func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> void:
 	super(label_name, type, opts)
 
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
 	_col = VBoxContainer.new()
 	add_child(_col)
 
@@ -22,7 +24,7 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> voi
 
 	_vector_box = VBoxContainer.new()
 	_vector_box.custom_minimum_size.x = 120 #Constants.get_vector_width()
-	_vector_box.size_flags_horizontal = Control.SIZE_EXPAND
+	_vector_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	_vector_box.add_theme_constant_override("separation", 0)
 	_col.add_child(_vector_box)
@@ -31,7 +33,6 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> voi
 	if type == DataType.VECTOR3:
 		item_indexes.push_back("z")
 		_count = 3
-
 
 	for i in item_indexes.size():
 		var s: CustomSpinBox
@@ -69,14 +70,20 @@ func get_value():
 
 
 func set_value(value) -> void:
+	var valid_value := false
 	var vector
-	if value == null or not value is Vector2 or not value is Vector3 or not value is String:
-		return
+
 	if value is Vector3 or value is Vector2:
 		vector = value
+		valid_value = true
+
 	elif value is String:
 		value = value.substr(1, value.length() - 2)
 		vector = value.split(',')
+		valid_value = (vector.size() == _count)
+
+	if not valid_value:
+		return
 
 	for i in _count:
 		var spinbox = _vector_box.get_child(i)
@@ -88,4 +95,4 @@ func notify_connection_changed(connected: bool) -> void:
 
 
 func _on_value_changed(val) -> void:
-	super(val)
+	super(get_value())

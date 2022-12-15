@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ck2kh376qfiar"]
 
-[sub_resource type="GDScript" id="GDScript_kreji"]
+[sub_resource type="GDScript" id="GDScript_ktmgu"]
 script/source = "extends Control
 
 
@@ -8,30 +8,41 @@ func set_text(text: String):
 	$%Label.set_text(text)
 "
 
-[node name="PrintAsText" type="ScrollContainer"]
-custom_minimum_size = Vector2(150, 34)
+[node name="PrintAsText" type="MarginContainer"]
 offset_right = 150.0
 offset_bottom = 34.0
 size_flags_horizontal = 3
-script = SubResource("GDScript_kreji")
+size_flags_vertical = 3
+script = SubResource("GDScript_ktmgu")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 2
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(150, 34)
+offset_right = 150.0
+offset_bottom = 34.0
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer"]
+offset_right = 150.0
+offset_bottom = 34.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Panel" type="Panel" parent="PanelContainer"]
-layout_mode = 2
+[node name="Panel" type="Panel" parent="ScrollContainer/PanelContainer"]
+offset_right = 150.0
+offset_bottom = 34.0
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-layout_mode = 2
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/PanelContainer"]
+offset_right = 150.0
+offset_bottom = 34.0
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer"]
+[node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
-layout_mode = 2
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 146.0
+offset_bottom = 30.0
 size_flags_vertical = 1
 text = "Output"

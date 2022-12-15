@@ -78,6 +78,7 @@ func allow_multiple_connections_on_input_slot(idx: int, enabled := true) -> void
 func set_local_value(idx, value) -> void:
 	if idx in inputs:
 		inputs[idx].local_value = value
+		changed.emit()
 
 
 func get_local_value(idx) -> Variant:

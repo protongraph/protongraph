@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dlg64poi6ort8"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77edb"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iwt8m"]
 bg_color = Color(0, 0, 0, 0.27451)
 
 [node name="BlackOverlay" type="Panel"]
@@ -10,4 +10,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_77edb")
+theme_override_styles/panel = SubResource("StyleBoxFlat_iwt8m")

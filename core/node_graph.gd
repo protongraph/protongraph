@@ -27,16 +27,17 @@ func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
 	if not new_node:
 		return null
 
-	if "position" in data:
-		new_node.external_data.position = data.position
-
 	if "name" in data:
 		new_node.unique_name = data.name
+		data.erase("name") # TODO: check if this is required
 	else:
 		new_node.unique_name = _get_unique_name(new_node)
 
+	new_node.external_data = data
+
 	nodes[new_node.unique_name] = new_node
 	new_node.graph = self
+	new_node.changed.connect(_on_node_changed)
 
 	if new_node.leaf_node:
 		_leaf_nodes.push_back(new_node)
@@ -72,7 +73,7 @@ func disconnect_node(from: StringName, from_idx, to: StringName, to_idx) -> void
 
 
 func clean_rebuild() -> void:
-	for node in nodes:
+	for node in nodes.values():
 		node.clear_values()
 
 	rebuild()
@@ -140,3 +141,7 @@ func _get_right_connected(node: ProtonNode, idx) -> Array[Dictionary]:
 			})
 
 	return res
+
+
+func _on_node_changed() -> void:
+	rebuild()

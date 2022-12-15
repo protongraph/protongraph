@@ -11,7 +11,7 @@
 [ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_right_hover.tres" id="11"]
 [ext_resource type="PackedScene" uid="uid://bgo7smjjxdrys" path="res://ui/common/spinbox/edit_popup.tscn" id="12_ava0u"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yfdlu"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qvjve"]
 
 [node name="Spinbox" type="ProgressBar"]
 custom_minimum_size = Vector2(70, 24)
@@ -81,7 +81,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxEmpty_yfdlu")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qvjve")
 text = "50"
 alignment = 2
 context_menu_enabled = false

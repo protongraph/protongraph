@@ -4,9 +4,12 @@ extends Node
 # This script parses the node folder to retrieve a list of all the
 # available ProtonNodes.
 
-
 var _nodes: Dictionary
 var _node_search_index: Dictionary
+
+
+func _ready() -> void:
+	refresh_list()
 
 
 func _exit_tree() -> void:
@@ -43,7 +46,15 @@ func refresh_list() -> void:
 	clear()
 	_node_search_index = Dictionary()
 	_nodes = Dictionary()
-	_find_all_nodes("res://nodes/")
+
+	var node_path := "res://nodes/"
+	if OS.has_feature("standalone"):
+		node_path = OS.get_executable_path().get_base_dir().path_join("nodes")
+
+	print("in refresh list, ", node_path)
+	print("in standalone? ", OS.has_feature("standalone"))
+
+	_find_all_nodes(node_path)
 
 
 # Recursively search all the scripts that inherits from ProtonNode and store

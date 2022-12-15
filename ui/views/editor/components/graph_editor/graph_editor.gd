@@ -46,12 +46,11 @@ func disconnect_node(from, from_port, to, to_port):
 func set_node_graph(graph: NodeGraph) -> void:
 	_graph = graph
 	rebuild_ui()
+	_graph.clean_rebuild()
 
 
 func clear() -> void:
-	for c in get_children():
-		remove_child(c)
-		c.queue_free()
+	NodeUtil.remove_children(self)
 
 
 # Creates the visual representation of the NodeGraph item.

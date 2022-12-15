@@ -10,3 +10,11 @@ static func safe_free(any) -> void:
 		any.free()
 
 	# Other types don't need specific attention.
+
+
+# TODO: Might not belong here
+static func is_equal(a: Variant, b: Variant) -> bool:
+	if typeof(a) != typeof(b):
+		return false
+
+	return a == b

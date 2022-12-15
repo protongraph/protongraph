@@ -21,6 +21,8 @@ var _extras_ui := []
 
 func _ready() -> void:
 	position_offset_changed.connect(_on_position_offset_changed)
+	resizable = true
+	resize_request.connect(_on_resize_request)
 
 
 func _exit_tree():
@@ -29,11 +31,7 @@ func _exit_tree():
 
 func clear() -> void:
 	_remove_extra_ui()
-
-	for c in get_children():
-		remove_child(c)
-		c.queue_free()
-
+	NodeUtil.remove_children(self)
 	_input_component_map.clear()
 	_output_component_map.clear()
 	_input_connections.clear()
@@ -43,8 +41,16 @@ func clear() -> void:
 func rebuild_ui() -> void:
 	clear()
 	title = proton_node.title
-	position_offset = proton_node.external_data.position
 	show_close = true
+
+	var data: Dictionary = proton_node.external_data
+
+	if "position" in data:
+		position_offset = data.position
+
+	if "size" in data:
+		size = data.size
+
 	_populate_rows()
 	_setup_connection_slots()
 
@@ -158,7 +164,9 @@ func _populate_rows():
 		else:
 			ui = _create_component_for(extra)
 
-		get_child(current_row).add_child(ui)
+		var row: Control = get_child(current_row)
+		row.size_flags_vertical = SIZE_EXPAND_FILL
+		row.add_child(ui)
 		current_row += 1
 
 
@@ -256,3 +264,8 @@ func _on_position_offset_changed() -> void:
 func _on_local_value_changed(value, idx) -> void:
 	proton_node.set_local_value(idx, value)
 	value_changed.emit(value, idx)
+
+
+func _on_resize_request(new_min_size) -> void:
+	size = new_min_size
+	proton_node.external_data.size = new_min_size

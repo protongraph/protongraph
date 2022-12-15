@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://common/autoloads/save_load_manager/ui/unsaved_changes_dialog.gd" id="1_excob"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_27p2d"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxivi"]
 bg_color = Color(0.478431, 0.027451, 0.027451, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
@@ -61,7 +61,7 @@ theme_override_constants/separation = 20
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/hover = SubResource("StyleBoxFlat_27p2d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_uxivi")
 text = "Discard"
 
 [node name="Confirm" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]

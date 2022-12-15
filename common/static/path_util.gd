@@ -43,5 +43,3 @@ static func get_absolute_path(relative_path: String, origin: String):
 		absolute_path += t1[i]
 		if i != t1.size() - 1:
 			absolute_path += '/'
-
-

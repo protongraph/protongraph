@@ -108,7 +108,10 @@ func _save_graph(graph: NodeGraph) -> void:
 
 func _load_graph(path: String) -> void:
 	var file := ConfigFile.new()
-	file.load(path)
+	var err = file.load(path)
+
+	if err != OK:
+		return
 
 	var graph = NodeGraph.new()
 	graph.save_file_path = path

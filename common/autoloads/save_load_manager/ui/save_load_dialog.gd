@@ -15,6 +15,8 @@ func _ready() -> void:
 	cancelled.connect(_on_cancelled)
 	min_size = Vector2i(600, 400)
 	_remove_theme_overrides_recursive(self)
+	set_filters(PackedStringArray(["*.tpgn ; Text PGraphNode"]))
+	access = FileDialog.ACCESS_FILESYSTEM
 
 
 func show_load_dialog() -> void:

@@ -5,7 +5,12 @@
 + port back all the nodes
 + Use a custom ProtonMesh to store mesh data (instead of mesh instance)
 	- required for vertex attributes and other features
++ File dialog
+	- warning when selecting a file that's not a node graph
++ Print as text
+	- option to show individual array elements / group them
+	- collapse individual elements
+	- Show total array size
 
 ## Bugs
-+ Vector (2 & 3) ui component are not synced with the inspector
-+ String / int comparison because idx is a variant
++
