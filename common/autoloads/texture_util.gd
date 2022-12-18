@@ -42,7 +42,7 @@ func get_texture(path) -> Texture2D:
 
 	var texture = load(path)
 	if not texture is Texture2D:
-		print(path, " is not a texture")
+		printerr(path, " is not a texture.")
 		return null
 
 	var scale = EditorUtil.get_editor_scale() / 4.0

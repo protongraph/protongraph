@@ -22,6 +22,8 @@ func _ready() -> void:
 	_container = _viewport.get_parent()
 	_camera = Camera3D.new()
 	add_child(_camera)
+	_camera.position = Vector3(3.0, 1.5, 3.0)
+	_camera.global_transform = _camera.global_transform.looking_at(Vector3.ZERO, Vector3.UP)
 
 
 func _process(delta: float) -> void:

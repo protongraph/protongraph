@@ -9,9 +9,6 @@ var name: String
 var type: int
 var options: SlotOptions
 
-# Visual properties
-var visible := true
-
 # Type mirroring related properties
 var mirror_type_from
 var original_type: int

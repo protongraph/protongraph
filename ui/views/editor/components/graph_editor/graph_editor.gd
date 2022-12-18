@@ -153,9 +153,9 @@ func _on_disconnection_request(from: StringName, from_slot: int, to: StringName,
 	_graph.disconnect_node(from, from_slot, to, to_slot)
 
 
-func _on_delete_nodes_request(selected = null) -> void:
-	if not selected:
-		return
+func _on_delete_nodes_request(selected: Array = []) -> void:
+	for node in selected:
+		_on_close_request(get_node(NodePath(node)))
 
 
 func _on_close_request(node: GraphNode) -> void:

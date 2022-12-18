@@ -51,9 +51,6 @@ func refresh_list() -> void:
 	if OS.has_feature("standalone"):
 		node_path = OS.get_executable_path().get_base_dir().path_join("nodes")
 
-	print("in refresh list, ", node_path)
-	print("in standalone? ", OS.has_feature("standalone"))
-
 	_find_all_nodes(node_path)
 
 
@@ -62,7 +59,7 @@ func refresh_list() -> void:
 func _find_all_nodes(path) -> void:
 	var dir := DirAccess.open(path)
 	if not dir:
-		print_debug("Could not open ", path)
+		printerr("Could not open ", path)
 		return
 
 	dir.include_hidden = false

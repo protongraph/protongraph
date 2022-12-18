@@ -149,23 +149,6 @@ func is_output_ready(idx = null) -> bool:
 	return true
 
 
-func set_input_slot_visibility(idx, visible: bool) -> void:
-	_set_slot_visibility(inputs, idx, visible)
-
-
-func set_output_slot_visibility(idx, visible: bool) -> void:
-	_set_slot_visibility(outputs, idx, visible)
-
-
-func set_extra_slot_visibility(idx, visible: bool) -> void:
-	_set_slot_visibility(extras, idx, visible)
-
-
-func _set_slot_visibility(dict: Dictionary, idx, visible: bool) -> void:
-	if idx in dict:
-		dict[idx].visible = visible
-
-
 # Overide this function in the derived classes to return something usable.
 # Generates all the outputs for every declared outputs.
 func _generate_outputs() -> void:

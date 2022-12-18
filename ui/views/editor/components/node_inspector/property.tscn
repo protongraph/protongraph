@@ -1,20 +1,82 @@
-[gd_scene load_steps=2 format=3 uid="uid://bab88o2d5xerh"]
+[gd_scene load_steps=4 format=3 uid="uid://bab88o2d5xerh"]
 
 [ext_resource type="Script" path="res://ui/views/editor/components/node_inspector/property.gd" id="1_0xf8k"]
+[ext_resource type="Texture2D" uid="uid://dop15wai55gt6" path="res://ui/icons/icon_pin.svg" id="2_kx3ec"]
+[ext_resource type="Texture2D" uid="uid://ws2w6wus0rdn" path="res://ui/icons/icon_warning.svg" id="3_kprkq"]
 
-[node name="Property" type="HBoxContainer"]
+[node name="Property" type="VBoxContainer"]
 offset_right = 28.0
 offset_bottom = 24.0
 size_flags_horizontal = 5
 size_flags_vertical = 5
-script = ExtResource( "1_0xf8k" )
+theme_override_constants/separation = 2
+script = ExtResource("1_0xf8k")
 
-[node name="Component" type="MarginContainer" parent="."]
-offset_bottom = 24.0
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 67.0
+offset_bottom = 32.0
+theme_override_constants/separation = 2
+
+[node name="Component" type="MarginContainer" parent="HBoxContainer"]
+unique_name_in_owner = true
+offset_right = 7.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="PinButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+offset_left = 9.0
+offset_right = 41.0
+offset_bottom = 32.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+toggle_mode = true
+icon = ExtResource("2_kx3ec")
+icon_alignment = 1
+expand_icon = true
+
+[node name="VisibilityBox" type="CheckBox" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+offset_left = 43.0
+offset_right = 67.0
+offset_bottom = 32.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+alignment = 1
+icon_alignment = 1
+
+[node name="PinOptionsContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+offset_top = 34.0
+offset_right = 67.0
+offset_bottom = 73.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PinOptionsContainer"]
+offset_right = 67.0
+offset_bottom = 31.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PinOptionsContainer/HBoxContainer"]
+offset_right = 67.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
 
-[node name="VisibilityBox" type="CheckBox" parent="."]
-offset_left = 4.0
-offset_right = 28.0
-offset_bottom = 24.0
-size_flags_vertical = 4
+[node name="PinPathEdit" type="LineEdit" parent="PinOptionsContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+offset_right = 67.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+placeholder_text = "Variable name"
+
+[node name="WarningButton" type="Button" parent="PinOptionsContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+icon = ExtResource("3_kprkq")
+flat = true
+expand_icon = true
+
+[node name="HSeparator" type="HSeparator" parent="PinOptionsContainer"]
+offset_top = 35.0
+offset_right = 67.0
+offset_bottom = 39.0

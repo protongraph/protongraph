@@ -2,8 +2,6 @@
 extends ProtonNode
 
 
-#const PrintUi :=
-
 const PrintAsTextUi := preload("./print_as_text.tscn")
 
 var _ui := PrintAsTextUi.instantiate()

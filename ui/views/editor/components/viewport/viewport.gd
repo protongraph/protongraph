@@ -14,7 +14,7 @@ func clear() -> void:
 
 
 func display(output: Array) -> void:
-	if not _output_root:
+	if not _output_root or not is_visible_in_tree():
 		return
 
 	for node in output:

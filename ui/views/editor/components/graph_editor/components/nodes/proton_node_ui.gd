@@ -20,8 +20,8 @@ var _extras_ui := []
 
 
 func _ready() -> void:
-	position_offset_changed.connect(_on_position_offset_changed)
 	resizable = true
+	position_offset_changed.connect(_on_position_offset_changed)
 	resize_request.connect(_on_resize_request)
 
 
@@ -36,6 +36,7 @@ func clear() -> void:
 	_output_component_map.clear()
 	_input_connections.clear()
 	_output_connections.clear()
+	size = Vector2i.ZERO
 
 
 func rebuild_ui() -> void:
@@ -56,16 +57,22 @@ func rebuild_ui() -> void:
 
 
 func notify_input_connection_changed(slot: int, connected: bool) -> void:
-	var row: Control = get_child(slot)
-	var ui_component: GraphNodeUiComponent = row.get_child(0)
+	var ui_component: GraphNodeUiComponent
+	for idx in _input_component_map:
+		if _input_component_map[idx].slot == slot:
+			ui_component = _input_component_map[idx]
+
 	ui_component.notify_connection_changed(connected)
 	_input_connections[ui_component.index] = connected
 	connection_changed.emit()
 
 
 func notify_output_connection_changed(slot: int, connected: bool) -> void:
-	var row: Control = get_child(slot)
-	var ui_component: GraphNodeUiComponent = row.get_child(1)
+	var ui_component: GraphNodeUiComponent
+	for idx in _output_component_map:
+		if _output_component_map[idx].slot == slot:
+			ui_component = _output_component_map[idx]
+
 	ui_component.notify_connection_changed(connected)
 	_output_connections[ui_component.index] = connected
 	connection_changed.emit()
@@ -74,6 +81,28 @@ func notify_output_connection_changed(slot: int, connected: bool) -> void:
 func set_local_value(idx, value) -> void:
 	if idx in _input_component_map:
 		_input_component_map[idx].set_value(value)
+
+
+func set_slot_visibility(type: String, idx, visible: bool) -> void:
+	if not proton_node:
+		return
+
+	if not "hidden_slots" in proton_node.external_data:
+		proton_node.external_data["hidden_slots"] = {
+			"input": [],
+			"output": [],
+			"extra": [],
+		}
+
+	var target_array: Array = proton_node.external_data["hidden_slots"][type]
+
+	if visible:
+		target_array.erase(idx)
+
+	elif not target_array.has(idx):
+		target_array.push_back(idx)
+
+	rebuild_ui()
 
 
 func is_multiple_connections_enabled_on_slot(slot: int) -> bool:
@@ -90,6 +119,16 @@ func is_input_slot_connected(idx: Variant) -> bool:
 	if idx in _input_connections:
 		return _input_connections[idx]
 	return false
+
+
+func is_slot_visible(type, idx) -> bool:
+	if not proton_node:
+		return false
+
+	if not "hidden_slots" in proton_node.external_data:
+		return true
+
+	return not idx in proton_node.external_data["hidden_slots"][type]
 
 
 func input_idx_to_slot(idx: Variant) -> int:
@@ -119,55 +158,56 @@ func output_slot_to_idx(slot: int) -> Variant:
 
 
 func _populate_rows():
-	# Create an HBoxContainer for each row
-	var inputs_count = proton_node.inputs.size()
-	var outputs_count = proton_node.outputs.size()
-	var extras_count = proton_node.extras.size()
-	var rows_count = max(inputs_count, outputs_count) + extras_count
-
-	for i in rows_count:
-		var hbox := HBoxContainer.new()
-		hbox.custom_minimum_size.y = 24
-		add_child(hbox)
-
 	var current_row = 0 # Needed because the dictionary keys aren't continuous.
-
 	for idx in proton_node.inputs:
-		var input: ProtonNodeSlot = proton_node.inputs[idx]
-		var ui = _create_component_for(input)
-		ui.index = idx
-		ui.slot = current_row
-		_input_component_map[idx] = ui
-		get_child(current_row).add_child(ui)
-		current_row += 1
-		ui.visible = input.visible
-		ui.value_changed.connect(_on_local_value_changed.bind(idx))
+		if is_slot_visible("input", idx):
+			var input: ProtonNodeSlot = proton_node.inputs[idx]
+			var ui = _create_component_for(input)
+			ui.index = idx
+			ui.slot = current_row
+			_input_component_map[idx] = ui
+			_get_or_create_row(current_row).add_child(ui)
+			current_row += 1
+			ui.value_changed.connect(_on_local_value_changed.bind(idx))
 
 	current_row = 0
 	for idx in proton_node.outputs:
-		var output: ProtonNodeSlot = proton_node.outputs[idx]
-		var ui = _create_component_for(output, true)
-		ui.index = idx
-		ui.slot = current_row
-		_output_component_map[idx] = ui
-		get_child(current_row).add_child(ui)
-		current_row += 1
-		ui.visible = output.visible
+		if is_slot_visible("output", idx):
+			var output: ProtonNodeSlot = proton_node.outputs[idx]
+			var ui = _create_component_for(output, true)
+			ui.index = idx
+			ui.slot = current_row
+			_output_component_map[idx] = ui
+			_get_or_create_row(current_row).add_child(ui)
+			current_row += 1
 
-	current_row = max(inputs_count, outputs_count)
 	for idx in proton_node.extras:
-		var extra: ProtonNodeSlot = proton_node.extras[idx]
-		var ui
-		if extra.type == DataType.MISC_CUSTOM_UI:
-			ui = extra.options.custom_ui
-			_extras_ui.push_back(ui)
-		else:
-			ui = _create_component_for(extra)
+		if is_slot_visible("extra", idx):
+			var extra: ProtonNodeSlot = proton_node.extras[idx]
+			var ui
+			if extra.type == DataType.MISC_CUSTOM_UI:
+				ui = extra.options.custom_ui
+				_extras_ui.push_back(ui)
+			else:
+				ui = _create_component_for(extra)
 
-		var row: Control = get_child(current_row)
-		row.size_flags_vertical = SIZE_EXPAND_FILL
-		row.add_child(ui)
-		current_row += 1
+			var row: Control = _create_new_row()
+			row.size_flags_vertical = SIZE_EXPAND_FILL
+			row.add_child(ui)
+
+
+func _create_new_row() -> Node:
+	var hbox := HBoxContainer.new()
+	hbox.custom_minimum_size.y = 24
+	add_child(hbox)
+	return hbox
+
+
+func _get_or_create_row(row_index) -> Node:
+	if row_index < get_child_count():
+		return get_child(row_index)
+
+	return _create_new_row()
 
 
 func _create_component_for(io: ProtonNodeSlot, is_output := false) -> GraphNodeUiComponent:
@@ -215,22 +255,26 @@ func _reset_connection_slots() -> void:
 
 func _setup_connection_slots() -> void:
 	_reset_connection_slots()
-	var current_row = 0
 
-	for key in proton_node.inputs.keys():
-		var input = proton_node.inputs[key]
-		set_slot_enabled_left(current_row, true)
-		set_slot_type_left(current_row, input.type)
-		set_slot_color_left(current_row, DataType.COLORS[input.type])
-		current_row += 1
+	var slot: int
+	var ui: GraphNodeUiComponent
+	var type
 
-	current_row = 0
-	for key in proton_node.outputs.keys():
-		var output = proton_node.outputs[key]
-		set_slot_enabled_right(current_row, true)
-		set_slot_type_right(current_row, output.type)
-		set_slot_color_right(current_row, DataType.COLORS[output.type])
-		current_row += 1
+	for idx in _input_component_map:
+		ui = _input_component_map[idx]
+		slot = ui.slot
+		type = proton_node.inputs[idx].type
+		set_slot_enabled_left(slot, true)
+		set_slot_type_left(slot, type)
+		set_slot_color_left(slot, DataType.COLORS[type])
+
+	for idx in _output_component_map:
+		ui = _output_component_map[idx]
+		slot = ui.slot
+		type = proton_node.outputs[idx].type
+		set_slot_enabled_right(slot, true)
+		set_slot_type_right(slot, type)
+		set_slot_color_right(slot, DataType.COLORS[type])
 
 
 func _update_frame_stylebox():

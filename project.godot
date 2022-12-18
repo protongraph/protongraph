@@ -79,7 +79,7 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/graph_editor/components/nodes/graph_node_ui_component.gd"
 }, {
-"base": "HBoxContainer",
+"base": "Control",
 "class": &"InspectorProperty",
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/node_inspector/property.gd"
@@ -300,5 +300,4 @@ toggle_graph_editor={
 [rendering]
 
 transparent_background=true
-anti_aliasing/quality/use_debanding=true
 environment/defaults/default_environment="res://default_env.tres"

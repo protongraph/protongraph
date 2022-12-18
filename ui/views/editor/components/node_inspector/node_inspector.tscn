@@ -13,7 +13,6 @@ grow_vertical = 2
 script = ExtResource("1_be0h7")
 
 [node name="Panel" type="Panel" parent="."]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -21,7 +20,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -30,19 +28,22 @@ grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
 clip_children = 1
-layout_mode = 2
+offset_right = 1280.0
+offset_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="DefaultContent" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
 unique_name_in_owner = true
-layout_mode = 2
+offset_right = 1280.0
+offset_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="InfoLabel" type="Label" parent="ScrollContainer/MarginContainer/DefaultContent"]
-layout_mode = 2
+offset_right = 1280.0
+offset_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Select a node to display its local properties here. "
@@ -54,50 +55,67 @@ clip_text = true
 [node name="Properties" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
 unique_name_in_owner = true
 visible = false
-layout_mode = 2
+offset_right = 1280.0
+offset_bottom = 720.0
 
 [node name="NameLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
-layout_mode = 2
+offset_right = 1280.0
+offset_bottom = 26.0
 theme_override_font_sizes/font_size = 16
 text = "[Node name]"
 
 [node name="InputsLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
-layout_mode = 2
+offset_top = 30.0
+offset_right = 1280.0
+offset_bottom = 56.0
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 text = "Inputs"
 
 [node name="Inputs" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
-layout_mode = 2
+offset_top = 60.0
+offset_right = 1280.0
+offset_bottom = 60.0
 theme_override_constants/separation = 2
 
 [node name="OutputsLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
-layout_mode = 2
+offset_top = 64.0
+offset_right = 1280.0
+offset_bottom = 90.0
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 text = "Outputs"
 
 [node name="Outputs" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
-layout_mode = 2
+offset_top = 94.0
+offset_right = 1280.0
+offset_bottom = 94.0
 theme_override_constants/separation = 2
 
 [node name="ExtrasLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
-layout_mode = 2
+offset_top = 98.0
+offset_right = 1280.0
+offset_bottom = 124.0
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 text = "Extras"
 
 [node name="Extras" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
-layout_mode = 2
+offset_left = 640.0
+offset_top = 128.0
+offset_right = 640.0
+offset_bottom = 128.0
 size_flags_horizontal = 4
 theme_override_constants/separation = 2
 
 [node name="DocumentationLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
-layout_mode = 2
+offset_top = 132.0
+offset_right = 1280.0
+offset_bottom = 158.0
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 text = "Documentation"

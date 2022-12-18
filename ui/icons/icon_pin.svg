@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="16"
+   viewBox="0 0 16 16"
+   width="16"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="icon_pin.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="56.0625"
+     inkscape:cx="7.9910814"
+     inkscape:cy="8.0178372"
+     inkscape:window-width="2530"
+     inkscape:window-height="1050"
+     inkscape:window-x="30"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <path
+     d="m9 1.2715-.70703.70703v1.4141l-2.1211 2.123 4.2422 4.2422 2.1211-2.1211h1.4141l.70703-.70703-5.6562-5.6582zm-3.5352 4.9512-3.5352.70703 7.0703 7.0703.70703-3.5352-4.2422-4.2422zm-1.4141 4.2422-1.4141 1.4141-.70703 2.1211 2.1211-.70703 1.4141-1.4141-1.4141-1.4141z"
+     fill="#fc7f7f"
+     fill-rule="evenodd"
+     id="path2"
+     style="fill:#ffffff" />
+</svg>

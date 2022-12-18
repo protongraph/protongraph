@@ -37,7 +37,7 @@ func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
 
 	nodes[new_node.unique_name] = new_node
 	new_node.graph = self
-	new_node.changed.connect(_on_node_changed)
+	new_node.changed.connect(_on_node_changed.bind(new_node))
 
 	if new_node.leaf_node:
 		_leaf_nodes.push_back(new_node)
@@ -63,6 +63,7 @@ func connect_node(from: StringName, from_idx, to: StringName, to_idx) -> void:
 	c.to = to
 	c.to_idx = to_idx
 	connections.push_back(c)
+	graph_changed.emit()
 
 
 func disconnect_node(from: StringName, from_idx, to: StringName, to_idx) -> void:
@@ -70,13 +71,12 @@ func disconnect_node(from: StringName, from_idx, to: StringName, to_idx) -> void
 		if c.from == from and c.from_idx == from_idx and c.to == to and c.to_idx == to_idx:
 			connections.erase(c)
 			return
+	graph_changed.emit()
 
 
 func clean_rebuild() -> void:
 	for node in nodes.values():
 		node.clear_values()
-
-	rebuild()
 
 
 func rebuild() -> void:
@@ -130,6 +130,17 @@ func _get_left_connected_flat(node: ProtonNode, idx = null) -> Array[ProtonNode]
 	return res
 
 
+func _get_right_connected_flat(node: ProtonNode, idx = null) -> Array[ProtonNode]:
+	var res: Array[ProtonNode] = []
+
+	for c in connections:
+		if c.from == node.unique_name:
+			if idx == null or idx == c.from_idx:
+				res.push_back(nodes[c.from])
+
+	return res
+
+
 func _get_right_connected(node: ProtonNode, idx) -> Array[Dictionary]:
 	var res: Array[Dictionary] = []
 
@@ -143,5 +154,10 @@ func _get_right_connected(node: ProtonNode, idx) -> Array[Dictionary]:
 	return res
 
 
-func _on_node_changed() -> void:
-	rebuild()
+func _on_node_changed(node: ProtonNode) -> void:
+	node.clear_values()
+
+	for n in _get_right_connected_flat(node):
+		n.clear_values()
+
+	graph_changed.emit()

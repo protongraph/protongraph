@@ -78,7 +78,7 @@ func _rebuild_ui() -> void:
 	# same GraphNodeComponents used by the ProtonNodeUi class.
 	for idx in _proton_node.inputs:
 		var input: ProtonNodeSlot = _proton_node.inputs[idx]
-		var ui: InspectorProperty = PropertyScene.instantiate()
+		var ui := PropertyScene.instantiate()
 		_inputs.add_child(ui)
 
 		# Don't display the local value if something is connected to the input slot
@@ -87,9 +87,10 @@ func _rebuild_ui() -> void:
 		else:
 			ui.create_input(input.name, input.type, input.local_value, idx, input.options)
 
-		ui.set_property_visibility(input.visible)
+		ui.set_property_visibility(_proton_node_ui.is_slot_visible("input", idx))
+		ui.enable_pin()
 		ui.value_changed.connect(_on_inspector_value_changed)
-		ui.property_visibility_changed.connect(_on_input_property_visibility_changed.bind(idx))
+		ui.property_visibility_changed.connect(_on_property_visibility_changed.bind("input", idx))
 
 	# Outputs are simpler and only require the name and type.
 	for idx in _proton_node.outputs:
@@ -97,8 +98,8 @@ func _rebuild_ui() -> void:
 		var ui: InspectorProperty = PropertyScene.instantiate()
 		_outputs.add_child(ui)
 		ui.create_generic(output.name, output.type)
-		ui.set_property_visibility(output.visible)
-		ui.property_visibility_changed.connect(_on_output_property_visibility_changed.bind(idx))
+		ui.set_property_visibility(_proton_node_ui.is_slot_visible("output", idx))
+		ui.property_visibility_changed.connect(_on_property_visibility_changed.bind("output", idx))
 
 	# For custom components (like 2D preview or other things that don't fall in
 	# the previous categories. We just display a name.
@@ -107,8 +108,8 @@ func _rebuild_ui() -> void:
 		var ui: InspectorProperty = PropertyScene.instantiate()
 		_extras.add_child(ui)
 		ui.create_generic(extra.name, -1)
-		ui.set_property_visibility(extra.visible)
-		ui.property_visibility_changed.connect(_on_extra_property_visibility_changed.bind(idx))
+		ui.set_property_visibility(_proton_node_ui.is_slot_visible("extra", idx))
+		ui.property_visibility_changed.connect(_on_property_visibility_changed.bind("extra", idx))
 
 	#_documentation.rebuild(_selected_node.doc)
 
@@ -144,13 +145,5 @@ func _on_inspector_value_changed(value, idx: int) -> void:
 		_proton_node_ui.set_local_value(idx, value)
 
 
-func _on_input_property_visibility_changed(visible: bool, index: int) -> void:
-	_proton_node.set_input_slot_visibility(index, visible)
-
-
-func _on_output_property_visibility_changed(visible: bool, index: int) -> void:
-	_proton_node.set_output_slot_visibility(index, visible)
-
-
-func _on_extra_property_visibility_changed(visible: bool, index: int) -> void:
-	_proton_node.set_extra_slot_visibility(index, visible)
+func _on_property_visibility_changed(p_visible: bool, type: String, idx: Variant) -> void:
+	_proton_node_ui.set_slot_visibility(type, idx, p_visible)

@@ -31,7 +31,14 @@ func _ready() -> void:
 func edit(graph: NodeGraph) -> void:
 	_graph = graph
 	_graph_editor.set_node_graph(graph)
-	_toolbar.rebuild.connect(_graph.rebuild)
+	_toolbar.rebuild.connect(rebuild)
+	_graph.graph_changed.connect(rebuild)
+	rebuild()
+
+
+func rebuild() -> void:
+	_viewport.clear()
+	_graph.rebuild()
 
 
 func get_edited_graph() -> NodeGraph:
