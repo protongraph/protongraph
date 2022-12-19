@@ -28,24 +28,12 @@ func _ready() -> void:
 	_pin_button.toggled.connect(_on_pin_button_toggled)
 	_pin_options_container.visible = false
 	_pin_button.visible = false
+	_pin_path_edit.text_submitted.connect(_notify_pin_changes)
+	_pin_path_edit.focus_exited.connect(_notify_pin_changes)
 
 
 func create_input(p_name: String, type: int, value, idx, opts := SlotOptions.new()) -> void:
-	match type:
-		DataType.BOOLEAN:
-			_ui = BooleanComponent.new()
-		DataType.NUMBER:
-			_ui = ScalarComponent.new()
-		DataType.STRING:
-			_ui = StringComponent.new()
-		DataType.VECTOR2:
-			_ui = VectorComponent.new()
-		DataType.VECTOR3:
-			_ui = VectorComponent.new()
-		_:
-			create_generic(p_name, type)
-			return
-
+	_ui = UserInterfaceUtil.create_component(type)
 	_root.add_child(_ui)
 	p_name = _sanitize_name(p_name, type)
 	_ui.initialize(p_name, type, opts)
@@ -65,10 +53,6 @@ func create_generic(p_name: String, type: int) -> void:
 	_root.add_child(ui)
 
 
-func enable_pin() -> void:
-	_pin_button.visible = true
-
-
 func set_value(value) -> void:
 	if _ui:
 		_ui.set_value(value)
@@ -78,9 +62,10 @@ func set_property_visibility(v: bool) -> void:
 	_visibility_box.set_pressed_no_signal(v)
 
 
-func set_pinned(pinned: bool, pin_path: String) -> void:
+func set_pinned(enabled: bool, pin_path: String) -> void:
+	_pin_button.visible = true
 	_pin_path_edit.set_text(pin_path)
-	_pin_button.set_pressed(pinned)
+	_pin_button.set_pressed(enabled)
 
 
 func get_slot_index() -> Variant:
@@ -99,6 +84,12 @@ func _sanitize_name(p_name: String, type: int) -> String:
 	return DataType.get_type_name(type)
 
 
+func _notify_pin_changes(_name := "") -> void:
+	var pin_name = _pin_path_edit.get_text()
+	if not pin_name.is_empty():
+		pinned.emit(_pin_button.button_pressed, pin_name)
+
+
 func _on_value_changed(value) -> void:
 	value_changed.emit(value, _index)
 
@@ -109,4 +100,5 @@ func _on_visibility_box_toggled(pressed: bool) -> void:
 
 func _on_pin_button_toggled(pressed: bool) -> void:
 	_pin_options_container.visible = pressed
-	pinned.emit(pressed)
+	_notify_pin_changes()
+

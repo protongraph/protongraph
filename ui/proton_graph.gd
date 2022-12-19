@@ -4,7 +4,7 @@ extends Node
 
 const EditorViewScene = preload("res://ui/views/editor/editor_view.tscn")
 
-@onready var _view_container: ViewContainer = $"%ViewContainer"
+@onready var _view_container: ViewContainer = $%ViewContainer
 
 
 func _ready():
@@ -29,7 +29,7 @@ func _on_create_graph() -> void:
 	edit_graph(NodeGraph.new())
 
 
-func _on_open_settings(path) -> void:
+func _on_open_settings(_path) -> void:
 	pass
 	#if _view_container.is_view_opened(SettingsView):
 	#	return

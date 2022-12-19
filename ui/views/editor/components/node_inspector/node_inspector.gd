@@ -3,12 +3,14 @@ extends Control
 
 # The Node sidebar displays the selected node inputs, outputs and documentation.
 # From there you can change the node's local values and hide or show individual
-# parts of the graph UI.
+# parts of the graph UI. You can also pin variables which will show in the
+# graph inspector.
 #
 # Hiding parts of the UI is useful for nodes havinga lot of parameters not
 # connected them to anything. Hiding them makes the node appear smaller and
 # saves space on the graph, while still being able to edit the local values.
 
+signal pinned_variables_changed
 
 const PropertyScene = preload("property.tscn")
 
@@ -74,6 +76,10 @@ func _rebuild_ui() -> void:
 	_properties.visible = true
 	_name_label.text = _proton_node.title
 
+	var pinned_inputs := {}
+	if "pinned" in _proton_node.external_data:
+		pinned_inputs = _proton_node.external_data["pinned"]
+
 	# Create a new InspectorProperty object for each slots. They rely on the
 	# same GraphNodeComponents used by the ProtonNodeUi class.
 	for idx in _proton_node.inputs:
@@ -88,9 +94,14 @@ func _rebuild_ui() -> void:
 			ui.create_input(input.name, input.type, input.local_value, idx, input.options)
 
 		ui.set_property_visibility(_proton_node_ui.is_slot_visible("input", idx))
-		ui.enable_pin()
+		if idx in pinned_inputs:
+			ui.set_pinned(true, pinned_inputs[idx])
+		else:
+			ui.set_pinned(false, "")
+
 		ui.value_changed.connect(_on_inspector_value_changed)
 		ui.property_visibility_changed.connect(_on_property_visibility_changed.bind("input", idx))
+		ui.pinned.connect(_on_property_pinned.bind(idx))
 
 	# Outputs are simpler and only require the name and type.
 	for idx in _proton_node.outputs:
@@ -140,10 +151,24 @@ func _on_node_connection_changed() -> void:
 
 
 # Sync changes from the node inspector to the graphnode
-func _on_inspector_value_changed(value, idx: int) -> void:
+func _on_inspector_value_changed(value, idx: Variant) -> void:
 	if _proton_node_ui:
 		_proton_node_ui.set_local_value(idx, value)
 
 
 func _on_property_visibility_changed(p_visible: bool, type: String, idx: Variant) -> void:
 	_proton_node_ui.set_slot_visibility(type, idx, p_visible)
+
+
+func _on_property_pinned(pinned: bool, pin_name: String, idx: Variant) -> void:
+	if not "pinned" in _proton_node.external_data:
+		_proton_node.external_data["pinned"] = {}
+
+	var pinned_map: Dictionary = _proton_node.external_data["pinned"]
+
+	if not pinned:
+		pinned_map.erase(idx)
+	else:
+		pinned_map[idx] = pin_name
+
+	pinned_variables_changed.emit()

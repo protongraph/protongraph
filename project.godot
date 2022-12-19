@@ -299,5 +299,5 @@ toggle_graph_editor={
 
 [rendering]
 
-transparent_background=true
 environment/defaults/default_environment="res://default_env.tres"
+transparent_background=true

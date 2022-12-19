@@ -3,7 +3,7 @@ extends GraphNode
 
 # Takes a ProtonNode resource as input and recreate the corresponding UI
 
-signal value_changed(value, slot)
+signal value_changed(value, idx)
 signal connection_changed
 
 
@@ -83,7 +83,7 @@ func set_local_value(idx, value) -> void:
 		_input_component_map[idx].set_value(value)
 
 
-func set_slot_visibility(type: String, idx, visible: bool) -> void:
+func set_slot_visibility(type: String, idx: Variant, slot_visible: bool) -> void:
 	if not proton_node:
 		return
 
@@ -96,7 +96,7 @@ func set_slot_visibility(type: String, idx, visible: bool) -> void:
 
 	var target_array: Array = proton_node.external_data["hidden_slots"][type]
 
-	if visible:
+	if slot_visible:
 		target_array.erase(idx)
 
 	elif not target_array.has(idx):
@@ -216,20 +216,7 @@ func _create_component_for(io: ProtonNodeSlot, is_output := false) -> GraphNodeU
 	if is_output:
 		component = GenericOutputComponent.new()
 	else:
-		match io.type:
-			DataType.BOOLEAN:
-				component = BooleanComponent.new()
-			DataType.NUMBER:
-				component = ScalarComponent.new()
-			DataType.STRING:
-				component = StringComponent.new()
-				#component.template_path = template_path
-			DataType.VECTOR2:
-				component = VectorComponent.new()
-			DataType.VECTOR3:
-				component = VectorComponent.new()
-			_:
-				component = GenericInputComponent.new()
+		component = UserInterfaceUtil.create_component(io.type)
 
 	component.initialize(io.name, io.type, io.options)
 

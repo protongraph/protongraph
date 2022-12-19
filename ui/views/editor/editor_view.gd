@@ -26,11 +26,13 @@ func _ready() -> void:
 	_toolbar.toggle_graph_inspector.connect(_toggle_panel.bind(_graph_inspector))
 	_toolbar.toggle_graph_editor.connect(_toggle_panel.bind(_graph_editor))
 	_toolbar.toggle_viewport.connect(_toggle_panel.bind(_viewport))
+	_node_inspector.pinned_variables_changed.connect(_on_pinned_variables_changed)
 
 
 func edit(graph: NodeGraph) -> void:
 	_graph = graph
 	_graph_editor.set_node_graph(graph)
+	_graph_inspector.set_graph_editor(_graph_editor)
 	_toolbar.rebuild.connect(rebuild)
 	_graph.graph_changed.connect(rebuild)
 	rebuild()
@@ -63,3 +65,7 @@ func _on_node_deselected(_node: ProtonNodeUi) -> void:
 
 func _on_save_button_pressed() -> void:
 	GlobalEventBus.save_graph.emit(_graph)
+
+
+func _on_pinned_variables_changed() -> void:
+	_graph_inspector.rebuild_ui()

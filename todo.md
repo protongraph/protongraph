@@ -13,6 +13,7 @@
 + Expression node
 + Browse examples page in the welcome view
 + Pin variables
++ Update untitled tab name when saving the graph
 
 ## Bugs
 +

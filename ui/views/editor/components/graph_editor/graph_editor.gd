@@ -7,7 +7,7 @@ const AddNodePopup = preload("./components/popup/add_node_popup.tscn")
 var _graph: NodeGraph
 var _add_node_popup: Popup
 var _new_node_position: Vector2
-var _previous_scroll_offset: Vector2
+var _rebuild_ui_complete := false
 
 
 func _ready() -> void:
@@ -15,6 +15,7 @@ func _ready() -> void:
 	connection_request.connect(_on_connection_request)
 	disconnection_request.connect(_on_disconnection_request)
 	delete_nodes_request.connect(_on_delete_nodes_request)
+	scroll_offset_changed.connect(_on_scroll_offset_changed)
 
 	# Setup connections types
 	var c = DataType.get_valid_connections()
@@ -51,11 +52,11 @@ func set_node_graph(graph: NodeGraph) -> void:
 
 func clear() -> void:
 	NodeUtil.remove_children(self)
+	_rebuild_ui_complete = false
 
 
 # Creates the visual representation of the NodeGraph item.
 func rebuild_ui() -> void:
-	_previous_scroll_offset = scroll_offset
 	clear()
 
 	for n in _graph.nodes.values():
@@ -69,7 +70,13 @@ func rebuild_ui() -> void:
 		connect_node(c.from, from_port, c.to, to_port)
 
 	await(get_tree().process_frame)
-	scroll_offset = _previous_scroll_offset
+
+	# Restore scroll offset after all nodes are created, otherwise the target
+	# offset might not be available yet
+	if "scroll_offset" in _graph.external_data:
+		scroll_offset = _graph.external_data["scroll_offset"]
+
+	_rebuild_ui_complete = true
 
 
 # TMP hack because calling update alone doesn't update the connections which
@@ -160,3 +167,8 @@ func _on_delete_nodes_request(selected: Array = []) -> void:
 
 func _on_close_request(node: GraphNode) -> void:
 	delete_node(node)
+
+
+func _on_scroll_offset_changed(new_offset: Vector2i) -> void:
+	if _graph and _rebuild_ui_complete:
+		_graph.external_data["scroll_offset"] = new_offset

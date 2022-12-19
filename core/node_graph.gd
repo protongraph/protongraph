@@ -8,6 +8,7 @@ signal graph_changed
 var nodes: Dictionary
 var connections: Array
 var save_file_path: String
+var external_data: Dictionary
 
 var _leaf_nodes: Array[ProtonNode]
 
@@ -19,6 +20,7 @@ func _init():
 func clear() -> void:
 	nodes = {}
 	connections = []
+	external_data = {}
 	_leaf_nodes.clear()
 
 
@@ -29,7 +31,7 @@ func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
 
 	if "name" in data:
 		new_node.unique_name = data.name
-		data.erase("name") # TODO: check if this is required
+		data.erase("name")
 	else:
 		new_node.unique_name = _get_unique_name(new_node)
 

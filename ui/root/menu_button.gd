@@ -52,7 +52,7 @@ func _on_id_pressed(id) -> void:
 
 
 func _on_view_changed(view) -> void:
-	var disabled: bool = not view is EditorView
+	var entry_disabled: bool = not view is EditorView
 	var popup: PopupMenu = get_popup()
-	popup.set_item_disabled(popup.get_item_index(10), disabled)
-	popup.set_item_disabled(popup.get_item_index(12), disabled)
+	popup.set_item_disabled(popup.get_item_index(10), entry_disabled)
+	popup.set_item_disabled(popup.get_item_index(12), entry_disabled)

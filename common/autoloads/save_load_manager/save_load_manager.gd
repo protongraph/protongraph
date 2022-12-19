@@ -89,6 +89,7 @@ func _save_graph(graph: NodeGraph) -> void:
 
 	file.set_value("graph_node", "version", 1)
 	file.set_value("graph_node", "connections", graph.connections)
+	file.set_value("graph_node", "external_data", graph.external_data)
 
 	for node_name in graph.nodes:
 		var node: ProtonNode = graph.nodes[node_name]
@@ -129,5 +130,6 @@ func _load_graph(path: String) -> void:
 			node.set_local_value(idx, local_values[idx])
 
 	graph.connections = file.get_value("graph_node", "connections", [])
+	graph.external_data = file.get_value("graph_node", "external_data", {})
 
 	GlobalEventBus.graph_loaded.emit(graph)

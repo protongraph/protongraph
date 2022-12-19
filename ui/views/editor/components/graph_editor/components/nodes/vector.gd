@@ -94,5 +94,5 @@ func notify_connection_changed(connected: bool) -> void:
 	_vector_box.visible = !connected
 
 
-func _on_value_changed(val) -> void:
+func _on_value_changed(_val) -> void:
 	super(get_value())
