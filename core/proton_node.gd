@@ -8,7 +8,7 @@ var type_id: String
 var title: String
 var description: String
 var category: String
-var documentation: DocumentationData
+var documentation := DocumentationData.new()
 var ignore := false
 var leaf_node := false
 var graph: NodeGraph

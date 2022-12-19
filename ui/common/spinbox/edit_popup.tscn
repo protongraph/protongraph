@@ -5,6 +5,7 @@
 
 [node name="EditPopup" type="PopupPanel"]
 size = Vector2i(150, 294)
+visible = true
 transient = false
 exclusive = true
 script = ExtResource("2")
@@ -21,70 +22,49 @@ theme_override_constants/margin_bottom = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 custom_minimum_size = Vector2(130, 0)
-offset_left = 6.0
-offset_top = 6.0
-offset_right = 136.0
-offset_bottom = 280.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="e100" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
 unique_name_in_owner = true
-offset_right = 130.0
+layout_mode = 2
 step = 100.0
 
 [node name="e10" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
 unique_name_in_owner = true
-offset_top = 35.0
-offset_right = 130.0
-offset_bottom = 66.0
+layout_mode = 2
 step = 10.0
 
 [node name="e1" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
 unique_name_in_owner = true
-offset_top = 70.0
-offset_right = 130.0
-offset_bottom = 101.0
+layout_mode = 2
 step = 1.0
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
-offset_top = 105.0
-offset_right = 130.0
-offset_bottom = 109.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-offset_top = 113.0
-offset_right = 130.0
-offset_bottom = 139.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "+0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
-offset_top = 143.0
-offset_right = 130.0
-offset_bottom = 147.0
+layout_mode = 2
 
 [node name="ep1" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
 unique_name_in_owner = true
-offset_top = 151.0
-offset_right = 130.0
-offset_bottom = 182.0
+layout_mode = 2
 step = 0.1
 
 [node name="ep01" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
 unique_name_in_owner = true
-offset_top = 186.0
-offset_right = 130.0
-offset_bottom = 217.0
+layout_mode = 2
 step = 0.01
 
 [node name="ep001" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
 unique_name_in_owner = true
-offset_top = 221.0
-offset_right = 130.0
-offset_bottom = 252.0
+layout_mode = 2
 step = 0.001

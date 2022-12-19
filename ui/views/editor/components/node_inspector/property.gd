@@ -15,6 +15,7 @@ signal pinned
 
 var _index
 var _ui
+var _can_be_pinned := true
 
 @onready var _root: Control = $%Component
 @onready var _visibility_box: CheckBox = $%VisibilityBox
@@ -43,6 +44,7 @@ func create_input(p_name: String, type: int, value, idx, opts := SlotOptions.new
 
 	_ui.notify_connection_changed(false)
 	_index = idx
+	_set_pin_capabilities(type)
 	_ui.value_changed.connect(_on_value_changed)
 
 
@@ -51,6 +53,7 @@ func create_generic(p_name: String, type: int) -> void:
 	var ui = GenericInputComponent.new()
 	ui.initialize(p_name, type, null)
 	_root.add_child(ui)
+	_can_be_pinned = false
 
 
 func set_value(value) -> void:
@@ -63,9 +66,10 @@ func set_property_visibility(v: bool) -> void:
 
 
 func set_pinned(enabled: bool, pin_path: String) -> void:
-	_pin_button.visible = true
-	_pin_path_edit.set_text(pin_path)
-	_pin_button.set_pressed(enabled)
+	if _can_be_pinned:
+		_pin_button.visible = true
+		_pin_path_edit.set_text(pin_path)
+		_pin_button.set_pressed(enabled)
 
 
 func get_slot_index() -> Variant:
@@ -82,6 +86,17 @@ func _sanitize_name(p_name: String, type: int) -> String:
 
 	# Empty name, often happens with outputs. Show the type name instead.
 	return DataType.get_type_name(type)
+
+
+func _set_pin_capabilities(type: int):
+	var valid_types := [
+		DataType.BOOLEAN,
+		DataType.NUMBER,
+		DataType.STRING,
+		DataType.VECTOR2,
+		DataType.VECTOR3,
+	]
+	_can_be_pinned = type in valid_types
 
 
 func _notify_pin_changes(_name := "") -> void:

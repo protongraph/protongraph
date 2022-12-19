@@ -17,17 +17,16 @@ const PropertyScene = preload("property.tscn")
 var _proton_node_ui: ProtonNodeUi
 var _proton_node: ProtonNode
 
-@onready var _default: Control = $"%DefaultContent"
-@onready var _properties: Control = $"%Properties"
-@onready var _name_label: Label = $"%NameLabel"
-@onready var _input_label: Label = $"%InputsLabel"
-@onready var _output_label: Label = $"%OutputsLabel"
-@onready var _extra_label: Label = $"%ExtrasLabel"
-@onready var _documentation_label: Label = $"%DocumentationLabel"
-@onready var _inputs: Control = $"%Inputs"
-@onready var _outputs: Control = $"%Outputs"
-@onready var _extras: Control = $"%Extras"
-# @onready var _documentation: DocumentationPanel = $"%Documentation
+@onready var _default: Control = $%DefaultContent
+@onready var _properties: Control = $%Properties
+@onready var _name_label: Label = $%NameLabel
+@onready var _input_label: Label = $%InputsLabel
+@onready var _output_label: Label = $%OutputsLabel
+@onready var _extra_label: Label = $%ExtrasLabel
+@onready var _inputs: Control = $%Inputs
+@onready var _outputs: Control = $%Outputs
+@onready var _extras: Control = $%Extras
+@onready var _documentation_panel: DocumentationPanel = $%DocumentationPanel
 
 
 func clear() -> void:
@@ -37,6 +36,7 @@ func clear() -> void:
 	_name_label.text = ""
 	_default.visible = true
 	_properties.visible = false
+	_documentation_panel.set_text("")
 
 
 func display_node(node: ProtonNodeUi) -> void:
@@ -52,6 +52,8 @@ func display_node(node: ProtonNodeUi) -> void:
 	_proton_node_ui = node
 	_proton_node = node.proton_node
 	_rebuild_ui()
+	_documentation_panel.set_data(_proton_node.documentation)
+
 	_proton_node_ui.value_changed.connect(_on_node_value_changed)
 	_proton_node_ui.connection_changed.connect(_on_node_connection_changed)
 
@@ -94,6 +96,7 @@ func _rebuild_ui() -> void:
 			ui.create_input(input.name, input.type, input.local_value, idx, input.options)
 
 		ui.set_property_visibility(_proton_node_ui.is_slot_visible("input", idx))
+
 		if idx in pinned_inputs:
 			ui.set_pinned(true, pinned_inputs[idx])
 		else:

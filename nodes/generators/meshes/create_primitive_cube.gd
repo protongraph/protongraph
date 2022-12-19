@@ -19,6 +19,19 @@ func _init() -> void:
 
 	create_output(0, "", DataType.MESH_3D)
 
+	documentation.add_paragraph("Creates a 3D cube.")
+
+	var p = documentation.add_parameter("Size")
+	p.set_type("vector3")
+	p.set_description("The cube dimensions along the X Y Z axes.")
+	p.set_cost(0)
+
+	p = documentation.add_parameter("Subdivision")
+	p.set_type("vector3")
+	p.set_description("Number of extra edge loops inserted along each axes.")
+	p.set_cost(2)
+	p.add_warning("This parameter can quickly increase the triangle count.", 1)
+
 
 func _generate_outputs() -> void:
 	var size: Vector3 = get_input_single(0, Vector3.ONE)

@@ -33,7 +33,7 @@ func _ready():
 
 func _on_about_to_popup() -> void:
 	# Force the popup to always use as little space as possible because the
-	# control size flags doesn't work in this case
+	# control size flags don't work in this case
 	size = Vector2.ZERO
 	delta = 0.0
 	label.text = str(delta)
