@@ -44,6 +44,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://ui/views/editor/components/node_inspector/documentation/documentation_panel.gd"
 }, {
+"base": "GenericInputComponent",
+"class": &"DropdownComponent",
+"language": &"GDScript",
+"path": "res://ui/views/editor/components/graph_editor/components/nodes/dropdown.gd"
+}, {
 "base": "RefCounted",
 "class": &"EditorUtil",
 "language": &"GDScript",
@@ -202,6 +207,7 @@ _global_script_class_icons={
 "DataType": "",
 "DocumentationData": "",
 "DocumentationPanel": "",
+"DropdownComponent": "",
 "EditorUtil": "",
 "EditorView": "",
 "EditorViewport": "",

@@ -29,6 +29,10 @@ var _proton_node: ProtonNode
 @onready var _documentation_panel: DocumentationPanel = $%DocumentationPanel
 
 
+func _ready() -> void:
+	clear()
+
+
 func clear() -> void:
 	_clear_ui()
 	_proton_node_ui = null

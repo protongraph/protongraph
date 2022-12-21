@@ -46,11 +46,6 @@ func get_value():
 	return null
 
 
-# If the data to store on disk is different than the one used in core.
-func get_value_for_export():
-	return get_value()
-
-
 func set_value(_val) -> void:
 	pass
 

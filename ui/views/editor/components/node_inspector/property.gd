@@ -34,10 +34,9 @@ func _ready() -> void:
 
 
 func create_input(p_name: String, type: int, value, idx, opts := SlotOptions.new()) -> void:
-	_ui = UserInterfaceUtil.create_component(type)
-	_root.add_child(_ui)
 	p_name = _sanitize_name(p_name, type)
-	_ui.initialize(p_name, type, opts)
+	_ui = UserInterfaceUtil.create_component(p_name, type, opts)
+	_root.add_child(_ui)
 
 	if value != null:
 		_ui.set_value(value)

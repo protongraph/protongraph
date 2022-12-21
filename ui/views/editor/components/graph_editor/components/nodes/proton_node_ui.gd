@@ -216,12 +216,12 @@ func _create_component_for(io: ProtonNodeSlot, is_output := false) -> GraphNodeU
 	if is_output:
 		component = GenericOutputComponent.new()
 	else:
-		component = UserInterfaceUtil.create_component(io.type)
-
-	component.initialize(io.name, io.type, io.options)
+		component = UserInterfaceUtil.create_component(io.name, io.type, io.options)
 
 	if io.local_value != null:
 		component.set_value(io.local_value)
+	else:
+		io.local_value = component.get_value()
 
 	if is_output:
 		component.name = "Output"

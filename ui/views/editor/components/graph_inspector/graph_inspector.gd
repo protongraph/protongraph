@@ -27,6 +27,9 @@ func rebuild_ui() -> void:
 	var pinned := {}
 
 	for node_ui in _graph.get_children():
+		if not node_ui is ProtonNodeUi:
+			continue
+
 		var node: ProtonNode = node_ui.proton_node
 		if not "pinned" in node.external_data:
 			continue
@@ -50,8 +53,7 @@ func rebuild_ui() -> void:
 		var node_component = node_ui._input_component_map[idx]
 		var node: ProtonNode = node_ui.proton_node
 
-		var component = UserInterfaceUtil.create_component(slot.type)
-		component.initialize(pin_path, slot.type, slot.options)
+		var component = UserInterfaceUtil.create_component(pin_path, slot.type, slot.options)
 		component.set_value(node.get_local_value(idx))
 		_root.add_child(component)
 

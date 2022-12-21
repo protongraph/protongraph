@@ -24,13 +24,16 @@ static func create_spinbox(label_name: String, opts := SlotOptions.new()) -> Cus
 	return spinbox
 
 
-static func create_component(type: int) -> GraphNodeUiComponent:
+static func create_component(name: String, type: int, opts: SlotOptions) -> GraphNodeUiComponent:
 	var component: GraphNodeUiComponent
 	match type:
 		DataType.BOOLEAN:
 			component = BooleanComponent.new()
 		DataType.NUMBER:
-			component = ScalarComponent.new()
+			if opts.has_dropdown():
+				component = DropdownComponent.new()
+			else:
+				component = ScalarComponent.new()
 		DataType.STRING:
 			component = StringComponent.new()
 		DataType.VECTOR2:
@@ -39,5 +42,7 @@ static func create_component(type: int) -> GraphNodeUiComponent:
 			component = VectorComponent.new()
 		_:
 			component = GenericInputComponent.new()
+
+	component.initialize(name, type, opts)
 
 	return component
