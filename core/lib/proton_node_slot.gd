@@ -29,7 +29,9 @@ func get_computed_value_copy() -> Array:
 	for item in computed_value:
 		if item is Node:
 			res.push_back(item.duplicate(7))
-		if item is Resource:
+		elif item is Resource:
 			res.push_back(item.duplicate(true))
+		else:
+			res.push_back(item)
 
 	return res
