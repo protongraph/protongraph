@@ -68,6 +68,8 @@ func rebuild_ui() -> void:
 		var to: ProtonNodeUi = get_node(NodePath(c.to))
 		var to_port := to.input_idx_to_slot(c.to_idx)
 		connect_node(c.from, from_port, c.to, to_port)
+		from.notify_output_connection_changed(from_port, true)
+		to.notify_input_connection_changed(to_port, true)
 
 	await(get_tree().process_frame)
 

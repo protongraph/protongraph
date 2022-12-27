@@ -93,7 +93,7 @@ func rebuild() -> void:
 			for dep in dependencies:
 				path.push_front(dep)
 				next.append_array(_get_left_connected_flat(dep))
-			dependencies = next
+			dependencies = next.duplicate(false)
 
 		# Generate outputs from the begining
 		for node in path:
@@ -106,8 +106,7 @@ func rebuild() -> void:
 
 				for data in _get_right_connected(node, idx):
 					var right_node: ProtonNode = data.to
-					right_node.inputs[data.idx].computed_value = value
-					right_node.inputs[data.idx].computed_value_ready = true
+					right_node.set_input(data.idx, value)
 
 
 func _get_unique_name(node: ProtonNode) -> String:
@@ -125,8 +124,12 @@ func _get_left_connected_flat(node: ProtonNode, idx = null) -> Array[ProtonNode]
 	var res: Array[ProtonNode] = []
 
 	for c in connections:
-		if c.to == node.unique_name:
-			if idx == null or idx == c.to_idx:
+		if c.to != node.unique_name:
+			continue
+
+		if idx == null or idx == c.to_idx:
+			var n = nodes[c.from]
+			if not n in res:
 				res.push_back(nodes[c.from])
 
 	return res

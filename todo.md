@@ -1,7 +1,6 @@
 # TODO
 
 ## Priority tasks before the beta release
-+ Dropdown input should be int, not string
 + Viewport camera fixes
 
 ## Core
@@ -33,7 +32,6 @@
 + Set Transform node
 + Extrude mesh
 + Subdivide mesh
-+ Math node
 
 ## Bugs
 +

@@ -35,7 +35,7 @@ func _init() -> void:
 	opts.add_dropdown_item(FLOOR, "Floor")
 	opts.add_dropdown_item(CEIL, "Ceil")
 
-	create_input(0, "Op", DataType.NUMBER, opts)
+	create_input(0, "", DataType.MISC, opts)
 	create_input(1, "A", DataType.NUMBER)
 	create_input(2, "B", DataType.NUMBER)
 	create_output(0, "", DataType.NUMBER)

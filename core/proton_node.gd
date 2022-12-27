@@ -77,6 +77,7 @@ func allow_multiple_connections_on_input_slot(idx: int, enabled := true) -> void
 
 func set_local_value(idx, value) -> void:
 	if idx in inputs:
+		print("local value changed")
 		inputs[idx].local_value = value
 		changed.emit()
 
@@ -115,6 +116,25 @@ func get_input_single(idx, default = null):
 	return input[0]
 
 
+# Called from the parent graph when  passing values from previous
+# nodes to this one
+func set_input(idx, value) -> void:
+	if not value is Array:
+		value = [value]
+
+	if not idx in inputs:
+		return
+
+	inputs[idx].computed_value = value
+	inputs[idx].computed_value_ready = true
+
+	# Reset the outputs which are no longer valid
+	for o_idx in outputs:
+		outputs[o_idx].computed_value.clear()
+		outputs[o_idx].computed_value_ready = false
+
+
+# Called from the custom nodes when generating values
 func set_output(idx, value) -> void:
 	if not value is Array:
 		value = [value]
@@ -160,3 +180,6 @@ func _generate_outputs() -> void:
 func _clear_cache():
 	pass
 
+
+func _to_string() -> String:
+	return "[" + unique_name + "]"

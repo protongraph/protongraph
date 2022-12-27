@@ -10,9 +10,6 @@ var _editor_scale := 1.0 # TODO: fetch these options from the settings page.
 var _sub_header_size := 14
 var _icon_width := 20
 
-@onready var tree: Tree = $HSplitContainer/Tree
-@onready var label: RichTextLabel = $HSplitContainer/RichTextLabel
-
 
 func _ready() -> void:
 	bbcode_enabled = true

@@ -40,8 +40,12 @@ static func create_component(name: String, type: int, opts: SlotOptions) -> Grap
 			component = VectorComponent.new()
 		DataType.VECTOR3:
 			component = VectorComponent.new()
-		_:
-			component = GenericInputComponent.new()
+		DataType.MISC:
+			if opts.has_dropdown():
+				component = DropdownComponent.new()
+
+	if not component:
+		component = GenericInputComponent.new()
 
 	component.initialize(name, type, opts)
 

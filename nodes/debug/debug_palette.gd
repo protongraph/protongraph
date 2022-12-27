@@ -16,7 +16,7 @@ func _init() -> void:
 	var opts := SlotOptions.new()
 	opts.add_dropdown_item(0, "Option 1")
 	opts.add_dropdown_item(1, "Option 2")
-	create_input("dropdown", "DropDown", DataType.STRING, opts)
+	create_input("dropdown", "DropDown", DataType.MISC, opts)
 	create_input(4, "Vector2", DataType.VECTOR2)
 	create_input(5, "Vector3", DataType.VECTOR3)
 
@@ -30,5 +30,5 @@ func _init() -> void:
 	create_input(30, "---- 3D Types ----", DataType.NODE_3D)
 	create_input(31, "Bezier Curve", DataType.CURVE_3D)
 	create_input(32, "Mesh", DataType.MESH_3D)
-	create_input(33, "Polygon Curve", DataType.POLYLINE_3D)
+	create_input(33, "Polyline3D", DataType.POLYLINE_3D)
 	create_input(34, "Heightmap", DataType.HEIGHTMAP)

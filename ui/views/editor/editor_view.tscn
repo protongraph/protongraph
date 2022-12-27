@@ -47,7 +47,7 @@ layout_mode = 2
 
 [node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/HBoxContainer/HSplitContainer"]
 layout_mode = 2
-split_offset = -300
+split_offset = -325
 
 [node name="VSplitContainer" type="VSplitContainer" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer"]
 layout_mode = 2
@@ -57,7 +57,7 @@ split_offset = -200
 [node name="NodeGraphEditor" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer/VSplitContainer" instance=ExtResource("1_8i43s")]
 unique_name_in_owner = true
 layout_mode = 2
-scroll_offset = Vector2(-50, -212)
+scroll_offset = Vector2(-25, -212)
 
 [node name="Viewport" parent="MarginContainer/HBoxContainer/HSplitContainer/HSplitContainer/VSplitContainer" instance=ExtResource("5_lr66y")]
 unique_name_in_owner = true

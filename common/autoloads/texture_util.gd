@@ -49,8 +49,7 @@ func get_texture(path) -> Texture2D:
 	if scale != 1.0:
 		var image: Image = texture.get_image()
 		image.resize(int(texture.get_width() * scale), int(texture.get_height() * scale))
-		texture = ImageTexture.new()
-		texture.create_from_image(image)
+		texture = ImageTexture.create_from_image(image)
 
 	_cache[path] = texture
 	return texture

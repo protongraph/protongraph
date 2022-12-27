@@ -82,3 +82,4 @@ func add_dropdown_item(id, label: String) -> void:
 	item.id = id
 	item.label = label
 	dropdown_items.push_back(item)
+	show_type_icon = false

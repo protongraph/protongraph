@@ -23,8 +23,9 @@ const POLYLINE_3D := 34
 const NOISE := 40
 const HEIGHTMAP := 41
 
-const MISC_CUSTOM_UI := 100
-const MISC_PREVIEW_2D := 101
+const MISC := 100
+const MISC_CUSTOM_UI := 101
+const MISC_PREVIEW_2D := 102
 
 
 # Colors are used for slots, connections between slots and frame color
@@ -51,7 +52,9 @@ const COLORS = {
 	MASK_3D: Color("fc9224"),
 	POLYLINE_3D: Color("fdb136"),
 	HEIGHTMAP: Color("fecf46"),
-}
+
+	MISC: Color.BLACK,
+	}
 
 const NAMES = {
 	ANY: "Any",

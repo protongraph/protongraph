@@ -55,6 +55,7 @@ func rebuild_ui() -> void:
 
 		var component = UserInterfaceUtil.create_component(pin_path, slot.type, slot.options)
 		component.set_value(node.get_local_value(idx))
+		component.notify_connection_changed(false)
 		_root.add_child(component)
 
 		component.value_changed.connect(_on_inspector_value_changed.bind(idx, node_ui))
