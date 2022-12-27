@@ -3,6 +3,7 @@ extends Control
 
 
 @onready var _output_root: Node3D = $SubViewportContainer/SubViewport/OutputRoot
+@onready var _camera: ViewportCamera = $SubViewportContainer/SubViewport/ViewportCamera
 
 
 func _ready() -> void:
@@ -20,3 +21,10 @@ func display(output: Array) -> void:
 	for node in output:
 		if node is Node3D:
 			_output_root.add_child(node)
+
+
+func _input(event: InputEvent) -> void:
+	var current_mouse_pos := get_viewport().get_mouse_position()
+	var rect = Rect2i(global_position, size)
+	if rect.has_point(current_mouse_pos):
+		_camera.process_input(event)

@@ -39,7 +39,6 @@ handle_input_locally = false
 msaa_3d = 1
 use_taa = true
 use_debanding = true
-scaling_3d_mode = 1
 size = Vector2i(1280, 720)
 render_target_update_mode = 4
 
@@ -51,6 +50,7 @@ transform = Transform3D(0.807497, -0.27144, 0.523707, 0, 0.887832, 0.460167, -0.
 shadow_enabled = true
 
 [node name="ViewportCamera" type="Node3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
 script = ExtResource("2_it4fl")
 
 [node name="OutputRoot" type="Marker3D" parent="SubViewportContainer/SubViewport"]

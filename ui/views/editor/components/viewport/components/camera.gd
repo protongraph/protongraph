@@ -12,8 +12,6 @@ var _pan_motion: Vector2
 var _zoom: float
 var _viewport: Viewport
 var _container: SubViewportContainer
-var _captured := false
-var _captured_from_outside := false
 var _margin := 5 # Margin in pixels. Warp the mouse before it actually leaves.
 
 
@@ -22,8 +20,7 @@ func _ready() -> void:
 	_container = _viewport.get_parent()
 	_camera = Camera3D.new()
 	add_child(_camera)
-	_camera.position = Vector3(3.0, 1.5, 3.0)
-	_camera.global_transform = _camera.global_transform.looking_at(Vector3.ZERO, Vector3.UP)
+	reset_camera()
 
 
 func _process(delta: float) -> void:
@@ -35,7 +32,7 @@ func _process(delta: float) -> void:
 
 
 # Handles the zoom, panning and orbiting in the viewport.
-func _unhandled_input(event) -> void:
+func process_input(event) -> void:
 	if not event is InputEventMouse:
 		return # Not a mouse event
 
@@ -44,39 +41,33 @@ func _unhandled_input(event) -> void:
 	var shift = Input.is_key_pressed(KEY_SHIFT)
 	var middle = Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)
 
-	# If another part of the UI (like the graph node) starts panning and the
-	# mouse gets over the viewport, we ignore that
-	_captured = middle
+	if middle: # Handle mouse wrapping if the mouse leaves the viewport
+		var local_pos: Vector2 = event.position - _container.global_position
 
-	if _captured: # Handle mouse wrapping if the mouse leaves the viewport
-		var new_pos: Vector2 = event.position
+		if local_pos.x < 0 + _margin:
+			local_pos.x = vx - _margin
 
+		if local_pos.x > vx - _margin:
+			local_pos.x = 0 + _margin
 
-		if event.position.x < 0 + _margin:
-			new_pos.x = vx - _margin
+		if local_pos.y < 0 + _margin:
+			local_pos.y = vy - _margin
 
-		if event.position.x > vx - _margin:
-			new_pos.x = 0 + _margin
+		if local_pos.y > vy - _margin:
+			local_pos.y = 0 + _margin
 
-		if event.position.y < 0 + _margin:
-			new_pos.y = vy - _margin
-
-		if event.position.y > vy - _margin:
-			new_pos.y = 0 + _margin
-
-		if new_pos != event.position:
-			_viewport.warp_mouse(new_pos + _container.get_global_transform().origin)
+		if local_pos != event.position - _container.global_position:
+			_viewport.warp_mouse(local_pos)
+			return
 
 	# Handle zoom input when user scrolls up or down
 	if event is InputEventMouseButton:
 		var dist = _camera.transform.origin.z
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			_camera.transform.origin.z -= 0.2 * zoom_speed * dist
-			_consume_event()
 
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			_camera.transform.origin.z += 0.2 * zoom_speed * dist
-			_consume_event()
 
 	# Handle panning and orbiting
 	elif event is InputEventMouseMotion:
@@ -88,21 +79,15 @@ func _unhandled_input(event) -> void:
 
 		if shift and middle:
 			_pan_motion = event.relative
-			_consume_event()
 
 		elif middle:
 			_orbit_motion = event.relative
-			_consume_event()
-
-
-func _consume_event() -> void:
-	_viewport.set_input_as_handled()
 
 
 func reset_camera() -> void:
-	transform.origin = Vector3.ZERO
-	rotation = Vector3(deg_to_rad(-40.0), deg_to_rad(45.0), deg_to_rad(0.0))
-	_camera.transform.origin.z = 3.0
+	position = Vector3.ZERO
+	rotation_degrees = Vector3(-40.0, 45.0, 0.0)
+	_camera.position = Vector3(0.0, 0.0, 3.0)
 
 
 func _pan_camera(delta: float) -> void:
