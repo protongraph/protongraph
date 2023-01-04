@@ -29,6 +29,7 @@ var exp_edit := false
 var vec_x: SlotOptions
 var vec_y: SlotOptions
 var vec_z: SlotOptions
+var vec_w: SlotOptions
 
 # Spinbox options
 var rounded := false
@@ -70,6 +71,9 @@ func get_vector_index_options(index: String) -> SlotOptions:
 		"z":
 			if vec_z != null:
 				return vec_z
+		"w":
+			if vec_w != null:
+				return vec_w
 	return self
 
 

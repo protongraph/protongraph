@@ -19,6 +19,7 @@ var _table := {
 	DataType.TEXTURE_2D: "icon_texture.svg",
 	DataType.VECTOR2: "icon_vector2.svg",
 	DataType.VECTOR3: "icon_vector3.svg",
+	DataType.VECTOR4: "icon_vector4.svg",
 	DataType.POLYLINE_3D: "icon_vector_curve.svg",
 }
 

@@ -8,6 +8,7 @@ const NUMBER := 11
 const STRING := 12
 const VECTOR2 := 13
 const VECTOR3 := 14
+const VECTOR4 := 15
 
 const NODE_2D := 20
 const TEXTURE_2D := 21
@@ -39,6 +40,7 @@ const COLORS = {
 	STRING: Color("2988FF"),
 	VECTOR2: Color("7D2BFF"),
 	VECTOR3: Color("BA24FF"),
+	VECTOR4: Color("9615d1"),
 
 	NODE_2D: Color("B6FF63"),
 	TEXTURE_2D: Color("69EB63"),
@@ -63,6 +65,7 @@ const NAMES = {
 	STRING: "String",
 	VECTOR2: "Vector2",
 	VECTOR3: "Vector3",
+	VECTOR4: "Vector4",
 
 	NODE_2D: "Node2D",
 	TEXTURE_2D: "Texture",
@@ -121,7 +124,7 @@ static func get_category_color(category: String) -> Color:
 		"Utilities":
 			return Color("4371b5")
 		"Vectors":
-			return COLORS[NUMBER].darkened(0.25)
+			return COLORS[VECTOR2].darkened(0.25)
 		"Numbers":
 			return COLORS[NUMBER].darkened(0.25)
 		_:

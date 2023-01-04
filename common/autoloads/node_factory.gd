@@ -81,7 +81,7 @@ func _find_all_nodes(path) -> void:
 
 		var full_path = path_root + file
 		var script = load(full_path)
-		if not script:
+		if script == null:
 			print("Error: Failed to load script ", file)
 			continue
 

@@ -16,6 +16,7 @@ signal pinned
 var _index
 var _ui
 var _can_be_pinned := true
+var _ignore_updates := false
 
 @onready var _root: Control = $%Component
 @onready var _visibility_box: CheckBox = $%VisibilityBox
@@ -56,8 +57,12 @@ func create_generic(p_name: String, type: int) -> void:
 
 
 func set_value(value) -> void:
-	if _ui:
-		_ui.set_value(value)
+	if not _ui:
+		return
+
+	_ignore_updates = true
+	_ui.set_value(value)
+	_ignore_updates = false
 
 
 func set_property_visibility(v: bool) -> void:
@@ -106,7 +111,8 @@ func _notify_pin_changes(_name := "") -> void:
 
 
 func _on_value_changed(value) -> void:
-	value_changed.emit(value, _index)
+	if not _ignore_updates:
+		value_changed.emit(value, _index)
 
 
 func _on_visibility_box_toggled(pressed: bool) -> void:

@@ -16,6 +16,7 @@ const PropertyScene = preload("property.tscn")
 
 var _proton_node_ui: ProtonNodeUi
 var _proton_node: ProtonNode
+var _ignore_value_changes := false
 
 @onready var _default: Control = $%DefaultContent
 @onready var _properties: Control = $%Properties
@@ -34,6 +35,10 @@ func _ready() -> void:
 
 
 func clear() -> void:
+	if is_instance_valid(_proton_node_ui):
+		_proton_node_ui.value_changed.disconnect(_on_node_value_changed)
+		_proton_node_ui.connection_changed.disconnect(_on_node_connection_changed)
+
 	_clear_ui()
 	_proton_node_ui = null
 	_proton_node = null
@@ -48,10 +53,6 @@ func display_node(node: ProtonNodeUi) -> void:
 
 	if not node:
 		return
-
-	if is_instance_valid(_proton_node_ui):
-		_proton_node_ui.value_changed.disconnect(_on_node_value_changed)
-		_proton_node_ui.connection_changed.disconnect(_on_node_connection_changed)
 
 	_proton_node_ui = node
 	_proton_node = node.proton_node

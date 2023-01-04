@@ -25,8 +25,8 @@ func _ready() -> void:
 	_node_tree.item_selected.connect(_on_item_selected)
 	_node_tree.nothing_selected.connect(_on_nothing_selected)
 	_grouping_button.toggled.connect(_on_grouping_type_changed)
-	_create_button.connect("pressed", _on_item_activated)
-	_cancel_button.connect("pressed", _hide_popup)
+	_create_button.pressed.connect(_on_item_activated)
+	_cancel_button.pressed.connect(hide)
 
 	_create_button.disabled = true
 	_default_description = _description_label.text
@@ -128,10 +128,6 @@ func _get_node_category(node) -> String:
 	return reversed
 
 
-func _hide_popup() -> void:
-	hide()
-
-
 func _filter_node(node) -> bool:
 	return _search_text.is_subsequence_ofn(node.title)
 
@@ -163,7 +159,7 @@ func _on_item_activated() -> void:
 
 	var type_id: String = selected.get_metadata(0)
 	create_node_request.emit(type_id)
-	_hide_popup()
+	hide()
 
 
 func _on_search_text_changed(new_text):
