@@ -13,7 +13,7 @@ func _init() -> void:
 	create_input(0, "Start", DataType.VECTOR3)
 	create_input(1, "End", DataType.VECTOR3, opts)
 
-	create_output(0, "", DataType.CURVE_3D)
+	create_output(0, "Line", DataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:

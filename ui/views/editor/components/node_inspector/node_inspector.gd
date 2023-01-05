@@ -48,6 +48,10 @@ func clear() -> void:
 	_documentation_panel.set_text("")
 
 
+func get_selected() -> ProtonNodeUi:
+	return _proton_node_ui
+
+
 func display_node(node: ProtonNodeUi) -> void:
 	clear()
 

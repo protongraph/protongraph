@@ -47,7 +47,7 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> voi
 
 		# Create spinbox using per index vector options if available.
 		var vector_index = item_indexes[i]
-		s = UserInterfaceUtil.create_spinbox(vector_index, opts.get_vector_index_options(vector_index))
+		s = UserInterfaceUtil.create_spinbox(vector_index, opts.get_vector_options(vector_index))
 
 		_vector_box.add_child(s)
 		s.value_changed.connect(_on_value_changed)
@@ -75,10 +75,6 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> voi
 	buttons_container.add_child(clear_button)
 	buttons_container.add_child(_link_button)
 	_col.add_child(buttons_container)
-
-	var separator = VSeparator.new()
-	separator.modulate = Color(0, 0, 0, 0)
-	_col.add_child(separator)
 
 
 func get_value():

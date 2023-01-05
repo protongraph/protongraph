@@ -39,6 +39,7 @@ custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 icon = ExtResource("1_lh0uq")
+flat = false
 expand_icon = true
 script = ExtResource("3_llsfr")
 

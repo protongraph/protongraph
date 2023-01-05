@@ -21,9 +21,15 @@ func _init() -> void:
 	opts.value = 0.0
 	opts.min_value = 0.0
 	opts.allow_lesser = false
+	opts.override_vector_options_with_current()
+	opts.vec_x.label_override = "Top left"
+	opts.vec_y.label_override = "Top right"
+	opts.vec_z.label_override = "Bottom left"
+	opts.vec_w.label_override = "Bottom right"
+
 	create_input(4, "Corners radius", DataType.VECTOR4, opts)
 
-	create_output(0, "", DataType.CURVE_3D)
+	create_output(0, "Rectangle", DataType.CURVE_3D)
 
 	documentation.add_paragraph("Creates a 3D curve object, shaped like a rectangle.")
 

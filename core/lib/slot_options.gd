@@ -1,5 +1,5 @@
 class_name SlotOptions
-extends RefCounted
+extends Resource
 
 
 # Options that can be passed when creating a new input. The UI can use these
@@ -10,8 +10,9 @@ extends RefCounted
 
 
 # Generic options
-var show_type_icon := true
 var value: Variant
+var show_type_icon := true
+var label_override := ""
 
 # Scaling options
 var expand := false
@@ -60,7 +61,7 @@ func get_default_value(default = null) -> Variant:
 	return default
 
 
-func get_vector_index_options(index: String) -> SlotOptions:
+func get_vector_options(index: String) -> SlotOptions:
 	match index:
 		"x":
 			if vec_x != null:
@@ -75,6 +76,14 @@ func get_vector_index_options(index: String) -> SlotOptions:
 			if vec_w != null:
 				return vec_w
 	return self
+
+
+func override_vector_options_with_current() -> void:
+	var copy = self.duplicate()
+	vec_x = copy.duplicate()
+	vec_y = copy.duplicate()
+	vec_z = copy.duplicate()
+	vec_w = copy.duplicate()
 
 
 func has_dropdown() -> bool:

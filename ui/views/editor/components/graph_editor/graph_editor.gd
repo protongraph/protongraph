@@ -2,6 +2,9 @@ class_name NodeGraphEditor
 extends GraphEdit
 
 
+signal node_deleted(ProtonNodeUi)
+
+
 const AddNodePopup = preload("./components/popup/add_node_popup.tscn")
 
 var _graph: NodeGraph
@@ -91,7 +94,8 @@ func force_redraw() -> void:
 func delete_node(node: ProtonNodeUi) -> void:
 	remove_child(node)
 	_graph.delete_node(node.proton_node)
-	force_redraw()
+	node_deleted.emit(node)
+	call_deferred("force_redraw")
 
 
 func _create_proton_node_ui(proton_node: ProtonNode) -> void:

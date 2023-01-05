@@ -21,6 +21,7 @@ var _graph: NodeGraph
 func _ready() -> void:
 	_graph_editor.node_selected.connect(_on_node_selected)
 	_graph_editor.node_deselected.connect(_on_node_deselected)
+	_graph_editor.node_deleted.connect(_on_node_deleted)
 	_toolbar.save_graph.connect(_on_save_button_pressed)
 	_toolbar.toggle_node_inspector.connect(_toggle_panel.bind(_node_inspector))
 	_toolbar.toggle_graph_inspector.connect(_toggle_panel.bind(_graph_inspector))
@@ -61,6 +62,11 @@ func _on_node_selected(node: ProtonNodeUi) -> void:
 
 func _on_node_deselected(_node: ProtonNodeUi) -> void:
 	_node_inspector.clear()
+
+
+func _on_node_deleted(deleted_node: ProtonNodeUi) -> void:
+	if _node_inspector.get_selected() == deleted_node:
+		_node_inspector.clear()
 
 
 func _on_save_button_pressed() -> void:

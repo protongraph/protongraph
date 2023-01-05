@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://djeep1msjomu8"]
+[gd_scene load_steps=8 format=3 uid="uid://djeep1msjomu8"]
 
 [ext_resource type="Script" path="res://ui/views/editor/components/viewport/viewport.gd" id="1_mdwbn"]
 [ext_resource type="Script" path="res://ui/views/editor/components/viewport/components/camera.gd" id="2_it4fl"]
 [ext_resource type="Texture2D" uid="uid://de2387csdhf47" path="res://ui/views/editor/components/viewport/components/t_panorama_sky.png" id="2_p0kfs"]
+[ext_resource type="Script" path="res://ui/views/editor/components/viewport/gizmos/gizmos_manager.gd" id="4_6uoat"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ymbai"]
 panorama = ExtResource("2_p0kfs")
@@ -51,6 +52,10 @@ shadow_enabled = true
 [node name="ViewportCamera" type="Node3D" parent="SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
 script = ExtResource("2_it4fl")
+
+[node name="GizmosManager" type="Node3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+script = ExtResource("4_6uoat")
 
 [node name="OutputRoot" type="Marker3D" parent="SubViewportContainer/SubViewport"]
 unique_name_in_owner = true

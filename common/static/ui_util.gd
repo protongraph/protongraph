@@ -11,6 +11,9 @@ static func create_spinbox(label_name: String, opts := SlotOptions.new()) -> Cus
 	var spinbox = SpinboxScene.instantiate()
 
 	spinbox.set_label_text(label_name)
+	if not opts.label_override.is_empty():
+		spinbox.set_label_text(opts.label_override)
+
 	spinbox.name = "SpinBox"
 	spinbox.max_value = opts.max_value
 	spinbox.min_value = opts.min_value
@@ -47,4 +50,10 @@ static func create_component(name: String, type: int, opts: SlotOptions) -> Grap
 
 	component.initialize(name, type, opts)
 
+	return component
+
+
+static func create_output_component(name: String, type: int, opts: SlotOptions) -> GenericOutputComponent:
+	var component := GenericOutputComponent.new()
+	component.initialize(name, type, opts)
 	return component

@@ -14,7 +14,7 @@ func _init() -> void:
 	opts.allow_lesser = true
 	create_input(0, "", DataType.NUMBER, opts)
 
-	create_output(0, "", DataType.NUMBER)
+	create_output(0, "Number", DataType.NUMBER)
 
 
 func _generate_outputs() -> void:

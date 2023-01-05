@@ -30,7 +30,7 @@ func _init() -> void:
 	create_input(0, "", DataType.MISC, opts)
 	create_input(1, "A", DataType.VECTOR3)
 	create_input(2, "B", DataType.VECTOR3)
-	create_output(0, "", DataType.VECTOR3)
+	create_output(0, "Result", DataType.VECTOR3)
 
 
 func _generate_outputs() -> void:

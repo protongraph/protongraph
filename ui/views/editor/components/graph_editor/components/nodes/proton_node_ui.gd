@@ -159,6 +159,7 @@ func output_slot_to_idx(slot: int) -> Variant:
 
 func _populate_rows():
 	var current_row = 0 # Needed because the dictionary keys aren't continuous.
+
 	for idx in proton_node.inputs:
 		if is_slot_visible("input", idx):
 			var input: ProtonNodeSlot = proton_node.inputs[idx]
@@ -170,7 +171,6 @@ func _populate_rows():
 			current_row += 1
 			ui.value_changed.connect(_on_local_value_changed.bind(idx))
 
-	current_row = 0
 	for idx in proton_node.outputs:
 		if is_slot_visible("output", idx):
 			var output: ProtonNodeSlot = proton_node.outputs[idx]
@@ -214,7 +214,7 @@ func _create_component_for(io: ProtonNodeSlot, is_output := false) -> GraphNodeU
 	var component: GraphNodeUiComponent
 
 	if is_output:
-		component = GenericOutputComponent.new()
+		component = UserInterfaceUtil.create_output_component(io.name, io.type, io.options)
 	else:
 		component = UserInterfaceUtil.create_component(io.name, io.type, io.options)
 

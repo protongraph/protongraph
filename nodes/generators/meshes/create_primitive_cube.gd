@@ -16,7 +16,7 @@ func _init() -> void:
 	opts.step = 1
 	create_input(1, "Subdivision", DataType.VECTOR3, opts)
 
-	create_output(0, "", DataType.MESH_3D)
+	create_output(0, "Cube", DataType.MESH_3D)
 
 	documentation.add_paragraph("Creates a 3D cube.")
 

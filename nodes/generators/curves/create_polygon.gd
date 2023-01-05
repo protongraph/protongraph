@@ -21,7 +21,7 @@ func _init() -> void:
 	create_input(2, "Up Axis", DataType.VECTOR3)
 	create_input(3, "Origin", DataType.VECTOR3)
 
-	create_output(0, "", DataType.CURVE_3D)
+	create_output(0, "Polygon", DataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:
@@ -42,11 +42,11 @@ func _generate_outputs() -> void:
 		v.x = cos(angle_offset * i)
 		v.y = sin(angle_offset * i)
 		v *= radius
-		curve.add_point(t.xform(v))
+		curve.add_point(v * t)
 
 	var path = Path3D.new()
 	path.curve = curve
-	path.translation = origin
+	path.position = origin
 
 	set_output(0, path)
 
