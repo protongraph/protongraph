@@ -30,6 +30,7 @@ func _ready() -> void:
 
 # Overriding parent functions.
 func connect_node(from, from_port, to, to_port):
+	print("in connect node: ", from_port, " to ", to_port)
 	var err = super(from, from_port, to, to_port)
 	if err == OK:
 		var from_node = get_node(NodePath(from))
@@ -67,9 +68,9 @@ func rebuild_ui() -> void:
 
 	for c in _graph.connections:
 		var from: ProtonNodeUi = get_node(NodePath(c.from))
-		var from_port := from.output_idx_to_slot(c.from_idx)
+		var from_port := from.output_idx_to_port(c.from_idx)
 		var to: ProtonNodeUi = get_node(NodePath(c.to))
-		var to_port := to.input_idx_to_slot(c.to_idx)
+		var to_port := to.input_idx_to_port(c.to_idx)
 		connect_node(c.from, from_port, c.to, to_port)
 		from.notify_output_connection_changed(from_port, true)
 		to.notify_input_connection_changed(to_port, true)
@@ -134,7 +135,7 @@ func _on_create_node_request(node_type_id: String) -> void:
 	_create_proton_node_ui(node)
 
 
-func _on_connection_request(from, from_slot: int, to, to_slot: int) -> void:
+func _on_connection_request(from, from_port: int, to, to_port: int) -> void:
 	if from == to:
 		return
 
@@ -145,25 +146,33 @@ func _on_connection_request(from, from_slot: int, to, to_slot: int) -> void:
 		return
 
 	# Disconnect any existing connection to the input slot first unless multi connection is enabled
-	if not to_node.is_multiple_connections_enabled_on_slot(to_slot):
+	if not to_node.is_multiple_connections_enabled_on_port(to_port):
 		for c in get_connection_list():
-			if c.to == to and c.to_port == to_slot:
-				self.disconnect_node(c.from, c.from_port, c.to, c.to_port)
+			if c.to == to and c.to_port == to_port:
+				disconnect_node(c.from, c.from_port, c.to, c.to_port)
 				break
 
-	var err = self.connect_node(from, from_slot, to, to_slot)
+	var err = connect_node(from, from_port, to, to_port)
 	if err != OK:
-		print_debug("Error ", err, " - Could not connect node ", from, ":", from_slot, " to ", to, ":", to_slot)
+		print_debug("Error ", err, " - Could not connect node ", from, ":", from_port, " to ", to, ":", to_port)
 		return
 
-	var from_idx = from_node.output_slot_to_idx(from_slot)
-	var to_idx = to_node.input_slot_to_idx(to_slot)
+	var from_idx = from_node.output_port_to_idx(from_port)
+	var to_idx = to_node.input_port_to_idx(to_port)
 	_graph.connect_node(from, from_idx, to, to_idx)
 
 
 func _on_disconnection_request(from: StringName, from_slot: int, to: StringName, to_slot: int) -> void:
 	self.disconnect_node(from, from_slot, to, to_slot)
-	_graph.disconnect_node(from, from_slot, to, to_slot)
+
+	var from_node: ProtonNodeUi = get_node_or_null(NodePath(from))
+	var to_node: ProtonNodeUi = get_node_or_null(NodePath(to))
+	if not from_node or not to_node:
+		return
+
+	var from_idx = from_node.output_port_to_idx(from_slot)
+	var to_idx = to_node.input_port_to_idx(to_slot)
+	_graph.disconnect_node(from, from_idx, to, to_idx)
 
 
 func _on_delete_nodes_request(selected: Array = []) -> void:

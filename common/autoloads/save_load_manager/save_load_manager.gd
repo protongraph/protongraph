@@ -125,6 +125,9 @@ func _load_graph(path: String) -> void:
 		var data: Dictionary = file.get_value(node_name, "external_data", {})
 		data.name = node_name
 		var node := graph.create_node(type_id, data, false)
+		if not node:
+			continue
+
 		var local_values: Dictionary = file.get_value(node_name, "local_values", {})
 		for idx in local_values:
 			node.set_local_value(idx, local_values[idx])

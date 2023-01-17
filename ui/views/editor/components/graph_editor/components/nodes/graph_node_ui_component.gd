@@ -13,7 +13,8 @@ var label: Label
 var icon: TextureRect
 var icon_container: CenterContainer
 var index # As defined in the ProtonNode
-var slot: int # The actual GraphEdit slot
+var slot: int # The GraphEdit slot (actual control row)
+var port: int # The GraphEdit port (consecutive enabled slots)
 
 
 func initialize(label_name: String, type: int, opts := SlotOptions.new()):

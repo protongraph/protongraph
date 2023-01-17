@@ -8,8 +8,8 @@ func _init() -> void:
 	description = "Display the 3d output in the viewport"
 	leaf_node = true
 
-	create_input(0, "3D Objects", DataType.NODE_3D)
-	allow_multiple_connections_on_input_slot(0)
+	create_input("data", "3D Objects", DataType.NODE_3D)
+	allow_multiple_connections_on_input_slot("data")
 
 	documentation.add_paragraph("Displays objects in the 3D viewport below.")
 
@@ -23,4 +23,4 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	GlobalEventBus.show_on_viewport.emit(get_input(0))
+	GlobalEventBus.show_on_viewport.emit(get_input("data"))

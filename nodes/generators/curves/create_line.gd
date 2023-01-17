@@ -10,15 +10,15 @@ func _init() -> void:
 	var opts := SlotOptions.new()
 	opts.value = Vector3.ONE
 
-	create_input(0, "Start", DataType.VECTOR3)
-	create_input(1, "End", DataType.VECTOR3, opts)
+	create_input("start", "Start", DataType.VECTOR3)
+	create_input("end", "End", DataType.VECTOR3, opts)
 
-	create_output(0, "Line", DataType.CURVE_3D)
+	create_output("line", "Line", DataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:
-	var start: Vector3 = get_input_single(0, Vector3.ZERO)
-	var end: Vector3 = get_input_single(1, Vector3.ZERO)
+	var start: Vector3 = get_input_single("start", Vector3.ZERO)
+	var end: Vector3 = get_input_single("end", Vector3.ZERO)
 
 	# Creates a 3D path, node origin is set to the starting point
 	var path = Path3D.new()
@@ -28,5 +28,5 @@ func _generate_outputs() -> void:
 	path.curve.add_point(Vector3.ZERO)
 	path.curve.add_point(end - start)
 
-	set_output(0, path)
+	set_output("line", path)
 

@@ -12,23 +12,23 @@ func _init() -> void:
 	opts.value = 6
 	opts.min_value = 3
 	opts.allow_lesser = false
-	create_input(0, "Vertex count", DataType.NUMBER, opts)
+	create_input("v_count", "Vertex count", DataType.NUMBER, opts)
 
 	opts = SlotOptions.new()
 	opts.value = 1.0
-	create_input(1, "Radius", DataType.NUMBER, opts)
+	create_input("radius", "Radius", DataType.NUMBER, opts)
 
-	create_input(2, "Up Axis", DataType.VECTOR3)
-	create_input(3, "Origin", DataType.VECTOR3)
+	create_input("up_axis", "Up Axis", DataType.VECTOR3)
+	create_input("origin", "Origin", DataType.VECTOR3)
 
-	create_output(0, "Polygon", DataType.CURVE_3D)
+	create_output("polygon", "Polygon", DataType.CURVE_3D)
 
 
 func _generate_outputs() -> void:
-	var count: int = get_input_single(0, 3)
-	var radius: float = get_input_single(1, 1.0)
-	var axis: Vector3 = get_input_single(2, Vector3.UP)
-	var origin: Vector3 = get_input_single(3, Vector3.ZERO)
+	var count: int = get_input_single("v_count", 3)
+	var radius: float = get_input_single("radius", 1.0)
+	var axis: Vector3 = get_input_single("up_axis", Vector3.UP)
+	var origin: Vector3 = get_input_single("origin", Vector3.ZERO)
 	var angle_offset: float = (2 * PI) / count
 
 	var t = Transform3D()
@@ -48,5 +48,5 @@ func _generate_outputs() -> void:
 	path.curve = curve
 	path.position = origin
 
-	set_output(0, path)
+	set_output("polygon", path)
 

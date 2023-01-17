@@ -27,16 +27,16 @@ func _init() -> void:
 	opts.add_dropdown_item(FLOOR, "Floor")
 	opts.add_dropdown_item(CEIL, "Ceil")
 
-	create_input(0, "", DataType.MISC, opts)
-	create_input(1, "A", DataType.VECTOR3)
-	create_input(2, "B", DataType.VECTOR3)
-	create_output(0, "Result", DataType.VECTOR3)
+	create_input("op", "", DataType.MISC, opts)
+	create_input("a", "A", DataType.VECTOR3)
+	create_input("b", "B", DataType.VECTOR3)
+	create_output("result", "Result", DataType.VECTOR3)
 
 
 func _generate_outputs() -> void:
-	var operation: int = get_input_single(0, ADD)
-	var a: Vector3 = get_input_single(1, 0.0)
-	var b: Vector3 = get_input_single(2, 1.0)
+	var operation: int = get_input_single("op", ADD)
+	var a: Vector3 = get_input_single("a", 0.0)
+	var b: Vector3 = get_input_single("b", 1.0)
 	var result
 
 	match operation:
@@ -57,4 +57,4 @@ func _generate_outputs() -> void:
 		CEIL:
 			result = a.ceil()
 
-	set_output(0, result)
+	set_output("result", result)

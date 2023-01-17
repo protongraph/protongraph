@@ -64,7 +64,7 @@ func rebuild_ui() -> void:
 	_default.visible = _root.get_child_count() == 0
 
 
-func _on_inspector_value_changed(value, idx: Variant, node_ui: ProtonNodeUi) -> void:
+func _on_inspector_value_changed(value, idx: String, node_ui: ProtonNodeUi) -> void:
 	node_ui.set_local_value(idx, value)
 
 

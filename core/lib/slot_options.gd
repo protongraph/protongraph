@@ -6,7 +6,12 @@ extends Resource
 # value when generating the appropriate controls.
 #
 # It's not guaranteed that a flag will be accounted for in every situation though,
-# this is only for autocompletion and early error detection.
+# this is mostly for autocompletion and early error detection.
+
+func _init(val = null):
+	super()
+	if val:
+		value = val
 
 
 # Generic options

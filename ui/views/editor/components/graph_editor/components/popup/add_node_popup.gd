@@ -12,6 +12,7 @@ signal create_node_request
 @onready var _cancel_button: Button = $%CancelButton
 @onready var _description_label: Label = $%DescriptionText
 @onready var _grouping_button: CheckBox = $%CheckBox
+@onready var _search: LineEdit = $%Search
 
 var _default_description: String
 var _search_text := ""
@@ -27,6 +28,7 @@ func _ready() -> void:
 	_grouping_button.toggled.connect(_on_grouping_type_changed)
 	_create_button.pressed.connect(_on_item_activated)
 	_cancel_button.pressed.connect(hide)
+	_search.text_changed.connect(_on_search_text_changed)
 
 	_create_button.disabled = true
 	_default_description = _description_label.text

@@ -13,15 +13,15 @@ func _init() -> void:
 	description = "Print the data as text"
 	leaf_node = true
 
-	create_input(0, "Any", DataType.ANY)
+	create_input("input", "Any", DataType.ANY)
 
 	var opts = SlotOptions.new()
 	opts.custom_ui = _ui
-	create_extra(0, "TextArea", DataType.MISC_CUSTOM_UI, opts)
+	create_extra("print", "TextArea", DataType.MISC_CUSTOM_UI, opts)
 
 
 func _generate_outputs() -> void:
-	var input := get_input(0)
+	var input := get_input("input")
 	var text: String = ""
 
 	for object in input:

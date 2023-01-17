@@ -19,7 +19,7 @@ var outputs: Dictionary
 var extras: Dictionary
 
 
-func create_input(idx, name: String, type: int, options := SlotOptions.new()) -> void:
+func create_input(idx: String, name: String, type: int, options := SlotOptions.new()) -> void:
 	var input = ProtonNodeSlot.new()
 	input.name = name
 	input.type = type
@@ -28,7 +28,7 @@ func create_input(idx, name: String, type: int, options := SlotOptions.new()) ->
 	inputs[idx] = input
 
 
-func create_output(idx, name: String, type: int, options := SlotOptions.new()) -> void:
+func create_output(idx: String, name: String, type: int, options := SlotOptions.new()) -> void:
 	var output = ProtonNodeSlot.new()
 	output.name = name
 	output.type = type
@@ -36,7 +36,7 @@ func create_output(idx, name: String, type: int, options := SlotOptions.new()) -
 	outputs[idx] = output
 
 
-func create_extra(idx, name: String, type: int, options := SlotOptions.new()) -> void:
+func create_extra(idx: String, name: String, type: int, options := SlotOptions.new()) -> void:
 	var extra = ProtonNodeSlot.new()
 	extra.name = name
 	extra.type = type
@@ -70,18 +70,18 @@ func disable_type_mirroring_on_slot(output_idx) -> void:
 
 
 # Allows multiple connections on the same input slot.
-func allow_multiple_connections_on_input_slot(idx: int, enabled := true) -> void:
+func allow_multiple_connections_on_input_slot(idx: String, enabled := true) -> void:
 	if idx in inputs:
 		inputs[idx].allow_multiple_connections = enabled
 
 
-func set_local_value(idx, value) -> void:
+func set_local_value(idx: String, value: Variant) -> void:
 	if idx in inputs:
 		inputs[idx].local_value = value
 		changed.emit()
 
 
-func get_local_value(idx) -> Variant:
+func get_local_value(idx: String) -> Variant:
 	if idx in inputs:
 		return inputs[idx].local_value
 	return null
@@ -90,7 +90,7 @@ func get_local_value(idx) -> Variant:
 # Returns the associated data to the given input index. It either comes from a
 # connected input node, or from a local control field in the case of a simple
 # type (float, string)
-func get_input(idx: Variant, default = []) -> Array:
+func get_input(idx: String, default = []) -> Array:
 	if not idx in inputs:
 		return []
 
@@ -108,7 +108,7 @@ func get_input(idx: Variant, default = []) -> Array:
 
 # By default, every input and output is an array. This is just a short hand with
 # all the necessary checks that returns the first value of the input.
-func get_input_single(idx, default = null):
+func get_input_single(idx: String, default = null):
 	var input := get_input(idx)
 	if input.is_empty() or input[0] == null:
 		return default
@@ -117,7 +117,7 @@ func get_input_single(idx, default = null):
 
 # Called from the parent graph when  passing values from previous
 # nodes to this one
-func set_input(idx, value) -> void:
+func set_input(idx: String, value) -> void:
 	if not value is Array:
 		value = [value]
 
@@ -134,7 +134,7 @@ func set_input(idx, value) -> void:
 
 
 # Called from the custom nodes when generating values
-func set_output(idx, value) -> void:
+func set_output(idx: String, value) -> void:
 	if not value is Array:
 		value = [value]
 
@@ -153,19 +153,23 @@ func clear_values() -> void:
 		outputs[idx].computed_value_ready = false
 
 
+# Check if an output has been computed.
+# If no specific idx is provided, returns true if every output have been computed,
+# false overwise.
 func is_output_ready(idx = null) -> bool:
 	if outputs.is_empty():
 		return false
 
-	if idx in outputs:
-		return outputs[idx].computed_value_ready
+	if idx == null: # No index provided, check them all
+		for i in outputs:
+			if not outputs[i].computed_value_ready:
+				return false
+		return true
 
-	# No index provided, check them all
-	for i in outputs:
-		if not outputs[i].computed_value_ready:
-			return false
+	if not idx in outputs:
+		return false
 
-	return true
+	return outputs[idx].computed_value_ready
 
 
 # Overide this function in the derived classes to return something usable.

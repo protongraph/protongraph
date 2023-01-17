@@ -18,7 +18,7 @@ func _ready() -> void:
 	pass
 
 
-func _process(delta):
+func _process(_delta) -> void:
 	if not visible or not _target:
 		return
 

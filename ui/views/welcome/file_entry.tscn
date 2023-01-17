@@ -1,0 +1,69 @@
+[gd_scene load_steps=6 format=3 uid="uid://f2xmkvqxd0ie"]
+
+[ext_resource type="Script" path="res://ui/views/welcome/file_entry.gd" id="1_nv8q2"]
+[ext_resource type="Texture2D" uid="uid://ccnuoncf0j2vm" path="res://ui/icons/icon_close.svg" id="2_g1e0s"]
+
+[sub_resource type="SystemFont" id="SystemFont_0fj4c"]
+font_weight = 900
+
+[sub_resource type="LabelSettings" id="LabelSettings_487ny"]
+font = SubResource("SystemFont_0fj4c")
+
+[sub_resource type="LabelSettings" id="LabelSettings_8gqmh"]
+font_size = 12
+font_color = Color(0.7, 0.7, 0.7, 1)
+
+[node name="FileEntry" type="Button"]
+custom_minimum_size = Vector2(0, 50)
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+script = ExtResource("1_nv8q2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FileNameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Graph name"
+label_settings = SubResource("LabelSettings_487ny")
+
+[node name="FilePathLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Graph file path"
+label_settings = SubResource("LabelSettings_8gqmh")
+
+[node name="CloseButton" type="Button" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Remove from history
+(This will NOT delete the file from the disk)"
+mouse_filter = 1
+icon = ExtResource("2_g1e0s")
+expand_icon = true

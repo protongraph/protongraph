@@ -72,9 +72,12 @@ func notify_output_connection_changed(slot: int, connected: bool) -> void:
 	for idx in _output_component_map:
 		if _output_component_map[idx].slot == slot:
 			ui_component = _output_component_map[idx]
+			break
 
-	ui_component.notify_connection_changed(connected)
-	_output_connections[ui_component.index] = connected
+	if ui_component:
+		ui_component.notify_connection_changed(connected)
+		_output_connections[ui_component.index] = connected
+
 	connection_changed.emit()
 
 
@@ -83,7 +86,7 @@ func set_local_value(idx, value) -> void:
 		_input_component_map[idx].set_value(value)
 
 
-func set_slot_visibility(type: String, idx: Variant, slot_visible: bool) -> void:
+func set_slot_visibility(type: String, idx: String, slot_visible: bool) -> void:
 	if not proton_node:
 		return
 
@@ -105,8 +108,8 @@ func set_slot_visibility(type: String, idx: Variant, slot_visible: bool) -> void
 	rebuild_ui()
 
 
-func is_multiple_connections_enabled_on_slot(slot: int) -> bool:
-	var idx = input_slot_to_idx(slot)
+func is_multiple_connections_enabled_on_port(port: int) -> bool:
+	var idx = input_port_to_idx(port)
 
 	if not idx in proton_node.inputs:
 		return false
@@ -115,7 +118,7 @@ func is_multiple_connections_enabled_on_slot(slot: int) -> bool:
 	return input.options.multi if "multi" in input.options else false
 
 
-func is_input_slot_connected(idx: Variant) -> bool:
+func is_input_slot_connected(idx: String) -> bool:
 	if idx in _input_connections:
 		return _input_connections[idx]
 	return false
@@ -131,34 +134,35 @@ func is_slot_visible(type, idx) -> bool:
 	return not idx in proton_node.external_data["hidden_slots"][type]
 
 
-func input_idx_to_slot(idx: Variant) -> int:
+func input_idx_to_port(idx: String) -> int:
 	if idx in _input_component_map:
-		return _input_component_map[idx].slot
+		return _input_component_map[idx].port
 	return -1
 
 
-func output_idx_to_slot(idx: Variant) -> int:
+func output_idx_to_port(idx: String) -> int:
 	if idx in _output_component_map:
-		return _output_component_map[idx].slot
+		return _output_component_map[idx].port
 	return -1
 
 
-func input_slot_to_idx(slot: int) -> Variant:
+func input_port_to_idx(port: int) -> String:
 	for idx in _input_component_map:
-		if _input_component_map[idx].slot == slot:
+		if _input_component_map[idx].port == port:
 			return idx
-	return null
+	return ""
 
 
-func output_slot_to_idx(slot: int) -> Variant:
+func output_port_to_idx(port: int) -> String:
 	for idx in _output_component_map:
-		if _output_component_map[idx].slot == slot:
+		if _output_component_map[idx].port == port:
 			return idx
-	return null
+	return ""
 
 
 func _populate_rows():
 	var current_row = 0 # Needed because the dictionary keys aren't continuous.
+	var current_port = 0
 
 	for idx in proton_node.inputs:
 		if is_slot_visible("input", idx):
@@ -166,10 +170,14 @@ func _populate_rows():
 			var ui = _create_component_for(input)
 			ui.index = idx
 			ui.slot = current_row
+			ui.port = current_port
 			_input_component_map[idx] = ui
 			_get_or_create_row(current_row).add_child(ui)
 			current_row += 1
+			current_port += 1
 			ui.value_changed.connect(_on_local_value_changed.bind(idx))
+
+	current_port = 0
 
 	for idx in proton_node.outputs:
 		if is_slot_visible("output", idx):
@@ -177,9 +185,11 @@ func _populate_rows():
 			var ui = _create_component_for(output, true)
 			ui.index = idx
 			ui.slot = current_row
+			ui.port = current_port
 			_output_component_map[idx] = ui
 			_get_or_create_row(current_row).add_child(ui)
 			current_row += 1
+			current_port += 1
 
 	for idx in proton_node.extras:
 		if is_slot_visible("extra", idx):

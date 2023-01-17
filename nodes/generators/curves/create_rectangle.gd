@@ -12,10 +12,10 @@ func _init() -> void:
 	opts.min_value = 0.0
 	opts.allow_lesser = false
 
-	create_input(0, "Width", DataType.NUMBER, opts)
-	create_input(1, "Length", DataType.NUMBER, opts)
-	create_input(2, "Up Axis", DataType.VECTOR3)
-	create_input(3, "Origin", DataType.VECTOR3)
+	create_input("width", "Width", DataType.NUMBER, opts)
+	create_input("length", "Length", DataType.NUMBER, opts)
+	create_input("up_axis", "Up Axis", DataType.VECTOR3)
+	create_input("origin", "Origin", DataType.VECTOR3)
 
 	opts = SlotOptions.new()
 	opts.value = 0.0
@@ -27,28 +27,25 @@ func _init() -> void:
 	opts.vec_z.label_override = "Bottom left"
 	opts.vec_w.label_override = "Bottom right"
 
-	create_input(4, "Corners radius", DataType.VECTOR4, opts)
+	create_input("corners_radius", "Corners radius", DataType.VECTOR4, opts)
 
-	create_output(0, "Rectangle", DataType.CURVE_3D)
+	create_output("rectangle", "Rectangle", DataType.CURVE_3D)
 
 	documentation.add_paragraph("Creates a 3D curve object, shaped like a rectangle.")
 
 	var p := documentation.add_parameter("Corners radius")
 	p.set_type("Vector4")
 	p.set_cost(0)
-	p.set_description(
-		"Values above zero will round the associated corner in this order:
-		Top left - Top right - Bottom left - Bottom right."
-	)
+	p.set_description("Values above zero will round the associated corner")
 
 
 # TODO: handle rounded corners
 func _generate_outputs() -> void:
-	var width: float = get_input_single(0, 1.0)
-	var length: float = get_input_single(1, 1.0)
-	var axis: Vector3 = get_input_single(2, Vector3.UP)
-	var origin: Vector3 = get_input_single(3, Vector3.ZERO)
-	var radius: Vector4 = get_input_single(4, Vector4.ZERO)
+	var width: float = get_input_single("width", 1.0)
+	var length: float = get_input_single("length", 1.0)
+	var axis: Vector3 = get_input_single("up_axis", Vector3.UP)
+	var origin: Vector3 = get_input_single("origin", Vector3.ZERO)
+	var radius: Vector4 = get_input_single("corners_radius", Vector4.ZERO)
 	var offset := Vector3(width / 2.0, length / 2.0, 0.0)
 
 	var t = Transform3D()
@@ -67,5 +64,5 @@ func _generate_outputs() -> void:
 	path.curve = curve
 	path.translation = origin
 
-	set_output(0, path)
+	set_output("rectangle", path)
 

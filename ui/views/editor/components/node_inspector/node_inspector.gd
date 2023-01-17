@@ -148,7 +148,7 @@ func _on_node_deleted(node) -> void:
 
 
 # Sync changes from the graph node to the side bar
-func _on_node_value_changed(value, idx: Variant) -> void:
+func _on_node_value_changed(value, idx: String) -> void:
 	for child in _inputs.get_children():
 		if child is InspectorProperty and MemoryUtil.is_equal(child.get_slot_index(), idx):
 			child.set_value(value)
@@ -163,16 +163,16 @@ func _on_node_connection_changed() -> void:
 
 
 # Sync changes from the node inspector to the graphnode
-func _on_inspector_value_changed(value, idx: Variant) -> void:
+func _on_inspector_value_changed(value, idx: String) -> void:
 	if _proton_node_ui:
 		_proton_node_ui.set_local_value(idx, value)
 
 
-func _on_property_visibility_changed(p_visible: bool, type: String, idx: Variant) -> void:
+func _on_property_visibility_changed(p_visible: bool, type: String, idx: String) -> void:
 	_proton_node_ui.set_slot_visibility(type, idx, p_visible)
 
 
-func _on_property_pinned(pinned: bool, pin_name: String, idx: Variant) -> void:
+func _on_property_pinned(pinned: bool, pin_name: String, idx: String) -> void:
 	if not "pinned" in _proton_node.external_data:
 		_proton_node.external_data["pinned"] = {}
 
