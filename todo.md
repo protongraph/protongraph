@@ -16,7 +16,6 @@
 + Collapse nodes (to save space)
 + Different slot icons
 + implicit conversions (float -> vector)
-+ link button for vectors
 + Pin variable tooltip? Default and min / max values in the graph inspector?
 + Single active and Mute nodes
 + Dropping a node on a (valid) connection auto connects it

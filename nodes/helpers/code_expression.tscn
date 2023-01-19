@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://uo7dqbpgrhr5"]
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_r0t5n"]
+
+[node name="CodeExpression" type="CodeEdit"]
+custom_minimum_size = Vector2(100, 50)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "TODO: Fix this node"
+highlight_all_occurrences = true
+highlight_current_line = true
+draw_control_chars = true
+draw_tabs = true
+draw_spaces = true
+syntax_highlighter = SubResource("CodeHighlighter_r0t5n")
+line_folding = true
+line_length_guidelines = [120, 80]
+gutters_draw_line_numbers = true
+gutters_draw_fold_gutter = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true

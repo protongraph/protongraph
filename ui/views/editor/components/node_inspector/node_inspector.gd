@@ -16,7 +16,6 @@ const PropertyScene = preload("property.tscn")
 
 var _proton_node_ui: ProtonNodeUi
 var _proton_node: ProtonNode
-var _ignore_value_changes := false
 
 @onready var _default: Control = $%DefaultContent
 @onready var _properties: Control = $%Properties

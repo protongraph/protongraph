@@ -11,9 +11,12 @@ config_version=5
 [application]
 
 config/name="ProtonGraph"
-run/main_scene="res://ui/proton_graph.tscn"
+run/main_scene="res://proton_graph.tscn"
 config/features=PackedStringArray("4.0")
-config/icon="res://icon.png"
+boot_splash/image="res://ui/icons/splash.png"
+boot_splash/fullsize=false
+config/icon="res://ui/icons/icon.png"
+run/minimum_display_time=5000
 
 [autoload]
 
@@ -78,5 +81,4 @@ toggle_graph_editor={
 
 [rendering]
 
-environment/defaults/default_environment="res://default_env.tres"
 transparent_background=true

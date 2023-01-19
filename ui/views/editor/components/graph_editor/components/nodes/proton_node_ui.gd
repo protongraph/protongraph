@@ -110,12 +110,10 @@ func set_slot_visibility(type: String, idx: String, slot_visible: bool) -> void:
 
 func is_multiple_connections_enabled_on_port(port: int) -> bool:
 	var idx = input_port_to_idx(port)
-
 	if not idx in proton_node.inputs:
 		return false
 
-	var input = proton_node.inputs[idx]
-	return input.options.multi if "multi" in input.options else false
+	return proton_node.inputs[idx].allow_multiple_connections
 
 
 func is_input_slot_connected(idx: String) -> bool:

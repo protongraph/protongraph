@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cix67ygu2d5u5"]
+[gd_scene load_steps=7 format=3 uid="uid://5py8x3g8o3vk"]
 
 [ext_resource type="Theme" uid="uid://ckiydn4300lug" path="res://ui/themes/default.tres" id="1_ay0nm"]
 [ext_resource type="Texture2D" uid="uid://cbbh53a0sbqka" path="res://ui/icons/icon_menu.svg" id="1_lh0uq"]
-[ext_resource type="Script" path="res://ui/proton_graph.gd" id="2_aiyx6"]
+[ext_resource type="Script" path="res://proton_graph.gd" id="2_aiyx6"]
 [ext_resource type="Script" path="res://ui/root/menu_button.gd" id="3_llsfr"]
 [ext_resource type="PackedScene" uid="uid://krqgsakt0ufw" path="res://ui/views/welcome/welcome_view.tscn" id="4_3anom"]
 [ext_resource type="Script" path="res://ui/root/view_container.gd" id="4_fkmym"]

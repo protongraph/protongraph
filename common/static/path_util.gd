@@ -25,7 +25,7 @@ static func get_relative_path(absolute_path: String, origin: String) -> String:
 
 
 # Origin is absolute
-static func get_absolute_path(relative_path: String, origin: String):
+static func get_absolute_path(relative_path: String, origin: String) -> String:
 	var absolute_path := ""
 
 	var t1: Array = relative_path.split("/")
@@ -43,3 +43,5 @@ static func get_absolute_path(relative_path: String, origin: String):
 		absolute_path += t1[i]
 		if i != t1.size() - 1:
 			absolute_path += '/'
+
+	return absolute_path

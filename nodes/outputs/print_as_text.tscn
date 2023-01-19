@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ck2kh376qfiar"]
 
-[sub_resource type="GDScript" id="GDScript_ktmgu"]
+[sub_resource type="GDScript" id="GDScript_7e5c0"]
 script/source = "extends Control
 
 
@@ -13,26 +13,22 @@ offset_right = 150.0
 offset_bottom = 34.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = SubResource("GDScript_ktmgu")
+script = SubResource("GDScript_7e5c0")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 custom_minimum_size = Vector2(150, 34)
-offset_right = 150.0
-offset_bottom = 34.0
+layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="ScrollContainer"]
-offset_right = 150.0
-offset_bottom = 34.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Panel" type="Panel" parent="ScrollContainer/PanelContainer"]
-offset_right = 150.0
-offset_bottom = 34.0
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/PanelContainer"]
-offset_right = 150.0
-offset_bottom = 34.0
+layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
@@ -40,9 +36,6 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 146.0
-offset_bottom = 30.0
+layout_mode = 2
 size_flags_vertical = 1
 text = "Output"

@@ -1,5 +1,5 @@
 class_name SlotOptions
-extends Resource
+extends RefCounted
 
 
 # Options that can be passed when creating a new input. The UI can use these
@@ -84,11 +84,11 @@ func get_vector_options(index: String) -> SlotOptions:
 
 
 func override_vector_options_with_current() -> void:
-	var copy = self.duplicate()
-	vec_x = copy.duplicate()
-	vec_y = copy.duplicate()
-	vec_z = copy.duplicate()
-	vec_w = copy.duplicate()
+	var copy = get_copy()
+	vec_x = copy.get_copy()
+	vec_y = copy.get_copy()
+	vec_z = copy.get_copy()
+	vec_w = copy.get_copy()
 
 
 func has_dropdown() -> bool:
@@ -101,3 +101,14 @@ func add_dropdown_item(id, label: String) -> void:
 	item.label = label
 	dropdown_items.push_back(item)
 	show_type_icon = false
+
+
+func get_copy() -> SlotOptions:
+	var copy = SlotOptions.new()
+
+	var p_value: Variant
+	for property in get_property_list():
+		p_value = get(property.name)
+		copy.set(property.name, p_value)
+
+	return copy

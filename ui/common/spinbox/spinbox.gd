@@ -3,16 +3,15 @@ extends ProgressBar
 
 
 @export var spinbox_name: String
-@export var enforce_step: bool
 @export_enum("Top", "Middle", "Bottom", "Single") var style = 3:
 	set(val):
 		style = val
 		_update_style()
 
-@onready var _name_label: Label = $"%Label"
-@onready var _line_edit: LineEdit = $"%LineEdit"
-@onready var _increase_button: Button = $"%Increase"
-@onready var _decrease_button: Button = $"%Decrease"
+@onready var _name_label: Label = $%Label
+@onready var _line_edit: LineEdit = $%LineEdit
+@onready var _increase_button: Button = $%Increase
+@onready var _decrease_button: Button = $%Decrease
 @onready var _edit_popup: PopupPanel = $EditPopup
 
 
@@ -20,6 +19,7 @@ var _clicked := false
 var _acc := 0.0
 var _previous_value := 0.0
 var _is_edited := false
+var _step := 0.1
 
 var _bg = preload("styles/progress_bar_bg.tres")
 var _bg_top = preload("styles/progress_bar_bg_top.tres")
@@ -32,6 +32,8 @@ var _fg_bottom = preload("styles/progress_bar_fg_bottom.tres")
 
 
 func _ready() -> void:
+	step = 0.001 # Enfore lowest step to allow any values.
+
 	gui_input.connect(_on_gui_input)
 	value_changed.connect(_update_line_edit_value)
 
@@ -55,6 +57,10 @@ func _ready() -> void:
 
 func get_line_edit() -> LineEdit:
 	return _line_edit
+
+
+func set_custom_step(s: float) -> void:
+	_step = s
 
 
 func set_label_text(text) -> void:
@@ -123,9 +129,9 @@ func _show_extra_controls() -> void:
 
 func _on_button_pressed(increase: bool) -> void:
 	if increase:
-		_create_undo_redo_action(value + step, value)
+		_create_undo_redo_action(value + _step, value)
 	else:
-		_create_undo_redo_action(value - step, value)
+		_create_undo_redo_action(value - _step, value)
 	_update_line_edit_value(value)
 
 
@@ -173,7 +179,7 @@ func _on_value_gui_input(event) -> void:
 
 		_acc += event.relative.x
 		if abs(_acc) >= 5 * EditorUtil.get_editor_scale():
-			value += sign(_acc) * step
+			value += sign(_acc) * _step
 			_acc = 0.0
 		_line_edit.text = str(value)
 
@@ -195,7 +201,7 @@ func _on_edit_value_ended() -> void:
 func _on_edit_value(custom_step: float) -> void:
 	if not _is_edited: # + or - button was clicked
 		_create_undo_redo_action(value + custom_step, value)
-	else:
+	else: # Drag action
 		value += custom_step
 
 

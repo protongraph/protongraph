@@ -18,7 +18,7 @@ static func create_spinbox(label_name: String, opts := SlotOptions.new()) -> Cus
 	spinbox.max_value = opts.max_value
 	spinbox.min_value = opts.min_value
 	spinbox.value = opts.get_default_value(0)
-	spinbox.step = opts.step
+	spinbox.set_custom_step(opts.step)
 	spinbox.exp_edit = opts.exp_edit
 	spinbox.allow_greater = opts.allow_greater
 	spinbox.allow_lesser = opts.allow_lesser

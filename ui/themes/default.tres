@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=69 format=3 uid="uid://ckiydn4300lug"]
+[gd_resource type="Theme" load_steps=71 format=3 uid="uid://ckiydn4300lug"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fofou"]
 
@@ -296,6 +296,13 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whune"]
+bg_color = Color(0.0235294, 0.0235294, 0.0313726, 0.627451)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5o1p4"]
 content_margin_left = 6.0
 content_margin_top = 4.0
@@ -446,6 +453,7 @@ bg_color = Color(0.678431, 0.780392, 1, 0.117647)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7r4ha"]
 bg_color = Color(0.678431, 0.780392, 1, 0.117647)
@@ -460,6 +468,17 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_axvfv"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.0235294, 0.0235294, 0.0313726, 0.627451)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ue81k"]
 bg_color = Color(0.678431, 0.780392, 1, 0.470588)
@@ -585,6 +604,8 @@ MenuButton/styles/normal = SubResource("StyleBoxEmpty_eu81w")
 MenuButton/styles/pressed = SubResource("StyleBoxFlat_6n518")
 Panel/styles/panel = SubResource("StyleBoxFlat_ljame")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_qsd56")
+PanelContainerTransparent/base_type = &"PanelContainer"
+PanelContainerTransparent/styles/panel = SubResource("StyleBoxFlat_whune")
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_5o1p4")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_v1hue")
 PopupMenu/styles/separator = SubResource("StyleBoxLine_u6p4g")
@@ -626,6 +647,8 @@ Tree/styles/focus = SubResource("StyleBoxEmpty_b88ea")
 Tree/styles/panel = SubResource("StyleBoxFlat_kjovh")
 Tree/styles/selected = SubResource("StyleBoxFlat_7r4ha")
 Tree/styles/selected_focus = SubResource("StyleBoxFlat_gwg01")
+TreeDark/base_type = &"Tree"
+TreeDark/styles/panel = SubResource("StyleBoxFlat_axvfv")
 VBoxContainer/constants/separation = 6
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_ue81k")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_5y7o5")

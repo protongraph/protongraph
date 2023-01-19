@@ -104,7 +104,7 @@ func clear() -> void:
 		add_child(_turtle)
 
 	_turtle.transform = Transform3D()
-	_turtle.look_at(Vector3.UP, Vector3.BACK)
+	#_turtle.look_at(Vector3.UP, Vector3.BACK) # TODO: Check later
 
 	_new_path()
 

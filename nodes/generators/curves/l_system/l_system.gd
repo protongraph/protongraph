@@ -64,18 +64,18 @@ func _compute_final_string() -> String:
 		var current = ""
 
 		var replaced := false
-		var ignore := false
+		var ignore_current := false
 
 		for c in final:
 			if c == "(" and replaced:
-				ignore = true
+				ignore_current = true
 				continue
 
 			if c == ")" and replaced:
-				ignore = false
+				ignore_current = false
 				continue
 
-			if ignore:
+			if ignore_current:
 				continue
 
 			if rules.has(c):

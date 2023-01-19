@@ -36,7 +36,7 @@ func edit(graph: NodeGraph) -> void:
 	_graph_inspector.set_graph_editor(_graph_editor)
 	_toolbar.rebuild.connect(rebuild)
 	_graph.graph_changed.connect(rebuild)
-	rebuild()
+	rebuild.call_deferred()
 
 
 func rebuild() -> void:

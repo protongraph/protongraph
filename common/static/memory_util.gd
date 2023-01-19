@@ -18,3 +18,7 @@ static func is_equal(a: Variant, b: Variant) -> bool:
 		return false
 
 	return a == b
+
+
+static func is_vector(a: Variant) -> bool:
+	return a is Vector2 or a is Vector3 or a is Vector3

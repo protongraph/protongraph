@@ -47,7 +47,13 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> voi
 
 		# Create spinbox using per index vector options if available.
 		var vector_index = item_indexes[i]
-		s = UserInterfaceUtil.create_spinbox(vector_index, opts.get_vector_options(vector_index))
+		var opts_copy = opts.get_vector_options(vector_index).get_copy()
+
+		# Convert the option default value from Vector to float type if needed
+		if MemoryUtil.is_vector(opts.value):
+			opts_copy.value = opts.value[vector_index]
+
+		s = UserInterfaceUtil.create_spinbox(vector_index, opts_copy)
 
 		_vector_box.add_child(s)
 		s.value_changed.connect(_on_value_changed)
