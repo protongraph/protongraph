@@ -79,20 +79,30 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HistoryPanel" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="BrowseExamplesButton" type="Button" parent="ScrollContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Browse examples projects"
+
+[node name="HistoryPanel" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/HistoryPanel"]
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HistoryPanel"]
 layout_mode = 2
 text = "Recent files"
 
-[node name="HSeparator" type="HSeparator" parent="ScrollContainer/MarginContainer/HistoryPanel"]
+[node name="HSeparator" type="HSeparator" parent="ScrollContainer/MarginContainer/VBoxContainer/HistoryPanel"]
 layout_mode = 2
 
-[node name="FilesRoot" type="VBoxContainer" parent="ScrollContainer/MarginContainer/HistoryPanel"]
+[node name="FilesRoot" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer/HistoryPanel"]
 unique_name_in_owner = true
 layout_mode = 2

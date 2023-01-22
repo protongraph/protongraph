@@ -40,6 +40,8 @@ func _init() -> void:
 	create_input("b", "B", DataType.NUMBER)
 	create_output("result", "Result", DataType.NUMBER)
 
+	local_value_changed.connect(_on_local_value_changed)
+
 
 func _generate_outputs() -> void:
 	var operation: int = get_input_single("op", ADD)
@@ -78,3 +80,18 @@ func _generate_outputs() -> void:
 			result = ceil(a)
 
 	set_output("result", result)
+
+
+func _on_local_value_changed(idx: String, value) -> void:
+	if idx != "op":
+		return
+
+	var slot_options: SlotOptions = inputs["op"].options # TODO: make a dedicated api?
+	var operation: int = get_input_single("op", ADD)
+
+	if operation in [ABS, FLOOR, ROUND, CEIL]:
+		slot_options.ignored = true
+	else:
+		slot_options.ignored = false
+
+	layout_changed.emit()

@@ -7,9 +7,14 @@ signal value_changed(value, idx)
 signal connection_changed
 
 
+var graph_editor: NodeGraphEditor
 var proton_node: ProtonNode:
 	set(val):
+		if is_instance_valid(proton_node):
+			proton_node.layout_changed.disconnect(rebuild_ui)
+
 		proton_node = val
+		proton_node.layout_changed.connect(rebuild_ui)
 		_update_frame_stylebox()
 
 var _input_connections := {}
@@ -34,8 +39,8 @@ func clear() -> void:
 	NodeUtil.remove_children(self)
 	_input_component_map.clear()
 	_output_component_map.clear()
-	_input_connections.clear()
-	_output_connections.clear()
+	#_input_connections.clear()
+	#_output_connections.clear()
 	size = Vector2i.ZERO
 
 
@@ -56,10 +61,10 @@ func rebuild_ui() -> void:
 	_setup_connection_slots()
 
 
-func notify_input_connection_changed(slot: int, connected: bool) -> void:
+func notify_input_connection_changed(port: int, connected: bool) -> void:
 	var ui_component: GraphNodeUiComponent
 	for idx in _input_component_map:
-		if _input_component_map[idx].slot == slot:
+		if _input_component_map[idx].port == port:
 			ui_component = _input_component_map[idx]
 
 	ui_component.notify_connection_changed(connected)
@@ -67,10 +72,10 @@ func notify_input_connection_changed(slot: int, connected: bool) -> void:
 	connection_changed.emit()
 
 
-func notify_output_connection_changed(slot: int, connected: bool) -> void:
+func notify_output_connection_changed(port: int, connected: bool) -> void:
 	var ui_component: GraphNodeUiComponent
 	for idx in _output_component_map:
-		if _output_component_map[idx].slot == slot:
+		if _output_component_map[idx].port == port:
 			ui_component = _output_component_map[idx]
 			break
 
@@ -89,6 +94,12 @@ func set_local_value(idx, value) -> void:
 func set_slot_visibility(type: String, idx: String, slot_visible: bool) -> void:
 	if not proton_node:
 		return
+
+	if not slot_visible:
+		if type == "input":
+			graph_editor.disconnect_inputs(self, input_idx_to_port(idx))
+		elif type == "output":
+			graph_editor.disconnect_outputs(self, output_idx_to_port(idx))
 
 	if not "hidden_slots" in proton_node.external_data:
 		proton_node.external_data["hidden_slots"] = {
@@ -171,10 +182,15 @@ func _populate_rows():
 			ui.port = current_port
 			_input_component_map[idx] = ui
 			_get_or_create_row(current_row).add_child(ui)
-			current_row += 1
-			current_port += 1
 			ui.value_changed.connect(_on_local_value_changed.bind(idx))
 
+			if idx in _input_connections:
+				ui.notify_connection_changed(_input_connections[idx])
+
+			current_row += 1
+			current_port += 1
+
+	# Reset current port for the output slots
 	current_port = 0
 
 	for idx in proton_node.outputs:
@@ -186,6 +202,10 @@ func _populate_rows():
 			ui.port = current_port
 			_output_component_map[idx] = ui
 			_get_or_create_row(current_row).add_child(ui)
+
+			if idx in _output_connections:
+				ui.notify_connection_changed(_output_connections[idx])
+
 			current_row += 1
 			current_port += 1
 

@@ -4,16 +4,17 @@ extends Node
 # Declare every signal sent on any event bus here.
 #
 # Naming conventions:
-#  - End with a verb in the past tense for events that happened
-#  - Start with a verb in present tense for intents (commands)
-# Alphabetically ordered
+# - End with a verb in past tense for events that already happened
+# - Start with a verb in present tense for intents (commands)
+# - Alphabetically ordered
 
 
+signal browse_examples
 signal create_graph
 signal current_view_changed
 signal file_history_changed
-signal graph_loaded
-signal graph_saved
+signal graph_loaded(NodeGraph)
+signal graph_saved(NodeGraph)
 signal load_graph
 signal notify
 signal open_settings

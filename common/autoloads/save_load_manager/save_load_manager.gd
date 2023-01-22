@@ -36,15 +36,6 @@ func _toggle_overlay(val: bool) -> void:
 
 
 func _on_load_graph_requested(path: String = "") -> void:
-
-	# If the graph is already loaded, open the relevant tab directly
-	if not path.is_empty():
-		# TODO: Tight coupling, check how this could be improved
-		var view_container: ViewContainer = GlobalDirectory.get_registered_node("ViewContainer")
-		if view_container and view_container.is_graph_loaded(path):
-			view_container.focus(path)
-			return
-
 	# No path provided, display the file selection popup
 	if path.is_empty():
 		_file_dialog.show_load_dialog()

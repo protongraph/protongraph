@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqn70yjq7ejnf"]
+
+[ext_resource type="Script" path="res://ui/root/notification_center/notification_center.gd" id="1_tlnae"]
+
+[node name="NotificationCenter" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("1_tlnae")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NotificationRoot" type="VBoxContainer" parent="ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+alignment = 2

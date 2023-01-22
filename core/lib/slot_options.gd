@@ -18,6 +18,7 @@ func _init(val = null):
 var value: Variant
 var show_type_icon := true
 var label_override := ""
+var ignored := false
 
 # Scaling options
 var expand := false

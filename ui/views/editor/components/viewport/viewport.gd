@@ -29,7 +29,7 @@ func display(list: Array) -> void:
 
 	for node in list:
 		if is_instance_valid(node) and node is Node3D:
-			_output_root.add_child(node)
+			_output_root.add_child(node, true)
 			_gizmos_manager.add_gizmo_for(node)
 		else:
 			list.erase(node)

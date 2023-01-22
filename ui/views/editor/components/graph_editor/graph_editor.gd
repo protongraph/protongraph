@@ -2,6 +2,11 @@ class_name NodeGraphEditor
 extends GraphEdit
 
 
+# Note: DO NOT remove the "self." before calling connect_node and disconnect_node,
+# otherwise the overriden function is not called and the original from the
+# parent class is called instead.
+
+
 signal node_deleted(ProtonNodeUi)
 
 
@@ -30,7 +35,6 @@ func _ready() -> void:
 
 # Overriding parent functions.
 func connect_node(from, from_port, to, to_port):
-	print("in connect node: ", from_port, " to ", to_port)
 	var err = super(from, from_port, to, to_port)
 	if err == OK:
 		var from_node = get_node(NodePath(from))
@@ -99,12 +103,25 @@ func delete_node(node: ProtonNodeUi) -> void:
 	call_deferred("force_redraw")
 
 
+func disconnect_inputs(node: ProtonNodeUi, port: int):
+	for c in get_connection_list():
+		if c.to == node.name and c.to_port == port:
+			self.disconnect_node(c.from, c.from_port, c.to, c.to_port)
+
+
+func disconnect_outputs(node: ProtonNodeUi, port: int):
+	for c in get_connection_list():
+		if c.from == node.name and c.from_port == port:
+			self.disconnect_node(c.from, c.from_port, c.to, c.to_port)
+
+
 func _create_proton_node_ui(proton_node: ProtonNode) -> void:
 	var graph_node := ProtonNodeUi.new()
 	add_child(graph_node)
-	graph_node.close_request.connect(_on_close_request.bind(graph_node))
+	graph_node.graph_editor = self
 	graph_node.proton_node = proton_node
 	graph_node.name = proton_node.unique_name
+	graph_node.close_request.connect(_on_close_request.bind(graph_node))
 	graph_node.rebuild_ui()
 
 
@@ -147,12 +164,9 @@ func _on_connection_request(from, from_port: int, to, to_port: int) -> void:
 
 	# Disconnect any existing connection to the input slot first unless multi connection is enabled
 	if not to_node.is_multiple_connections_enabled_on_port(to_port):
-		for c in get_connection_list():
-			if c.to == to and c.to_port == to_port:
-				disconnect_node(c.from, c.from_port, c.to, c.to_port)
-				break
+		disconnect_inputs(to_node, to_port)
 
-	var err = connect_node(from, from_port, to, to_port)
+	var err = self.connect_node(from, from_port, to, to_port)
 	if err != OK:
 		print_debug("Error ", err, " - Could not connect node ", from, ":", from_port, " to ", to, ":", to_port)
 		return
@@ -162,16 +176,16 @@ func _on_connection_request(from, from_port: int, to, to_port: int) -> void:
 	_graph.connect_node(from, from_idx, to, to_idx)
 
 
-func _on_disconnection_request(from: StringName, from_slot: int, to: StringName, to_slot: int) -> void:
-	self.disconnect_node(from, from_slot, to, to_slot)
+func _on_disconnection_request(from: StringName, from_port: int, to: StringName, to_port: int) -> void:
+	self.disconnect_node(from, from_port, to, to_port)
 
 	var from_node: ProtonNodeUi = get_node_or_null(NodePath(from))
 	var to_node: ProtonNodeUi = get_node_or_null(NodePath(to))
 	if not from_node or not to_node:
 		return
 
-	var from_idx = from_node.output_port_to_idx(from_slot)
-	var to_idx = to_node.input_port_to_idx(to_slot)
+	var from_idx = from_node.output_port_to_idx(from_port)
+	var to_idx = to_node.input_port_to_idx(to_port)
 	_graph.disconnect_node(from, from_idx, to, to_idx)
 
 

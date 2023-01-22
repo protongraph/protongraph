@@ -1,7 +1,7 @@
 # TODO
 
 ## Priority tasks before the beta release
-+ Viewport camera fixes
++
 
 ## Core
 + Use a custom ProtonMesh to store mesh data (instead of mesh instance)

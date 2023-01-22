@@ -52,6 +52,11 @@ func close_tab(tab: int = -1) -> void:
 		tabs_cleared.emit()
 
 
+func change_tab(tab: int) -> void:
+	current_tab = tab
+	_tabs.set_current_tab(tab)
+
+
 func _on_tab_changed(tab: int) -> void:
 	_tabs.set_current_tab(tab)
 

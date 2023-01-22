@@ -77,7 +77,7 @@ mouse_filter = 2
 
 [node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
 layout_mode = 2
-split_offset = 130
+split_offset = 175
 
 [node name="Tree" type="Tree" parent="MarginContainer/HSplitContainer" node_paths=PackedStringArray("input", "output")]
 unique_name_in_owner = true
@@ -87,42 +87,9 @@ script = ExtResource("5_04xjp")
 input = NodePath("../../../SubViewportContainer/SubViewport/InputRoot")
 output = NodePath("../../../SubViewportContainer/SubViewport/OutputRoot")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer"]
+[node name="MarginContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
-
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme_type_variation = &"PanelContainerTransparent"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/MarginContainer/PanelContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="HelpButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/PanelContainer/MarginContainer/HBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-toggle_mode = true
-icon = ExtResource("5_xtp6v")
-expand_icon = true
-
-[node name="ResetCameraButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/PanelContainer/MarginContainer/HBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-text = "
-"
-icon = ExtResource("6_6dlau")
-expand_icon = true
+size_flags_horizontal = 8
 
 [node name="HelpPanel" type="PanelContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]
 unique_name_in_owner = true
@@ -143,3 +110,35 @@ text = "[b]Orbit[/b]:[color=gray] Middle Click[/color]
 [b]Zoom[/b]:[color=gray] Scroll Up / Down[/color]"
 fit_content_height = true
 autowrap_mode = 0
+
+[node name="Toolbox" type="PanelContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_type_variation = &"PanelContainerTransparent"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HelpButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+tooltip_text = "Display help"
+toggle_mode = true
+icon = ExtResource("5_xtp6v")
+expand_icon = true
+
+[node name="ResetCameraButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+tooltip_text = "Reset camera view"
+text = "
+"
+icon = ExtResource("6_6dlau")
+expand_icon = true

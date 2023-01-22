@@ -23,7 +23,7 @@ run/minimum_display_time=5000
 GlobalEventBus="*res://common/autoloads/event_bus.gd"
 GlobalUndoRedo="*res://common/autoloads/undo_redo.gd"
 GlobalDirectory="*res://common/autoloads/global_directory.gd"
-Settings="*res://common/autoloads/project_settings.gd"
+Settings="*res://common/autoloads/settings.gd"
 TextureUtil="*res://common/autoloads/texture_util.gd"
 NodeFactory="*res://common/autoloads/node_factory.gd"
 FileHistory="*res://common/autoloads/file_history.gd"
@@ -36,10 +36,6 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/transparent=true
 window/subwindows/embed_subwindows=false
-
-[editor]
-
-export/convert_text_resources_to_binary=true
 
 [input]
 

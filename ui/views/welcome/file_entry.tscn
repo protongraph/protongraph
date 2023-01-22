@@ -3,13 +3,14 @@
 [ext_resource type="Script" path="res://ui/views/welcome/file_entry.gd" id="1_nv8q2"]
 [ext_resource type="Texture2D" uid="uid://ccnuoncf0j2vm" path="res://ui/icons/icon_close.svg" id="2_g1e0s"]
 
-[sub_resource type="SystemFont" id="SystemFont_0fj4c"]
+[sub_resource type="SystemFont" id="SystemFont_ky6bh"]
 font_weight = 900
 
-[sub_resource type="LabelSettings" id="LabelSettings_487ny"]
-font = SubResource("SystemFont_0fj4c")
+[sub_resource type="LabelSettings" id="LabelSettings_mm0mh"]
+font = SubResource("SystemFont_ky6bh")
+font_size = 14
 
-[sub_resource type="LabelSettings" id="LabelSettings_8gqmh"]
+[sub_resource type="LabelSettings" id="LabelSettings_yc0e5"]
 font_size = 12
 font_color = Color(0.7, 0.7, 0.7, 1)
 
@@ -47,13 +48,13 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "Graph name"
-label_settings = SubResource("LabelSettings_487ny")
+label_settings = SubResource("LabelSettings_mm0mh")
 
 [node name="FilePathLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Graph file path"
-label_settings = SubResource("LabelSettings_8gqmh")
+label_settings = SubResource("LabelSettings_yc0e5")
 
 [node name="CloseButton" type="Button" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true

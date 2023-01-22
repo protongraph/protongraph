@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://5py8x3g8o3vk"]
+[gd_scene load_steps=8 format=3 uid="uid://clf75fl1jt5r0"]
 
 [ext_resource type="Theme" uid="uid://ckiydn4300lug" path="res://ui/themes/default.tres" id="1_ay0nm"]
 [ext_resource type="Texture2D" uid="uid://cbbh53a0sbqka" path="res://ui/icons/icon_menu.svg" id="1_lh0uq"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://ui/root/menu_button.gd" id="3_llsfr"]
 [ext_resource type="PackedScene" uid="uid://krqgsakt0ufw" path="res://ui/views/welcome/welcome_view.tscn" id="4_3anom"]
 [ext_resource type="Script" path="res://ui/root/view_container.gd" id="4_fkmym"]
+[ext_resource type="PackedScene" uid="uid://cqn70yjq7ejnf" path="res://ui/root/notification_center/notification_center.tscn" id="7_hbfc7"]
 
 [node name="ProtonGraph" type="PanelContainer"]
 anchors_preset = 15
@@ -60,4 +61,7 @@ script = ExtResource("4_fkmym")
 tab_bar = NodePath("../MarginContainer/TopBar/TabBar")
 
 [node name="Welcome" parent="VBoxContainer/ViewContainer" instance=ExtResource("4_3anom")]
+layout_mode = 2
+
+[node name="NotificationCenter" parent="." instance=ExtResource("7_hbfc7")]
 layout_mode = 2

@@ -5,6 +5,7 @@ const FileEntry := preload("./file_entry.tscn")
 
 @onready var new_button: Button = $%New
 @onready var load_button: Button = $%Load
+@onready var examples_button: Button = $%BrowseExamplesButton
 @onready var history_panel: Control = $%HistoryPanel
 @onready var files_root: Control = $%FilesRoot
 
@@ -12,6 +13,7 @@ const FileEntry := preload("./file_entry.tscn")
 func _ready() -> void:
 	new_button.pressed.connect(_on_new_button_pressed)
 	load_button.pressed.connect(_on_load_button_pressed)
+	examples_button.pressed.connect(_on_browse_examples_button_pressed)
 	GlobalEventBus.file_history_changed.connect(_rebuild_history_view)
 	_rebuild_history_view()
 
@@ -38,3 +40,7 @@ func _on_new_button_pressed() -> void:
 
 func _on_load_button_pressed() -> void:
 	GlobalEventBus.load_graph.emit()
+
+
+func _on_browse_examples_button_pressed() -> void:
+	GlobalEventBus.browse_examples.emit()

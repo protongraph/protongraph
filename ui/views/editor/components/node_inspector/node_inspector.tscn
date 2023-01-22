@@ -46,7 +46,9 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Select a node to display its local properties here. "
+text = "Node inspector
+
+Select a node to display its local properties here. "
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3

@@ -2,6 +2,10 @@ class_name ProtonNode
 extends Resource
 
 
+signal local_value_changed(idx, value)
+signal layout_changed
+
+
 var external_data: Dictionary
 var unique_name: String
 var type_id: String
@@ -79,6 +83,7 @@ func set_local_value(idx: String, value: Variant) -> void:
 	if idx in inputs:
 		inputs[idx].local_value = value
 		changed.emit()
+		local_value_changed.emit(idx, value)
 
 
 func get_local_value(idx: String) -> Variant:

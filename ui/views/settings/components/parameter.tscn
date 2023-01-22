@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=3 uid="uid://bk3p7yrwydwbs"]
+
+[ext_resource type="Script" path="res://ui/views/settings/components/parameter.gd" id="1_1k3mw"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_mj8hq"]
+font_size = 12
+font_color = Color(0.7, 0.7, 0.7, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_u048o"]
+font_size = 12
+font_color = Color(1, 0.862745, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fphtq"]
+font_size = 12
+font_color = Color(1, 0.0784314, 0, 1)
+
+[node name="Parameter" type="MarginContainer"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -43.0
+offset_bottom = 43.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+script = ExtResource("1_1k3mw")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Parameter name"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="DescriptionLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Detailled parameter description"
+label_settings = SubResource("LabelSettings_mj8hq")
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="WarningLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Regular importance warning"
+label_settings = SubResource("LabelSettings_u048o")
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ImportantWarningLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Critical importance warning"
+label_settings = SubResource("LabelSettings_fphtq")
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+allow_greater = true
+allow_lesser = true

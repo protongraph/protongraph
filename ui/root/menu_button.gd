@@ -23,6 +23,7 @@ func _ready() -> void:
 	popup.add_icon_item(_save_icon, "Save Copy As", 12)
 	popup.add_icon_item(_save_icon, "Save All", 14)
 	popup.add_separator()
+	popup.add_icon_item(_load_icon, "Browse examples", 17)
 	popup.add_icon_item(_settings_icon, "Settings", 20)
 	popup.add_separator()
 	popup.add_icon_item(_close_icon, "Quit", 30)
@@ -45,6 +46,8 @@ func _on_id_pressed(id) -> void:
 			GlobalEventBus.save_graph_as.emit(_current_graph)
 		14:
 			GlobalEventBus.save_all.emit()
+		17:
+			GlobalEventBus.browse_examples.emit()
 		20:
 			GlobalEventBus.open_settings.emit()
 		30:

@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://dg0pdmbvync0j"]
+
+[ext_resource type="Script" path="res://ui/views/examples/examples_view.gd" id="1_qar3x"]
+
+[node name="ExamplesView" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_qar3x")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Under construction"
+horizontal_alignment = 1
