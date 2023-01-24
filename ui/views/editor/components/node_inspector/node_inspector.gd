@@ -36,7 +36,8 @@ func _ready() -> void:
 func clear() -> void:
 	if is_instance_valid(_proton_node_ui):
 		_proton_node_ui.value_changed.disconnect(_on_node_value_changed)
-		_proton_node_ui.connection_changed.disconnect(_on_node_connection_changed)
+		_proton_node_ui.connection_changed.disconnect(_rebuild_ui_deferred)
+		_proton_node_ui.rebuilt.disconnect(_rebuild_ui_deferred)
 
 	_clear_ui()
 	_proton_node_ui = null
@@ -63,7 +64,8 @@ func display_node(node: ProtonNodeUi) -> void:
 	_documentation_panel.set_data(_proton_node.documentation)
 
 	_proton_node_ui.value_changed.connect(_on_node_value_changed)
-	_proton_node_ui.connection_changed.connect(_on_node_connection_changed)
+	_proton_node_ui.connection_changed.connect(_rebuild_ui_deferred)
+	_proton_node_ui.rebuilt.connect(_rebuild_ui_deferred)
 
 
 func _clear_ui() -> void:
@@ -141,6 +143,13 @@ func _rebuild_ui() -> void:
 	#_documentation_label.visible = _documentation.get_child_count() != 0
 
 
+# Rebuild the UI the next frame. Useful when a node has inputs mirroring
+# other sockets. Don't call it immediately or the slots data in the node
+# won't be up to date yet.
+func _rebuild_ui_deferred() -> void:
+	call_deferred("_rebuild_ui")
+
+
 func _on_node_deleted(node) -> void:
 	if node == _proton_node_ui:
 		clear()
@@ -152,13 +161,6 @@ func _on_node_value_changed(value, idx: String) -> void:
 		if child is InspectorProperty and MemoryUtil.is_equal(child.get_slot_index(), idx):
 			child.set_value(value)
 			return
-
-
-# Rebuild the UI the next frame. Useful when a node has inputs mirroring
-# other sockets. Don't call it immediately or the slots data in the node
-# won't be up to date yet.
-func _on_node_connection_changed() -> void:
-	call_deferred("_rebuild_ui")
 
 
 # Sync changes from the node inspector to the graphnode

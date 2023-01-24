@@ -8,8 +8,9 @@ func _init() -> void:
 	description = "Display the 3d output in the viewport"
 	leaf_node = true
 
-	create_input("data", "3D Objects", DataType.NODE_3D)
-	allow_multiple_connections_on_input_slot("data")
+	var opts := SlotOptions.new()
+	opts.allow_multiple_connections = true
+	create_input("data", "3D Objects", DataType.NODE_3D, opts)
 
 	documentation.add_paragraph("Displays objects in the 3D viewport below.")
 

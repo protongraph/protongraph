@@ -50,7 +50,7 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> voi
 		var opts_copy = opts.get_vector_options(vector_index).get_copy()
 
 		# Convert the option default value from Vector to float type if needed
-		if MemoryUtil.is_vector(opts.value):
+		if VectorUtil.is_vector(opts.value):
 			opts_copy.value = opts.value[vector_index]
 
 		s = UserInterfaceUtil.create_spinbox(vector_index, opts_copy)

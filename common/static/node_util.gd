@@ -33,3 +33,9 @@ static func remove_children(node: Node, free := true) -> void:
 		node.remove_child(child)
 		if free:
 			child.queue_free()
+
+
+static func remove_parent(node: Node) -> void:
+	var parent = node.get_parent()
+	if parent:
+		parent.remove_child(node)

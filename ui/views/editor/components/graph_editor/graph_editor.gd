@@ -40,7 +40,7 @@ func connect_node(from, from_port, to, to_port):
 		var from_node = get_node(NodePath(from))
 		var to_node = get_node(NodePath(to))
 		from_node.notify_output_connection_changed(int(from_port), true)
-		to_node.notify_input_connection_changed(int(to_port), true)
+		to_node.notify_input_connection_changed(int(to_port), true, from_node)
 	return err
 
 
@@ -77,7 +77,7 @@ func rebuild_ui() -> void:
 		var to_port := to.input_idx_to_port(c.to_idx)
 		connect_node(c.from, from_port, c.to, to_port)
 		from.notify_output_connection_changed(from_port, true)
-		to.notify_input_connection_changed(to_port, true)
+		to.notify_input_connection_changed(to_port, true, from)
 
 	await(get_tree().process_frame)
 

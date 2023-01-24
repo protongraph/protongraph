@@ -12,6 +12,7 @@ signal value_changed
 var label: Label
 var icon: TextureRect
 var icon_container: CenterContainer
+var ignored_overlay: TextureRect
 var index # As defined in the ProtonNode
 var slot: int # The GraphEdit slot (actual control row)
 var port: int # The GraphEdit port (consecutive enabled slots)
@@ -29,13 +30,20 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()):
 		icon_container = CenterContainer.new()
 		icon_container.add_child(icon)
 
+	if not ignored_overlay:
+		ignored_overlay = TextureRect.new()
+		ignored_overlay.texture = TextureUtil.get_texture("res://ui/icons/stripes.png")
+		ignored_overlay.stretch_mode = TextureRect.STRETCH_TILE
+		ignored_overlay.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		ignored_overlay.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		ignored_overlay.modulate = Color(Color.WHITE, 0.20)
+		ignored_overlay.visible = opts.ignored
+		add_child(ignored_overlay)
+
 	label.text = label_name
-	label.mouse_filter = Control.MOUSE_FILTER_PASS
-	icon.mouse_filter = Control.MOUSE_FILTER_PASS
 	icon.visible = opts.show_type_icon
 
 	size_flags_horizontal = SIZE_EXPAND_FILL
-	mouse_filter = Control.MOUSE_FILTER_PASS
 
 	if type != -1:
 		label.tooltip_text = DataType.get_type_name(type)

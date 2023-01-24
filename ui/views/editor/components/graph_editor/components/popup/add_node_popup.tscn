@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbnesvlod3m68"]
+[gd_scene load_steps=3 format=3 uid="uid://dbnesvlod3m68"]
 
 [ext_resource type="Script" path="res://ui/views/editor/components/graph_editor/components/popup/add_node_popup.gd" id="1_pu2oj"]
+[ext_resource type="Texture2D" uid="uid://bfn8ywnmrfrba" path="res://ui/icons/icon_reload.svg" id="2_3yg18"]
 
 [node name="AddNodePopup" type="PopupPanel"]
 disable_3d = true
@@ -36,6 +37,14 @@ theme_override_constants/separation = 8
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
+
+[node name="ReloadButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+tooltip_text = "Refresh node list"
+icon = ExtResource("2_3yg18")
+expand_icon = true
 
 [node name="Search" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true

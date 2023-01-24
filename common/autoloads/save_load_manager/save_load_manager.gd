@@ -20,7 +20,7 @@ func _ready():
 	add_child(_file_dialog)
 	_file_dialog.about_to_popup.connect(_toggle_overlay.bind(true))
 	_file_dialog.close_requested.connect(_toggle_overlay.bind(false))
-	_file_dialog.cancelled.connect(_toggle_overlay.bind(false))
+	_file_dialog.get_cancel_button().pressed.connect(_toggle_overlay.bind(false))
 
 	_black_overlay = preload("./ui/black_overlay.tscn").instantiate()
 	add_child(_black_overlay)

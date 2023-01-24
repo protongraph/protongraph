@@ -5,6 +5,7 @@ extends GraphNode
 
 signal value_changed(value, idx)
 signal connection_changed
+signal rebuilt
 
 
 var graph_editor: NodeGraphEditor
@@ -59,16 +60,32 @@ func rebuild_ui() -> void:
 
 	_populate_rows()
 	_setup_connection_slots()
+	rebuilt.emit()
 
 
-func notify_input_connection_changed(port: int, connected: bool) -> void:
+func notify_input_connection_changed(port: int, connected: bool, from_node: ProtonNodeUi = null) -> void:
+	# Get the associated UI component
 	var ui_component: GraphNodeUiComponent
 	for idx in _input_component_map:
 		if _input_component_map[idx].port == port:
 			ui_component = _input_component_map[idx]
 
-	ui_component.notify_connection_changed(connected)
-	_input_connections[ui_component.index] = connected
+	# Notify the component the connected has changed, this usually means
+	# the component will update the local value editor depending on the
+	# connection state
+	if ui_component:
+		ui_component.notify_connection_changed(connected)
+		_input_connections[ui_component.index] = connected
+
+	# Update the type mirroring if necessary
+	var input_idx := input_port_to_idx(port)
+	for output_idx in proton_node.outputs:
+		var output_slot: ProtonNodeSlot = proton_node.outputs[output_idx]
+		# Mirror type to output
+		if output_slot.mirror_type_from == input_idx:
+			output_slot.type = proton_node.inputs[input_idx].type
+
+
 	connection_changed.emit()
 
 
@@ -124,7 +141,7 @@ func is_multiple_connections_enabled_on_port(port: int) -> bool:
 	if not idx in proton_node.inputs:
 		return false
 
-	return proton_node.inputs[idx].allow_multiple_connections
+	return proton_node.inputs[idx].options.allow_multiple_connections
 
 
 func is_input_slot_connected(idx: String) -> bool:

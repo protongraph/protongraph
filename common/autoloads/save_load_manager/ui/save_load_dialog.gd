@@ -12,7 +12,7 @@ var _default_file_suggestion := "new_graph.tpgn"
 
 func _ready() -> void:
 	file_selected.connect(_on_file_selected)
-	cancelled.connect(_on_cancelled)
+	get_cancel_button().pressed.connect(_on_cancelled)
 	min_size = Vector2i(600, 400)
 	_remove_theme_overrides_recursive(self)
 	set_filters(PackedStringArray(["*.tpgn ; Text PGraphNode"]))

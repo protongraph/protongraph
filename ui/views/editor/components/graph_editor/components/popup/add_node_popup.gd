@@ -10,6 +10,7 @@ signal create_node_request
 @onready var _node_tree: Tree = $%NodeTree
 @onready var _create_button: Button = $%CreateButton
 @onready var _cancel_button: Button = $%CancelButton
+@onready var _reload_button: Button = $%ReloadButton
 @onready var _description_label: Label = $%DescriptionText
 @onready var _grouping_button: CheckBox = $%CheckBox
 @onready var _search: LineEdit = $%Search
@@ -28,6 +29,7 @@ func _ready() -> void:
 	_grouping_button.toggled.connect(_on_grouping_type_changed)
 	_create_button.pressed.connect(_on_item_activated)
 	_cancel_button.pressed.connect(hide)
+	_reload_button.pressed.connect(_on_reload_button_pressed)
 	_search.text_changed.connect(_on_search_text_changed)
 
 	_create_button.disabled = true
@@ -174,4 +176,9 @@ func _on_grouping_type_changed(_pressed):
 
 
 func _on_about_to_popup():
+	_refresh_nodes_list()
+
+
+func _on_reload_button_pressed() -> void:
+	NodeFactory.refresh_list()
 	_refresh_nodes_list()

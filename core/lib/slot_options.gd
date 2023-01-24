@@ -20,6 +20,9 @@ var show_type_icon := true
 var label_override := ""
 var ignored := false
 
+# Connections options
+var allow_multiple_connections := false
+
 # Scaling options
 var expand := false
 var compact_display := false

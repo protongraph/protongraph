@@ -86,7 +86,7 @@ func _on_local_value_changed(idx: String, value) -> void:
 	if idx != "op":
 		return
 
-	var slot_options: SlotOptions = inputs["op"].options # TODO: make a dedicated api?
+	var slot_options: SlotOptions = inputs["b"].options # TODO: make a dedicated api?
 	var operation: int = get_input_single("op", ADD)
 
 	if operation in [ABS, FLOOR, ROUND, CEIL]:

@@ -61,22 +61,17 @@ func restore_custom_data(_data: Dictionary) -> void:
 # connected to the input slot
 func enable_type_mirroring_on_slot(input_idx, output_idx) -> void:
 	if input_idx in inputs and output_idx in outputs:
-		var slot = outputs.output_index
-		slot.mirror_type_from = input_idx
-		slot.original_type = slot.type
+		var output_slot: ProtonNodeSlot = outputs[output_idx]
+		var input_slot: ProtonNodeSlot = inputs[input_idx]
+		output_slot.mirror_type_from = input_idx
+		output_slot.original_type = output_slot.type
 
 
 func disable_type_mirroring_on_slot(output_idx) -> void:
 	if output_idx in outputs:
-		var slot = outputs.output_idx
+		var slot: ProtonNodeSlot = outputs[output_idx]
 		slot.mirror_type_from = null
 		slot.type = slot.original_type
-
-
-# Allows multiple connections on the same input slot.
-func allow_multiple_connections_on_input_slot(idx: String, enabled := true) -> void:
-	if idx in inputs:
-		inputs[idx].allow_multiple_connections = enabled
 
 
 func set_local_value(idx: String, value: Variant) -> void:

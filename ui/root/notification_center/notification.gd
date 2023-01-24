@@ -14,6 +14,7 @@ func _ready() -> void:
 	_timer = Timer.new()
 	_timer.autostart = false
 	_timer.one_shot = true
+	add_child(_timer)
 
 	_timer.timeout.connect(_remove_notification)
 	_close.pressed.connect(_remove_notification)

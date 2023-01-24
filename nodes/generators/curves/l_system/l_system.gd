@@ -14,9 +14,13 @@ func _init() -> void:
 	description = "Create 3D curves from an L-System"
 
 	create_input("axiom", "Axiom", DataType.STRING, SlotOptions.new("F"))
-	create_input("rules", "Rules", DataType.STRING, SlotOptions.new("F=F[+F][-F]"))
 
-	var opts = SlotOptions.new()
+	var opts := SlotOptions.new()
+	opts.value = "F=F[+F][-F]"
+	opts.allow_multiple_connections = true
+	create_input("rules", "Rules", DataType.STRING, opts)
+
+	opts = SlotOptions.new()
 	opts.step = 1
 	opts.value = 2
 	opts.min_value = 1
@@ -37,7 +41,6 @@ func _init() -> void:
 	create_output("curve", "Curves", DataType.CURVE_3D)
 	create_output("str_system", "System", DataType.STRING)
 
-	allow_multiple_connections_on_input_slot("rules", true)
 
 
 func _generate_outputs() -> void:
