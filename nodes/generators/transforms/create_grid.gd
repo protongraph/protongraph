@@ -32,8 +32,8 @@ func _generate_outputs() -> void:
 	var spacing: Vector3 = get_input_single("spacing", Vector3.ONE)
 	spacing = VectorUtil.max_f(spacing, MIN_SPACING)
 
-	var reference: Node3D = get_input_single("reference_frame", Node3D.new())
-	var gt: Transform3D = reference.transform
+	var reference_frame: Node3D = get_input_single("reference_frame", Node3D.new())
+	var gt: Transform3D = reference_frame.transform
 
 	var half_size := size * 0.5
 	var start_corner := origin - half_size
@@ -47,7 +47,6 @@ func _generate_outputs() -> void:
 	var grid: Array[Node3D] = []
 	var node: Node3D
 	var pos: Vector3
-	var index := 0
 
 	for i in width * length:
 		for j in height:

@@ -42,12 +42,12 @@ static func clamp_f(vec, min_val: float, max_val: float):
 	return vec
 
 
-static func clamp_v(vec, min_v, max_v):
-	if not _check_validity(vec, min_v) or not _check_validity(vec, max_v):
+static func clamp_v(vec, min_val, max_val):
+	if not _check_validity(vec, min_val) or not _check_validity(vec, max_val):
 		return
 
 	for i in _get_count(vec):
-		vec[i] = clamp(vec[i], min_v[i], max_v[i])
+		vec[i] = clamp(vec[i], min_val[i], max_val[i])
 	return vec
 
 

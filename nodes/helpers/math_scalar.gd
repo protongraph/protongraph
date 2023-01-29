@@ -82,7 +82,7 @@ func _generate_outputs() -> void:
 	set_output("result", result)
 
 
-func _on_local_value_changed(idx: String, value) -> void:
+func _on_local_value_changed(idx: String, _value) -> void:
 	if idx != "op":
 		return
 

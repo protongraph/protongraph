@@ -126,4 +126,11 @@ func _load_graph(path: String) -> void:
 	graph.connections = file.get_value("graph_node", "connections", [])
 	graph.external_data = file.get_value("graph_node", "external_data", {})
 
+	# TODO:
+	# When loading partially failed (missing nodes), display a confirm dialog
+	# asking the user to either cancel, or load the graph without the missing
+	# nodes (and show a list of nodes that couldn't be loaded)
+	# If the user loads the partial graph, the connections array must first
+	# be cleaned up
+
 	GlobalEventBus.graph_loaded.emit(graph)

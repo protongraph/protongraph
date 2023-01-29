@@ -40,7 +40,6 @@ func _init() -> void:
 	p.set_description("Values above zero will round the associated corner")
 
 
-# TODO: handle rounded corners
 func _generate_outputs() -> void:
 	var width: float = get_input_single("width", 1.0)
 	var length: float = get_input_single("length", 1.0)

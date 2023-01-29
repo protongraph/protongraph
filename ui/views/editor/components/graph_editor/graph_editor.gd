@@ -72,8 +72,11 @@ func rebuild_ui() -> void:
 
 	for c in _graph.connections:
 		var from: ProtonNodeUi = get_node(NodePath(c.from))
-		var from_port := from.output_idx_to_port(c.from_idx)
 		var to: ProtonNodeUi = get_node(NodePath(c.to))
+		if not from or not to:
+			continue
+
+		var from_port := from.output_idx_to_port(c.from_idx)
 		var to_port := to.input_idx_to_port(c.to_idx)
 		connect_node(c.from, from_port, c.to, to_port)
 		from.notify_output_connection_changed(from_port, true)

@@ -92,6 +92,7 @@ func get_local_value(idx: String) -> Variant:
 # type (float, string)
 func get_input(idx: String, default = []) -> Array:
 	if not idx in inputs:
+		push_error("Error in ", type_id, ", Input ", idx, " was not defined")
 		return []
 
 	# Check if connected nodes on this input provided something.
@@ -122,6 +123,7 @@ func set_input(idx: String, value) -> void:
 		value = [value]
 
 	if not idx in inputs:
+		push_error("Invalid index: ", idx, " was not found in inputs")
 		return
 
 	inputs[idx].computed_value = value
@@ -135,12 +137,15 @@ func set_input(idx: String, value) -> void:
 
 # Called from the custom nodes when generating values
 func set_output(idx: String, value) -> void:
+	if not idx in outputs:
+		push_error("Invalid index: ", idx, " was not found in outputs")
+		return
+
 	if not value is Array:
 		value = [value]
 
-	if idx in outputs:
-		outputs[idx].computed_value = value
-		outputs[idx].computed_value_ready = true
+	outputs[idx].computed_value = value
+	outputs[idx].computed_value_ready = true
 
 
 func clear_values() -> void:

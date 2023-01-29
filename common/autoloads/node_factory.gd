@@ -39,6 +39,7 @@ func create(type_id: String) -> ProtonNode:
 	if type_id in _nodes:
 		return _nodes[type_id].duplicate()
 
+	push_error("Could not create a node of type ", type_id)
 	return null
 
 
@@ -89,14 +90,6 @@ func _find_all_nodes(path) -> void:
 		if not _is_node_valid(node):
 			MemoryUtil.safe_free(node)
 			continue
-
-		# If the interface is defined in a separate file, load it instead
-		# TODO: Redo this later. It's not the ProtonNode responsibility to provide this info
-#		if node.has_custom_gui():
-#			var scene = load(path_root + file.replace(".gd", ".tscn"))
-#			if not scene is PackedScene:
-#				continue # Scene file does not exists
-#			node = scene.instantiate()
 
 		_nodes[node.type_id] = node
 		_node_search_index[node.title] = node.type_id

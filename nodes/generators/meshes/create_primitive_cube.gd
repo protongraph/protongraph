@@ -43,6 +43,7 @@ func _generate_outputs() -> void:
 	cube.subdivide_depth = int(subdivision.z)
 
 	var mesh_instance := MeshInstance3D.new()
-	mesh_instance.mesh = cube
+	mesh_instance.name = "Cube"
+	mesh_instance.mesh = ProtonMesh.create_from_primitive(cube)
 
 	set_output("cube", mesh_instance)

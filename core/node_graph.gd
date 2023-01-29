@@ -72,7 +72,7 @@ func disconnect_node(from: StringName, from_idx, to: StringName, to_idx) -> void
 	for c in connections:
 		if c.from == from and c.from_idx == from_idx and c.to == to and c.to_idx == to_idx:
 			connections.erase(c)
-			return
+			break
 	graph_changed.emit()
 
 
