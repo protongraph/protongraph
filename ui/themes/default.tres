@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=71 format=3 uid="uid://ckiydn4300lug"]
+[gd_resource type="Theme" load_steps=73 format=3 uid="uid://ckiydn4300lug"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fofou"]
 
@@ -296,6 +296,9 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bjinb"]
+bg_color = Color(0.137255, 0.156863, 0.180392, 0.627451)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whune"]
 bg_color = Color(0.0235294, 0.0235294, 0.0313726, 0.627451)
 corner_radius_top_left = 4
@@ -437,6 +440,18 @@ content_margin_left = 6.0
 content_margin_top = 4.0
 content_margin_right = 6.0
 content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5wy5b"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.0235294, 0.0235294, 0.0313726, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_size = 3
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6tj57"]
 
@@ -604,6 +619,8 @@ MenuButton/styles/normal = SubResource("StyleBoxEmpty_eu81w")
 MenuButton/styles/pressed = SubResource("StyleBoxFlat_6n518")
 Panel/styles/panel = SubResource("StyleBoxFlat_ljame")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_qsd56")
+PanelContainerHeader/base_type = &"PanelContainer"
+PanelContainerHeader/styles/panel = SubResource("StyleBoxFlat_bjinb")
 PanelContainerTransparent/base_type = &"PanelContainer"
 PanelContainerTransparent/styles/panel = SubResource("StyleBoxFlat_whune")
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_5o1p4")
@@ -634,6 +651,7 @@ TextEdit/colors/selection_color = Color(0.54902, 0.694118, 1, 0.176471)
 TextEdit/styles/focus = SubResource("StyleBoxEmpty_b0gpn")
 TextEdit/styles/normal = SubResource("StyleBoxFlat_uxggp")
 TextEdit/styles/read_only = SubResource("StyleBoxEmpty_ndbrb")
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_5wy5b")
 Tree/colors/children_hl_line_color = Color(1, 1, 1, 0.156863)
 Tree/colors/font_color = Color(0.87451, 0.87451, 0.87451, 1)
 Tree/colors/guide_color = Color(0.698039, 0.698039, 0.698039, 0)

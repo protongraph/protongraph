@@ -16,6 +16,7 @@
 + Single active and Mute nodes
 + Dropping a node on a (valid) connection auto connects it
 + Boolean input checkbox isn't visible enough on the nodes background
++ Save viewport camera position
 
 ## Nodes
 + Port back all the nodes

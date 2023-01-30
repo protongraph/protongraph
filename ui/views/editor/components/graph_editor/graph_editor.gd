@@ -40,7 +40,7 @@ func connect_node(from, from_port, to, to_port):
 		var from_node = get_node(NodePath(from))
 		var to_node = get_node(NodePath(to))
 		from_node.notify_output_connection_changed(int(from_port), true)
-		to_node.notify_input_connection_changed(int(to_port), true, from_node)
+		to_node.notify_input_connection_changed(int(to_port), true)
 	return err
 
 
@@ -78,9 +78,7 @@ func rebuild_ui() -> void:
 
 		var from_port := from.output_idx_to_port(c.from_idx)
 		var to_port := to.input_idx_to_port(c.to_idx)
-		connect_node(c.from, from_port, c.to, to_port)
-		from.notify_output_connection_changed(from_port, true)
-		to.notify_input_connection_changed(to_port, true, from)
+		self.connect_node(c.from, from_port, c.to, to_port)
 
 	await(get_tree().process_frame)
 
@@ -116,6 +114,40 @@ func disconnect_outputs(node: ProtonNodeUi, port: int):
 	for c in get_connection_list():
 		if c.from == node.name and c.from_port == port:
 			self.disconnect_node(c.from, c.from_port, c.to, c.to_port)
+
+
+func get_left_connected(node: ProtonNodeUi, port: int) -> Array[Dictionary]:
+	var res: Array[Dictionary] = []
+	for c in get_connection_list():
+		if c.to == node.name and c.to_port == port:
+			res.push_back({
+				"node": get_node(NodePath(c.from)),
+				"port": c.from_port,
+			})
+	return res
+
+
+func get_right_connected(node: ProtonNodeUi, port: int) -> Array[Dictionary]:
+	var res: Array[Dictionary] = []
+	for c in get_connection_list():
+		if c.from == node.name and c.from_port == port:
+			res.push_back({
+				"node": get_node(NodePath(c.to)),
+				"port": c.to_port,
+			})
+	return res
+
+
+func get_right_connected_flat(node: ProtonNodeUi, port: int = -1) -> Array[ProtonNodeUi]:
+	var res: Array[ProtonNodeUi] = []
+	for c in get_connection_list():
+		if c.from != node.name:
+			continue
+
+		if c.from_port == port or port == -1:
+			res.push_back(get_node(NodePath(c.to)))
+
+	return res
 
 
 func _create_proton_node_ui(proton_node: ProtonNode) -> void:

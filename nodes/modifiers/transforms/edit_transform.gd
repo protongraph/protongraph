@@ -9,11 +9,13 @@ func _init() -> void:
 
 	var opts := SlotOptions.new()
 	opts.allow_multiple_connections = true
-	create_input("in", "Nodes", DataType.NODE_3D, opts)
+	create_input("in", "Instances", DataType.NODE_3D, opts)
 	create_input("position", "Position", DataType.VECTOR3)
 	create_input("rotation", "Rotation", DataType.VECTOR3)
 	create_input("scale", "Scale", DataType.VECTOR3, SlotOptions.new(Vector3.ONE))
-	create_output("out", "", DataType.NODE_3D)
+	create_output("out", "Instances", DataType.NODE_3D)
+
+	enable_type_mirroring_on_slot("in", "out")
 
 
 func _generate_outputs() -> void:

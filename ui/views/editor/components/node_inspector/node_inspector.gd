@@ -147,7 +147,7 @@ func _rebuild_ui() -> void:
 # other sockets. Don't call it immediately or the slots data in the node
 # won't be up to date yet.
 func _rebuild_ui_deferred() -> void:
-	call_deferred("_rebuild_ui")
+	_rebuild_ui.call_deferred()
 
 
 func _on_node_deleted(node) -> void:
@@ -158,7 +158,7 @@ func _on_node_deleted(node) -> void:
 # Sync changes from the graph node to the side bar
 func _on_node_value_changed(value, idx: String) -> void:
 	for child in _inputs.get_children():
-		if child is InspectorProperty and MemoryUtil.is_equal(child.get_slot_index(), idx):
+		if child is InspectorProperty and child.get_slot_index() == idx:
 			child.set_value(value)
 			return
 

@@ -15,20 +15,20 @@ extends ProgressBar
 @onready var _edit_popup: PopupPanel = $EditPopup
 
 
-var _clicked := false
+var _pressed := false
 var _acc := 0.0
 var _previous_value := 0.0
 var _is_edited := false
 var _step := 0.1
 
-var _bg = preload("styles/progress_bar_bg.tres")
-var _bg_top = preload("styles/progress_bar_bg_top.tres")
-var _bg_middle = preload("styles/progress_bar_bg_middle.tres")
-var _bg_bottom = preload("styles/progress_bar_bg_bottom.tres")
-var _fg = preload("styles/progress_bar_fg.tres")
-var _fg_top = preload("styles/progress_bar_fg_top.tres")
-var _fg_middle = preload("styles/progress_bar_fg_middle.tres")
-var _fg_bottom = preload("styles/progress_bar_fg_bottom.tres")
+var _bg := preload("styles/progress_bar_bg.tres")
+var _bg_top := preload("styles/progress_bar_bg_top.tres")
+var _bg_middle := preload("styles/progress_bar_bg_middle.tres")
+var _bg_bottom := preload("styles/progress_bar_bg_bottom.tres")
+var _fg := preload("styles/progress_bar_fg.tres")
+var _fg_top := preload("styles/progress_bar_fg_top.tres")
+var _fg_middle := preload("styles/progress_bar_fg_middle.tres")
+var _fg_bottom := preload("styles/progress_bar_fg_bottom.tres")
 
 
 func _ready() -> void:
@@ -166,14 +166,14 @@ func _on_value_gui_input(event) -> void:
 		return
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		_clicked = event.pressed
+		_pressed = event.pressed
 		_acc = 0.0
-		if _clicked:
+		if _pressed:
 			_previous_value = value
 		else:
 			_create_undo_redo_action(value, _previous_value)
 
-	elif event is InputEventMouseMotion and _clicked:
+	elif event is InputEventMouseMotion and _pressed:
 		if sign(_acc) != sign(event.relative.x):
 			_acc = 0.0
 

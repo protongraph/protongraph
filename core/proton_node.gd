@@ -24,23 +24,34 @@ var extras: Dictionary
 
 
 func create_input(idx: String, name: String, type: int, options := SlotOptions.new()) -> void:
+	if not _slot_creation_check(idx, inputs):
+		return
+
 	var input = ProtonNodeSlot.new()
 	input.name = name
 	input.type = type
+	input.original_type = type
 	input.local_value = null
 	input.options = options
 	inputs[idx] = input
 
 
 func create_output(idx: String, name: String, type: int, options := SlotOptions.new()) -> void:
+	if not _slot_creation_check(idx, outputs):
+		return
+
 	var output = ProtonNodeSlot.new()
 	output.name = name
 	output.type = type
+	output.original_type = type
 	output.options = options
 	outputs[idx] = output
 
 
 func create_extra(idx: String, name: String, type: int, options := SlotOptions.new()) -> void:
+	if not _slot_creation_check(idx, extras):
+		return
+
 	var extra = ProtonNodeSlot.new()
 	extra.name = name
 	extra.type = type
@@ -62,16 +73,23 @@ func restore_custom_data(_data: Dictionary) -> void:
 func enable_type_mirroring_on_slot(input_idx, output_idx) -> void:
 	if input_idx in inputs and output_idx in outputs:
 		var output_slot: ProtonNodeSlot = outputs[output_idx]
-		var input_slot: ProtonNodeSlot = inputs[input_idx]
 		output_slot.mirror_type_from = input_idx
-		output_slot.original_type = output_slot.type
+
+		var input_slot: ProtonNodeSlot = inputs[input_idx]
+		input_slot.mirror_type_to.push_back(output_idx)
 
 
 func disable_type_mirroring_on_slot(output_idx) -> void:
 	if output_idx in outputs:
-		var slot: ProtonNodeSlot = outputs[output_idx]
-		slot.mirror_type_from = null
-		slot.type = slot.original_type
+		var output_slot: ProtonNodeSlot = outputs[output_idx]
+		var input_idx: String = output_slot.mirror_type_from
+		output_slot.mirror_type_from = ""
+		output_slot.type = output_slot.original_type
+
+		var input_slot: ProtonNodeSlot = inputs[input_idx]
+		input_slot.mirror_type_to.erase(output_idx)
+		if input_slot.mirror_type_to.is_empty():
+			input_slot.type = input_slot.original_type
 
 
 func set_local_value(idx: String, value: Variant) -> void:
@@ -175,6 +193,18 @@ func is_output_ready(idx = null) -> bool:
 		return false
 
 	return outputs[idx].computed_value_ready
+
+
+func _slot_creation_check(idx: String, map: Dictionary) -> bool:
+	if idx.is_empty():
+		push_error("Cannot create slot with an empty id.")
+		return false
+
+	if idx in map:
+		push_error("Slot id ", idx, " already exists, aborting.")
+		return false
+
+	return true
 
 
 # Overide this function in the derived classes to return something usable.

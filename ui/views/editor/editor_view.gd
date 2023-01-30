@@ -41,7 +41,7 @@ func edit(graph: NodeGraph) -> void:
 
 func rebuild() -> void:
 	_viewport.clear()
-	_graph.rebuild()
+	_graph.clean_rebuild()
 
 
 func get_edited_graph() -> NodeGraph:

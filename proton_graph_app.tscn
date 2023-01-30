@@ -1,12 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://clf75fl1jt5r0"]
+[gd_scene load_steps=8 format=3 uid="uid://dj1nkkd858xcc"]
 
-[ext_resource type="Theme" uid="uid://ckiydn4300lug" path="res://ui/themes/default.tres" id="1_ay0nm"]
-[ext_resource type="Texture2D" uid="uid://cbbh53a0sbqka" path="res://ui/icons/icon_menu.svg" id="1_lh0uq"]
-[ext_resource type="Script" path="res://proton_graph.gd" id="2_aiyx6"]
-[ext_resource type="Script" path="res://ui/root/menu_button.gd" id="3_llsfr"]
-[ext_resource type="PackedScene" uid="uid://krqgsakt0ufw" path="res://ui/views/welcome/welcome_view.tscn" id="4_3anom"]
-[ext_resource type="Script" path="res://ui/root/view_container.gd" id="4_fkmym"]
-[ext_resource type="PackedScene" uid="uid://cqn70yjq7ejnf" path="res://ui/root/notification_center/notification_center.tscn" id="7_hbfc7"]
+[ext_resource type="Theme" uid="uid://ckiydn4300lug" path="res://ui/themes/default.tres" id="1_khixk"]
+[ext_resource type="Script" path="res://proton_graph_app.gd" id="2_en3mi"]
+[ext_resource type="Texture2D" uid="uid://cbbh53a0sbqka" path="res://ui/icons/icon_menu.svg" id="3_pqiiq"]
+[ext_resource type="Script" path="res://ui/root/menu_button.gd" id="4_cv0ou"]
+[ext_resource type="Script" path="res://ui/root/view_container.gd" id="5_7obkg"]
+[ext_resource type="PackedScene" uid="uid://krqgsakt0ufw" path="res://ui/views/welcome/welcome_view.tscn" id="6_kcqf0"]
+[ext_resource type="PackedScene" uid="uid://cqn70yjq7ejnf" path="res://ui/root/notification_center/notification_center.tscn" id="7_30aiq"]
 
 [node name="ProtonGraph" type="PanelContainer"]
 anchors_preset = 15
@@ -14,8 +14,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_ay0nm")
-script = ExtResource("2_aiyx6")
+theme = ExtResource("1_khixk")
+script = ExtResource("2_en3mi")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -39,10 +39,10 @@ layout_mode = 2
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
-icon = ExtResource("1_lh0uq")
+icon = ExtResource("3_pqiiq")
 flat = false
 expand_icon = true
-script = ExtResource("3_llsfr")
+script = ExtResource("4_cv0ou")
 
 [node name="TabBar" type="TabBar" parent="VBoxContainer/MarginContainer/TopBar"]
 layout_mode = 2
@@ -57,11 +57,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 clip_tabs = false
 tabs_visible = false
-script = ExtResource("4_fkmym")
+script = ExtResource("5_7obkg")
 tab_bar = NodePath("../MarginContainer/TopBar/TabBar")
 
-[node name="Welcome" parent="VBoxContainer/ViewContainer" instance=ExtResource("4_3anom")]
+[node name="Welcome" parent="VBoxContainer/ViewContainer" instance=ExtResource("6_kcqf0")]
 layout_mode = 2
 
-[node name="NotificationCenter" parent="." instance=ExtResource("7_hbfc7")]
+[node name="NotificationCenter" parent="." instance=ExtResource("7_30aiq")]
 layout_mode = 2

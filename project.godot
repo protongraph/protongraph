@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ProtonGraph"
-run/main_scene="res://proton_graph.tscn"
+run/main_scene="res://proton_graph_app.tscn"
 config/features=PackedStringArray("4.0")
 boot_splash/image="res://ui/icons/splash.png"
 boot_splash/fullsize=false

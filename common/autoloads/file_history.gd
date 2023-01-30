@@ -23,21 +23,20 @@ func get_list() -> Array[String]:
 
 
 func _load_or_create_file_history() -> void:
-	var dir = DirAccess.open("user://")
-	if dir.file_exists(HISTORY_PATH):
-		_load_file_history()
-	else:
+	if not _load_file_history():
 		_save_file_history()
 	_initialized = true
 
 
-func _load_file_history() -> void:
+func _load_file_history() -> bool:
 	var file = ConfigFile.new()
 	var err = file.load(HISTORY_PATH)
 	if err != OK:
-		return
+		push_warning("Could not load recent file history. Code: ", err)
+		return false
 
 	_history = file.get_value("history", "list", [])
+	return true
 
 
 func _save_file_history() -> void:

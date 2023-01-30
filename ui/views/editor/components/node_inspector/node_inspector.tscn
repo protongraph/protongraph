@@ -64,49 +64,68 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "[Node name]"
 
-[node name="InputsLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer/MarginContainer/Properties"]
+layout_mode = 2
+theme_type_variation = &"PanelContainerHeader"
+
+[node name="InputsLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 text = "Inputs"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Inputs" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="OutputsLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
+[node name="PanelContainer2" type="PanelContainer" parent="ScrollContainer/MarginContainer/Properties"]
+layout_mode = 2
+theme_type_variation = &"PanelContainerHeader"
+
+[node name="OutputsLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties/PanelContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 text = "Outputs"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Outputs" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="ExtrasLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
+[node name="PanelContainer3" type="PanelContainer" parent="ScrollContainer/MarginContainer/Properties"]
+layout_mode = 2
+theme_type_variation = &"PanelContainerHeader"
+
+[node name="ExtrasLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties/PanelContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 text = "Extras"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Extras" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="DocumentationLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties"]
+[node name="PanelContainer4" type="PanelContainer" parent="ScrollContainer/MarginContainer/Properties"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_type_variation = &"PanelContainerHeader"
+
+[node name="DocumentationLabel" type="Label" parent="ScrollContainer/MarginContainer/Properties/PanelContainer4"]
+layout_mode = 2
 text = "Documentation"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DocumentationPanel" type="RichTextLabel" parent="ScrollContainer/MarginContainer/Properties"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-fit_content_height = true
 scroll_active = false
 script = ExtResource("2_br1pm")

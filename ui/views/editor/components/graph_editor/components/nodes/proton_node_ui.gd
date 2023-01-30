@@ -29,6 +29,7 @@ func _ready() -> void:
 	resizable = true
 	position_offset_changed.connect(_on_position_offset_changed)
 	resize_request.connect(_on_resize_request)
+	connection_changed.connect(_on_connection_changed)
 
 
 func _exit_tree():
@@ -63,7 +64,7 @@ func rebuild_ui() -> void:
 	rebuilt.emit()
 
 
-func notify_input_connection_changed(port: int, connected: bool, from_node: ProtonNodeUi = null) -> void:
+func notify_input_connection_changed(port: int, connected: bool) -> void:
 	# Get the associated UI component
 	var ui_component: GraphNodeUiComponent
 	for idx in _input_component_map:
@@ -76,15 +77,6 @@ func notify_input_connection_changed(port: int, connected: bool, from_node: Prot
 	if ui_component:
 		ui_component.notify_connection_changed(connected)
 		_input_connections[ui_component.index] = connected
-
-	# Update the type mirroring if necessary
-	var input_idx := input_port_to_idx(port)
-	for output_idx in proton_node.outputs:
-		var output_slot: ProtonNodeSlot = proton_node.outputs[output_idx]
-		# Mirror type to output
-		if output_slot.mirror_type_from == input_idx:
-			output_slot.type = proton_node.inputs[input_idx].type
-
 
 	connection_changed.emit()
 
@@ -106,6 +98,8 @@ func notify_output_connection_changed(port: int, connected: bool) -> void:
 func set_local_value(idx, value) -> void:
 	if idx in _input_component_map:
 		_input_component_map[idx].set_value(value)
+
+	_on_local_value_changed(value, idx)
 
 
 func set_slot_visibility(type: String, idx: String, slot_visible: bool) -> void:
@@ -345,3 +339,47 @@ func _on_local_value_changed(value, idx) -> void:
 func _on_resize_request(new_min_size) -> void:
 	size = new_min_size
 	proton_node.external_data.size = new_min_size
+
+
+# Update slots type mirrorring
+func _on_connection_changed() -> void:
+	var type_changed := false
+
+	for input_idx in proton_node.inputs:
+		var input_slot: ProtonNodeSlot = proton_node.inputs[input_idx]
+
+		if not input_slot.is_mirroring_enabled():
+			continue
+
+		# Mirroring is enabled, get the connected nodes to this slot (if any)
+		var input_port := input_idx_to_port(input_idx)
+		var left_connected: Array[Dictionary] = graph_editor.get_left_connected(self, input_port)
+		var new_type = input_slot.original_type
+
+		# If something is connected, retrieve its output slot type
+		if not left_connected.is_empty():
+			var data: Dictionary = left_connected[0]
+			var left_node: ProtonNodeUi = data["node"]
+			var output_idx = left_node.output_port_to_idx(data["port"])
+			new_type = left_node.proton_node.outputs[output_idx].type
+
+		# Skip if the incomming type already matches the current type
+		if new_type == input_slot.type:
+			continue
+
+		# Apply the new type and propagate to the mirrored outputs
+		input_slot.type = new_type
+		type_changed = true
+
+		for output_idx in input_slot.mirror_type_to:
+			var output_slot: ProtonNodeSlot = proton_node.outputs[output_idx]
+			output_slot.type = new_type
+
+	if type_changed:
+		# Update the slots
+		_setup_connection_slots()
+
+		# Propagate changes to the right connected nodes
+		var right_connected: Array[ProtonNodeUi] = graph_editor.get_right_connected_flat(self)
+		for node in right_connected:
+			node.connection_changed.emit()

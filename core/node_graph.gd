@@ -79,6 +79,7 @@ func disconnect_node(from: StringName, from_idx, to: StringName, to_idx) -> void
 func clean_rebuild() -> void:
 	for node in nodes.values():
 		node.clear_values()
+	rebuild()
 
 
 func rebuild() -> void:
@@ -120,14 +121,14 @@ func _get_unique_name(node: ProtonNode) -> String:
 	return unique_name
 
 
-func _get_left_connected_flat(node: ProtonNode, idx = null) -> Array[ProtonNode]:
+func _get_left_connected_flat(node: ProtonNode, idx: String = "") -> Array[ProtonNode]:
 	var res: Array[ProtonNode] = []
 
 	for c in connections:
 		if c.to != node.unique_name:
 			continue
 
-		if idx == null or idx == c.to_idx:
+		if idx.is_empty() or idx == c.to_idx:
 			var n = nodes[c.from]
 			if not n in res:
 				res.push_back(nodes[c.from])
@@ -135,18 +136,18 @@ func _get_left_connected_flat(node: ProtonNode, idx = null) -> Array[ProtonNode]
 	return res
 
 
-func _get_right_connected_flat(node: ProtonNode, idx = null) -> Array[ProtonNode]:
+func _get_right_connected_flat(node: ProtonNode, idx: String = "") -> Array[ProtonNode]:
 	var res: Array[ProtonNode] = []
 
 	for c in connections:
 		if c.from == node.unique_name:
-			if idx == null or idx == c.from_idx:
+			if idx.is_empty() or idx == c.from_idx:
 				res.push_back(nodes[c.from])
 
 	return res
 
 
-func _get_right_connected(node: ProtonNode, idx) -> Array[Dictionary]:
+func _get_right_connected(node: ProtonNode, idx: String) -> Array[Dictionary]:
 	var res: Array[Dictionary] = []
 
 	for c in connections:

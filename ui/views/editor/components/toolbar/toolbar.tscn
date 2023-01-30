@@ -61,6 +61,7 @@ script = ExtResource("1_nv6t2")
 [node name="Create" type="Button" parent="."]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+tooltip_text = "Add node"
 focus_mode = 0
 shortcut = SubResource("Shortcut_7a4a0")
 icon = ExtResource("1_3snf8")
@@ -70,6 +71,7 @@ expand_icon = true
 [node name="Rebuild" type="Button" parent="."]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+tooltip_text = "Rebuild"
 focus_mode = 0
 shortcut = SubResource("Shortcut_u82ac")
 icon = ExtResource("3_hmxyg")
@@ -82,6 +84,7 @@ layout_mode = 2
 [node name="Save" type="Button" parent="."]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+tooltip_text = "Save current graph"
 focus_mode = 0
 shortcut = SubResource("Shortcut_t10ax")
 icon = ExtResource("2_on6in")
@@ -94,6 +97,7 @@ layout_mode = 2
 [node name="ToggleGraphInspector" type="Button" parent="."]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+tooltip_text = "Toggle graph inspector"
 focus_mode = 0
 shortcut = SubResource("Shortcut_qvlb1")
 icon = ExtResource("4_kshbb")
@@ -103,6 +107,7 @@ expand_icon = true
 [node name="ToggleNodeInspector" type="Button" parent="."]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+tooltip_text = "Toggle node inspector"
 focus_mode = 0
 shortcut = SubResource("Shortcut_5mcor")
 icon = ExtResource("5_gt8pn")
@@ -112,6 +117,7 @@ expand_icon = true
 [node name="ToggleGraphEditor" type="Button" parent="."]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+tooltip_text = "Toggle graph editor"
 focus_mode = 0
 shortcut = SubResource("Shortcut_noixo")
 icon = ExtResource("6_efu6l")
@@ -121,6 +127,7 @@ expand_icon = true
 [node name="ToggleViewport" type="Button" parent="."]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+tooltip_text = "Toggle 3D viewport"
 focus_mode = 0
 shortcut = SubResource("Shortcut_03n1u")
 icon = ExtResource("7_8e4pu")
