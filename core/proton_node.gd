@@ -137,14 +137,16 @@ func get_input_single(idx: String, default = null):
 # Called from the parent graph when  passing values from previous
 # nodes to this one
 func set_input(idx: String, value) -> void:
-	if not value is Array:
-		value = [value]
-
 	if not idx in inputs:
 		push_error("Invalid index: ", idx, " was not found in inputs")
 		return
 
-	inputs[idx].computed_value = value
+	if not value is Array:
+		value = [value]
+
+	# Append the value to the existing one in case multiple nodes are connected
+	# to this same input
+	inputs[idx].computed_value.append_array(value)
 	inputs[idx].computed_value_ready = true
 
 	# Reset the outputs which are no longer valid

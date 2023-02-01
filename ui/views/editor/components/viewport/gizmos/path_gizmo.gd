@@ -5,7 +5,6 @@ extends AbstractGizmo
 # TODO: edit handle support
 
 
-var editable := false
 var use_immediate_geometry := false
 
 var _target: Path3D

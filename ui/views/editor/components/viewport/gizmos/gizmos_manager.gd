@@ -16,14 +16,24 @@ func set_selected(node: Node3D, _editable := false) -> void:
 
 
 func add_gizmo_for(node):
+	var gizmo: AbstractGizmo
+
 	if node is Path3D:
-		var gizmo := Path3DGizmo.new()
-		gizmo.enable_for(node)
-		add_child(gizmo)
-		if _instanced_gizmos.has(node):
-			_instanced_gizmos[node].push_back(gizmo)
-		else:
-			_instanced_gizmos[node] = [gizmo]
+		gizmo = Path3DGizmo.new()
+
+	elif node is Polyline3D:
+		gizmo = Polyline3DGizmo.new()
+
+	else:
+		return
+
+	gizmo.enable_for(node)
+	add_child(gizmo)
+
+	if _instanced_gizmos.has(node):
+		_instanced_gizmos[node].push_back(gizmo)
+	else:
+		_instanced_gizmos[node] = [gizmo]
 
 
 func _on_node_removed(node: Node):

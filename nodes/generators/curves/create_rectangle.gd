@@ -122,6 +122,7 @@ func _generate_outputs() -> void:
 	curve.add_point(t * pos, t * v_in, t * v_out)
 
 	var path = Path3D.new()
+	path.name = "Rectangle"
 	path.curve = curve
 	path.position = origin
 

@@ -162,7 +162,7 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 shadow_color = Color(0.678431, 0.780392, 1, 0.0784314)
-shadow_size = 6
+shadow_size = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nidw8"]
 bg_color = Color(0.678431, 0.780392, 1, 0.470588)

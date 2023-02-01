@@ -1,33 +1,40 @@
 class_name StringComponent
-extends GenericInputComponent
+extends GraphNodeUiComponent
 
-
-var template_path: String
 
 var _line_edit: LineEdit
 var _file_dialog: FileDialog
-var _compact_display := false	# TODO: only show the file name in the unselected line_edit if this is true
+
+# TODO: only show the file name in the unselected line_edit if opts.compact_display is enabled
 
 
 func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> void:
 	super(label_name, type, opts)
 
+	var col := VBoxContainer.new()
+	add_child(col)
+
+	var header_row := HBoxContainer.new()
+	header_row.add_child(icon_container)
+	header_row.add_child(label)
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if opts.is_file:
+		var folder_button = Button.new()
+		folder_button.icon = TextureUtil.get_texture("res://ui/icons/icon_folder.svg")
+		folder_button.pressed.connect(_show_file_dialog.bind(opts.file_mode, opts.file_filters))
+		header_row.add_child(folder_button)
+
+	col.add_child(header_row)
+
 	_line_edit = LineEdit.new()
-	add_ui(_line_edit)
-	_line_edit.custom_minimum_size.x = 120
+	_line_edit.custom_minimum_size.x = 40
 	_line_edit.size_flags_horizontal = SIZE_EXPAND_FILL
 	_line_edit.name = "LineEdit"
 	_line_edit.placeholder_text = opts.placeholder
 	_line_edit.expand_to_text_length = opts.expand
 	_line_edit.text = opts.value if opts.value is String else ""
-	_compact_display = opts.compact_display
 	_line_edit.text_changed.connect(_on_value_changed)
-
-	if opts.dialog_options:
-		var folder_button = Button.new()
-		folder_button.icon = TextureUtil.get_texture("res://ui/icons/icon_folder.svg")
-		folder_button.pressed.connect(_show_file_dialog.bind(opts.dialog_options))
-		add_ui(folder_button)
+	col.add_child(_line_edit)
 
 
 func get_value() -> String:
@@ -39,24 +46,24 @@ func set_value(value: String) -> void:
 
 
 # Shows a FileDialog window and write the selected path to the line_edit.
-func _show_file_dialog(opts: SlotOptions.DialogOptions) -> void:
+func _show_file_dialog(mode, filters: PackedStringArray) -> void:
 	if not _file_dialog:
 		_file_dialog = FileDialog.new()
 		add_child(_file_dialog)
+		UserInterfaceUtil.fix_popup_theme_recursive(_file_dialog)
 
-	_file_dialog.custom_minimum_size = Vector2(500, 500)
-	_file_dialog.mode = opts.mode
-	_file_dialog.resizable = true
+	_file_dialog.mode = mode
 	_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
-	_file_dialog.set_filters(opts.filters)
+	_file_dialog.set_filters(filters)
 
 	_file_dialog.file_selected.connect(_on_file_selected)
-	_file_dialog.popup_centered()
+	_file_dialog.popup_centered(Vector2i(720, 600))
 
 
 # Called from _show_file_dialog when confirming the selection
 func _on_file_selected(path) -> void:
-	_line_edit.text = PathUtil.get_relative_path(path, template_path)
+	_line_edit.text = path # PathUtil.get_relative_path(path, graph_path)
+	_on_value_changed(path)
 
 
 func _on_value_changed(val) -> void:

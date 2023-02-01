@@ -285,14 +285,20 @@ func _setup_connection_slots() -> void:
 	var slot: int
 	var ui: GraphNodeUiComponent
 	var type
+	var opts: SlotOptions
+	var slot_icon_multi := TextureUtil.get_texture("res://ui/icons/input_slot_multi.svg")
 
 	for idx in _input_component_map:
 		ui = _input_component_map[idx]
 		slot = ui.slot
 		type = proton_node.inputs[idx].type
+		opts = proton_node.inputs[idx].options
 		set_slot_enabled_left(slot, true)
 		set_slot_type_left(slot, type)
 		set_slot_color_left(slot, DataType.COLORS[type])
+
+		if opts.allow_multiple_connections:
+			set("slot/" + str(slot) + "/left_icon", slot_icon_multi)
 
 	for idx in _output_component_map:
 		ui = _output_component_map[idx]
@@ -314,6 +320,7 @@ func _update_frame_stylebox():
 
 	var selected_frame_style := current_theme.get_stylebox("selected_frame", "GraphNode").duplicate()
 	selected_frame_style.border_color = frame_style.border_color
+	selected_frame_style.shadow_color = frame_style.border_color
 	add_theme_stylebox_override("selected_frame", selected_frame_style)
 
 

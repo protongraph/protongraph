@@ -57,3 +57,13 @@ static func create_output_component(name: String, type: int, opts: SlotOptions) 
 	var component := GenericOutputComponent.new()
 	component.initialize(name, type, opts)
 	return component
+
+
+# Some nested Godot popups have a panel with a style box override that doesn't
+# fit with the rest of the theme, so we remove them here.
+static func fix_popup_theme_recursive(node) -> void:
+	for c in node.get_children(true):
+		if c is Panel:
+			c.remove_theme_stylebox_override("panel")
+
+		fix_popup_theme_recursive(c)

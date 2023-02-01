@@ -21,7 +21,7 @@ func _init() -> void:
 	create_input("reference_frame", "Reference frame", DataType.NODE_3D)
 	create_input("align_rotation", "Align rotation", DataType.BOOLEAN)
 
-	create_output("out", "Points", DataType.NODE_3D)
+	create_output("points", "Points", DataType.NODE_3D)
 
 
 func _generate_outputs() -> void:
@@ -63,5 +63,5 @@ func _generate_outputs() -> void:
 			node.transform.origin = gt * pos
 			grid.push_back(node)
 
-	set_output("out", grid)
+	set_output("points", grid)
 

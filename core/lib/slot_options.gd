@@ -28,7 +28,7 @@ var expand := false
 var compact_display := false
 
 # Number options
-var step: int = 1
+var step: float = 1
 var min_value: float = 0.0
 var max_value: float = 100.0
 var allow_lesser := true
@@ -53,11 +53,9 @@ var dropdown_items: Array[DropdownItem]
 var placeholder := "Text"
 
 # File options
-class DialogOptions:
-	var mode: FileDialog.FileMode
-	var filters: PackedStringArray
-
-var dialog_options: DialogOptions = null
+var is_file := false
+var file_mode: FileDialog.FileMode
+var file_filters: PackedStringArray
 
 # Custom UI
 var custom_ui: Control

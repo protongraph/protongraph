@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://ui/views/editor/components/graph_inspector/graph_inspector.gd" id="1_hjjfa"]
 
 [node name="GraphInspector" type="Control"]
-clip_children = 1
+clip_contents = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -14,7 +14,7 @@ func _ready() -> void:
 	file_selected.connect(_on_file_selected)
 	get_cancel_button().pressed.connect(_on_cancelled)
 	min_size = Vector2i(600, 400)
-	_remove_theme_overrides_recursive(self)
+	UserInterfaceUtil.fix_popup_theme_recursive(self)
 	set_filters(PackedStringArray(["*.tpgn ; Text PGraphNode"]))
 	access = FileDialog.ACCESS_FILESYSTEM
 
@@ -31,16 +31,6 @@ func show_save_dialog(suggestion := "") -> void:
 	file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	current_file = suggestion if not suggestion.is_empty() else _default_file_suggestion
 	popup_centered()
-
-
-# Some nested Godot popups have a panel with a style box override that doesn't
-# fit with the rest of my theme, so we remove them here.
-func _remove_theme_overrides_recursive(node) -> void:
-	for c in node.get_children(true):
-		if c is Panel:
-			c.remove_theme_stylebox_override("panel")
-
-		_remove_theme_overrides_recursive(c)
 
 
 func _on_file_selected(path: String) -> void:

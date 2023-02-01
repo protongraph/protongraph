@@ -6,6 +6,8 @@ signal gizmo_changed
 
 @export var gizmo_scale := 1.0
 
+var editable := false
+
 
 func enable_for(_node) -> void:
 	pass
