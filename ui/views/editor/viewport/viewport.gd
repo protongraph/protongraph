@@ -23,12 +23,28 @@ func clear() -> void:
 	_tree.update()
 
 
-func display(list: Array) -> void:
+func remove_nodes_with_id(id: String) -> void:
+	for c in _output_root.get_children():
+		if c.get_meta("source_id") == id:
+			c.queue_free()
+
+	_tree.update()
+
+
+func display(id: String, list: Array) -> void:
 	if not _output_root or not is_visible_in_tree():
+		return
+
+	# A same source can only have one set active at a time, otherwise we get
+	# duplicates in between rebuilds
+	remove_nodes_with_id(id)
+
+	if list.is_empty():
 		return
 
 	for node in list:
 		if is_instance_valid(node) and node is Node3D:
+			node.set_meta("source_id", id)
 			_output_root.add_child(node, true)
 			_gizmos_manager.add_gizmo_for(node)
 

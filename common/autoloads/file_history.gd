@@ -5,7 +5,7 @@ extends Node
 
 const HISTORY_PATH := "user://history.json"
 
-var _history: Array[String] = []
+var _history: Array[String]
 var _initialized := false
 
 
@@ -35,7 +35,7 @@ func _load_file_history() -> bool:
 		push_warning("Could not load recent file history. Code: ", err)
 		return false
 
-	_history = file.get_value("history", "list", [])
+	_history = file.get_value("history", "list", []) as Array[String]
 	return true
 
 

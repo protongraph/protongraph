@@ -1,10 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://djeep1msjomu8"]
+[gd_scene load_steps=11 format=3 uid="uid://dru6wp1xq8ngq"]
 
-[ext_resource type="Script" path="res://ui/views/editor/components/viewport/viewport.gd" id="1_mdwbn"]
-[ext_resource type="Script" path="res://ui/views/editor/components/viewport/components/camera.gd" id="2_it4fl"]
-[ext_resource type="Texture2D" uid="uid://de2387csdhf47" path="res://ui/views/editor/components/viewport/components/t_panorama_sky.png" id="2_p0kfs"]
-[ext_resource type="Script" path="res://ui/views/editor/components/viewport/gizmos/gizmos_manager.gd" id="4_6uoat"]
-[ext_resource type="Script" path="res://ui/views/editor/components/viewport/components/viewport_tree.gd" id="5_04xjp"]
+[ext_resource type="Script" path="res://ui/views/editor/viewport/viewport.gd" id="1_mdwbn"]
+[ext_resource type="Script" path="res://ui/views/editor/viewport/components/camera.gd" id="2_it4fl"]
+[ext_resource type="Texture2D" uid="uid://de2387csdhf47" path="res://ui/views/editor/viewport/components/t_panorama_sky.png" id="2_p0kfs"]
+[ext_resource type="Script" path="res://ui/views/editor/viewport/gizmos/gizmos_manager.gd" id="4_6uoat"]
+[ext_resource type="Script" path="res://ui/views/editor/viewport/components/viewport_tree.gd" id="5_04xjp"]
 [ext_resource type="Texture2D" uid="uid://dnt2hnxoc8map" path="res://ui/icons/icon_question_mark.svg" id="5_xtp6v"]
 [ext_resource type="Texture2D" uid="uid://cislafpj4011d" path="res://ui/icons/icon_camera.svg" id="6_6dlau"]
 
@@ -108,7 +108,6 @@ bbcode_enabled = true
 text = "[b]Orbit[/b]:[color=gray] Middle Click[/color]
 [b]Pan[/b]:[color=gray] Shift + Middle Click[/color]
 [b]Zoom[/b]:[color=gray] Scroll Up / Down[/color]"
-fit_content_height = true
 autowrap_mode = 0
 
 [node name="Toolbox" type="PanelContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]

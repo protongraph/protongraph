@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dbnesvlod3m68"]
+[gd_scene load_steps=3 format=3 uid="uid://8qmhlka1km76"]
 
-[ext_resource type="Script" path="res://ui/views/editor/components/graph_editor/components/popup/add_node_popup.gd" id="1_pu2oj"]
+[ext_resource type="Script" path="res://ui/views/editor/graph_editor/components/popup/add_node_popup.gd" id="1_pu2oj"]
 [ext_resource type="Texture2D" uid="uid://bfn8ywnmrfrba" path="res://ui/icons/icon_reload.svg" id="2_3yg18"]
 
 [node name="AddNodePopup" type="PopupPanel"]
@@ -12,7 +12,6 @@ visible = true
 transient = false
 unresizable = false
 borderless = false
-transparent = true
 script = ExtResource("1_pu2oj")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

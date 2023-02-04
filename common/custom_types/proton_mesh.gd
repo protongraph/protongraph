@@ -16,3 +16,10 @@ static func create_from_primitive(source: PrimitiveMesh) -> ProtonMesh:
 	proton_mesh.add_surface_from_arrays(PRIMITIVE_TRIANGLES, arrays)
 
 	return proton_mesh
+
+
+static func create_from_arrays(arrays) -> ProtonMesh:
+	var proton_mesh = ProtonMesh.new()
+	proton_mesh.add_surface_from_arrays(PRIMITIVE_TRIANGLES, arrays)
+
+	return proton_mesh

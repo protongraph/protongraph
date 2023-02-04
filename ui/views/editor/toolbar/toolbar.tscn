@@ -1,7 +1,7 @@
-[gd_scene load_steps=23 format=3 uid="uid://cmgx4u6v8yx1p"]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Texture2D" uid="uid://bxirq7eqdu5f0" path="res://ui/icons/icon_add.svg" id="1_3snf8"]
-[ext_resource type="Script" path="res://ui/views/editor/components/toolbar/toolbar.gd" id="1_nv6t2"]
+[ext_resource type="Script" path="res://ui/views/editor/toolbar/toolbar.gd" id="1_nv6t2"]
 [ext_resource type="Texture2D" uid="uid://bbg71ievy0kx" path="res://ui/icons/icon_save.svg" id="2_on6in"]
 [ext_resource type="Texture2D" uid="uid://cohkmijvmeouk" path="res://ui/icons/icon_replay.svg" id="3_hmxyg"]
 [ext_resource type="Texture2D" uid="uid://bdx3oqvp7340c" path="res://ui/icons/icon_sidebar.svg" id="4_kshbb"]

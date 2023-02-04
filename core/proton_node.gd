@@ -108,7 +108,7 @@ func get_local_value(idx: String) -> Variant:
 # Returns the associated data to the given input index. It either comes from a
 # connected input node, or from a local control field in the case of a simple
 # type (float, string)
-func get_input(idx: String, default = []) -> Array:
+func get_input(idx: String, default = []):
 	if not idx in inputs:
 		push_error("Error in ", type_id, ", Input ", idx, " was not defined")
 		return []
@@ -128,14 +128,14 @@ func get_input(idx: String, default = []) -> Array:
 # By default, every input and output is an array. This is just a short hand with
 # all the necessary checks that returns the first value of the input.
 func get_input_single(idx: String, default = null):
-	var input := get_input(idx)
+	var input: Array = get_input(idx)
 	if input.is_empty() or input[0] == null:
 		return default
 	return input[0]
 
 
 # Called from the parent graph when  passing values from previous
-# nodes to this one
+# nodes to this one.
 func set_input(idx: String, value) -> void:
 	if not idx in inputs:
 		push_error("Invalid index: ", idx, " was not found in inputs")
@@ -145,17 +145,17 @@ func set_input(idx: String, value) -> void:
 		value = [value]
 
 	# Append the value to the existing one in case multiple nodes are connected
-	# to this same input
+	# to this same input.
 	inputs[idx].computed_value.append_array(value)
 	inputs[idx].computed_value_ready = true
 
-	# Reset the outputs which are no longer valid
+	# Outputs are no longer valid, reset them.
 	for o_idx in outputs:
-		outputs[o_idx].computed_value.clear()
+		outputs[o_idx].computed_value = []
 		outputs[o_idx].computed_value_ready = false
 
 
-# Called from the custom nodes when generating values
+# Called from the custom nodes when generating values.
 func set_output(idx: String, value) -> void:
 	if not idx in outputs:
 		push_error("Invalid index: ", idx, " was not found in outputs")
@@ -170,22 +170,22 @@ func set_output(idx: String, value) -> void:
 
 func clear_values() -> void:
 	for idx in inputs:
-		inputs[idx].computed_value.clear()
+		inputs[idx].computed_value = []
 		inputs[idx].computed_value_ready = false
 
 	for idx in outputs:
-		outputs[idx].computed_value.clear()
+		outputs[idx].computed_value = []
 		outputs[idx].computed_value_ready = false
 
 
 # Check if an output has been computed.
 # If no specific idx is provided, returns true if every output have been computed,
 # false overwise.
-func is_output_ready(idx = null) -> bool:
+func is_output_ready(idx: String = "") -> bool:
 	if outputs.is_empty():
 		return false
 
-	if idx == null: # No index provided, check them all
+	if idx.is_empty(): # No index provided, check them all
 		for i in outputs:
 			if not outputs[i].computed_value_ready:
 				return false

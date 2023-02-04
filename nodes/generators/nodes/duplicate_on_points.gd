@@ -16,7 +16,7 @@ func _init() -> void:
 
 func _generate_outputs() -> void:
 	var source: Node3D = get_input_single("source", null)
-	var transforms := get_input("points", [])
+	var transforms: Array = get_input("points", [])
 
 	if not source or transforms.is_empty():
 		return
@@ -24,7 +24,7 @@ func _generate_outputs() -> void:
 	var result: Array[Node3D] = []
 	var copy: Node3D
 
-	for t in transforms:
+	for t in transforms as Array[Node3D]:
 		copy = source.duplicate()
 		NodeUtil.remove_parent(copy)
 		copy.transform = t.transform

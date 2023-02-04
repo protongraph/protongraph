@@ -24,6 +24,6 @@ signal settings_updated
 signal save_all
 signal save_graph_as
 signal save_graph
-signal show_on_viewport(Array)
+signal show_on_viewport(id: String, data: Array)
 
 # warning-ignore-all:UNUSED_SIGNAL

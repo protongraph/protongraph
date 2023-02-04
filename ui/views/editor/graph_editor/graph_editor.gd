@@ -2,11 +2,6 @@ class_name NodeGraphEditor
 extends GraphEdit
 
 
-# Note: DO NOT remove the "self." before calling connect_node and disconnect_node,
-# otherwise the overriden function is not called and the original from the
-# parent class is called instead.
-
-
 signal node_deleted(ProtonNodeUi)
 
 
@@ -33,9 +28,8 @@ func _ready() -> void:
 			add_valid_connection_type(source, target)
 
 
-# Overriding parent functions.
-func connect_node(from, from_port, to, to_port):
-	var err = super(from, from_port, to, to_port)
+func connect_node_and_notify(from, from_port, to, to_port):
+	var err = connect_node(from, from_port, to, to_port)
 	if err == OK:
 		var from_node = get_node(NodePath(from))
 		var to_node = get_node(NodePath(to))
@@ -44,8 +38,8 @@ func connect_node(from, from_port, to, to_port):
 	return err
 
 
-func disconnect_node(from, from_port, to, to_port):
-	super(from, from_port, to, to_port)
+func disconnect_node_and_notify(from, from_port, to, to_port):
+	disconnect_node(from, from_port, to, to_port)
 	var from_node = get_node(NodePath(from))
 	var to_node = get_node(NodePath(to))
 	from_node.notify_output_connection_changed(int(from_port), false)
@@ -78,7 +72,7 @@ func rebuild_ui() -> void:
 
 		var from_port := from.output_idx_to_port(c.from_idx)
 		var to_port := to.input_idx_to_port(c.to_idx)
-		self.connect_node(c.from, from_port, c.to, to_port)
+		connect_node_and_notify(c.from, from_port, c.to, to_port)
 
 	await(get_tree().process_frame)
 
@@ -107,13 +101,13 @@ func delete_node(node: ProtonNodeUi) -> void:
 func disconnect_inputs(node: ProtonNodeUi, port: int):
 	for c in get_connection_list():
 		if c.to == node.name and c.to_port == port:
-			self.disconnect_node(c.from, c.from_port, c.to, c.to_port)
+			disconnect_node_and_notify(c.from, c.from_port, c.to, c.to_port)
 
 
 func disconnect_outputs(node: ProtonNodeUi, port: int):
 	for c in get_connection_list():
 		if c.from == node.name and c.from_port == port:
-			self.disconnect_node(c.from, c.from_port, c.to, c.to_port)
+			disconnect_node_and_notify(c.from, c.from_port, c.to, c.to_port)
 
 
 func get_left_connected(node: ProtonNodeUi, port: int) -> Array[Dictionary]:
@@ -201,7 +195,7 @@ func _on_connection_request(from, from_port: int, to, to_port: int) -> void:
 	if not to_node.is_multiple_connections_enabled_on_port(to_port):
 		disconnect_inputs(to_node, to_port)
 
-	var err = self.connect_node(from, from_port, to, to_port)
+	var err = connect_node_and_notify(from, from_port, to, to_port)
 	if err != OK:
 		print_debug("Error ", err, " - Could not connect node ", from, ":", from_port, " to ", to, ":", to_port)
 		return
@@ -212,7 +206,7 @@ func _on_connection_request(from, from_port: int, to, to_port: int) -> void:
 
 
 func _on_disconnection_request(from: StringName, from_port: int, to: StringName, to_port: int) -> void:
-	self.disconnect_node(from, from_port, to, to_port)
+	disconnect_node_and_notify(from, from_port, to, to_port)
 
 	var from_node: ProtonNodeUi = get_node_or_null(NodePath(from))
 	var to_node: ProtonNodeUi = get_node_or_null(NodePath(to))

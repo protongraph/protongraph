@@ -19,7 +19,7 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var nodes := get_input("data")
+	var nodes: Array = get_input("data")
 	var file_path: String = get_input_single("file_path", "")
 
 	if nodes.is_empty() or file_path.is_empty():
@@ -29,14 +29,11 @@ func _generate_outputs() -> void:
 	var state := GLTFState.new()
 	var root: Node3D
 
-	print("nodes: ", nodes)
-
 	if nodes.size() == 1:
 		root = nodes[0]
 	else:
 		root = Node3D.new()
 		for node in nodes:
-			print("adding ", node)
 			root.add_child(node)
 
 	document.append_from_scene(root, state)

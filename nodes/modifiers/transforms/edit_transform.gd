@@ -5,7 +5,7 @@ func _init() -> void:
 	type_id = "edit_transform"
 	title = "Edit Transform"
 	category = "Modifiers/Transforms"
-	description = "Edit the nodes position / rotation / scale"
+	description = "Edit the instances position / rotation / scale"
 
 	var opts := SlotOptions.new()
 	opts.allow_multiple_connections = true
@@ -19,14 +19,14 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var nodes: Array[Node3D] = get_input("in")
-	var position = get_input_single("position", Vector3.ZERO)
-	var rotation = get_input_single("rotation", Vector3.ZERO)
-	var scale = get_input_single("scale", Vector3.ONE)
+	var nodes: Array = get_input("in")
+	var position: Vector3 = get_input_single("position", Vector3.ZERO)
+	var rotation: Vector3 = get_input_single("rotation", Vector3.ZERO)
+	var scale: Vector3 = get_input_single("scale", Vector3.ONE)
 
-	for n in nodes:
+	for n in nodes as Array[Node3D]:
 		n.transform.origin = position
-		n.rotation = rotation
+		n.rotation_degrees = rotation
 		n.scale = scale
 
 	set_output("out", nodes)

@@ -49,7 +49,7 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var paths: Array[Path3D] = get_input("curve")
+	var paths: Array = get_input("curve")
 	if paths.is_empty():
 		return
 
@@ -57,10 +57,9 @@ func _generate_outputs() -> void:
 	var tolerance: float = get_input_single("tolerance", 4.0)
 	var polylines: Array[Polyline3D] = []
 
-	for path in paths:
+	for path in paths as Array[Path3D]:
 		var pl := Polyline3D.new()
 		pl.points = path.curve.tessellate(stages, tolerance) # TODO: Might be bugged upstream
-		print("p size ", pl.points.size())
 		pl.transform = path.transform
 		pl.name = "Polyline " + path.name
 		polylines.push_back(pl)

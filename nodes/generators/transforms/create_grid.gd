@@ -54,6 +54,7 @@ func _generate_outputs() -> void:
 			pos = Vector3.ZERO
 			pos.x = (i % width) * spacing.x
 			pos.y = (j * spacing.y)
+			@warning_ignore("integer_division")
 			pos.z = (i / width) * spacing.z
 			pos += start_corner
 

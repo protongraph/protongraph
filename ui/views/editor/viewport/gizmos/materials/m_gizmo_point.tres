@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dflivnmfv1w5x"]
+
+[resource]
+shading_mode = 0
+use_point_size = true
+point_size = 5.0

@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://ko6nqm7qnae"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://ui/views/editor/components/graph_inspector/graph_inspector.gd" id="1_hjjfa"]
+[ext_resource type="Script" path="res://ui/views/editor/graph_inspector/graph_inspector.gd" id="1_hjjfa"]
 
 [node name="GraphInspector" type="Control"]
 clip_contents = true

@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bab88o2d5xerh"]
+[gd_scene load_steps=6 format=3 uid="uid://csw4a4te2mbno"]
 
-[ext_resource type="Script" path="res://ui/views/editor/components/node_inspector/property.gd" id="1_0xf8k"]
+[ext_resource type="Script" path="res://ui/views/editor/node_inspector/property.gd" id="1_0xf8k"]
 [ext_resource type="Texture2D" uid="uid://dop15wai55gt6" path="res://ui/icons/icon_pin.svg" id="2_kx3ec"]
 [ext_resource type="Texture2D" uid="uid://ws2w6wus0rdn" path="res://ui/icons/icon_warning.svg" id="3_kprkq"]
+[ext_resource type="Texture2D" uid="uid://ctj40n5k3romk" path="res://ui/icons/icon_visible.svg" id="3_td3x4"]
+[ext_resource type="Texture2D" uid="uid://c3nj5x6afs0rd" path="res://ui/icons/icon_hidden.svg" id="4_q7qa8"]
 
 [node name="Property" type="VBoxContainer"]
 offset_right = 28.0
@@ -35,12 +37,15 @@ expand_icon = true
 
 [node name="VisibilityBox" type="CheckBox" parent="HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
+theme_override_icons/checked = ExtResource("3_td3x4")
+theme_override_icons/unchecked = ExtResource("4_q7qa8")
 alignment = 1
 icon_alignment = 1
+expand_icon = true
 
 [node name="PinOptionsContainer" type="VBoxContainer" parent="."]
 unique_name_in_owner = true

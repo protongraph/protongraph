@@ -30,7 +30,7 @@ func restore_custom_data(_data: Dictionary) -> void:
 
 
 func _generate_outputs() -> void:
-	var input := get_input("input")
+	var input: Array = get_input("input")
 	var text: String = ""
 
 	for object in input:

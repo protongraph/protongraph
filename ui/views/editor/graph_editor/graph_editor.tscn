@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://dlc0aaiewp0tx"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://ui/views/editor/components/graph_editor/graph_editor.gd" id="1_qf2ha"]
+[ext_resource type="Script" path="res://ui/views/editor/graph_editor/graph_editor.gd" id="1_qf2ha"]
 
 [node name="NodeGraphEditor" type="GraphEdit"]
 anchor_right = 1.0

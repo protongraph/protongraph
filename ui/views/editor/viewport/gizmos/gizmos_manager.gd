@@ -27,8 +27,9 @@ func add_gizmo_for(node):
 	else:
 		return
 
-	gizmo.enable_for(node)
 	add_child(gizmo)
+	gizmo.enable_for(node)
+
 
 	if _instanced_gizmos.has(node):
 		_instanced_gizmos[node].push_back(gizmo)

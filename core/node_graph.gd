@@ -51,14 +51,22 @@ func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
 
 
 func delete_node(node: ProtonNode) -> void:
+	# Remove the node from the list
 	nodes.erase(node.unique_name)
-	for c in connections:
+
+	# Remove every related connections to this node
+	var i := 0
+	while i < connections.size():
+		var c: Dictionary = connections[i]
 		if c.from == node.unique_name or c.to == node.unique_name:
 			connections.erase(c)
+		else:
+			i += 1
+
 	graph_changed.emit()
 
 
-func connect_node(from: StringName, from_idx, to: StringName, to_idx) -> void:
+func connect_node(from: String, from_idx: String, to: String, to_idx: String) -> void:
 	var c := {}
 	c.from = from
 	c.from_idx = from_idx
@@ -68,10 +76,10 @@ func connect_node(from: StringName, from_idx, to: StringName, to_idx) -> void:
 	graph_changed.emit()
 
 
-func disconnect_node(from: StringName, from_idx, to: StringName, to_idx) -> void:
+func disconnect_node(from: String, from_idx: String, to: String, to_idx: String) -> void:
 	for c in connections:
 		if c.from == from and c.from_idx == from_idx and c.to == to and c.to_idx == to_idx:
-			connections.erase(c)
+			connections.erase(c) # Okay to erase in a for loop because we break right after
 			break
 	graph_changed.emit()
 
@@ -83,6 +91,8 @@ func clean_rebuild() -> void:
 
 
 func rebuild() -> void:
+	# TODO: split the loop in half, merge all paths, remove duplicates from the
+	# end, traverse the path once instead of how many leaves there are.
 	for leaf in _leaf_nodes:
 		# Compute the leaf node dependency graph traversal path.
 		var path: Array[ProtonNode] = [leaf]
@@ -101,13 +111,12 @@ func rebuild() -> void:
 			if not node.is_output_ready():
 				node._generate_outputs()
 
-			# Push the computed outputs on the next nodes
-			for idx in node.outputs:
-				var value = node.outputs[idx].get_computed_value_copy()
-
-				for data in _get_right_connected(node, idx):
-					var right_node: ProtonNode = data.to
-					right_node.set_input(data.idx, value)
+				# Push the computed outputs on the next nodes
+				for idx in node.outputs:
+					for data in _get_right_connected(node, idx):
+						var value = node.outputs[idx].get_computed_value_copy()
+						var right_node: ProtonNode = data.to
+						right_node.set_input(data.idx, value)
 
 
 func _get_unique_name(node: ProtonNode) -> String:

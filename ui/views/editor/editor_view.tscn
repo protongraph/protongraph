@@ -1,11 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://br7vjmahwgjin"]
+[gd_scene load_steps=7 format=3]
 
-[ext_resource type="PackedScene" uid="uid://dlc0aaiewp0tx" path="res://ui/views/editor/components/graph_editor/graph_editor.tscn" id="1_8i43s"]
+[ext_resource type="PackedScene" path="res://ui/views/editor/graph_editor/graph_editor.tscn" id="1_8i43s"]
 [ext_resource type="Script" path="res://ui/views/editor/editor_view.gd" id="1_rpw2x"]
-[ext_resource type="PackedScene" uid="uid://cmgx4u6v8yx1p" path="res://ui/views/editor/components/toolbar/toolbar.tscn" id="2_qga80"]
-[ext_resource type="PackedScene" uid="uid://c3nl2ur2fan6g" path="res://ui/views/editor/components/node_inspector/node_inspector.tscn" id="3_ech34"]
-[ext_resource type="PackedScene" uid="uid://ko6nqm7qnae" path="res://ui/views/editor/components/graph_inspector/graph_inspector.tscn" id="3_gumgf"]
-[ext_resource type="PackedScene" uid="uid://djeep1msjomu8" path="res://ui/views/editor/components/viewport/viewport.tscn" id="5_lr66y"]
+[ext_resource type="PackedScene" path="res://ui/views/editor/toolbar/toolbar.tscn" id="2_qga80"]
+[ext_resource type="PackedScene" path="res://ui/views/editor/node_inspector/node_inspector.tscn" id="3_ech34"]
+[ext_resource type="PackedScene" path="res://ui/views/editor/graph_inspector/graph_inspector.tscn" id="3_gumgf"]
+[ext_resource type="PackedScene" path="res://ui/views/editor/viewport/viewport.tscn" id="5_lr66y"]
 
 [node name="EditorView" type="Control"]
 layout_mode = 3

@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3nl2ur2fan6g"]
+[gd_scene load_steps=3 format=3 uid="uid://bftpwevjf4nhq"]
 
-[ext_resource type="Script" path="res://ui/views/editor/components/node_inspector/node_inspector.gd" id="1_be0h7"]
-[ext_resource type="Script" path="res://ui/views/editor/components/node_inspector/documentation/documentation_panel.gd" id="2_br1pm"]
+[ext_resource type="Script" path="res://ui/views/editor/node_inspector/node_inspector.gd" id="1_be0h7"]
+[ext_resource type="Script" path="res://ui/views/editor/node_inspector/documentation/documentation_panel.gd" id="2_br1pm"]
 
 [node name="NodeInspector" type="Control"]
 clip_children = 1

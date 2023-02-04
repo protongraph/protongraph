@@ -7,7 +7,7 @@ extends AbstractGizmo
 
 var _target: Polyline3D
 var _line_mesh: MeshInstance3D
-var _material := preload("./materials/m_gizmo_blue.tres")
+var _material := preload("./materials/m_gizmo_yellow.tres")
 
 
 func enable_for(polyline: Polyline3D) -> void:
@@ -23,6 +23,8 @@ func _update_mesh() -> void:
 	if not _target:
 		return
 
+	clear_points()
+
 	var points := _target.points
 	var count = points.size() - 1
 	transform = _target.transform
@@ -33,6 +35,7 @@ func _update_mesh() -> void:
 	for i in count:
 		st.add_vertex(points[i])
 		st.add_vertex(points[i + 1])
+		add_point_at(transform * points[i])
 
 	if not _line_mesh:
 		_line_mesh = MeshInstance3D.new()

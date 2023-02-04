@@ -1,4 +1,7 @@
-[gd_resource type="Theme" load_steps=73 format=3 uid="uid://ckiydn4300lug"]
+[gd_resource type="Theme" load_steps=75 format=3 uid="uid://ckiydn4300lug"]
+
+[ext_resource type="Texture2D" uid="uid://bnqkbq06s5s83" path="res://ui/icons/gui_checked.svg" id="1_3t2tt"]
+[ext_resource type="Texture2D" uid="uid://dg310p0kpsf0a" path="res://ui/icons/gui_unchecked.svg" id="2_688vm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fofou"]
 
@@ -570,6 +573,8 @@ Button/styles/focus = SubResource("StyleBoxFlat_64e8q")
 Button/styles/hover = SubResource("StyleBoxFlat_wehlu")
 Button/styles/normal = SubResource("StyleBoxEmpty_nfutt")
 Button/styles/pressed = SubResource("StyleBoxFlat_tfa6w")
+CheckBox/icons/checked = ExtResource("1_3t2tt")
+CheckBox/icons/unchecked = ExtResource("2_688vm")
 CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_m1mhb")
 CheckBox/styles/normal = SubResource("StyleBoxEmpty_7tntx")
 CheckBox/styles/pressed = SubResource("StyleBoxEmpty_lx5di")
