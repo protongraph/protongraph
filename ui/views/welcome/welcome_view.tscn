@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://krqgsakt0ufw"]
+[gd_scene load_steps=6 format=3 uid="uid://krqgsakt0ufw"]
 
 [ext_resource type="Script" path="res://ui/views/welcome/welcome_view.gd" id="1_ekqb2"]
 [ext_resource type="Texture2D" uid="uid://dj1xrh5y4wdf4" path="res://ui/icons/icon_proton_graph.svg" id="2_hyx22"]
+[ext_resource type="Texture2D" uid="uid://cpvnpujov3yb6" path="res://ui/icons/icon_magnifying_glass.svg" id="3_0spty"]
+[ext_resource type="Texture2D" uid="uid://cqaq3jxuddo8a" path="res://ui/icons/icon_new.svg" id="3_dsxnl"]
+[ext_resource type="Texture2D" uid="uid://dqvgam553soqh" path="res://ui/icons/icon_load.svg" id="4_2ojfm"]
 
 [node name="Welcome" type="HBoxContainer"]
 anchors_preset = 15
@@ -56,16 +59,20 @@ theme_override_constants/separation = 12
 
 [node name="New" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(75, 0)
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "New"
+icon = ExtResource("3_dsxnl")
+alignment = 2
 expand_icon = true
 
 [node name="Load" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Load"
+icon = ExtResource("4_2ojfm")
+alignment = 2
 expand_icon = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
@@ -85,10 +92,13 @@ alignment = 1
 
 [node name="BrowseExamplesButton" type="Button" parent="ScrollContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(230, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 text = "Browse examples projects"
+icon = ExtResource("3_0spty")
+expand_icon = true
 
 [node name="HistoryPanel" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

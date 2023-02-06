@@ -24,7 +24,7 @@ var ignored := false
 var allow_multiple_connections := false
 
 # Scaling options
-var expand := false
+var expand := true
 var compact_display := false
 
 # Number options

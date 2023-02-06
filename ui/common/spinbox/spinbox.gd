@@ -10,6 +10,7 @@ extends ProgressBar
 
 @onready var _name_label: Label = $%Label
 @onready var _line_edit: LineEdit = $%LineEdit
+@onready var _buttons_container: Control = $%ButtonsContainer
 @onready var _increase_button: Button = $%Increase
 @onready var _decrease_button: Button = $%Decrease
 @onready var _edit_popup: PopupPanel = $EditPopup
@@ -20,6 +21,8 @@ var _acc := 0.0
 var _previous_value := 0.0
 var _is_edited := false
 var _step := 0.1
+var _is_mouse_above_button_container := false
+var _is_mouse_above_spinbox := false
 
 var _bg := preload("styles/progress_bar_bg.tres")
 var _bg_top := preload("styles/progress_bar_bg_top.tres")
@@ -46,6 +49,11 @@ func _ready() -> void:
 	_line_edit.focus_exited.connect(_on_line_edit_changed)
 	_line_edit.gui_input.connect(_on_value_gui_input)
 
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+	_buttons_container.mouse_entered.connect(_on_mouse_entered.bind(true))
+	_buttons_container.mouse_exited.connect(_on_mouse_exited.bind(true))
+
 	_edit_popup.edit_value.connect(_on_edit_value)
 	_edit_popup.edit_value_started.connect(_on_edit_value_started)
 	_edit_popup.edit_value_ended.connect(_on_edit_value_ended)
@@ -53,6 +61,7 @@ func _ready() -> void:
 	set_label_text(spinbox_name)
 	_update_line_edit_value(value)
 	_update_style()
+	_toggle_buttons(false)
 
 
 func get_line_edit() -> LineEdit:
@@ -70,7 +79,7 @@ func set_label_text(text) -> void:
 	spinbox_name = text if text is String else String(text)
 	if _name_label:
 		_name_label.text = spinbox_name
-		custom_minimum_size.x = spinbox_name.length() * 8 + 80
+		custom_minimum_size.x = spinbox_name.length() * 8 + 10
 		custom_minimum_size.x *= EditorUtil.get_editor_scale()
 
 
@@ -125,6 +134,10 @@ func _show_extra_controls() -> void:
 	pos.x -= _edit_popup.size.x
 	_edit_popup.position = pos
 	_edit_popup.popup()
+
+
+func _toggle_buttons(enabled: bool) -> void:
+	_buttons_container.visible = enabled
 
 
 func _on_button_pressed(increase: bool) -> void:
@@ -209,3 +222,22 @@ func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 			_show_extra_controls()
+
+
+func _on_mouse_entered(is_container := false) -> void:
+	if is_container:
+		_is_mouse_above_button_container = true
+	else:
+		_is_mouse_above_spinbox = true
+
+	_toggle_buttons(true)
+
+
+func _on_mouse_exited(is_container := false) -> void:
+	if is_container:
+		_is_mouse_above_button_container = false
+	else:
+		_is_mouse_above_spinbox = false
+
+	if not _is_mouse_above_spinbox and not _is_mouse_above_button_container:
+		_toggle_buttons(false)

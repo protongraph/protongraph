@@ -15,10 +15,9 @@
 + Pin variable tooltip? Default and min / max values in the graph inspector?
 + Single active and Mute nodes
 + Dropping a node on a (valid) connection auto connects it
-+ Boolean input checkbox isn't visible enough on the nodes background
 + Save viewport camera position
 + Visibility toggle on the 3D viewport tree
-+ fix duplicates in the viewport
+
 
 ## Nodes
 + Port back all the nodes

@@ -3,7 +3,7 @@ extends GraphNodeUiComponent
 
 
 var _col: VBoxContainer
-var _label_box: Container
+var _header_box: Container
 var _vector_box: Container
 var _count := 2
 var _link_button: Button
@@ -13,23 +13,36 @@ var _ignore_spinbox_updates := false
 func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> void:
 	super(label_name, type, opts)
 
-	size_flags_horizontal = Control.SIZE_EXPAND_FILL
-
+	# Create the main Vbox containing everything
 	_col = VBoxContainer.new()
 	add_child(_col)
 
-	_label_box = HBoxContainer.new()
-	_label_box.add_child(icon_container)
-	_label_box.add_child(label)
+	# Adjust container sizing to use all the horizontal space
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-	_col.add_child(_label_box)
+	# Setup the header like this: [icon | label | clear | link]
+	_header_box = HBoxContainer.new()
+	_header_box.add_child(icon_container)
+	_header_box.add_child(label)
 
-	_vector_box = VBoxContainer.new()
-	_vector_box.custom_minimum_size.x = 120 #Constants.get_vector_width()
-	_vector_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var clear_button := Button.new()
+	clear_button.icon = preload("res://ui/icons/icon_clear.svg")
+	clear_button.expand_icon = true
+	clear_button.custom_minimum_size = Vector2(30, 30)
+	clear_button.pressed.connect(_on_clear_pressed)
 
-	_vector_box.add_theme_constant_override("separation", 0)
-	_col.add_child(_vector_box)
+	_link_button = clear_button.duplicate()
+	_link_button.icon = preload("res://ui/icons/icon_link.svg")
+	_link_button.toggle_mode = true
+
+	_header_box.add_child(clear_button)
+	_header_box.add_child(_link_button)
+
+	_col.add_child(_header_box)
+
+	# Create the spinboxes
 
 	var item_indexes = ["x", "y"]
 
@@ -41,6 +54,18 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> voi
 		item_indexes.push_back("z")
 		item_indexes.push_back("w")
 		_count = 4
+
+	# Vector box holds between 2 and 4 spinbox (one for each vector component)
+	if _count > 3:
+		_vector_box = VBoxContainer.new()
+	else:
+		_vector_box = HBoxContainer.new()
+		_vector_box.custom_minimum_size.x = 120 #Constants.get_vector_width()
+
+	_vector_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+	_vector_box.add_theme_constant_override("separation", 2)
+	_col.add_child(_vector_box)
 
 	for i in item_indexes.size():
 		var s: CustomSpinBox
@@ -65,22 +90,6 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> voi
 		else:
 			s.style = 1
 
-	var clear_button := Button.new()
-	clear_button.icon = preload("res://ui/icons/icon_clear.svg")
-	clear_button.expand_icon = true
-	clear_button.custom_minimum_size = Vector2(30, 30)
-	clear_button.pressed.connect(_on_clear_pressed)
-
-	_link_button = clear_button.duplicate()
-	_link_button.icon = preload("res://ui/icons/icon_link.svg")
-	_link_button.toggle_mode = true
-
-	var buttons_container := HBoxContainer.new()
-	buttons_container.size_flags_horizontal = SIZE_EXPAND_FILL
-	buttons_container.alignment = BoxContainer.ALIGNMENT_END
-	buttons_container.add_child(clear_button)
-	buttons_container.add_child(_link_button)
-	_col.add_child(buttons_container)
 
 
 func get_value():

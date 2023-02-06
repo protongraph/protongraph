@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=75 format=3 uid="uid://ckiydn4300lug"]
+[gd_resource type="Theme" load_steps=76 format=3 uid="uid://ckiydn4300lug"]
 
 [ext_resource type="Texture2D" uid="uid://bnqkbq06s5s83" path="res://ui/icons/gui_checked.svg" id="1_3t2tt"]
 [ext_resource type="Texture2D" uid="uid://dg310p0kpsf0a" path="res://ui/icons/gui_unchecked.svg" id="2_688vm"]
@@ -41,6 +41,13 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k8rks"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(0.137255, 0.156863, 0.180392, 0.627451)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1mhb"]
 content_margin_left = 6.0
@@ -573,6 +580,8 @@ Button/styles/focus = SubResource("StyleBoxFlat_64e8q")
 Button/styles/hover = SubResource("StyleBoxFlat_wehlu")
 Button/styles/normal = SubResource("StyleBoxEmpty_nfutt")
 Button/styles/pressed = SubResource("StyleBoxFlat_tfa6w")
+ButtonSolid/base_type = &"Button"
+ButtonSolid/styles/normal = SubResource("StyleBoxFlat_k8rks")
 CheckBox/icons/checked = ExtResource("1_3t2tt")
 CheckBox/icons/unchecked = ExtResource("2_688vm")
 CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_m1mhb")

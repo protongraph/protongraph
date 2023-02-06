@@ -1,101 +1,124 @@
-[gd_scene load_steps=12 format=3 uid="uid://ddl1a7jcx4sgv"]
+[gd_scene load_steps=8 format=3 uid="uid://ddl1a7jcx4sgv"]
 
-[ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_right_pressed.tres" id="2"]
 [ext_resource type="Script" path="res://ui/common/spinbox/spinbox.gd" id="3"]
 [ext_resource type="Texture2D" uid="uid://gwy6ut76n73b" path="res://ui/icons/icon_arrow_left.svg" id="5_nfbni"]
-[ext_resource type="StyleBox" uid="uid://b4hd62prbx443" path="res://ui/common/spinbox/styles/spinbox_button_left_hover.tres" id="6"]
-[ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_right.tres" id="8"]
-[ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_left.tres" id="9"]
 [ext_resource type="Texture2D" uid="uid://dksv6terikjr0" path="res://ui/icons/icon_arrow_right.svg" id="9_kt533"]
-[ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_left_pressed.tres" id="10"]
-[ext_resource type="StyleBox" path="res://ui/common/spinbox/styles/spinbox_button_right_hover.tres" id="11"]
 [ext_resource type="PackedScene" uid="uid://bgo7smjjxdrys" path="res://ui/common/spinbox/edit_popup.tscn" id="12_ava0u"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y8nih"]
+[sub_resource type="LabelSettings" id="LabelSettings_cawyo"]
+font_size = 14
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_28vil"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mlty0"]
 
 [node name="Spinbox" type="ProgressBar"]
-custom_minimum_size = Vector2(70, 24)
+custom_minimum_size = Vector2(40, 24)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -483.0
-offset_top = -18.0
-offset_right = -360.0
-offset_bottom = 6.0
+offset_left = -40.0
+offset_top = -12.0
+offset_right = 49.0
+offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+mouse_default_cursor_shape = 10
 value = 50.0
 show_percentage = false
 script = ExtResource("3")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="Decrease" type="Button" parent="HBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(18, 0)
-layout_mode = 2
-focus_neighbor_right = NodePath("../Increase")
-theme_override_styles/normal = ExtResource("9")
-theme_override_styles/hover = ExtResource("6")
-theme_override_styles/pressed = ExtResource("10")
-icon = ExtResource("5_nfbni")
-expand_icon = true
-
-[node name="Control" type="Control" parent="HBoxContainer"]
-layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
 mouse_filter = 2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = 0
 
-[node name="Label" type="Label" parent="HBoxContainer/Control"]
+[node name="Label" type="Label" parent="MarginContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "Label"
+text = "X"
+label_settings = SubResource("LabelSettings_cawyo")
 vertical_alignment = 1
 text_overrun_behavior = 3
 metadata/_edit_layout_mode = 1
 
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer/Control"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 1
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxEmpty_y8nih")
+mouse_default_cursor_shape = 10
+theme_override_constants/minimum_character_width = 0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_28vil")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_mlty0")
 text = "50"
 alignment = 2
 context_menu_enabled = false
+flat = true
+select_all_on_focus = true
+caret_blink = true
 
-[node name="Increase" type="Button" parent="HBoxContainer"]
+[node name="ButtonsContainer" type="Control" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(18, 0)
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -40.0
+offset_top = -25.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ButtonsContainer"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 30.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ButtonsContainer/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Decrease" type="Button" parent="ButtonsContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_right = NodePath("../Increase")
+mouse_filter = 1
+theme_type_variation = &"ButtonSolid"
+icon = ExtResource("5_nfbni")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Increase" type="Button" parent="ButtonsContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
 focus_neighbor_left = NodePath("../Decrease")
-theme_override_styles/normal = ExtResource("8")
-theme_override_styles/hover = ExtResource("11")
-theme_override_styles/pressed = ExtResource("2")
+mouse_filter = 1
+theme_type_variation = &"ButtonSolid"
 icon = ExtResource("9_kt533")
+icon_alignment = 1
 expand_icon = true
 
 [node name="EditPopup" parent="." instance=ExtResource("12_ava0u")]
