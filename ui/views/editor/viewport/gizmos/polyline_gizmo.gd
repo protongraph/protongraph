@@ -40,6 +40,7 @@ func _update_mesh() -> void:
 	if not _line_mesh:
 		_line_mesh = MeshInstance3D.new()
 		_line_mesh.material_override = _material
+		_line_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(_line_mesh)
 
 	_line_mesh.mesh = st.commit()

@@ -5,11 +5,10 @@ extends Control
 # a 3D viewport below, and an Inspector and Node panel on the sides.
 #
 # This script is the glue code between all these parts. Their actual logic is
-# performed on their own scenes.
+# performed in their own scenes.
 
 
 var _graph: NodeGraph
-
 
 @onready var _toolbar: Toolbar = $%Toolbar
 @onready var _graph_editor: NodeGraphEditor = $%NodeGraphEditor
@@ -39,6 +38,25 @@ func edit(graph: NodeGraph) -> void:
 	rebuild.call_deferred()
 
 
+# Returns true to close the view
+# Returns false to continue editing
+func save_and_close() -> bool:
+	if not has_pending_changes():
+		return true
+
+	GlobalEventBus.save_graph.emit(_graph, true)
+
+	var status = await GlobalEventBus.save_status_updated
+	print(_graph.save_file_path.get_file(), " status: ", status)
+	match status:
+		"saved", "discarded":
+			return true
+		"canceled", _:
+			print("here")
+			return false
+
+
+
 func rebuild() -> void:
 	_viewport.clear()
 	_graph.clean_rebuild()
@@ -50,6 +68,10 @@ func get_edited_graph() -> NodeGraph:
 
 func get_edited_file_path() -> String:
 	return _graph.save_file_path if _graph else ""
+
+
+func has_pending_changes() -> bool:
+	return _graph.pending_changes
 
 
 func _toggle_panel(panel: Control) -> void:

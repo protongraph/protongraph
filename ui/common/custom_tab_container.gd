@@ -37,6 +37,9 @@ func close_tab(tab: int = -1) -> void:
 	if tab == -1:
 		tab = current_tab
 
+	if get_child_count() == 0:
+		return
+
 	var c = get_child(tab)
 	if not c:
 		return
@@ -44,17 +47,22 @@ func close_tab(tab: int = -1) -> void:
 	remove_child(c)
 	c.queue_free()
 	_tabs.remove_tab(tab)
-	current_tab = _tabs.current_tab
 
 	tab_closed.emit()
 
 	if get_child_count() == 0:
 		tabs_cleared.emit()
+	else:
+		current_tab = _tabs.current_tab
 
 
 func change_tab(tab: int) -> void:
 	current_tab = tab
 	_tabs.set_current_tab(tab)
+
+
+func set_tab_name(tab: int, new_name: String) -> void:
+	_tabs.set_tab_title(tab, new_name)
 
 
 func _on_tab_changed(tab: int) -> void:

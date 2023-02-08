@@ -1,14 +1,10 @@
 # TODO
 
-## Priority tasks before the beta release
-+ Save modified graph before exiting the application
-
 ## Core
 + Field input support
 + Detect (and prevent) loops in the graph
 
 ## UI
-+ Update untitled tab name when saving the graph
 + Collapse nodes (to save space)
 + Different slot icons
 + implicit conversions (float -> vector)

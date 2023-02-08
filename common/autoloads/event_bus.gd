@@ -16,7 +16,6 @@ signal file_history_changed
 signal graph_loaded(NodeGraph)
 signal graph_saved(NodeGraph)
 signal load_graph
-signal notify
 signal open_settings
 signal quit
 signal remove_from_file_history
@@ -24,6 +23,5 @@ signal settings_updated
 signal save_all
 signal save_graph_as
 signal save_graph
+signal save_status_updated(String)
 signal show_on_viewport(id: String, data: Array)
-
-# warning-ignore-all:UNUSED_SIGNAL

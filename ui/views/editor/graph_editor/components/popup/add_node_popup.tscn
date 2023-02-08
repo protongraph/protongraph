@@ -3,21 +3,25 @@
 [ext_resource type="Script" path="res://ui/views/editor/graph_editor/components/popup/add_node_popup.gd" id="1_pu2oj"]
 [ext_resource type="Texture2D" uid="uid://bfn8ywnmrfrba" path="res://ui/icons/icon_reload.svg" id="2_3yg18"]
 
-[node name="AddNodePopup" type="PopupPanel"]
+[node name="AddNodePopup" type="Window"]
 disable_3d = true
-transparent_bg = true
 title = "Add node"
 size = Vector2i(500, 500)
-visible = true
-transient = false
-unresizable = false
+transient = true
+exclusive = true
 script = ExtResource("1_pu2oj")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 496.0
-offset_bottom = 496.0
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_left = 14
@@ -25,17 +29,17 @@ theme_override_constants/margin_top = 14
 theme_override_constants/margin_right = 14
 theme_override_constants/margin_bottom = 14
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ReloadButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ReloadButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
@@ -43,7 +47,7 @@ tooltip_text = "Refresh node list"
 icon = ExtResource("2_3yg18")
 expand_icon = true
 
-[node name="Search" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Search" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -52,40 +56,40 @@ clear_button_enabled = true
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CheckBox" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Group by type"
 
-[node name="NodeTree" type="Tree" parent="MarginContainer/VBoxContainer"]
+[node name="NodeTree" type="Tree" parent="PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 hide_root = true
 
-[node name="DescriptionText" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="DescriptionText" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 text = "Select a node from 
 the list to see a description"
 
-[node name="ActionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ActionContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/ActionContainer"]
+[node name="CancelButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ActionContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Cancel"
 
-[node name="CreateButton" type="Button" parent="MarginContainer/VBoxContainer/ActionContainer"]
+[node name="CreateButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ActionContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true

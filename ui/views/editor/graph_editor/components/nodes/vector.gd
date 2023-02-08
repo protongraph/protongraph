@@ -56,7 +56,7 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> voi
 		_count = 4
 
 	# Vector box holds between 2 and 4 spinbox (one for each vector component)
-	if _count > 3:
+	if opts.force_vertical:
 		_vector_box = VBoxContainer.new()
 	else:
 		_vector_box = HBoxContainer.new()

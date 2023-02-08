@@ -40,6 +40,7 @@ var vec_x: SlotOptions
 var vec_y: SlotOptions
 var vec_z: SlotOptions
 var vec_w: SlotOptions
+var force_vertical := false
 
 # Spinbox options
 var rounded := false

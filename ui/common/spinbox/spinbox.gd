@@ -79,7 +79,7 @@ func set_label_text(text) -> void:
 	spinbox_name = text if text is String else String(text)
 	if _name_label:
 		_name_label.text = spinbox_name
-		custom_minimum_size.x = spinbox_name.length() * 8 + 10
+		custom_minimum_size.x = spinbox_name.length() * 8 + 10 # TODO: review this
 		custom_minimum_size.x *= EditorUtil.get_editor_scale()
 
 

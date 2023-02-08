@@ -78,4 +78,5 @@ toggle_graph_editor={
 
 [rendering]
 
+renderer/rendering_method="mobile"
 transparent_background=true

@@ -12,7 +12,7 @@ var _default_file_suggestion := "new_graph.tpgn"
 
 func _ready() -> void:
 	file_selected.connect(_on_file_selected)
-	get_cancel_button().pressed.connect(_on_cancelled)
+	get_cancel_button().pressed.connect(_on_canceled)
 	min_size = Vector2i(600, 400)
 	UserInterfaceUtil.fix_popup_theme_recursive(self)
 	set_filters(PackedStringArray(["*.tpgn ; Text PGraphNode"]))
@@ -37,5 +37,5 @@ func _on_file_selected(path: String) -> void:
 	path_selected.emit(path)
 
 
-func _on_cancelled() -> void:
+func _on_canceled() -> void:
 	path_selected.emit("")

@@ -3,18 +3,24 @@ extends Control
 # Handles everything related to saving and loading NodeGraph on the disk.
 
 
+const UnsavedChangesDialogScene := preload("./ui/unsaved_changes_dialog.tscn")
+const BlackOverlayScene := preload("./ui/black_overlay.tscn")
+
 var _black_overlay: Panel
-var _unsaved_changes_dialog: ConfirmDialog
+var _unsaved_changes_dialog: UnsavedChangesConfirmDialog
 var _file_dialog: SaveLoadDialog
 
 
 func _ready():
 	# Initialize dialogs
 	theme = ThemeManager.get_current_theme()
-	_unsaved_changes_dialog = preload("./ui/unsaved_changes_dialog.tscn").instantiate()
+	_unsaved_changes_dialog = UnsavedChangesDialogScene.instantiate()
 	add_child(_unsaved_changes_dialog)
 	_unsaved_changes_dialog.about_to_popup.connect(_toggle_overlay.bind(true))
 	_unsaved_changes_dialog.popup_hide.connect(_toggle_overlay.bind(false))
+	_unsaved_changes_dialog.confirmed.connect(_on_saving_confirmed)
+	_unsaved_changes_dialog.canceled.connect(_on_saving_canceled)
+	_unsaved_changes_dialog.discarded.connect(_on_graph_discarded)
 
 	_file_dialog = SaveLoadDialog.new()
 	add_child(_file_dialog)
@@ -22,7 +28,7 @@ func _ready():
 	_file_dialog.close_requested.connect(_toggle_overlay.bind(false))
 	_file_dialog.get_cancel_button().pressed.connect(_toggle_overlay.bind(false))
 
-	_black_overlay = preload("./ui/black_overlay.tscn").instantiate()
+	_black_overlay = BlackOverlayScene.instantiate()
 	add_child(_black_overlay)
 
 	# Setup signal connections
@@ -33,41 +39,6 @@ func _ready():
 
 func _toggle_overlay(val: bool) -> void:
 	_black_overlay.visible = val
-
-
-func _on_load_graph_requested(path: String = "") -> void:
-	# No path provided, display the file selection popup
-	if path.is_empty():
-		_file_dialog.show_load_dialog()
-		path = await _file_dialog.path_selected
-
-	_load_graph(path)
-
-
-func _on_save_graph_requested(graph: NodeGraph) -> void:
-	if not graph:
-		return
-
-	# No path assigned to the graph, open the file selection popup
-	if graph.save_file_path.is_empty():
-		_file_dialog.show_save_dialog()
-		graph.save_file_path = await _file_dialog.path_selected
-
-	_save_graph(graph)
-
-
-func _on_save_graph_as_requested(graph: NodeGraph) -> void:
-	if not graph:
-		return
-
-	_file_dialog.show_save_dialog()
-	var new_path = await _file_dialog.path_selected
-
-	if new_path.is_empty:
-		return
-
-	graph.save_file_path = new_path
-	_save_graph(graph)
 
 
 # TODO: move to dedicated loader / saver file?
@@ -95,6 +66,8 @@ func _save_graph(graph: NodeGraph) -> void:
 		file.set_value(node_name, "external_data", node.external_data)
 
 	file.save(graph.save_file_path)
+	graph.pending_changes = false
+
 	GlobalEventBus.graph_saved.emit(graph)
 
 
@@ -125,6 +98,7 @@ func _load_graph(path: String) -> void:
 
 	graph.connections = file.get_value("graph_node", "connections", [])
 	graph.external_data = file.get_value("graph_node", "external_data", {})
+	graph.pending_changes = false
 
 	# TODO:
 	# When loading partially failed (missing nodes), display a confirm dialog
@@ -134,3 +108,54 @@ func _load_graph(path: String) -> void:
 	# be cleaned up
 
 	GlobalEventBus.graph_loaded.emit(graph)
+
+
+func _on_load_graph_requested(path: String = "") -> void:
+	# No path provided, display the file selection popup
+	if path.is_empty():
+		_file_dialog.show_load_dialog()
+		path = await _file_dialog.path_selected
+
+	_load_graph(path)
+
+
+func _on_save_graph_requested(graph: NodeGraph, show_confirm_dialog := false) -> void:
+	if show_confirm_dialog:
+		_unsaved_changes_dialog.show_for(graph)
+		return
+
+	if not graph:
+		return
+
+	# No path assigned to the graph, open the file selection popup
+	if graph.save_file_path.is_empty():
+		_file_dialog.show_save_dialog()
+		graph.save_file_path = await _file_dialog.path_selected
+
+	_save_graph(graph)
+
+
+func _on_save_graph_as_requested(graph: NodeGraph) -> void:
+	if not graph:
+		return
+
+	# Prompt user for a new path
+	_file_dialog.show_save_dialog()
+	graph.save_file_path  = await _file_dialog.path_selected
+
+	_save_graph(graph)
+
+
+func _on_saving_confirmed(graph: NodeGraph) -> void:
+	await _on_save_graph_requested(graph)
+	GlobalEventBus.save_status_updated.emit("saved")
+
+
+func _on_saving_canceled(_graph: NodeGraph) -> void:
+	GlobalEventBus.save_status_updated.emit("canceled")
+
+
+func _on_graph_discarded(_graph: NodeGraph) -> void:
+	GlobalEventBus.save_status_updated.emit("discarded")
+
+

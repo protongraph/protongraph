@@ -99,6 +99,8 @@ func _set_pin_capabilities(type: int):
 		DataType.STRING,
 		DataType.VECTOR2,
 		DataType.VECTOR3,
+		DataType.VECTOR4,
+		DataType.CURVE_FUNC,
 		DataType.MISC,
 	]
 	_can_be_pinned = type in valid_types

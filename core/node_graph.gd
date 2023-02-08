@@ -9,12 +9,14 @@ var nodes: Dictionary
 var connections: Array
 var save_file_path: String
 var external_data: Dictionary
+var pending_changes := false
 
 var _leaf_nodes: Array[ProtonNode]
 
 
 func _init():
 	clear()
+	graph_changed.connect(_on_graph_changed)
 
 
 func clear() -> void:
@@ -176,3 +178,7 @@ func _on_node_changed(node: ProtonNode) -> void:
 		n.clear_values()
 
 	graph_changed.emit()
+
+
+func _on_graph_changed() -> void:
+	pending_changes = true

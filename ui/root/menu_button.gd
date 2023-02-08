@@ -55,7 +55,15 @@ func _on_id_pressed(id) -> void:
 
 
 func _on_view_changed(view) -> void:
+	# Toggle the save / save_as options from the menu button if the current
+	# view is not an editor view.
 	var entry_disabled: bool = not view is EditorView
 	var popup: PopupMenu = get_popup()
 	popup.set_item_disabled(popup.get_item_index(10), entry_disabled)
 	popup.set_item_disabled(popup.get_item_index(12), entry_disabled)
+
+	# Update the current graph reference
+	if view is EditorView:
+		_current_graph = view.get_edited_graph()
+	else:
+		_current_graph = null

@@ -22,6 +22,7 @@ func _init() -> void:
 	#opts.step = 0.1
 	opts.min_value = 0.0
 	opts.allow_lesser = false
+	opts.force_vertical = true
 	opts.override_vector_options_with_current()
 	opts.vec_x.label_override = "Top left"
 	opts.vec_y.label_override = "Top right"

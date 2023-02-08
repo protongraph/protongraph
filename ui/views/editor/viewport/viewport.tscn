@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dru6wp1xq8ngq"]
+[gd_scene load_steps=12 format=3 uid="uid://dru6wp1xq8ngq"]
 
 [ext_resource type="Script" path="res://ui/views/editor/viewport/viewport.gd" id="1_mdwbn"]
 [ext_resource type="Script" path="res://ui/views/editor/viewport/components/camera.gd" id="2_it4fl"]
@@ -18,6 +18,10 @@ process_mode = 3
 [sub_resource type="Environment" id="Environment_s5dt0"]
 background_mode = 2
 sky = SubResource("Sky_rbhip")
+
+[sub_resource type="World3D" id="World3D_wutdu"]
+resource_local_to_scene = true
+environment = SubResource("Environment_s5dt0")
 
 [node name="Viewport" type="Control"]
 clip_children = 1
@@ -39,6 +43,7 @@ grow_vertical = 2
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+world_3d = SubResource("World3D_wutdu")
 handle_input_locally = false
 msaa_3d = 2
 use_debanding = true
@@ -108,6 +113,7 @@ bbcode_enabled = true
 text = "[b]Orbit[/b]:[color=gray] Middle Click[/color]
 [b]Pan[/b]:[color=gray] Shift + Middle Click[/color]
 [b]Zoom[/b]:[color=gray] Scroll Up / Down[/color]"
+fit_content = true
 autowrap_mode = 0
 
 [node name="Toolbox" type="PanelContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]

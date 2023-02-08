@@ -33,6 +33,7 @@ func add_point_at(pos: Vector3) -> void:
 	RenderingServer.instance_set_base(instance, _point_mesh)
 	var t = Transform3D(Basis(), pos)
 	RenderingServer.instance_set_transform(instance, t)
+	RenderingServer.instance_geometry_set_cast_shadows_setting(instance, RenderingServer.SHADOW_CASTING_SETTING_OFF)
 	_points.push_back(instance)
 
 

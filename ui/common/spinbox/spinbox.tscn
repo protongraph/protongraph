@@ -5,12 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://dksv6terikjr0" path="res://ui/icons/icon_arrow_right.svg" id="9_kt533"]
 [ext_resource type="PackedScene" uid="uid://bgo7smjjxdrys" path="res://ui/common/spinbox/edit_popup.tscn" id="12_ava0u"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_cawyo"]
+[sub_resource type="LabelSettings" id="LabelSettings_7880m"]
 font_size = 14
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_28vil"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kh3d5"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mlty0"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v14ek"]
 
 [node name="Spinbox" type="ProgressBar"]
 custom_minimum_size = Vector2(40, 24)
@@ -50,7 +50,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "X"
-label_settings = SubResource("LabelSettings_cawyo")
+label_settings = SubResource("LabelSettings_7880m")
 vertical_alignment = 1
 text_overrun_behavior = 3
 metadata/_edit_layout_mode = 1
@@ -62,8 +62,8 @@ mouse_filter = 1
 mouse_default_cursor_shape = 10
 theme_override_constants/minimum_character_width = 0
 theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxEmpty_28vil")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_mlty0")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_kh3d5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_v14ek")
 text = "50"
 alignment = 2
 context_menu_enabled = false
@@ -76,30 +76,36 @@ unique_name_in_owner = true
 layout_mode = 1
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -40.0
-offset_top = -25.0
-offset_right = 40.0
-offset_bottom = 20.0
+offset_left = -30.0
+offset_top = -20.0
+offset_right = 30.0
+offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="ButtonsContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="ButtonsContainer"]
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_bottom = 30.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"PanelContainerTransparent"
+
+[node name="MarginContainer" type="MarginContainer" parent="ButtonsContainer/PanelContainer"]
+layout_mode = 2
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ButtonsContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ButtonsContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 alignment = 1
 
-[node name="Decrease" type="Button" parent="ButtonsContainer/MarginContainer/HBoxContainer"]
+[node name="Decrease" type="Button" parent="ButtonsContainer/PanelContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(30, 30)
+custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
 size_flags_vertical = 4
 focus_neighbor_right = NodePath("../Increase")
@@ -109,9 +115,9 @@ icon = ExtResource("5_nfbni")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Increase" type="Button" parent="ButtonsContainer/MarginContainer/HBoxContainer"]
+[node name="Increase" type="Button" parent="ButtonsContainer/PanelContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(30, 30)
+custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
 size_flags_vertical = 4
 focus_neighbor_left = NodePath("../Decrease")

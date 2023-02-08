@@ -5,10 +5,10 @@ extends GraphEdit
 signal node_deleted(ProtonNodeUi)
 
 
-const AddNodePopup = preload("./components/popup/add_node_popup.tscn")
+const AddNodePopup := preload("./components/popup/add_node_popup.tscn")
 
 var _graph: NodeGraph
-var _add_node_popup: Popup
+var _add_node_popup: Window
 var _new_node_position: Vector2
 var _rebuild_ui_complete := false
 

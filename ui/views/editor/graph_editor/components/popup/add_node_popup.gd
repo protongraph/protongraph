@@ -1,4 +1,4 @@
-extends Popup
+extends Window
 
 # Browse the available nodes from this panel. Once a node is selected, it sends
 # a signal caught by the template editor that handles the actual node creation.
@@ -23,6 +23,9 @@ var _initialized := false
 
 func _ready() -> void:
 	about_to_popup.connect(_on_about_to_popup)
+	close_requested.connect(hide)
+	focus_exited.connect(hide)
+
 	_node_tree.item_activated.connect(_on_item_activated)
 	_node_tree.item_selected.connect(_on_item_selected)
 	_node_tree.nothing_selected.connect(_on_nothing_selected)

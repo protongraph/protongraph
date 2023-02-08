@@ -43,6 +43,7 @@ func _update_mesh() -> void:
 	if not _curve_mesh:
 		_curve_mesh = MeshInstance3D.new()
 		_curve_mesh.material_override = _material
+		_curve_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(_curve_mesh)
 
 	_curve_mesh.mesh = st.commit()

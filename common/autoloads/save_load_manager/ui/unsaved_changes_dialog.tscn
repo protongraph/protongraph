@@ -1,71 +1,90 @@
-[gd_scene load_steps=3 format=3 uid="uid://dufdry30fahpo"]
+[gd_scene load_steps=4 format=3 uid="uid://dufdry30fahpo"]
 
 [ext_resource type="Script" path="res://common/autoloads/save_load_manager/ui/unsaved_changes_dialog.gd" id="1_excob"]
+[ext_resource type="Texture2D" uid="uid://ws2w6wus0rdn" path="res://ui/icons/icon_warning.svg" id="2_lo203"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxivi"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_luku7"]
 bg_color = Color(0.478431, 0.027451, 0.027451, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
-[node name="UnsavedChangesDialog" type="PopupPanel"]
+[node name="UnsavedChangesDialog" type="Popup"]
 transparent_bg = true
 title = "Confirm"
-size = Vector2i(352, 125)
-always_on_top = true
-transparent = true
+size = Vector2i(350, 180)
+visible = true
+min_size = Vector2i(350, 180)
 script = ExtResource("1_excob")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = -932.0
-offset_bottom = -599.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = ExtResource("2_lo203")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Save changes before closing the template?"
+text = "Save changes before closing ?"
+horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="FileNameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "file_name.tpgn"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="Cancel" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Discard" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/hover = SubResource("StyleBoxFlat_luku7")
+text = "Don't save"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Cancel" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Cancel"
 
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="Discard" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Confirm" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/hover = SubResource("StyleBoxFlat_uxivi")
-text = "Discard"
-
-[node name="Confirm" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
+theme_type_variation = &"ButtonImportant"
 text = "Save"
