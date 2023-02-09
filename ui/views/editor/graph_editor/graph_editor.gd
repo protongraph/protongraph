@@ -27,6 +27,12 @@ func _ready() -> void:
 		for source in sources:
 			add_valid_connection_type(source, target)
 
+	# Add UI to move the graphedit to an external window
+	var box := get_zoom_hbox()
+	var button := FloatButton.new()
+	button.subwindow_id = "graph_editor"
+	box.add_child(button)
+
 
 func connect_node_and_notify(from, from_port, to, to_port):
 	var err = connect_node(from, from_port, to, to_port)

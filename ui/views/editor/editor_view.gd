@@ -11,22 +11,32 @@ extends Control
 var _graph: NodeGraph
 
 @onready var _toolbar: Toolbar = $%Toolbar
+@onready var _graph_editor_root: Control = $%NodeGraphRoot
 @onready var _graph_editor: NodeGraphEditor = $%NodeGraphEditor
+@onready var _viewport_root: Control = $%ViewportRoot
 @onready var _viewport: EditorViewport = $%Viewport
 @onready var _node_inspector: NodeInspector = $%NodeInspector
 @onready var _graph_inspector: GraphInspector = $%GraphInspector
 
 
 func _ready() -> void:
+	visibility_changed.connect(_on_visibility_changed)
+
 	_graph_editor.node_selected.connect(_on_node_selected)
 	_graph_editor.node_deselected.connect(_on_node_deselected)
 	_graph_editor.node_deleted.connect(_on_node_deleted)
 	_toolbar.save_graph.connect(_on_save_button_pressed)
 	_toolbar.toggle_node_inspector.connect(_toggle_panel.bind(_node_inspector))
 	_toolbar.toggle_graph_inspector.connect(_toggle_panel.bind(_graph_inspector))
-	_toolbar.toggle_graph_editor.connect(_toggle_panel.bind(_graph_editor))
-	_toolbar.toggle_viewport.connect(_toggle_panel.bind(_viewport))
+	_toolbar.toggle_graph_editor.connect(_toggle_panel.bind(_graph_editor_root))
+	_toolbar.toggle_viewport.connect(_toggle_panel.bind(_viewport_root))
 	_node_inspector.pinned_variables_changed.connect(_on_pinned_variables_changed)
+
+	WindowManager.window_created.connect(_on_window_changed)
+	WindowManager.window_closed.connect(_on_window_changed)
+
+	_on_window_changed("viewport")
+	_on_window_changed("graph_editor")
 
 
 func edit(graph: NodeGraph) -> void:
@@ -47,14 +57,12 @@ func save_and_close() -> bool:
 	GlobalEventBus.save_graph.emit(_graph, true)
 
 	var status = await GlobalEventBus.save_status_updated
-	print(_graph.save_file_path.get_file(), " status: ", status)
+
 	match status:
 		"saved", "discarded":
 			return true
 		"canceled", _:
-			print("here")
 			return false
-
 
 
 func rebuild() -> void:
@@ -97,3 +105,36 @@ func _on_save_button_pressed() -> void:
 
 func _on_pinned_variables_changed() -> void:
 	_graph_inspector.rebuild_ui()
+
+
+# Match the visibility of the components that can be moved to sub windows to
+# make sure they are not visible if their parent editor view is not the
+# current focused tab.
+func _on_visibility_changed() -> void:
+	_graph_editor.visible = visible
+	_viewport.visible = visible
+
+
+# Some panels (like the viewport or the graph editor) can be displayed in an
+# external window. This method ensure they are displayed in the right place.
+func _on_window_changed(id: String) -> void:
+	var panel: Control
+	var default_root: Control
+
+	match id:
+		"viewport":
+			panel = _viewport
+			default_root = _viewport_root
+
+		"graph_editor":
+			panel = _graph_editor
+			default_root = _graph_editor_root
+
+	if WindowManager.has_window(id):
+		WindowManager.add_control_to(id, panel)
+	else:
+		NodeUtil.set_parent(panel, default_root)
+
+	# Hide the roots if their children have moved to an external window.
+	for root in [_graph_editor_root, _viewport_root]:
+		root.visible = root.get_child_count() > 0

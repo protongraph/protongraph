@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://djvu4d06hknnj"]
 
 [ext_resource type="Script" path="res://ui/views/editor/graph_editor/graph_editor.gd" id="1_qf2ha"]
 
 [node name="NodeGraphEditor" type="GraphEdit"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -12,4 +13,4 @@ zoom_min = 0.25
 zoom_max = 2.16
 zoom_step = 1.08
 show_zoom_label = true
-script = ExtResource( "1_qf2ha" )
+script = ExtResource("1_qf2ha")

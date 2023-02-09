@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dru6wp1xq8ngq"]
+[gd_scene load_steps=14 format=3 uid="uid://dru6wp1xq8ngq"]
 
 [ext_resource type="Script" path="res://ui/views/editor/viewport/viewport.gd" id="1_mdwbn"]
 [ext_resource type="Script" path="res://ui/views/editor/viewport/components/camera.gd" id="2_it4fl"]
@@ -7,6 +7,11 @@
 [ext_resource type="Script" path="res://ui/views/editor/viewport/components/viewport_tree.gd" id="5_04xjp"]
 [ext_resource type="Texture2D" uid="uid://dnt2hnxoc8map" path="res://ui/icons/icon_question_mark.svg" id="5_xtp6v"]
 [ext_resource type="Texture2D" uid="uid://cislafpj4011d" path="res://ui/icons/icon_camera.svg" id="6_6dlau"]
+[ext_resource type="Texture2D" uid="uid://bjirb8q6awvj3" path="res://ui/icons/icon_window.svg" id="6_ddiw8"]
+[ext_resource type="Script" path="res://ui/common/float_button.gd" id="7_vwp7d"]
+
+[sub_resource type="World3D" id="World3D_wutdu"]
+resource_local_to_scene = true
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ymbai"]
 panorama = ExtResource("2_p0kfs")
@@ -19,27 +24,19 @@ process_mode = 3
 background_mode = 2
 sky = SubResource("Sky_rbhip")
 
-[sub_resource type="World3D" id="World3D_wutdu"]
-resource_local_to_scene = true
-environment = SubResource("Environment_s5dt0")
-
-[node name="Viewport" type="Control"]
+[node name="Viewport" type="MarginContainer"]
 clip_children = 1
-layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_mdwbn")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
@@ -72,12 +69,7 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
 
 [node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
@@ -88,6 +80,7 @@ split_offset = 175
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"TreeDark"
+scroll_vertical_enabled = false
 script = ExtResource("5_04xjp")
 input = NodePath("../../../SubViewportContainer/SubViewport/InputRoot")
 output = NodePath("../../../SubViewportContainer/SubViewport/OutputRoot")
@@ -128,6 +121,16 @@ layout_mode = 2
 [node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 6
+
+[node name="ToggleFloatButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("6_ddiw8")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("7_vwp7d")
+subwindow_id = "viewport"
 
 [node name="HelpButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true

@@ -14,7 +14,7 @@ corner_radius_bottom_left = 3
 transparent_bg = true
 title = "Confirm"
 size = Vector2i(350, 180)
-visible = true
+transparent = true
 min_size = Vector2i(350, 180)
 script = ExtResource("1_excob")
 
