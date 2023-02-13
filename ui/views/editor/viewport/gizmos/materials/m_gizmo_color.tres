@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ipm0pb8e04kw"]
+
+[resource]
+render_priority = 100
+shading_mode = 0
+vertex_color_use_as_albedo = true

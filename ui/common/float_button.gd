@@ -12,6 +12,7 @@ func _ready():
 	icon = WindowIcon
 	icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	expand_icon = true
+	tooltip_text = "Toggle external window"
 
 	if custom_minimum_size == Vector2.ZERO:
 		custom_minimum_size = Vector2(30, 30)

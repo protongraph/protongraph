@@ -55,16 +55,17 @@ func _generate_outputs() -> void:
 	radius.w = _clamp_radius(radius.w, length, radius.y, width, radius.z)
 
 	var circle_mult = 4.0 * (sqrt(2.0) - 1.0) / 3.0
-	var offset := Vector3(width / 2.0, length / 2.0, 0.0)
+	var offset := Vector3(width / 2.0, -length / 2.0, 0.0)
 	var top = width - (radius.x + radius.y)
 	var bottom = width - (radius.z + radius.w)
 	var left = length - (radius.x + radius.z)
 	var right = length - (radius.y + radius.w)
 
 	var t := Transform3D()
-	var up := Vector3(0, 0, 1)
+	var up := Vector3.UP
 	if axis != Vector3.ZERO and axis != up:
 		t = t.looking_at(axis.normalized(), up)
+	t.origin = origin
 
 	var curve = Curve3D.new()
 
@@ -72,64 +73,66 @@ func _generate_outputs() -> void:
 	var v_in := Vector3.ZERO
 	var v_out := Vector3.ZERO
 	pos.x += radius.x
-	curve.add_point(t * pos, t * v_in, t * v_out)
+	curve.add_point(pos, v_in, v_out)
 
 	# Top right
 	pos.x += top
 	v_in = Vector3.ZERO
 	v_out = Vector3(radius.y * circle_mult, 0.0, 0.0)
-	curve.add_point(t * pos, t * v_in, t * v_out)
+	curve.add_point(pos, v_in, v_out)
 
 	pos.x += radius.y
 	pos.y -= radius.y
 	v_in = Vector3(0.0, radius.y * circle_mult, 0.0)
 	v_out = Vector3.ZERO
-	curve.add_point(t * pos, t * v_in, t * v_out)
+	curve.add_point(pos, v_in, v_out)
 
 	# Bottom right
 	pos.y -= right
 	v_in = Vector3.ZERO
 	v_out = Vector3(0.0, -radius.w * circle_mult, 0.0)
-	curve.add_point(t * pos, t * v_in, t * v_out)
+	curve.add_point(pos, v_in, v_out)
 
 	pos.y -= radius.w
 	pos.x -= radius.w
 	v_in = Vector3(radius.w * circle_mult, 0.0, 0.0)
 	v_out = Vector3.ZERO
-	curve.add_point(t * pos, t * v_in, t * v_out)
+	curve.add_point(pos, v_in, v_out)
 
 	# Bottom left
 	pos.x -= bottom
 	v_in = Vector3.ZERO
 	v_out = Vector3(-radius.z * circle_mult, 0.0, 0.0)
-	curve.add_point(t * pos, t * v_in, t * v_out)
+	curve.add_point(pos, v_in, v_out)
 
 	pos.x -= radius.z
 	pos.y += radius.z
 	v_in = Vector3(0.0, -radius.z * circle_mult, 0.0)
 	v_out = Vector3.ZERO
-	curve.add_point(t * pos, t * v_in, t * v_out)
+	curve.add_point(pos, v_in, v_out)
 
 	# Top left
 	pos.y += left
 	v_in = Vector3.ZERO
 	v_out = Vector3(0.0, radius.x * circle_mult, 0.0)
-	curve.add_point(t * pos, t * v_in, t * v_out)
+	curve.add_point(pos, v_in, v_out)
 
 	pos.y += radius.x
 	pos.x += radius.x
 	v_in = Vector3(-radius.x * circle_mult, 0.0, 0.0)
 	v_out = Vector3.ZERO
-	curve.add_point(t * pos, t * v_in, t * v_out)
+	curve.add_point(pos, v_in, v_out)
 
 	var path = Path3D.new()
 	path.name = "Rectangle"
 	path.curve = curve
-	path.position = origin
+	path.transform = t
 
 	set_output("rectangle", path)
 
 
+# Ensure no corner radius is larger than their edges and neighboring corners radius.
+# TODO: double check this logic
 func _clamp_radius(r: float, edge_1: float, r1: float, edge_2: float, r2: float) -> float:
 	var smallest_edge = min(edge_1, edge_2)
 	r = clamp(r, 0.0, smallest_edge)

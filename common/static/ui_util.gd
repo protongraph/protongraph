@@ -41,6 +41,8 @@ static func create_component(name: String, type: int, opts: SlotOptions) -> Grap
 			component = StringComponent.new()
 		DataType.VECTOR2, DataType.VECTOR3, DataType.VECTOR4:
 			component = VectorComponent.new()
+		DataType.CURVE_FUNC:
+			component = CurveComponent.new()
 		DataType.MISC:
 			if opts.has_dropdown():
 				component = DropdownComponent.new()

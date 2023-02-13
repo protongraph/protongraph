@@ -18,7 +18,7 @@ func _init() -> void:
 	opts.allow_lesser = false
 	create_input("loop_cuts", "Loop cuts", DataType.NUMBER, opts)
 	create_input("axis", "Axis", DataType.VECTOR3, SlotOptions.new(Vector3.UP))
-	create_input("local_space", "Local space", DataType.BOOLEAN, SlotOptions.new(false))
+	create_input("space", "Local space", DataType.BOOLEAN, SlotOptions.new(false))
 	create_input("smooth", "Smooth faces", DataType.BOOLEAN, SlotOptions.new(false))
 	create_input("taper_curve", "Taper ramp", DataType.CURVE_FUNC)
 
@@ -36,7 +36,7 @@ func _generate_outputs() -> void:
 	var cuts: int = get_input_single("loop_cuts", 0)
 	var smooth: bool = get_input_single("smooth", false)
 	var axis: Vector3 = get_input_single("axis", Vector3.UP)
-	# var local_space: bool = get_input_single("local_space", false)
+	var local_space: bool = get_input_single("space", false)
 	var taper: Curve = get_input_single("taper_curve")
 
 	# Data validation
@@ -55,6 +55,7 @@ func _generate_outputs() -> void:
 		var extrude_steps := cuts + 2
 		var extrude_length: float = depth / (extrude_steps - 1)
 		var point_count := pl.size()
+		var transform := pl.get_transform()
 
 		surface_tool.clear()
 		surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -63,9 +64,11 @@ func _generate_outputs() -> void:
 		for i in extrude_steps:
 			var taper_size = 1.0
 			if taper:
-				taper_size = taper.interpolate_baked(float(i) / float(extrude_steps))
+				taper_size = taper.sample_baked(float(i) / float(extrude_steps))
 
 			var extrude_axis = axis * i * extrude_length
+			if local_space:
+				extrude_axis = extrude_axis * transform.basis
 
 			for point_index in point_count:
 				var pos: Vector3 = taper_size * pl.points[point_index] + extrude_axis
@@ -84,6 +87,7 @@ func _generate_outputs() -> void:
 		surface_tool.generate_normals()
 
 		var mi := MeshInstance3D.new()
+		mi.transform = pl.get_transform()
 		mi.name = pl.name + " Extruded"
 		mi.mesh = ProtonMesh.create_from_arrays(surface_tool.commit_to_arrays())
 

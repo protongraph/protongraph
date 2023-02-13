@@ -10,9 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://bjirb8q6awvj3" path="res://ui/icons/icon_window.svg" id="6_ddiw8"]
 [ext_resource type="Script" path="res://ui/common/float_button.gd" id="7_vwp7d"]
 
-[sub_resource type="World3D" id="World3D_wutdu"]
-resource_local_to_scene = true
-
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ymbai"]
 panorama = ExtResource("2_p0kfs")
 
@@ -23,6 +20,10 @@ process_mode = 3
 [sub_resource type="Environment" id="Environment_s5dt0"]
 background_mode = 2
 sky = SubResource("Sky_rbhip")
+
+[sub_resource type="World3D" id="World3D_wutdu"]
+resource_local_to_scene = true
+environment = SubResource("Environment_s5dt0")
 
 [node name="Viewport" type="MarginContainer"]
 clip_children = 1
@@ -126,6 +127,7 @@ theme_override_constants/separation = 6
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
+tooltip_text = "Toggle external window"
 icon = ExtResource("6_ddiw8")
 icon_alignment = 1
 expand_icon = true

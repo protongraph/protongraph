@@ -16,20 +16,19 @@ func set_selected(node: Node3D, _editable := false) -> void:
 
 
 func add_gizmo_for(node):
-	var gizmo: AbstractGizmo
+	if node is Node3D:
+		_add_gizmo(node, AxisGizmo.new())
 
 	if node is Path3D:
-		gizmo = Path3DGizmo.new()
+		_add_gizmo(node, Path3DGizmo.new())
 
 	elif node is Polyline3D:
-		gizmo = Polyline3DGizmo.new()
+		_add_gizmo(node, Polyline3DGizmo.new())
 
-	else:
-		return
 
+func _add_gizmo(node, gizmo: AbstractGizmo) -> void:
 	add_child(gizmo)
 	gizmo.enable_for(node)
-
 
 	if _instanced_gizmos.has(node):
 		_instanced_gizmos[node].push_back(gizmo)
