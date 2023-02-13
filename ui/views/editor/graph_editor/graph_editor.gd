@@ -166,14 +166,14 @@ func _show_add_node_popup(click_position: Vector2i) -> void:
 		add_child(_add_node_popup)
 		_add_node_popup.create_node_request.connect(_on_create_node_request)
 
-	var window_position := get_tree().get_root().position
-	var graph_edit_position := Vector2i(global_position)
+	var global_click_position: Vector2i = get_global_mouse_position()
+	var window_position := WindowManager.get_parent_window(self).position
 
-	# Necessary because sub windows are not embedded
-	_add_node_popup.position = click_position + window_position + graph_edit_position
+	# Necessary because sub windows are not embedded.
+	_add_node_popup.position = global_click_position + window_position
 	_add_node_popup.popup()
 
-	_new_node_position = graph_edit_position + click_position
+	_new_node_position = Vector2i(global_position) + click_position
 
 
 func _on_create_node_request(node_type_id: String) -> void:

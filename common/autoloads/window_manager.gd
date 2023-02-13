@@ -30,6 +30,16 @@ func add_control_to(id: String, control: Control) -> void:
 		w.size = control.size
 
 
+func get_parent_window(node: Node) -> Window:
+	if node is Window:
+		return node
+
+	if not node.is_inside_tree():
+		return get_tree().get_root()
+
+	return get_parent_window(node.get_parent())
+
+
 func _get_or_create(id: String) -> Window:
 	if id in _windows:
 		return _windows[id]

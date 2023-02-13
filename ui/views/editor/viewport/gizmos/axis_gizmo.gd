@@ -40,7 +40,7 @@ func _update_mesh() -> void:
 
 	st.set_color(Color.BLUE)
 	st.add_vertex(Vector3.ZERO)
-	st.add_vertex(Vector3.FORWARD)
+	st.add_vertex(Vector3.BACK)
 
 	if not _axis_mesh:
 		_axis_mesh = MeshInstance3D.new()

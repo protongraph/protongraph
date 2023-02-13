@@ -3,6 +3,9 @@ extends RefCounted
 
 
 static func safe_free(any) -> void:
+	if any is RefCounted:
+		return
+
 	if any is Node:
 		any.queue_free()
 
