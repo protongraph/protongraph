@@ -28,27 +28,30 @@ func _init() -> void:
 	opts.allow_greater = true
 	opts.allow_lesser = false
 	create_input("gen_count", "Generations", DataType.NUMBER, opts)
-	create_input("step_size", "Step Size", DataType.NUMBER, SlotOptions.new(1.0))
+	create_input("step_size", "Step size", DataType.NUMBER, SlotOptions.new(1.0))
 	create_input("angle", "Angle", DataType.NUMBER, SlotOptions.new(45.0))
-	create_input("rand_size", "Randomize Size", DataType.NUMBER)
-	create_input("rand_angle", "Randomize Angle", DataType.NUMBER)
+	create_input("rand_size", "Random size range", DataType.VECTOR2)
+	create_input("rand_angle", "Random angle range", DataType.VECTOR2)
 
 	opts = SlotOptions.new()
 	opts.value = 0
 	opts.step = 1
 	create_input("seed", "Seed", DataType.NUMBER, opts)
 
-	create_output("curve", "Curves", DataType.CURVE_3D)
+	create_output("curves", "Curves", DataType.CURVE_3D)
 	create_output("str_system", "System", DataType.STRING)
 
 
 
 func _generate_outputs() -> void:
-	var custom_seed = get_input_single("seed", 0)
+	var custom_seed: int = get_input_single("seed", 0)
+	_rng = RandomNumberGenerator.new()
 	_rng.set_seed(custom_seed)
 	_turtle.set_seed(custom_seed + 100)
 	_turtle.step_size = get_input_single("step_size", 1.0)
 	_turtle.default_angle = get_input_single("angle", 45.0)
+	_turtle.random_angle_range = get_input_single("rand_angle", Vector2.ZERO)
+	_turtle.random_size_range = get_input_single("rand_size", Vector2.ZERO)
 
 	var system := _compute_final_string()
 	var curves := _turtle.draw(system)

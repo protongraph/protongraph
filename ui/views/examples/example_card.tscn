@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://b8u8qt8t87vjb"]
+
+[ext_resource type="Script" path="res://ui/views/examples/example_card.gd" id="1_cav5y"]
+[ext_resource type="Texture2D" uid="uid://dvogk3ltnnx87" path="res://ui/icons/icon_file.svg" id="1_moh0f"]
+
+[node name="ExampleCard" type="MarginContainer"]
+custom_minimum_size = Vector2(300, 0)
+offset_right = 348.0
+offset_bottom = 116.0
+script = ExtResource("1_cav5y")
+
+[node name="Button" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Thumbnail" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("1_moh0f")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Example 1"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelMinor"
+text = "In this example, learn how to create something using this node, or this tool."
+autowrap_mode = 3

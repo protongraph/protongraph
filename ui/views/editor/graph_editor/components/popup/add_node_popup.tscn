@@ -78,6 +78,7 @@ layout_mode = 2
 size_flags_vertical = 1
 text = "Select a node from 
 the list to see a description"
+autowrap_mode = 3
 
 [node name="ActionContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2

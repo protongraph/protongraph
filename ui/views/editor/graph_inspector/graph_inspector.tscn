@@ -1,9 +1,10 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://ccc6i8ykc1cb8"]
 
 [ext_resource type="Script" path="res://ui/views/editor/graph_inspector/graph_inspector.gd" id="1_hjjfa"]
 
 [node name="GraphInspector" type="Control"]
 clip_contents = true
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,14 +21,29 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="DefaultLabel" type="Label" parent="."]
-unique_name_in_owner = true
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DefaultInfo" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="DefaultLabel" type="Label" parent="ScrollContainer/MarginContainer/DefaultInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
 text = "Graph Inspector
 
 Pinned properties from the nodes inspector will appear here."
@@ -35,14 +51,16 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="InfoLabel2" type="Label" parent="ScrollContainer/MarginContainer/DefaultInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_type_variation = &"LabelMinor"
+text = "(Hide this panel using the toolbar on the left)"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
-[node name="PropertiesRoot" type="VBoxContainer" parent="MarginContainer"]
+[node name="PropertiesRoot" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2

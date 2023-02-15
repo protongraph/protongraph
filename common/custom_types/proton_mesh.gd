@@ -18,8 +18,18 @@ static func create_from_primitive(source: PrimitiveMesh) -> ProtonMesh:
 	return proton_mesh
 
 
+# Creates a single surface mesh
 static func create_from_arrays(arrays) -> ProtonMesh:
-	var proton_mesh = ProtonMesh.new()
+	var proton_mesh := ProtonMesh.new()
 	proton_mesh.add_surface_from_arrays(PRIMITIVE_TRIANGLES, arrays)
+
+	return proton_mesh
+
+
+static func create_from_array_mesh(array_mesh: ArrayMesh) -> ProtonMesh:
+	var proton_mesh := ProtonMesh.new()
+
+	for i in array_mesh.get_surface_count():
+		proton_mesh.add_surface_from_arrays(PRIMITIVE_TRIANGLES, array_mesh.surface_get_arrays(i))
 
 	return proton_mesh

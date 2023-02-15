@@ -3,6 +3,9 @@
 ## Core
 + Field input support
 + Detect (and prevent) loops in the graph
++ Enforce data validity from the slot options
+	- This currently only applies to the built-in component ui, but it does
+	not check the validity of what's provided by connected nodes.
 
 ## UI
 + Collapse nodes (to save space)
@@ -15,6 +18,7 @@
 + Visibility toggle on the 3D viewport tree
 + Nested graphs
 + Add per view UndoRedo support
++ Keyboard shortcuts in the add node popup
 
 ## Nodes
 + Port back all the nodes
@@ -23,6 +27,8 @@
 	- collapse individual elements
 	- Show total array size
 + Expression node
-+ Set Transform node
-+ Extrude mesh
++ extrude faces / individual faces
 + Subdivide mesh
++ Relax points
++ Stretch along curve
+	- port back and do the suggested edits

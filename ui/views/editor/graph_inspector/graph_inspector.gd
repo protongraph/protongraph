@@ -5,7 +5,7 @@ extends Control
 var _graph: NodeGraphEditor
 
 @onready var _root: Control = $%PropertiesRoot
-@onready var _default: Label = $%DefaultLabel
+@onready var _default: Control = $%DefaultInfo
 
 
 func _ready():

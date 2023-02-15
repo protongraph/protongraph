@@ -33,7 +33,7 @@ func _generate_outputs() -> void:
 
 	var t = Transform3D()
 	if axis != Vector3.ZERO:
-		t = t.looking_at(axis.normalized(), Vector3(0, 0, 1))
+		t = t.looking_at(axis.normalized(), Vector3.BACK)
 
 	var curve = Curve3D.new()
 

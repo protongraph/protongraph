@@ -10,7 +10,7 @@ func _init() -> void:
 	var opts := SlotOptions.new()
 	opts.allow_multiple_connections = true
 	create_input("cross_section", "Cross section", DataType.POLYLINE_3D, opts)
-	create_input("curve", "Curve path", DataType.CURVE_3D)
+	create_input("curve", "Curve path", DataType.CURVE_3D, opts)
 
 	opts = SlotOptions.new()
 	opts.value = 0
@@ -63,9 +63,9 @@ func _generate_outputs() -> void:
 			# Point slightly ahead for look_at calculations
 			var position_2: Vector3
 			if current_offset + 0.1 < curve_length:
-				position_2 = curve.sample_baked(current_offset + 0.1)
+				position_2 = curve.sample_baked(current_offset + 0.2)
 			else:
-				position_2 = curve.sample_baked(current_offset - 0.1)
+				position_2 = curve.sample_baked(current_offset - 0.2)
 				position_2 += (position_on_curve - position_2) * 2.0
 
 			var taper_size := 1.0

@@ -93,6 +93,7 @@ func rebuild_ui() -> void:
 # TMP hack because calling update alone doesn't update the connections which
 # are in another layer.
 func force_redraw() -> void:
+	await get_tree().process_frame
 	$CLAYER.queue_redraw()
 	queue_redraw()
 
@@ -101,7 +102,7 @@ func delete_node(node: ProtonNodeUi) -> void:
 	remove_child(node)
 	_graph.delete_node(node.proton_node)
 	node_deleted.emit(node)
-	call_deferred("force_redraw")
+	force_redraw.call_deferred()
 
 
 func disconnect_inputs(node: ProtonNodeUi, port: int):
@@ -209,6 +210,7 @@ func _on_connection_request(from, from_port: int, to, to_port: int) -> void:
 	var from_idx = from_node.output_port_to_idx(from_port)
 	var to_idx = to_node.input_port_to_idx(to_port)
 	_graph.connect_node(from, from_idx, to, to_idx)
+	force_redraw.call_deferred()
 
 
 func _on_disconnection_request(from: StringName, from_port: int, to: StringName, to_port: int) -> void:
@@ -222,6 +224,7 @@ func _on_disconnection_request(from: StringName, from_port: int, to: StringName,
 	var from_idx = from_node.output_port_to_idx(from_port)
 	var to_idx = to_node.input_port_to_idx(to_port)
 	_graph.disconnect_node(from, from_idx, to, to_idx)
+	force_redraw.call_deferred()
 
 
 func _on_delete_nodes_request(selected: Array = []) -> void:

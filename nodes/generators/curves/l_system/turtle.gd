@@ -5,6 +5,8 @@ class_name Turtle
 
 var default_angle := 45.0
 var step_size := 1.0
+var random_angle_range := Vector2.ZERO
+var random_size_range := Vector2.ZERO
 
 
 var _rng := RandomNumberGenerator.new()
@@ -20,6 +22,7 @@ class Command:
 
 
 func set_seed(custom_seed: int) -> void:
+	_rng = RandomNumberGenerator.new()
 	_rng.set_seed(custom_seed)
 
 
@@ -31,8 +34,8 @@ func draw(system: String) -> Array:
 		var cmd = data[0]
 		system = data[1]
 
-		var angle: float = _get_parameter(cmd, 0, default_angle)
-		var size: float = _get_parameter(cmd, 0, step_size)
+		var angle: float = _get_parameter(cmd, 0, _get_angle())
+		var size: float = _get_parameter(cmd, 0, _get_size())
 
 		match cmd.name:
 			"[": # Push state
@@ -59,35 +62,38 @@ func draw(system: String) -> Array:
 			"h": # Half forward no draw
 				_turtle.translate_object_local(Vector3.FORWARD * size * 0.5)
 
-			"+": # Turn right
+			"y": # Turn right
 				_turtle.rotate_object_local(Vector3.UP, -deg_to_rad(angle))
 
-			"-": # Turn left
+			"Y": # Turn left
 				_turtle.rotate_object_local(Vector3.UP, deg_to_rad(angle))
 
-			"|": # Turn 180 degrees
+			"r": # Turn 180 degrees
 				_turtle.rotate_object_local(Vector3.UP, deg_to_rad(180))
 
-			"&": # Pitch up
-				_turtle.rotate_object_local(Vector3.RIGHT, deg_to_rad(angle))
-
-			"^": # Pitch down
+			"x": # Pitch down
 				_turtle.rotate_object_local(Vector3.RIGHT, -deg_to_rad(angle))
 
-			"\\": # Roll clockwise
+			"X": # Pitch up
+				_turtle.rotate_object_local(Vector3.RIGHT, deg_to_rad(angle))
+
+			"g": # Pitch 180
+				_turtle.rotate_object_local(Vector3.RIGHT, deg_to_rad(180))
+
+			"z": # Roll clockwise
 				_turtle.rotate_object_local(Vector3.FORWARD, -deg_to_rad(angle))
 
-			"/": # Roll counter clockwise
+			"Z": # Roll counter clockwise
 				_turtle.rotate_object_local(Vector3.FORWARD, deg_to_rad(angle))
 
-			"*": # Roll 180 degrees
+			"b": # Roll 180 degrees
 				_turtle.rotate_object_local(Vector3.FORWARD, deg_to_rad(180))
 
 			"~": # Random Pitch, Roll and Turn, default 180
-				pass
+				pass # TODO
 
 			"%": # Remove the end of the branch
-				pass
+				pass # TODO
 
 	if _path.curve.get_point_count() > 1:
 		_curves.push_back(_path)
@@ -104,7 +110,7 @@ func clear() -> void:
 		add_child(_turtle)
 
 	_turtle.transform = Transform3D()
-	#_turtle.look_at(Vector3.UP, Vector3.BACK) # TODO: Check later
+	_turtle.look_at_from_position(Vector3.ZERO, Vector3.UP, Vector3.BACK) # TODO: Check later
 
 	_new_path()
 
@@ -157,6 +163,19 @@ func _new_path() -> void:
 
 
 func _add_point_to_path() -> void:
-	# var local = _path.transform.xform_inv(_turtle.transform.origin)
-	var local = _path.transform * _turtle.transform.origin # TODO: check if right order
+	var local = _turtle.transform.origin * _path.transform
 	_path.curve.add_point(local)
+
+
+func _get_size() -> float:
+	if random_size_range == Vector2.ZERO:
+		return step_size
+
+	return randf_range(random_size_range.x, random_size_range.y)
+
+
+func _get_angle() -> float:
+	if random_angle_range == Vector2.ZERO:
+		return default_angle
+
+	return randf_range(random_angle_range.x, random_angle_range.y)

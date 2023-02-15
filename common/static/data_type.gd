@@ -91,22 +91,18 @@ static func get_category_color(category: String) -> Color:
 		type = tokens[1]
 
 	match type:
-		"Masks":
-			return COLORS[MASK_3D]
 		"Curves":
 			return COLORS[CURVE_3D].darkened(0.25)
-		"Vector Curves":
-			return COLORS[POLYLINE_3D].darkened(0.25)
-		"Function Curves":
-			return COLORS[CURVE_FUNC]
 		"Debug":
 			return Color.BLACK
+		"Function Curves":
+			return COLORS[CURVE_FUNC]
 		"Heightmaps":
 			return COLORS[HEIGHTMAP].darkened(0.3)
 		"Inputs":
 			return Color.STEEL_BLUE
-		"Inspector":
-			return Color.TEAL
+		"Masks":
+			return COLORS[MASK_3D]
 		"Maths":
 			return COLORS[NUMBER].darkened(0.25)
 		"Meshes":
@@ -115,9 +111,13 @@ static func get_category_color(category: String) -> Color:
 			return COLORS[NODE_3D].darkened(0.2)
 		"Noises":
 			return COLORS[NOISE].darkened(0.4)
+		"Numbers":
+			return COLORS[NUMBER].darkened(0.25)
 		"Output":
 			return Color.BLACK
-		"String":
+		"Polylines":
+			return COLORS[POLYLINE_3D].darkened(0.25)
+		"Strings":
 			return COLORS[STRING].darkened(0.25)
 		"Transforms":
 			return Color.MAROON
@@ -125,8 +125,6 @@ static func get_category_color(category: String) -> Color:
 			return Color("4371b5")
 		"Vectors":
 			return COLORS[VECTOR2].darkened(0.25)
-		"Numbers":
-			return COLORS[NUMBER].darkened(0.25)
 		_:
 			return Color.BLACK
 

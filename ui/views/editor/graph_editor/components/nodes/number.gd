@@ -24,7 +24,7 @@ func set_value(value: float) -> void:
 
 func notify_connection_changed(connected: bool) -> void:
 	label.visible = connected
-	icon.visible = connected
+	icon_container.visible = connected
 	_spinbox.visible = !connected
 
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dg0pdmbvync0j"]
+[gd_scene load_steps=3 format=3 uid="uid://dg0pdmbvync0j"]
 
 [ext_resource type="Script" path="res://ui/views/examples/examples_view.gd" id="1_qar3x"]
+[ext_resource type="PackedScene" uid="uid://b8u8qt8t87vjb" path="res://ui/views/examples/example_card.tscn" id="2_wsiyy"]
 
 [node name="ExamplesView" type="MarginContainer"]
 anchors_preset = 15
@@ -12,7 +13,23 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_qar3x")
 
-[node name="Label" type="Label" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
-text = "Under construction"
-horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+
+[node name="HFlowContainer" type="HFlowContainer" parent="ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 32
+alignment = 1
+
+[node name="ExampleCard" parent="ScrollContainer/MarginContainer/HFlowContainer" instance=ExtResource("2_wsiyy")]
+layout_mode = 2
+
+[node name="ExampleCard2" parent="ScrollContainer/MarginContainer/HFlowContainer" instance=ExtResource("2_wsiyy")]
+layout_mode = 2

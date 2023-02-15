@@ -5,6 +5,7 @@
 
 [node name="NodeInspector" type="Control"]
 clip_children = 1
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,20 +40,29 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 4
 alignment = 1
 
 [node name="InfoLabel" type="Label" parent="ScrollContainer/MarginContainer/DefaultContent"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 1
 text = "Node inspector
 
 Select a node to display its local properties here. "
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
-clip_text = true
+
+[node name="InfoLabel2" type="Label" parent="ScrollContainer/MarginContainer/DefaultContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_type_variation = &"LabelMinor"
+text = "(Hide this panel using the toolbar on the left)"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Properties" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
 unique_name_in_owner = true
