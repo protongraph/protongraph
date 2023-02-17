@@ -7,6 +7,9 @@ extends Node3D
 
 
 func add_point(pos: Vector3, up := Vector3.ZERO, index: int = -1) -> void:
+	if points.size() != up_axes.size():
+		up_axes.resize(points.size())
+
 	if index == -1:
 		points.push_back(pos)
 		up_axes.push_back(up)

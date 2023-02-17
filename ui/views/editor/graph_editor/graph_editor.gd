@@ -55,7 +55,7 @@ func disconnect_node_and_notify(from, from_port, to, to_port):
 func set_node_graph(graph: NodeGraph) -> void:
 	_graph = graph
 	rebuild_ui()
-	_graph.clean_rebuild()
+	_graph.rebuild(true)
 
 
 func clear() -> void:

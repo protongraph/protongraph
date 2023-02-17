@@ -24,14 +24,23 @@ script = ExtResource("2_xfeeo")
 [node name="Min" parent="VBoxContainer" instance=ExtResource("1_e8dce")]
 unique_name_in_owner = true
 layout_mode = 2
+value = 0.0
+allow_greater = true
+allow_lesser = true
 spinbox_name = "Min"
 
 [node name="Max" parent="VBoxContainer" instance=ExtResource("1_e8dce")]
 unique_name_in_owner = true
 layout_mode = 2
+value = 1.0
+allow_greater = true
+allow_lesser = true
 spinbox_name = "Max"
 
 [node name="Resolution" parent="VBoxContainer" instance=ExtResource("1_e8dce")]
 unique_name_in_owner = true
 layout_mode = 2
+value = 100.0
+allow_greater = true
+allow_lesser = true
 spinbox_name = "Resolution"

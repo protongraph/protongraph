@@ -15,8 +15,8 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	var node: Node = get_input_single("node")
-	var new_name: String = get_input_single("out")
+	var node: Node = get_input_single("node", null)
+	var new_name: String = get_input_single("name", "")
 
 	if node:
 		node.name = new_name

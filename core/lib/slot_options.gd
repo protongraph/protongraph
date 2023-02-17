@@ -9,7 +9,6 @@ extends RefCounted
 # this is mostly for autocompletion and early error detection.
 
 func _init(val = null):
-	super()
 	if val:
 		value = val
 

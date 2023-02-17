@@ -1,0 +1,189 @@
+[graph_node]
+
+version=1
+connections=[{
+"from": "create_primitive_cube",
+"from_idx": "cube",
+"to": "duplicate_on_points",
+"to_idx": "source"
+}, {
+"from": "curve_sample_points_even",
+"from_idx": "out",
+"to": "modifier_array_object",
+"to_idx": "in"
+}, {
+"from": "modifier_array_object",
+"from_idx": "out",
+"to": "modifier_array_object1",
+"to_idx": "in"
+}, {
+"from": "modifier_array_object1",
+"from_idx": "out",
+"to": "duplicate_on_points",
+"to_idx": "points"
+}, {
+"from": "duplicate_on_points",
+"from_idx": "duplicates",
+"to": "merge_meshes_simple",
+"to_idx": "meshes"
+}, {
+"from": "merge_meshes_simple",
+"from_idx": "out",
+"to": "rename_node",
+"to_idx": "node"
+}, {
+"from": "rename_node",
+"from_idx": "out",
+"to": "viewer_3d",
+"to_idx": "data"
+}, {
+"from": "curve_generator_polygon",
+"from_idx": "polygon",
+"to": "curve_sample_points_even",
+"to_idx": "curve"
+}]
+external_data={
+"scroll_offset": Vector2i(932, 1194)
+}
+
+[curve_sample_points_even]
+
+type_id="curve_sample_points_even"
+local_values={
+"align_rotation": true,
+"curve": null,
+"end": 0.5,
+"spacing": 0.47,
+"start": 0.0
+}
+custom_data={}
+external_data={
+"position": Vector2(1500, 1500)
+}
+
+[create_primitive_cube]
+
+type_id="create_primitive_cube"
+local_values={
+"size": Vector3(0.2, 0.2, 0.4),
+"subdiv": Vector3(0, 0, 0)
+}
+custom_data={}
+external_data={
+"hidden_slots": {
+"extra": [],
+"input": [],
+"output": []
+},
+"position": Vector2(2240, 1160)
+}
+
+[duplicate_on_points]
+
+type_id="duplicate_on_points"
+local_values={
+"points": null,
+"source": null
+}
+custom_data={}
+external_data={
+"position": Vector2(2640, 1500)
+}
+
+[viewer_3d]
+
+type_id="viewer_3d"
+local_values={
+"data": null
+}
+custom_data={}
+external_data={
+"position": Vector2(3420, 1500)
+}
+
+[modifier_array_object]
+
+type_id="modifier_array_object"
+local_values={
+"amount": 2.0,
+"in": null,
+"individual_rotation_pivot": false,
+"local_pos_offset": true,
+"local_rotation": false,
+"local_scale": false,
+"min_amount": -1.0,
+"pos_offset": Vector3(0, 0.42, 0),
+"rotation": Vector3(0, 0, 0),
+"rotation_pivot": Vector3(0, 0, 0),
+"scale": Vector3(1, 1, 1),
+"seed": 0.0
+}
+custom_data={}
+external_data={
+"pinned": {
+"amount": "Wall height"
+},
+"position": Vector2(1860, 1500)
+}
+
+[modifier_array_object1]
+
+type_id="modifier_array_object"
+local_values={
+"amount": 1.0,
+"in": null,
+"individual_rotation_pivot": false,
+"local_pos_offset": true,
+"local_rotation": false,
+"local_scale": false,
+"min_amount": -1.0,
+"pos_offset": Vector3(0, 0.21, 0.2),
+"rotation": Vector3(0, 0, 0),
+"rotation_pivot": Vector3(0, 0, 0),
+"scale": Vector3(1, 1, 1),
+"seed": 0.0
+}
+custom_data={}
+external_data={
+"position": Vector2(2240, 1500)
+}
+
+[merge_meshes_simple]
+
+type_id="merge_meshes_simple"
+local_values={
+"meshes": null
+}
+custom_data={}
+external_data={
+"position": Vector2(2940, 1500)
+}
+
+[rename_node]
+
+type_id="rename_node"
+local_values={
+"name": "BrickWall",
+"node": null
+}
+custom_data={}
+external_data={
+"position": Vector2(3180, 1500)
+}
+
+[curve_generator_polygon]
+
+type_id="curve_generator_polygon"
+local_values={
+"origin": Vector3(0, 0, 0),
+"radius": 2.0,
+"up_axis": Vector3(0, 1, 0),
+"v_count": 32.0
+}
+custom_data={}
+external_data={
+"pinned": {
+"radius": "Wall length"
+},
+"position": Vector2(1140, 1500)
+}

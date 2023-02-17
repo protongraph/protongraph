@@ -67,7 +67,7 @@ func save_and_close() -> bool:
 
 func rebuild() -> void:
 	_viewport.clear()
-	_graph.clean_rebuild()
+	_graph.rebuild(true)
 
 
 func get_edited_graph() -> NodeGraph:

@@ -18,7 +18,7 @@ func _init() -> void:
 	opts.value = 1.0
 	create_input("radius", "Radius", DataType.NUMBER, opts)
 
-	create_input("up_axis", "Up Axis", DataType.VECTOR3)
+	create_input("up_axis", "Up Axis", DataType.VECTOR3, SlotOptions.new(Vector3.UP))
 	create_input("origin", "Origin", DataType.VECTOR3)
 
 	create_output("polygon", "Polygon", DataType.CURVE_3D)

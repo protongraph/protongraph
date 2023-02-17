@@ -29,9 +29,9 @@ func set_curve(curve: Curve) -> void:
 	_curve = curve
 
 	if _curve and is_instance_valid(_panel):
-		_min.set_value_no_signal(curve.min_value)
-		_max.set_value_no_signal(curve.max_value)
-		_resolution.set_value_no_signal(curve.bake_resolution)
+		_min.set_value_no_undo(curve.min_value)
+		_max.set_value_no_undo(curve.max_value)
+		_resolution.set_value_no_undo(curve.bake_resolution)
 		_panel.set_curve(curve)
 
 

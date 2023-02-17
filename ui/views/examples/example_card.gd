@@ -1,3 +1,4 @@
+@tool
 extends MarginContainer
 
 
@@ -11,7 +12,9 @@ func _ready():
 	$%Button.pressed.connect(_on_pressed)
 	$%TitleLabel.set_text(title)
 	$%DescriptionLabel.set_text(description)
-	$%Thumbnail.set_texture(thumbnail)
+
+	if thumbnail:
+		$%Thumbnail.set_texture(thumbnail)
 
 
 func _on_pressed() -> void:

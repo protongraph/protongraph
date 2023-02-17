@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://ui/views/examples/examples_view.gd" id="1_qar3x"]
 [ext_resource type="PackedScene" uid="uid://b8u8qt8t87vjb" path="res://ui/views/examples/example_card.tscn" id="2_wsiyy"]
 
-[node name="ExamplesView" type="MarginContainer"]
+[node name="Examples" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -28,8 +28,12 @@ theme_override_constants/h_separation = 32
 theme_override_constants/v_separation = 32
 alignment = 1
 
-[node name="ExampleCard" parent="ScrollContainer/MarginContainer/HFlowContainer" instance=ExtResource("2_wsiyy")]
+[node name="BrickWallCard" parent="ScrollContainer/MarginContainer/HFlowContainer" instance=ExtResource("2_wsiyy")]
 layout_mode = 2
+graph_path = "res://examples/brick_wall.tpgn"
+title = "Brick wall"
+description = "A very simple graph to place bricks along a 3D curve."
 
-[node name="ExampleCard2" parent="ScrollContainer/MarginContainer/HFlowContainer" instance=ExtResource("2_wsiyy")]
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/HFlowContainer"]
 layout_mode = 2
+text = "More examples coming later"

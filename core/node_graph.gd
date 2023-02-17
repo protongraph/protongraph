@@ -12,6 +12,8 @@ var external_data: Dictionary
 var pending_changes := false
 
 var _leaf_nodes: Array[ProtonNode]
+var _thread := Thread.new()
+var _rebuild_queued := false
 
 
 func _init():
@@ -86,13 +88,23 @@ func disconnect_node(from: String, from_idx: String, to: String, to_idx: String)
 	graph_changed.emit()
 
 
-func clean_rebuild() -> void:
-	for node in nodes.values():
-		node.clear_values()
-	rebuild()
+func rebuild(clean_rebuild := false) -> void:
+	if is_thread_running():
+		_rebuild_queued = true
+		return
+
+	if _thread and _thread.is_started():
+		_thread.wait_to_finish()
+
+	_thread = Thread.new()
+	_thread.start(_rebuild.bind(clean_rebuild), Thread.PRIORITY_NORMAL)
 
 
-func rebuild() -> void:
+func _rebuild(clean_rebuild := false) -> void:
+	if clean_rebuild:
+		for node in nodes.values():
+			node.clear_values()
+
 	# TODO: split the loop in half, merge all paths, remove duplicates from the
 	# end, traverse the path once instead of how many leaves there are.
 	for leaf in _leaf_nodes:
@@ -119,6 +131,12 @@ func rebuild() -> void:
 						var value = node.outputs[idx].get_computed_value_copy()
 						var right_node: ProtonNode = data.to
 						right_node.set_input(data.idx, value)
+
+	_on_rebuild_completed.call_deferred()
+
+
+func is_thread_running() -> bool:
+	return _thread != null and _thread.is_alive()
 
 
 func _get_unique_name(node: ProtonNode) -> String:
@@ -182,3 +200,10 @@ func _on_node_changed(node: ProtonNode) -> void:
 
 func _on_graph_changed() -> void:
 	pending_changes = true
+
+
+# Restart the build process if another rebuild was requested before this one finished.
+func _on_rebuild_completed() -> void:
+	if _rebuild_queued:
+		_rebuild_queued = false
+		rebuild()

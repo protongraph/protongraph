@@ -70,7 +70,7 @@ func _generate_outputs() -> void:
 
 			var taper_size := 1.0
 			if taper:
-				taper_size = taper.sample_baked(float(i) / float(extrude_steps - 1))
+				taper_size = taper.sample(float(i) / float(extrude_steps - 1)) # TODO: check the bake issue
 
 			var node = Node3D.new()
 

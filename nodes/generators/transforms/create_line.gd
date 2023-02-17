@@ -2,10 +2,10 @@ extends ProtonNode
 
 
 func _init() -> void:
-	type_id = "modifier_point_array"
-	title = "Create Points Array"
+	type_id = "create_point_line"
+	title = "Create Points Line"
 	category = "Generators/Transforms"
-	description = "Creates an array of points"
+	description = "Creates a line of points"
 
 	var opts := SlotOptions.new()
 	opts.step = 1

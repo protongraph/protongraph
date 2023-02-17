@@ -41,6 +41,6 @@ static func remove_parent(node: Node) -> void:
 		parent.remove_child(node)
 
 
-static func set_parent(node: Node, new_parent: Node) -> void:
+static func set_parent(node: Node, new_parent: Node, force_legible_name := false) -> void:
 	remove_parent(node)
-	new_parent.add_child(node)
+	new_parent.add_child(node, force_legible_name)

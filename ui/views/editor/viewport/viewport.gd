@@ -45,7 +45,7 @@ func display(id: String, list: Array) -> void:
 	for node in list:
 		if is_instance_valid(node) and node is Node3D:
 			node.set_meta("source_id", id)
-			_output_root.add_child(node, true)
+			NodeUtil.set_parent(node, _output_root, true)
 			_gizmos_manager.add_gizmo_for(node)
 
 	_tree.update()
