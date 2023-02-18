@@ -48,8 +48,10 @@ func refresh_list() -> void:
 	_node_search_index = Dictionary()
 	_nodes = Dictionary()
 
-	var node_path := "res://nodes/"
-	if OS.has_feature("standalone"):
+	var node_path: String
+	if OS.has_feature("editor"):
+		node_path = "res://nodes/"
+	else:
 		node_path = OS.get_executable_path().get_base_dir().path_join("nodes")
 
 	_find_all_nodes(node_path)

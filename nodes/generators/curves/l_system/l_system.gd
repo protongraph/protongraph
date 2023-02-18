@@ -4,7 +4,7 @@ extends ProtonNode
 
 
 var _rng := RandomNumberGenerator.new()
-var _turtle := Turtle.new()
+var _turtle := LSystemTurtle.new()
 
 
 func _init() -> void:

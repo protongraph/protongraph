@@ -1,5 +1,5 @@
 extends Node
-class_name Turtle
+class_name LSystemTurtle
 
 # L-System component
 
