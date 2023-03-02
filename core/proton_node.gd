@@ -106,7 +106,7 @@ func get_local_value(idx: String) -> Variant:
 
 
 # Returns the associated data to the given input index. It either comes from a
-# connected input node, or from a local control field in the case of a simple
+# connected input node, or from a local control in the case of a simple
 # type (float, string)
 func get_input(idx: String, default = []):
 	if not idx in inputs:
@@ -125,16 +125,33 @@ func get_input(idx: String, default = []):
 	return default # No local value and no source connected
 
 
-# By default, every input and output is an array. This is just a short hand with
-# all the necessary checks that returns the first value of the input.
+# By default, every input and output is an array.
+# This method does the generic checks to return the first value only.
+# Automatically converts it to a Field object if the node expects it.
 func get_input_single(idx: String, default = null):
+	var return_value
 	var input: Array = get_input(idx)
+
 	if input.is_empty() or input[0] == null:
-		return default
-	return input[0]
+		return_value = default
+	else:
+		return_value = input[0]
+
+	var opts: SlotOptions = inputs[idx].options
+	# Convert to field if the slot expects one
+	if opts.supports_field and not return_value is Field:
+		var value = return_value
+		return_value = Field.new()
+		return_value.set_default_value(value)
+
+	# Convert to single value if the slot doesn't support fields.
+	elif not opts.supports_field and return_value is Field:
+		return_value = return_value.get_value()
+
+	return return_value
 
 
-# Called from the parent graph when  passing values from previous
+# Called from the parent graph when passing values from previous
 # nodes to this one.
 func set_input(idx: String, value) -> void:
 	if not idx in inputs:
@@ -156,7 +173,7 @@ func set_input(idx: String, value) -> void:
 
 
 # Called from the custom nodes when generating values.
-func set_output(idx: String, value) -> void:
+func set_output(idx: String, value: Variant) -> void:
 	if not idx in outputs:
 		push_error("Invalid index: ", idx, " was not found in outputs")
 		return

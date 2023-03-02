@@ -287,6 +287,7 @@ func _setup_connection_slots() -> void:
 	var type
 	var opts: SlotOptions
 	var slot_icon_multi := TextureUtil.get_texture("res://ui/icons/input_slot_multi.svg")
+	var slot_icon_field := TextureUtil.get_texture("res://ui/icons/icon_slot_field.svg")
 
 	for idx in _input_component_map:
 		ui = _input_component_map[idx]
@@ -299,14 +300,20 @@ func _setup_connection_slots() -> void:
 
 		if opts.allow_multiple_connections:
 			set("slot/" + str(slot) + "/left_icon", slot_icon_multi)
+		elif opts.supports_field:
+			set("slot/" + str(slot) + "/left_icon", slot_icon_field)
 
 	for idx in _output_component_map:
 		ui = _output_component_map[idx]
 		slot = ui.slot
 		type = proton_node.outputs[idx].type
+		opts = proton_node.outputs[idx].options
 		set_slot_enabled_right(slot, true)
 		set_slot_type_right(slot, type)
 		set_slot_color_right(slot, DataType.COLORS[type])
+
+		if opts.supports_field:
+			set("slot/" + str(slot) + "/right_icon", slot_icon_field)
 
 
 func _update_frame_stylebox():

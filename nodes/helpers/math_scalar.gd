@@ -36,17 +36,31 @@ func _init() -> void:
 	opts.add_dropdown_item(CEIL, "Ceil")
 
 	create_input("op", "", DataType.MISC, opts)
-	create_input("a", "A", DataType.NUMBER)
-	create_input("b", "B", DataType.NUMBER)
-	create_output("result", "Result", DataType.NUMBER)
+
+	opts = SlotOptions.new()
+	opts.supports_field = true
+	create_input("a", "A", DataType.NUMBER, opts)
+	create_input("b", "B", DataType.NUMBER, opts.get_copy())
+	create_output("result", "Result", DataType.NUMBER, opts.get_copy())
 
 	local_value_changed.connect(_on_local_value_changed)
 
 
 func _generate_outputs() -> void:
 	var operation: int = get_input_single("op", ADD)
-	var a: float = get_input_single("a", 0.0)
-	var b: float = get_input_single("b", 1.0)
+	var a: Field = get_input_single("a", 0.0)
+	var b: Field = get_input_single("b", 1.0)
+
+	var out := Field.new()
+	out.set_default_value(0.0)
+	out.set_generator(_compute.bind(operation, a, b))
+
+	set_output("result", out)
+
+
+func _compute(operation: int, field_a: Field, field_b: Field) -> float:
+	var a: float = field_a.get_value()
+	var b: float = field_b.get_value()
 	var result := 0.0
 
 	match operation:
@@ -79,7 +93,7 @@ func _generate_outputs() -> void:
 		CEIL:
 			result = ceil(a)
 
-	set_output("result", result)
+	return result
 
 
 func _on_local_value_changed(idx: String, _value) -> void:

@@ -99,6 +99,10 @@ func force_redraw() -> void:
 
 
 func delete_node(node: ProtonNodeUi) -> void:
+	for c in get_connection_list():
+		if c.to == node.name or c.from == node.name:
+			disconnect_node_and_notify(c.from, c.from_port, c.to, c.to_port)
+
 	remove_child(node)
 	_graph.delete_node(node.proton_node)
 	node_deleted.emit(node)

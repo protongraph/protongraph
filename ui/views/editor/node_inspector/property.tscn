@@ -24,7 +24,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
-[node name="PinButton" type="Button" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="PinButton" type="Button" parent="HBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
@@ -35,7 +40,7 @@ icon = ExtResource("2_kx3ec")
 icon_alignment = 1
 expand_icon = true
 
-[node name="VisibilityBox" type="CheckBox" parent="HBoxContainer"]
+[node name="VisibilityBox" type="CheckBox" parent="HBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2

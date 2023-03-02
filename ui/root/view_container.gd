@@ -51,7 +51,7 @@ func save_all_and_quit() -> void:
 # Returns true if it could open the view, false otherwise.
 func _focus_view(type) -> bool:
 	for c in get_children():
-		if c is type:
+		if is_instance_of(c, type):
 			change_tab(c.get_index())
 			return true
 

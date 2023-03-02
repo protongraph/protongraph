@@ -18,6 +18,7 @@ var value: Variant
 var show_type_icon := true
 var label_override := ""
 var ignored := false
+var supports_field := false
 
 # Connections options
 var allow_multiple_connections := false
