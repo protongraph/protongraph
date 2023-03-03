@@ -257,10 +257,13 @@ func _create_component_for(io: ProtonNodeSlot, is_output := false) -> GraphNodeU
 	else:
 		component = UserInterfaceUtil.create_component(io.name, io.type, io.options)
 
-	if io.local_value != null:
+	# Make sure the local value has the proper type. Mismatch can happen
+	# when dynamically changing slots types.
+	var component_default_value = component.get_value()
+	if io.local_value != null and typeof(io.local_value) == typeof(component_default_value):
 		component.set_value(io.local_value)
 	else:
-		io.local_value = component.get_value()
+		io.local_value = component_default_value
 
 	if is_output:
 		component.name = "Output"

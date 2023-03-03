@@ -56,7 +56,7 @@ const COLORS = {
 	HEIGHTMAP: Color("fecf46"),
 
 	MISC: Color.BLACK,
-	}
+}
 
 const NAMES = {
 	ANY: "Any",
