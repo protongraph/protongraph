@@ -1,18 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://bk3p7yrwydwbs"]
+[gd_scene load_steps=7 format=3 uid="uid://bk3p7yrwydwbs"]
 
 [ext_resource type="Script" path="res://ui/views/settings/components/parameter.gd" id="1_1k3mw"]
+[ext_resource type="Script" path="res://common/custom_types/custom_label_settings.gd" id="2_5oswp"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="3_s72rv"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_mj8hq"]
+[sub_resource type="LabelSettings" id="LabelSettings_15mtc"]
 font_size = 12
-font_color = Color(0.7, 0.7, 0.7, 1)
+font_color = Color(0.701961, 0.701961, 0.701961, 1)
+script = ExtResource("2_5oswp")
 
-[sub_resource type="LabelSettings" id="LabelSettings_u048o"]
+[sub_resource type="LabelSettings" id="LabelSettings_hfnj1"]
 font_size = 12
 font_color = Color(1, 0.862745, 0, 1)
+script = ExtResource("2_5oswp")
 
-[sub_resource type="LabelSettings" id="LabelSettings_fphtq"]
+[sub_resource type="LabelSettings" id="LabelSettings_4ta78"]
 font_size = 12
 font_color = Color(1, 0.0784314, 0, 1)
+script = ExtResource("2_5oswp")
 
 [node name="Parameter" type="MarginContainer"]
 anchors_preset = 14
@@ -46,7 +51,7 @@ autowrap_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "Detailled parameter description"
-label_settings = SubResource("LabelSettings_mj8hq")
+label_settings = SubResource("LabelSettings_15mtc")
 vertical_alignment = 1
 autowrap_mode = 3
 
@@ -54,7 +59,7 @@ autowrap_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "Regular importance warning"
-label_settings = SubResource("LabelSettings_u048o")
+label_settings = SubResource("LabelSettings_hfnj1")
 vertical_alignment = 1
 autowrap_mode = 3
 
@@ -62,15 +67,19 @@ autowrap_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "Critical importance warning"
-label_settings = SubResource("LabelSettings_fphtq")
+label_settings = SubResource("LabelSettings_4ta78")
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+
+[node name="AutoScale" type="Node" parent="HBoxContainer/CheckBox"]
+script = ExtResource("3_s72rv")
 
 [node name="SpinBox" type="SpinBox" parent="HBoxContainer"]
 unique_name_in_owner = true

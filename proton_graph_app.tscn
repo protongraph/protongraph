@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://dj1nkkd858xcc"]
 
-[ext_resource type="Theme" uid="uid://ckiydn4300lug" path="res://ui/themes/default.tres" id="1_khixk"]
 [ext_resource type="Script" path="res://proton_graph_app.gd" id="2_en3mi"]
 [ext_resource type="Texture2D" uid="uid://cbbh53a0sbqka" path="res://ui/icons/icon_menu.svg" id="3_pqiiq"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="4_67jmk"]
 [ext_resource type="Script" path="res://ui/root/menu_button.gd" id="4_cv0ou"]
 [ext_resource type="Script" path="res://ui/root/view_container.gd" id="5_7obkg"]
-[ext_resource type="PackedScene" uid="uid://krqgsakt0ufw" path="res://ui/views/welcome/welcome_view.tscn" id="6_kcqf0"]
+[ext_resource type="PackedScene" path="res://ui/views/welcome/welcome_view.tscn" id="6_kcqf0"]
 [ext_resource type="PackedScene" uid="uid://cqn70yjq7ejnf" path="res://ui/root/notification_center/notification_center.tscn" id="7_30aiq"]
 
 [node name="ProtonGraph" type="PanelContainer"]
@@ -14,7 +14,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_khixk")
 script = ExtResource("2_en3mi")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -43,6 +42,9 @@ icon = ExtResource("3_pqiiq")
 flat = false
 expand_icon = true
 script = ExtResource("4_cv0ou")
+
+[node name="AutoScale" type="Node" parent="VBoxContainer/MarginContainer/TopBar/MenuButton"]
+script = ExtResource("4_67jmk")
 
 [node name="TabBar" type="TabBar" parent="VBoxContainer/MarginContainer/TopBar"]
 layout_mode = 2

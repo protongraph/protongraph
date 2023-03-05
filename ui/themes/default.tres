@@ -310,12 +310,8 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qsd56"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4uakt"]
 bg_color = Color(0.0235294, 0.0235294, 0.0313726, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bjinb"]
 bg_color = Color(0.137255, 0.156863, 0.180392, 0.627451)
@@ -615,6 +611,7 @@ GraphNode/constants/close_offset = 24
 GraphNode/constants/port_offset = -10
 GraphNode/constants/separation = 6
 GraphNode/constants/title_offset = 26
+GraphNode/font_sizes/title_font_size = 16
 GraphNode/styles/comment = SubResource("StyleBoxFlat_nljh6")
 GraphNode/styles/frame = SubResource("StyleBoxFlat_2ltc8")
 GraphNode/styles/selected_frame = SubResource("StyleBoxFlat_r4gy3")
@@ -648,7 +645,7 @@ MenuButton/styles/hover = SubResource("StyleBoxFlat_ickuk")
 MenuButton/styles/normal = SubResource("StyleBoxEmpty_eu81w")
 MenuButton/styles/pressed = SubResource("StyleBoxFlat_6n518")
 Panel/styles/panel = SubResource("StyleBoxFlat_ljame")
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_qsd56")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_4uakt")
 PanelContainerHeader/base_type = &"PanelContainer"
 PanelContainerHeader/styles/panel = SubResource("StyleBoxFlat_bjinb")
 PanelContainerTransparent/base_type = &"PanelContainer"

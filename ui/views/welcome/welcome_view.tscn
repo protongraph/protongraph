@@ -1,10 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://krqgsakt0ufw"]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://ui/views/welcome/welcome_view.gd" id="1_ekqb2"]
 [ext_resource type="Texture2D" uid="uid://dj1xrh5y4wdf4" path="res://ui/icons/icon_proton_graph.svg" id="2_hyx22"]
 [ext_resource type="Texture2D" uid="uid://cpvnpujov3yb6" path="res://ui/icons/icon_magnifying_glass.svg" id="3_0spty"]
 [ext_resource type="Texture2D" uid="uid://cqaq3jxuddo8a" path="res://ui/icons/icon_new.svg" id="3_dsxnl"]
 [ext_resource type="Texture2D" uid="uid://dqvgam553soqh" path="res://ui/icons/icon_load.svg" id="4_2ojfm"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="4_4a0r6"]
+[ext_resource type="Script" path="res://common/custom_types/custom_label_settings.gd" id="4_np4j7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_w4ey2"]
+font_size = 24
+script = ExtResource("4_np4j7")
 
 [node name="Welcome" type="HBoxContainer"]
 anchors_preset = 15
@@ -31,6 +37,12 @@ layout_mode = 2
 theme_override_constants/separation = 24
 alignment = 1
 
+[node name="AutoScaleParent" type="Node" parent="PanelContainer/MarginContainer/VBoxContainer"]
+script = ExtResource("4_4a0r6")
+min_size_x = false
+min_size_y = false
+const_separation = true
+
 [node name="TitleBar" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
@@ -43,11 +55,14 @@ texture = ExtResource("2_hyx22")
 expand_mode = 1
 stretch_mode = 6
 
+[node name="AutoScaleParent" type="Node" parent="PanelContainer/MarginContainer/VBoxContainer/TitleBar/Icon"]
+script = ExtResource("4_4a0r6")
+
 [node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/TitleBar"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 24
 text = "ProtonGraph"
+label_settings = SubResource("LabelSettings_w4ey2")
 
 [node name="Buttons" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -57,23 +72,35 @@ alignment = 2
 layout_mode = 2
 theme_override_constants/separation = 12
 
+[node name="AutoScaleParent" type="Node" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer"]
+script = ExtResource("4_4a0r6")
+min_size_x = false
+min_size_y = false
+const_separation = true
+
 [node name="New" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
 text = "New"
 icon = ExtResource("3_dsxnl")
 alignment = 2
 expand_icon = true
 
+[node name="AutoScaleParent" type="Node" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer/New"]
+script = ExtResource("4_4a0r6")
+
 [node name="Load" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "Load"
 icon = ExtResource("4_2ojfm")
 alignment = 2
 expand_icon = true
+
+[node name="AutoScaleParent" type="Node" parent="PanelContainer/MarginContainer/VBoxContainer/Buttons/VBoxContainer/Load"]
+script = ExtResource("4_4a0r6")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
@@ -99,6 +126,9 @@ size_flags_vertical = 8
 text = "Browse examples projects"
 icon = ExtResource("3_0spty")
 expand_icon = true
+
+[node name="AutoScaleParent" type="Node" parent="ScrollContainer/MarginContainer/VBoxContainer/BrowseExamplesButton"]
+script = ExtResource("4_4a0r6")
 
 [node name="HistoryPanel" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

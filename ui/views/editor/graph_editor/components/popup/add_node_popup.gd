@@ -39,6 +39,8 @@ func _ready() -> void:
 	_default_description = _description_label.text
 	_grouping_button.button_pressed = Settings.get_setting(Settings.GROUP_NODES_BY_TYPE, false)
 
+	size *= EditorUtil.get_editor_scale()
+
 	_initialized = true
 
 

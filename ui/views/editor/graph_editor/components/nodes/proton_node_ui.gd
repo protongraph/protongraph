@@ -289,7 +289,8 @@ func _setup_connection_slots() -> void:
 	var ui: GraphNodeUiComponent
 	var type
 	var opts: SlotOptions
-	var slot_icon_multi := TextureUtil.get_texture("res://ui/icons/input_slot_multi.svg")
+	var slot_icon_default := TextureUtil.get_texture("res://ui/icons/icon_slot_default.svg")
+	var slot_icon_multi := TextureUtil.get_texture("res://ui/icons/icon_slot_multi.svg")
 	var slot_icon_field := TextureUtil.get_texture("res://ui/icons/icon_slot_field.svg")
 
 	for idx in _input_component_map:
@@ -305,6 +306,8 @@ func _setup_connection_slots() -> void:
 			set("slot/" + str(slot) + "/left_icon", slot_icon_multi)
 		elif opts.supports_field:
 			set("slot/" + str(slot) + "/left_icon", slot_icon_field)
+		else:
+			set("slot/" + str(slot) + "/left_icon", slot_icon_default)
 
 	for idx in _output_component_map:
 		ui = _output_component_map[idx]
@@ -317,6 +320,8 @@ func _setup_connection_slots() -> void:
 
 		if opts.supports_field:
 			set("slot/" + str(slot) + "/right_icon", slot_icon_field)
+		else:
+			set("slot/" + str(slot) + "/right_icon", slot_icon_default)
 
 
 func _update_frame_stylebox():

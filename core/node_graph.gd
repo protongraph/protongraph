@@ -89,6 +89,10 @@ func disconnect_node(from: String, from_idx: String, to: String, to_idx: String)
 
 
 func rebuild(clean_rebuild := false) -> void:
+	if OS.has_feature("editor"):
+		_rebuild(clean_rebuild)
+		return
+
 	if is_thread_running():
 		_rebuild_queued = true
 		return

@@ -1,12 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://ddl1a7jcx4sgv"]
+[gd_scene load_steps=10 format=3 uid="uid://ddl1a7jcx4sgv"]
 
+[ext_resource type="Script" path="res://common/custom_types/custom_label_settings.gd" id="2_3qour"]
 [ext_resource type="Script" path="res://ui/common/spinbox/spinbox.gd" id="3"]
 [ext_resource type="Texture2D" uid="uid://gwy6ut76n73b" path="res://ui/icons/icon_arrow_left.svg" id="5_nfbni"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="6_2e0f4"]
 [ext_resource type="Texture2D" uid="uid://dksv6terikjr0" path="res://ui/icons/icon_arrow_right.svg" id="9_kt533"]
 [ext_resource type="PackedScene" uid="uid://bgo7smjjxdrys" path="res://ui/common/spinbox/edit_popup.tscn" id="12_ava0u"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_7880m"]
+[sub_resource type="LabelSettings" id="LabelSettings_rviqw"]
 font_size = 14
+script = ExtResource("2_3qour")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kh3d5"]
 
@@ -50,7 +53,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "X"
-label_settings = SubResource("LabelSettings_7880m")
+label_settings = SubResource("LabelSettings_rviqw")
 vertical_alignment = 1
 text_overrun_behavior = 3
 metadata/_edit_layout_mode = 1
@@ -70,6 +73,12 @@ context_menu_enabled = false
 flat = true
 select_all_on_focus = true
 caret_blink = true
+
+[node name="AutoScale" type="Node" parent="MarginContainer/LineEdit"]
+script = ExtResource("6_2e0f4")
+min_size_x = false
+min_size_y = false
+font_size_override = true
 
 [node name="ButtonsContainer" type="Control" parent="."]
 unique_name_in_owner = true
@@ -128,4 +137,11 @@ icon = ExtResource("9_kt533")
 icon_alignment = 1
 expand_icon = true
 
+[node name="AutoScale" type="Node" parent="ButtonsContainer/PanelContainer/MarginContainer/HBoxContainer"]
+script = ExtResource("6_2e0f4")
+targets = 1
+
 [node name="EditPopup" parent="." instance=ExtResource("12_ava0u")]
+
+[node name="AutoScale" type="Node" parent="."]
+script = ExtResource("6_2e0f4")

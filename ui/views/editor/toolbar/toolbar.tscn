@@ -1,8 +1,9 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=24 format=3 uid="uid://br0jpb6yth144"]
 
 [ext_resource type="Texture2D" uid="uid://bxirq7eqdu5f0" path="res://ui/icons/icon_add.svg" id="1_3snf8"]
 [ext_resource type="Script" path="res://ui/views/editor/toolbar/toolbar.gd" id="1_nv6t2"]
 [ext_resource type="Texture2D" uid="uid://bbg71ievy0kx" path="res://ui/icons/icon_save.svg" id="2_on6in"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="3_gyhtf"]
 [ext_resource type="Texture2D" uid="uid://cohkmijvmeouk" path="res://ui/icons/icon_replay.svg" id="3_hmxyg"]
 [ext_resource type="Texture2D" uid="uid://bdx3oqvp7340c" path="res://ui/icons/icon_sidebar.svg" id="4_kshbb"]
 [ext_resource type="Texture2D" uid="uid://bl2t1v7qwrcrp" path="res://ui/icons/icon_inspector.svg" id="5_gt8pn"]
@@ -57,6 +58,10 @@ anchor_bottom = 1.0
 offset_right = 8.0
 grow_vertical = 2
 script = ExtResource("1_nv6t2")
+
+[node name="AutoScale" type="Node" parent="."]
+script = ExtResource("3_gyhtf")
+targets = 1
 
 [node name="Create" type="Button" parent="."]
 custom_minimum_size = Vector2(32, 32)

@@ -1,5 +1,7 @@
 extends Node
 
+# User settings.
+# Keep the ids unique across every settings, regardless of their parent category.
 
 const EDITOR_SCALE := {
 	"category": "editor",
@@ -28,7 +30,7 @@ const GROUP_NODES_BY_TYPE := {
 	"id": "group_nodes_by_type",
 	"title": "Group nodes by type",
 	"description":
-		"""In the "Add node" popup, by default nodes are grouped by purpose (Generators, Modifiers...).
+		"""In the "Add node" popup, by default, nodes are grouped by purpose (Generators, Modifiers...).
 		Turn this setting on to group them by data type (Meshes, Curves ...).""",
 }
 
@@ -55,8 +57,8 @@ var _require_restart := [
 ]
 
 
-func has(setting) -> bool:
-	return _values.has(setting)
+func require_restart(setting: Dictionary) -> bool:
+	return setting in _require_restart
 
 
 func get_list() -> Array:
@@ -78,7 +80,7 @@ func update_setting(setting, value) -> void:
 	_values[setting] = value
 	save_config()
 
-	if _require_restart.has(setting): # Keep using the old value until the user restarts the application
+	if require_restart(setting): # Keep using the old value until the user restarts the application
 		_values[setting] = old_value
 
 	GlobalEventBus.settings_updated.emit(setting)
@@ -106,6 +108,8 @@ func load_config() -> void:
 		print_debug("Failed to load the configuration file ", CONFIG_PATH)
 		return
 
+	# TODO: change this to ignore the category and only take the id in account, in case
+	# we move a setting to another category this shouldn't break the config file.
 	for setting in _list:
 		_values[setting] = config.get_value(setting.category, setting.id, _values[setting])
 

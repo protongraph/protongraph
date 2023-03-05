@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bk3oneuplluel"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://ui/views/settings/components/parameters_view.gd" id="1_86h7b"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="2_sab83"]
 
 [node name="SettingsParametersView" type="MarginContainer"]
 anchors_preset = 15
@@ -28,7 +29,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 16
 alignment = 1
+
+[node name="AutoScaleParent" type="Node" parent="HBoxContainer/ScrollContainer/ParameterRoot"]
+script = ExtResource("2_sab83")
+min_size_x = false
+min_size_y = false
+const_separation = true
 
 [node name="Spacer2" type="Control" parent="HBoxContainer"]
 layout_mode = 2

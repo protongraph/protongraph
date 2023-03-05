@@ -46,8 +46,8 @@ func get_texture(path) -> Texture2D:
 		printerr(path, " is not a texture.")
 		return null
 
-	var scale = EditorUtil.get_editor_scale() / 4.0
-	if scale != 1.0:
+	var scale := EditorUtil.get_editor_scale() / 4.0
+	if not is_equal_approx(scale, 1.0):
 		var image: Image = texture.get_image()
 		image.resize(int(texture.get_width() * scale), int(texture.get_height() * scale))
 		texture = ImageTexture.create_from_image(image)

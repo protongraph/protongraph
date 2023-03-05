@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://8qmhlka1km76"]
+[gd_scene load_steps=4 format=3 uid="uid://8qmhlka1km76"]
 
 [ext_resource type="Script" path="res://ui/views/editor/graph_editor/components/popup/add_node_popup.gd" id="1_pu2oj"]
 [ext_resource type="Texture2D" uid="uid://bfn8ywnmrfrba" path="res://ui/icons/icon_reload.svg" id="2_3yg18"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="3_qi6iu"]
 
 [node name="AddNodePopup" type="Window"]
 disable_3d = true
@@ -46,6 +47,9 @@ layout_mode = 2
 tooltip_text = "Refresh node list"
 icon = ExtResource("2_3yg18")
 expand_icon = true
+
+[node name="AutoScale" type="Node" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ReloadButton"]
+script = ExtResource("3_qi6iu")
 
 [node name="Search" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true

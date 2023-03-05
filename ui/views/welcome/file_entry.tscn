@@ -1,18 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://f2xmkvqxd0ie"]
+[gd_scene load_steps=7 format=3 uid="uid://f2xmkvqxd0ie"]
 
 [ext_resource type="Script" path="res://ui/views/welcome/file_entry.gd" id="1_nv8q2"]
+[ext_resource type="Script" path="res://common/custom_types/custom_label_settings.gd" id="2_3j52c"]
 [ext_resource type="Texture2D" uid="uid://ccnuoncf0j2vm" path="res://ui/icons/icon_close.svg" id="2_g1e0s"]
 
 [sub_resource type="SystemFont" id="SystemFont_ky6bh"]
 font_weight = 900
 
-[sub_resource type="LabelSettings" id="LabelSettings_mm0mh"]
+[sub_resource type="LabelSettings" id="LabelSettings_k86km"]
 font = SubResource("SystemFont_ky6bh")
 font_size = 14
+script = ExtResource("2_3j52c")
 
-[sub_resource type="LabelSettings" id="LabelSettings_yc0e5"]
+[sub_resource type="LabelSettings" id="LabelSettings_tvv6h"]
 font_size = 12
-font_color = Color(0.7, 0.7, 0.7, 1)
+font_color = Color(0.701961, 0.701961, 0.701961, 1)
+script = ExtResource("2_3j52c")
 
 [node name="FileEntry" type="Button"]
 custom_minimum_size = Vector2(0, 50)
@@ -48,13 +51,13 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "Graph name"
-label_settings = SubResource("LabelSettings_mm0mh")
+label_settings = SubResource("LabelSettings_k86km")
 
 [node name="FilePathLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Graph file path"
-label_settings = SubResource("LabelSettings_yc0e5")
+label_settings = SubResource("LabelSettings_tvv6h")
 
 [node name="CloseButton" type="Button" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true

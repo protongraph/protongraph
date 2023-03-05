@@ -1,7 +1,6 @@
 # TODO
 
 ## Core
-+ Field input support
 + Detect (and prevent) loops in the graph
 + Enforce data validity from the slot options
 	- This currently only applies to the built-in component ui, but it does

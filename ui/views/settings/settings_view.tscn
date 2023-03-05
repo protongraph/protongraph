@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://b7d30woy138cm"]
+[gd_scene load_steps=3 format=3 uid="uid://5wkonsicdlai"]
 
 [ext_resource type="Script" path="res://ui/views/settings/settings_view.gd" id="1_4rjnd"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="2_y3jco"]
 
 [node name="SettingsView" type="HBoxContainer"]
 anchors_preset = 15
@@ -14,6 +15,9 @@ script = ExtResource("1_4rjnd")
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+
+[node name="AutoScaleParent" type="Node" parent="PanelContainer"]
+script = ExtResource("2_y3jco")
 
 [node name="Panel" type="Panel" parent="PanelContainer"]
 layout_mode = 2

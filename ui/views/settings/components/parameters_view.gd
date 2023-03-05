@@ -19,6 +19,9 @@ func add_parameter(setting: Dictionary) -> void:
 	p.set_title(setting.title)
 	p.set_description(setting.description)
 
+	if Settings.require_restart(setting):
+		p.set_warning("You must restart the application for this change to take effect.")
+
 	var value = Settings.get_setting(setting)
 
 	if value is bool:

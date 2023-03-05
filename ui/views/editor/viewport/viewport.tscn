@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dru6wp1xq8ngq"]
+[gd_scene load_steps=15 format=3 uid="uid://dru6wp1xq8ngq"]
 
 [ext_resource type="Script" path="res://ui/views/editor/viewport/viewport.gd" id="1_mdwbn"]
 [ext_resource type="Script" path="res://ui/views/editor/viewport/components/camera.gd" id="2_it4fl"]
@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://cislafpj4011d" path="res://ui/icons/icon_camera.svg" id="6_6dlau"]
 [ext_resource type="Texture2D" uid="uid://bjirb8q6awvj3" path="res://ui/icons/icon_window.svg" id="6_ddiw8"]
 [ext_resource type="Script" path="res://ui/common/float_button.gd" id="7_vwp7d"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="10_erxuh"]
+
+[sub_resource type="World3D" id="World3D_wutdu"]
+resource_local_to_scene = true
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ymbai"]
 panorama = ExtResource("2_p0kfs")
@@ -20,10 +24,6 @@ process_mode = 3
 [sub_resource type="Environment" id="Environment_s5dt0"]
 background_mode = 2
 sky = SubResource("Sky_rbhip")
-
-[sub_resource type="World3D" id="World3D_wutdu"]
-resource_local_to_scene = true
-environment = SubResource("Environment_s5dt0")
 
 [node name="Viewport" type="MarginContainer"]
 clip_children = 1
@@ -109,6 +109,9 @@ text = "[b]Orbit[/b]:[color=gray] Middle Click[/color]
 fit_content = true
 autowrap_mode = 0
 
+[node name="AutoScale" type="Node" parent="MarginContainer/HSplitContainer/MarginContainer/HelpPanel/MarginContainer/RichTextLabel"]
+script = ExtResource("10_erxuh")
+
 [node name="Toolbox" type="PanelContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
@@ -151,3 +154,7 @@ text = "
 "
 icon = ExtResource("6_6dlau")
 expand_icon = true
+
+[node name="AutoScale" type="Node" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer/HBoxContainer"]
+script = ExtResource("10_erxuh")
+targets = 1

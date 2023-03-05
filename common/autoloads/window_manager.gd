@@ -48,7 +48,9 @@ func _get_or_create(id: String) -> Window:
 	_windows[id] = w
 	_add_default_ui(w, id)
 	w.size = Vector2i.ZERO
+	w.theme = ThemeManager.get_current_theme()
 	w.close_requested.connect(_on_close_requested.bind(id))
+
 	add_child(w)
 	window_created.emit(id)
 	return w
@@ -63,8 +65,6 @@ func _on_close_requested(id: String) -> void:
 
 
 func _add_default_ui(window: Window, id: String) -> void:
-	window.theme = ThemeManager.get_current_theme()
-
 	var panel_container := PanelContainer.new()
 	panel_container.set_anchors_preset(Control.PRESET_FULL_RECT)
 	window.add_child(panel_container)

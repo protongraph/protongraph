@@ -32,6 +32,8 @@ func _ready() -> void:
 	var button := FloatButton.new()
 	button.subwindow_id = "graph_editor"
 	box.add_child(button)
+	var auto_scale := AutoScale.new()
+	button.add_child(auto_scale)
 
 
 func connect_node_and_notify(from, from_port, to, to_port):
