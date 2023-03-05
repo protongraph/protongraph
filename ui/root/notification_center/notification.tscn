@@ -1,11 +1,14 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://fyn360ex0vop"]
 
 [ext_resource type="Script" path="res://ui/root/notification_center/notification.gd" id="1_ahdp3"]
 [ext_resource type="Texture2D" uid="uid://ccnuoncf0j2vm" path="res://ui/icons/icon_close.svg" id="2_ibjbc"]
+[ext_resource type="Script" path="res://common/custom_types/custom_label_settings.gd" id="2_mkpqv"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="4_sby1g"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_w8si7"]
+[sub_resource type="LabelSettings" id="LabelSettings_cce54"]
 font_size = 12
-font_color = Color(0.7, 0.7, 0.7, 1)
+font_color = Color(0.701961, 0.701961, 0.701961, 1)
+script = ExtResource("2_mkpqv")
 
 [node name="Notification" type="PanelContainer"]
 anchors_preset = 6
@@ -52,7 +55,7 @@ text = "Notification title"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Description"
-label_settings = SubResource("LabelSettings_w8si7")
+label_settings = SubResource("LabelSettings_cce54")
 
 [node name="CloseButton" type="Button" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -62,3 +65,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 icon = ExtResource("2_ibjbc")
 expand_icon = true
+
+[node name="AutoScale" type="Node" parent="MarginContainer/HBoxContainer/CloseButton"]
+script = ExtResource("4_sby1g")
