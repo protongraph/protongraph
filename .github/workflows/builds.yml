@@ -1,0 +1,251 @@
+name: 🐧 Linux Builds
+on: [push, pull_request]
+
+# Global Settings
+env:
+  # Only used for the cache key. Increment version to force clean build.
+  GODOT_BASE_BRANCH: master
+  SCONSFLAGS: verbose=yes warnings=extra werror=yes module_text_server_fb_enabled=yes
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  EM_VERSION: 3.1.18
+  EM_CACHE_FOLDER: "emsdk-cache"
+
+concurrency:
+  group: ci-${{github.actor}}-${{github.head_ref || github.run_number}}-${{github.ref}}-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-linux:
+    runs-on: "ubuntu-20.04"
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Editor Linux (target=editor,deploy=true,deploy-platform=windows,deploy-platform-target=template_release)
+            cache-name: linux-editor-deploy-windows-template-release
+            target: editor
+            tests: false
+            sconsflags: use_llvm=yes linker=gold deprecate=no
+            doc-test: false
+            bin: "./bin/godot.linuxbsd.editor.x86_64.llvm"
+            deploy-bin: "./bin/godot.windows.template_release.x86_64.llvm.exe"
+            proj-conv: false
+            artifact: true
+            platform: linuxbsd
+            deploy: true
+            deploy-platform: windows
+            deploy-platform-target: template_release
+
+          - name: Editor Linux (target=editor,deploy=true,deploy-platform=linux,deploy-platform-target=template_release)
+            cache-name: linux-editor-deploy-linux-template-release
+            target: editor
+            tests: false
+            sconsflags: use_llvm=yes linker=gold deprecate=no
+            doc-test: false
+            bin: "./bin/godot.linuxbsd.editor.x86_64.llvm"
+            deploy-bin: "./bin/godot.linuxbsd.template_release.x86_64.llvm"
+            proj-conv: false
+            artifact: true
+            platform: linuxbsd
+            deploy: true
+            deploy-platform: linux
+            deploy-platform-target: template_release
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Need newer mesa for lavapipe to work properly.
+      - name: Linux dependencies for tests
+        if: ${{ matrix.proj-test }}
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
+          sudo add-apt-repository ppa:kisak/kisak-mesa
+          sudo apt-get install -qq mesa-vulkan-drivers binutils
+
+      - name: Linux dependencies for gold linker
+        run: |
+          sudo apt-get install -qq binutils
+
+      - name: Setup Godot build cache
+        uses: ./.github/actions/godot-cache
+        with:
+          cache-name: ${{ matrix.cache-name }}
+        continue-on-error: true
+
+      - name: Set up Emscripten latest
+        if: ${{ matrix.platform == 'web' }}
+        uses: mymindstorm/setup-emsdk@v11
+        with:
+          version: ${{env.EM_VERSION}}
+          actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+
+      - name: Verify Emscripten setup
+        if: ${{ matrix.platform == 'web' }}
+        run: |
+          emcc -v
+
+      - name: Setup python and scons
+        uses: ./.github/actions/godot-deps
+
+      - name: Set up .NET Sdk
+        uses: actions/setup-dotnet@v2
+        if: ${{ matrix.build-mono }}
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Setup GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
+
+      - name: Compilation
+        uses: ./.github/actions/godot-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }}
+          platform: ${{ matrix.platform }}
+          target: ${{ matrix.target }}
+          tests: ${{ matrix.tests }}
+          deploy: ${{ matrix.deploy }}
+          deploy-platform: ${{ matrix.deploy-platform }}
+          deploy-platform-target: ${{ matrix.deploy-platform-target }}
+
+      - name: Export Game
+        if: ${{ matrix.deploy }}
+        run: |
+          mkdir -p .godot/editor .godot/imported export_linux
+          chmod +x ${{ matrix.bin }}
+          ${{ matrix.bin }} --headless --xr-mode off --export-pack Linux  `pwd`/protongraph_${{ matrix.deploy-platform }}.pck --path .
+      - name: Prepare artifacts
+        if: ${{ matrix.deploy && matrix.deploy-platform == 'windows' }}
+        run: |
+          rm -rf protongraph_${{ matrix.deploy-platform }}
+          export TARGET=protongraph_${{ matrix.deploy-platform }}
+          mkdir -p $TARGET
+          cp -rf ${{ matrix.deploy-bin }} $TARGET/protongraph_${{ matrix.deploy-platform }}.exe
+          cp -rf protongraph_${{ matrix.deploy-platform }}.pck $TARGET/protongraph_${{ matrix.deploy-platform }}.pck
+          cp -rf nodes $TARGET/nodes
+          7z a -r $TARGET.zip $TARGET
+        shell: bash
+
+      - name: Prepare artifacts
+        if: ${{ matrix.deploy && matrix.deploy-platform != 'windows' }}
+        run: |
+          rm -rf protongraph_${{ matrix.deploy-platform }}
+          export TARGET=protongraph_${{ matrix.deploy-platform }}
+          mkdir -p $TARGET
+          cp -rf ${{ matrix.deploy-bin }} $TARGET/protongraph_${{ matrix.deploy-platform }}
+          cp -rf protongraph_${{ matrix.deploy-platform }}.pck $TARGET/protongraph_${{ matrix.deploy-platform }}.pck          
+          cp -rf nodes $TARGET/nodes          
+          7z a -r $TARGET.zip $TARGET
+        shell: bash
+
+      - name: Upload Godot Artifact Export
+        if: ${{ matrix.deploy }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: protongraph_${{ matrix.deploy-platform }}_x86_64
+          path: |
+            protongraph_${{ matrix.deploy-platform }}
+
+      - name: Generate C# glue
+        if: ${{ matrix.build-mono }}
+        run: |
+          ${{ matrix.bin }} --headless --generate-mono-glue ./modules/mono/glue || true
+
+      - name: Build .NET solutions
+        if: ${{ matrix.build-mono }}
+        run: |
+          ./modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./bin --godot-platform=linuxbsd
+
+      # Execute unit tests for the editor
+      - name: Unit tests
+        if: ${{ matrix.tests }}
+        run: |
+          ${{ matrix.bin }} --version
+          ${{ matrix.bin }} --help
+          ${{ matrix.bin }} --test --headless
+
+      # Check class reference
+      - name: Check for class reference updates
+        if: ${{ matrix.doc-test }}
+        run: |
+          echo "Running --doctool to see if this changes the public API without updating the documentation."
+          echo -e "If a diff is shown, it means that your code/doc changes are incomplete and you should update the class reference with --doctool.\n\n"
+          ${{ matrix.bin }} --doctool --headless 2>&1 > /dev/null || true
+          git diff --color --exit-code && ! git ls-files --others --exclude-standard | sed -e 's/^/New doc file missing in PR: /' | grep 'xml$'
+
+      # Test 3.x -> 4.x project converter
+      - name: Test project converter
+        if: ${{ matrix.proj-conv }}
+        run: |
+          mkdir -p converter_test
+          cd converter_test
+          touch project.godot
+          ${{ matrix.bin }} --headless --validate-conversion-3to4
+          cd ..
+          rm converter_test -rf
+
+      # Download and extract zip archive with project, folder is renamed to be able to easy change used project
+      - name: Download test project
+        if: ${{ matrix.proj-test }}
+        run: |
+          wget https://github.com/godotengine/regression-test-project/archive/4.0.zip
+          unzip 4.0.zip
+          mv "regression-test-project-4.0" "test_project"
+
+      # Editor is quite complicated piece of software, so it is easy to introduce bug here
+      - name: Open and close editor (Vulkan)
+        if: ${{ matrix.proj-test }}
+        run: |
+          xvfb-run ${{ matrix.bin }} --audio-driver Dummy --editor --quit --path test_project 2>&1 | tee sanitizers_log.txt || true
+          misc/scripts/check_ci_log.py sanitizers_log.txt
+
+      - name: Open and close editor (GLES3)
+        if: ${{ matrix.proj-test }}
+        run: |
+          DRI_PRIME=0 xvfb-run ${{ matrix.bin }} --audio-driver Dummy --rendering-driver opengl3 --editor --quit --path test_project 2>&1 | tee sanitizers_log.txt || true
+          misc/scripts/check_ci_log.py sanitizers_log.txt
+
+      # Run test project
+      - name: Run project
+        if: ${{ matrix.proj-test }}
+        run: |
+          xvfb-run ${{ matrix.bin }} 40 --audio-driver Dummy --path test_project 2>&1 | tee sanitizers_log.txt || true
+          misc/scripts/check_ci_log.py sanitizers_log.txt
+
+      # Checkout godot-cpp
+      - name: Checkout godot-cpp
+        if: ${{ matrix.godot-cpp-test }}
+        uses: actions/checkout@v3
+        with:
+          repository: godotengine/godot-cpp
+          submodules: "recursive"
+          path: "godot-cpp"
+
+      # Dump GDExtension interface and API
+      - name: Dump GDExtension interface and API for godot-cpp build
+        if: ${{ matrix.godot-cpp-test }}
+        run: |
+          ${{ matrix.bin }} --headless --dump-gdextension-interface --dump-extension-api
+          cp -f gdextension_interface.h godot-cpp/gdextension/
+          cp -f extension_api.json godot-cpp/gdextension/
+
+      # Build godot-cpp test extension
+      - name: Build godot-cpp test extension
+        if: ${{ matrix.godot-cpp-test }}
+        run: |
+          cd godot-cpp/test
+          scons target=template_debug dev_build=yes
+          cd ../..
+
+      - name: Prepare artifact
+        if: ${{ matrix.artifact }}
+        run: |
+          chmod +x godot/bin/godot.* || true
+          chmod +x godot/bin/libgodot.* || true
+
+      - name: Upload artifact
+        uses: ./.github/actions/upload-artifact
+        if: ${{ matrix.artifact }}
+        with:
+          name: ${{ matrix.cache-name }}
