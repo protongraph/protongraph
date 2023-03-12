@@ -19,6 +19,7 @@ var show_type_icon := true
 var label_override := ""
 var ignored := false
 var supports_field := false
+var accept_connections := true
 
 # Connections options
 var allow_multiple_connections := false
@@ -94,11 +95,18 @@ func override_vector_options_with_current() -> void:
 	vec_w = copy.get_copy()
 
 
+func can_accept_connections() -> bool:
+	if has_dropdown():
+		return false
+
+	return accept_connections
+
+
 func has_dropdown() -> bool:
 	return not dropdown_items.is_empty()
 
 
-func add_dropdown_item(id, label: String) -> void:
+func add_dropdown_item(id: int, label: String) -> void:
 	var item = DropdownItem.new()
 	item.id = id
 	item.label = label

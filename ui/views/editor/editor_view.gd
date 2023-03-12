@@ -41,11 +41,11 @@ func _ready() -> void:
 
 func edit(graph: NodeGraph) -> void:
 	_graph = graph
+	_viewport.set_node_graph(graph)
 	_graph_editor.set_node_graph(graph)
 	_graph_inspector.set_graph_editor(_graph_editor)
-	_toolbar.rebuild.connect(rebuild)
-	_graph.graph_changed.connect(rebuild)
-	rebuild.call_deferred()
+	_toolbar.rebuild.connect(rebuild.bind(true))
+	_graph.graph_changed.connect(rebuild.bind(true)) # TMP, should be false
 
 
 # Returns true to close the view
@@ -65,9 +65,8 @@ func save_and_close() -> bool:
 			return false
 
 
-func rebuild() -> void:
-	_viewport.clear()
-	_graph.rebuild(true)
+func rebuild(clean_rebuild := false) -> void:
+	_graph.rebuild(clean_rebuild)
 
 
 func get_edited_graph() -> NodeGraph:

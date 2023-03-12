@@ -33,6 +33,14 @@ const GROUP_NODES_BY_TYPE := {
 		"""In the "Add node" popup, by default, nodes are grouped by purpose (Generators, Modifiers...).
 		Turn this setting on to group them by data type (Meshes, Curves ...).""",
 }
+const DISABLE_MULTITHREADING := {
+	"category": "debug",
+	"id": "disable_multithreading",
+	"title": "Disable multithreading",
+	"description":
+		"""Force the generation to run on the main thread (this will freeze the editor).
+		Required during development to access the error messages."""
+}
 
 const CONFIG_PATH = "user://config.cfg"
 
@@ -42,6 +50,7 @@ var _list := [
 	AUTOSAVE_ENABLED,
 	AUTOSAVE_INTERVAL,
 	GROUP_NODES_BY_TYPE,
+	DISABLE_MULTITHREADING,
 ]
 
 # Default settings values
@@ -50,6 +59,7 @@ var _values = {
 	AUTOSAVE_ENABLED: true,
 	AUTOSAVE_INTERVAL: 300.0,
 	EDITOR_SCALE: 100.0,
+	DISABLE_MULTITHREADING: false,
 }
 
 var _require_restart := [
@@ -65,7 +75,7 @@ func get_list() -> Array:
 	return _list
 
 
-func get_setting(setting, default = null):
+func get_value(setting, default = null):
 	if not _initialized:
 		load_or_create_config_file()
 

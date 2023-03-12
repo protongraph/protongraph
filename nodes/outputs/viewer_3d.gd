@@ -24,4 +24,4 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	GlobalEventBus.show_on_viewport.emit(unique_name, get_input("data"))
+	GlobalEventBus.show_on_viewport.emit(graph, get_input("data"))

@@ -3,6 +3,7 @@ extends Control
 
 
 var _graph: NodeGraphEditor
+var _mutex := false
 
 @onready var _root: Control = $%PropertiesRoot
 @onready var _default: Control = $%DefaultInfo
@@ -65,8 +66,18 @@ func rebuild_ui() -> void:
 
 
 func _on_inspector_value_changed(value, idx: String, node_ui: ProtonNodeUi) -> void:
+	if _mutex:
+		return # Change came from a graph edit update, ignore
+
+	_mutex = true
 	node_ui.set_local_value(idx, value)
+	_mutex = false
 
 
 func _on_node_value_changed(value, component: GraphNodeUiComponent) -> void:
+	if _mutex:
+		return # Change came from the graph inspector, ignore
+
+	_mutex = true
 	component.set_value(value)
+	_mutex = false

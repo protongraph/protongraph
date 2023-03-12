@@ -100,6 +100,8 @@ func _load_graph(path: String) -> void:
 	graph.external_data = file.get_value("graph_node", "external_data", {})
 	graph.pending_changes = false
 
+	graph.validate_connections()
+
 	# TODO:
 	# When loading partially failed (missing nodes), display a confirm dialog
 	# asking the user to either cancel, or load the graph without the missing

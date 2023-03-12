@@ -3,6 +3,9 @@ extends Resource
 
 
 signal graph_changed
+signal rebuild_started
+signal thread_completed
+signal rebuild_completed
 
 
 var nodes: Dictionary
@@ -19,6 +22,7 @@ var _rebuild_queued := false
 func _init():
 	clear()
 	graph_changed.connect(_on_graph_changed)
+	thread_completed.connect(_on_thread_completed, CONNECT_DEFERRED)
 
 
 func clear() -> void:
@@ -26,6 +30,27 @@ func clear() -> void:
 	connections = []
 	external_data = {}
 	_leaf_nodes.clear()
+
+
+# Ensure every nodes and their connections slots exists. Otherwise, remove them
+# from the connections list. This happens if a node changes its layout declaration
+# between two versions or if the node script file was not found when loading a graph.
+func validate_connections() -> void:
+	var invalid_connections := []
+
+	for c in connections:
+		if not c.from in nodes or not c.to in nodes:
+			invalid_connections.push_back(c)
+			continue
+
+		var from = nodes[c.from]
+		var to = nodes[c.to]
+
+		if not c.from_idx in from.outputs or not c.to_idx in to.inputs:
+			invalid_connections.push_back(c)
+
+	for c in invalid_connections:
+		connections.erase(c)
 
 
 func create_node(type_id: String, data := {}, notify := true) -> ProtonNode:
@@ -89,19 +114,23 @@ func disconnect_node(from: String, from_idx: String, to: String, to_idx: String)
 
 
 func rebuild(clean_rebuild := false) -> void:
-	if OS.has_feature("editor"):
+	if Settings.get_value(Settings.DISABLE_MULTITHREADING, false):
 		_rebuild(clean_rebuild)
 		return
 
-	if is_thread_running():
+	if _rebuild_queued:
+		return
+
+	if _is_thread_running():
 		_rebuild_queued = true
 		return
 
-	if _thread and _thread.is_started():
+	if _is_thread_joinable():
 		_thread.wait_to_finish()
 
 	_thread = Thread.new()
 	_thread.start(_rebuild.bind(clean_rebuild), Thread.PRIORITY_NORMAL)
+	rebuild_started.emit()
 
 
 func _rebuild(clean_rebuild := false) -> void:
@@ -136,11 +165,15 @@ func _rebuild(clean_rebuild := false) -> void:
 						var right_node: ProtonNode = data.to
 						right_node.set_input(data.idx, value)
 
-	_on_rebuild_completed.call_deferred()
+	thread_completed.emit()
 
 
-func is_thread_running() -> bool:
+func _is_thread_running() -> bool:
 	return _thread != null and _thread.is_alive()
+
+
+func _is_thread_joinable() -> bool:
+	return _thread != null and _thread.is_started() and not _thread.is_alive()
 
 
 func _get_unique_name(node: ProtonNode) -> String:
@@ -193,6 +226,7 @@ func _get_right_connected(node: ProtonNode, idx: String) -> Array[Dictionary]:
 	return res
 
 
+# TODO: should recursively invalidate everything on the right side of the connected slots
 func _on_node_changed(node: ProtonNode) -> void:
 	node.clear_values()
 
@@ -207,7 +241,9 @@ func _on_graph_changed() -> void:
 
 
 # Restart the build process if another rebuild was requested before this one finished.
-func _on_rebuild_completed() -> void:
+func _on_thread_completed() -> void:
 	if _rebuild_queued:
 		_rebuild_queued = false
-		rebuild()
+		rebuild.call_deferred()
+	else:
+		rebuild_completed.emit()

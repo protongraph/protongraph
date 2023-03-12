@@ -29,9 +29,7 @@ func get_value() -> Variant:
 
 
 func _execute() -> Variant:
-	print("in execute")
 	if _list.is_empty():
-		print("empty list, ")
 		return _generator.call()
 
 	if _current_index >= _list.size():
@@ -39,8 +37,6 @@ func _execute() -> Variant:
 
 	var item = _list[_current_index]
 	_current_index += 1
-	print("item: ", item, " ", item.transform.origin)
-	print("calling ", _generator)
 
 	return _generator.call(item)
 

@@ -52,6 +52,8 @@ func create_extra(idx: String, name: String, type: int, options := SlotOptions.n
 	if not _slot_creation_check(idx, extras):
 		return
 
+	options.accept_connections = false
+
 	var extra = ProtonNodeSlot.new()
 	extra.name = name
 	extra.type = type

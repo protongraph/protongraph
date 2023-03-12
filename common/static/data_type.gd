@@ -82,6 +82,14 @@ const NAMES = {
 	HEIGHTMAP: "Heightmap",
 }
 
+
+static func get_color(type: int) -> Color:
+	if type in COLORS:
+		return COLORS[type]
+
+	return Color.BLACK
+
+
 # Convert graph node category name to color
 static func get_category_color(category: String) -> Color:
 	var tokens := category.split("/")

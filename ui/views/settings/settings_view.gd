@@ -5,6 +5,8 @@ extends Node
 const ParametersViewScene := preload("./components/parameters_view.tscn")
 
 
+var _tabs_group := ButtonGroup.new()
+
 @onready var _tabs: Control = $%TabRoot
 @onready var _tab_container: Control = $%TabContainer
 
@@ -28,6 +30,7 @@ func _get_or_create_category(category: String) -> Array:
 		button.toggle_mode = true
 		button.text = category.capitalize()
 		button.name = category
+		button.button_group = _tabs_group
 		_tabs.add_child(button, true)
 
 		# Panel setup

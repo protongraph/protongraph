@@ -72,6 +72,8 @@ func rebuild_ui() -> void:
 	for n in _graph.nodes.values():
 		_create_proton_node_ui(n)
 
+	var invalid_connections: Array = []
+
 	for c in _graph.connections:
 		var from: ProtonNodeUi = get_node(NodePath(c.from))
 		var to: ProtonNodeUi = get_node(NodePath(c.to))
@@ -80,7 +82,12 @@ func rebuild_ui() -> void:
 
 		var from_port := from.output_idx_to_port(c.from_idx)
 		var to_port := to.input_idx_to_port(c.to_idx)
+		if from_port == -1 or to_port == -1:
+			invalid_connections.push_back(c)
+
 		connect_node_and_notify(c.from, from_port, c.to, to_port)
+
+	# Cleanup the
 
 	await(get_tree().process_frame)
 

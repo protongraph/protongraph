@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dru6wp1xq8ngq"]
+[gd_scene load_steps=16 format=3 uid="uid://dru6wp1xq8ngq"]
 
 [ext_resource type="Script" path="res://ui/views/editor/viewport/viewport.gd" id="1_mdwbn"]
 [ext_resource type="Script" path="res://ui/views/editor/viewport/components/camera.gd" id="2_it4fl"]
@@ -7,12 +7,10 @@
 [ext_resource type="Script" path="res://ui/views/editor/viewport/components/viewport_tree.gd" id="5_04xjp"]
 [ext_resource type="Texture2D" uid="uid://dnt2hnxoc8map" path="res://ui/icons/icon_question_mark.svg" id="5_xtp6v"]
 [ext_resource type="Texture2D" uid="uid://cislafpj4011d" path="res://ui/icons/icon_camera.svg" id="6_6dlau"]
+[ext_resource type="Texture2D" uid="uid://baxirbcpddsfe" path="res://ui/icons/spinning_wheel/icon_spinning_wheel.tres" id="6_40kvp"]
 [ext_resource type="Texture2D" uid="uid://bjirb8q6awvj3" path="res://ui/icons/icon_window.svg" id="6_ddiw8"]
 [ext_resource type="Script" path="res://ui/common/float_button.gd" id="7_vwp7d"]
 [ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="10_erxuh"]
-
-[sub_resource type="World3D" id="World3D_wutdu"]
-resource_local_to_scene = true
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ymbai"]
 panorama = ExtResource("2_p0kfs")
@@ -24,6 +22,10 @@ process_mode = 3
 [sub_resource type="Environment" id="Environment_s5dt0"]
 background_mode = 2
 sky = SubResource("Sky_rbhip")
+
+[sub_resource type="World3D" id="World3D_wutdu"]
+resource_local_to_scene = true
+environment = SubResource("Environment_s5dt0")
 
 [node name="Viewport" type="MarginContainer"]
 clip_children = 1
@@ -87,7 +89,8 @@ output = NodePath("../../../SubViewportContainer/SubViewport/OutputRoot")
 
 [node name="MarginContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
+mouse_filter = 2
+alignment = 2
 
 [node name="HelpPanel" type="PanelContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]
 unique_name_in_owner = true
@@ -158,3 +161,28 @@ expand_icon = true
 [node name="AutoScale" type="Node" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer/HBoxContainer"]
 script = ExtResource("10_erxuh")
 targets = 1
+
+[node name="RebuildingPanel" type="PanelContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_type_variation = &"PanelContainerTransparent"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/RebuildingPanel"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/RebuildingPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/RebuildingPanel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = ExtResource("6_40kvp")
+expand_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/RebuildingPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Rebuilding"
+vertical_alignment = 1

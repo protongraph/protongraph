@@ -1,0 +1,29 @@
+[gd_resource type="AnimatedTexture" load_steps=9 format=3 uid="uid://baxirbcpddsfe"]
+
+[ext_resource type="Texture2D" uid="uid://wqrel3trsih6" path="res://ui/icons/spinning_wheel/icon_wheel_1.svg" id="1_xhutb"]
+[ext_resource type="Texture2D" uid="uid://cah1r04qx7tl0" path="res://ui/icons/spinning_wheel/icon_wheel_2.svg" id="2_tkxjo"]
+[ext_resource type="Texture2D" uid="uid://cclf0l8tc44fu" path="res://ui/icons/spinning_wheel/icon_wheel_3.svg" id="3_s7pqs"]
+[ext_resource type="Texture2D" uid="uid://ca5kermq42sj8" path="res://ui/icons/spinning_wheel/icon_wheel_4.svg" id="4_vtkfb"]
+[ext_resource type="Texture2D" uid="uid://xu53vjqliip2" path="res://ui/icons/spinning_wheel/icon_wheel_5.svg" id="5_qouuc"]
+[ext_resource type="Texture2D" uid="uid://k5moxine2d7s" path="res://ui/icons/spinning_wheel/icon_wheel_6.svg" id="6_2577p"]
+[ext_resource type="Texture2D" uid="uid://csdluap5sx476" path="res://ui/icons/spinning_wheel/icon_wheel_7.svg" id="7_486de"]
+[ext_resource type="Texture2D" uid="uid://c8l0wxkhfgfd5" path="res://ui/icons/spinning_wheel/icon_wheel_8.svg" id="8_mrupp"]
+
+[resource]
+frames = 8
+speed_scale = 10.0
+frame_0/texture = ExtResource("1_xhutb")
+frame_1/texture = ExtResource("2_tkxjo")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("3_s7pqs")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("4_vtkfb")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("5_qouuc")
+frame_4/duration = 1.0
+frame_5/texture = ExtResource("6_2577p")
+frame_5/duration = 1.0
+frame_6/texture = ExtResource("7_486de")
+frame_6/duration = 1.0
+frame_7/texture = ExtResource("8_mrupp")
+frame_7/duration = 1.0

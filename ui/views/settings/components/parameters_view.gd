@@ -22,7 +22,7 @@ func add_parameter(setting: Dictionary) -> void:
 	if Settings.require_restart(setting):
 		p.set_warning("You must restart the application for this change to take effect.")
 
-	var value = Settings.get_setting(setting)
+	var value = Settings.get_value(setting)
 
 	if value is bool:
 		p.mark_as_bool()

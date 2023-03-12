@@ -92,7 +92,6 @@ func _gui_input(event) -> void:
 
 	elif event is InputEventMouseButton:
 		if event.double_click:
-			print("here")
 			add_point(_to_curve_space(event.position))
 
 		elif event.pressed and event.button_index == MOUSE_BUTTON_MIDDLE:

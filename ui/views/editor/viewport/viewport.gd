@@ -2,53 +2,40 @@ class_name EditorViewport
 extends Control
 
 
+var _graph: NodeGraph
+var _just_wrapped := false
+var _display_queue: Array[Node3D] = []
+
 @onready var _output_root: Node3D = $%OutputRoot
 @onready var _camera: ViewportCamera = $%ViewportCamera
 @onready var _gizmos_manager: GizmosManager = $%GizmosManager
 @onready var _tree: Tree = $%Tree
-
-var _just_wrapped := false
+@onready var _rebuilding_panel: Control = $%RebuildingPanel
 
 
 func _ready() -> void:
-	GlobalEventBus.show_on_viewport.connect(display)
+	GlobalEventBus.show_on_viewport.connect(_on_show_on_viewport)
 	$%HelpButton.toggled.connect(_on_help_button_toggled)
 	$%ResetCameraButton.pressed.connect(_camera.reset_camera)
 	$%HelpPanel.visible = false
 
 
 func clear() -> void:
+	_display_queue.clear()
 	NodeUtil.remove_children(_output_root)
 	_gizmos_manager.clear()
 	_tree.update()
 
 
-func remove_nodes_with_id(id: String) -> void:
-	for c in _output_root.get_children():
-		if c.get_meta("source_id") == id:
-			c.queue_free()
+func set_node_graph(graph: NodeGraph) -> void:
+	if _graph:
+		_graph.rebuild_started.disconnect(_on_rebuild_started)
+		_graph.rebuild_completed.disconnect(_on_rebuild_completed)
 
-	_tree.update()
-
-
-func display(id: String, list: Array) -> void:
-	if not _output_root or not is_visible_in_tree():
-		return
-
-	# A same source can only have one set active at a time, otherwise we get
-	# duplicates in between rebuilds
-	remove_nodes_with_id(id)
-
-	if list.is_empty():
-		return
-
-	for node in list:
-		if is_instance_valid(node) and node is Node3D:
-			node.set_meta("source_id", id)
-			NodeUtil.set_parent(node, _output_root, true)
-			_gizmos_manager.add_gizmo_for(node)
-
-	_tree.update()
+	_graph = graph
+	_graph.rebuild_started.connect(_on_rebuild_started)
+	_graph.rebuild_completed.connect(_on_rebuild_completed)
+	_rebuilding_panel.visible = false
 
 
 # Forward all inputs happening on top of this viewport to the camera node.
@@ -87,3 +74,32 @@ func _input(event: InputEvent) -> void:
 
 func _on_help_button_toggled(pressed: bool) -> void:
 	$%HelpPanel.visible = pressed
+
+
+# Called from the GlobalEventBus, if the request matches the currently edited graph,
+# store the requested nodes in a queue and display them once the rebuild is complete.
+func _on_show_on_viewport(graph: NodeGraph, list: Array) -> void:
+	if graph != _graph:
+		return
+
+	_display_queue.append_array(list)
+
+
+func _on_rebuild_started() -> void:
+	_display_queue.clear()
+	_rebuilding_panel.visible = true
+
+
+# Node graph is done rebuilding the scene, display the queued results.
+func _on_rebuild_completed() -> void:
+	NodeUtil.remove_children(_output_root)
+	_gizmos_manager.clear()
+
+	for node in _display_queue:
+		if is_instance_valid(node) and node is Node3D:
+			NodeUtil.set_parent(node, _output_root, true)
+			_gizmos_manager.add_gizmo_for(node)
+
+	_tree.update()
+	_display_queue.clear()
+	_rebuilding_panel.visible = false

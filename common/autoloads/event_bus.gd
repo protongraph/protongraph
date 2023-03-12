@@ -24,4 +24,4 @@ signal save_all
 signal save_graph_as
 signal save_graph
 signal save_status_updated(String)
-signal show_on_viewport(id: String, data: Array)
+signal show_on_viewport(graph: NodeGraph, data: Array)

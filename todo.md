@@ -18,6 +18,8 @@
 + Nested graphs
 + Add per view UndoRedo support
 + Keyboard shortcuts in the add node popup
++ Split the node UI in groups. (store the info in the slot options)
+	- add the ability to expand / fold a group
 
 ## Nodes
 + Port back all the nodes

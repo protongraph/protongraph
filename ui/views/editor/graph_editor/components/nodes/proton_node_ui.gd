@@ -298,16 +298,18 @@ func _setup_connection_slots() -> void:
 		slot = ui.slot
 		type = proton_node.inputs[idx].type
 		opts = proton_node.inputs[idx].options
-		set_slot_enabled_left(slot, true)
-		set_slot_type_left(slot, type)
-		set_slot_color_left(slot, DataType.COLORS[type])
 
-		if opts.allow_multiple_connections:
-			set("slot/" + str(slot) + "/left_icon", slot_icon_multi)
-		elif opts.supports_field:
-			set("slot/" + str(slot) + "/left_icon", slot_icon_field)
-		else:
-			set("slot/" + str(slot) + "/left_icon", slot_icon_default)
+		if opts.can_accept_connections():
+			set_slot_enabled_left(slot, true)
+			set_slot_type_left(slot, type)
+			set_slot_color_left(slot, DataType.get_color(type))
+
+			if opts.allow_multiple_connections:
+				set("slot/" + str(slot) + "/left_icon", slot_icon_multi)
+			elif opts.supports_field:
+				set("slot/" + str(slot) + "/left_icon", slot_icon_field)
+			else:
+				set("slot/" + str(slot) + "/left_icon", slot_icon_default)
 
 	for idx in _output_component_map:
 		ui = _output_component_map[idx]
@@ -316,7 +318,7 @@ func _setup_connection_slots() -> void:
 		opts = proton_node.outputs[idx].options
 		set_slot_enabled_right(slot, true)
 		set_slot_type_right(slot, type)
-		set_slot_color_right(slot, DataType.COLORS[type])
+		set_slot_color_right(slot, DataType.get_color(type))
 
 		if opts.supports_field:
 			set("slot/" + str(slot) + "/right_icon", slot_icon_field)

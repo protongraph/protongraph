@@ -48,7 +48,7 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()):
 	if type != -1:
 		label.tooltip_text = DataType.get_type_name(type)
 		icon.texture = TextureUtil.get_slot_icon(type)
-		icon.modulate = DataType.COLORS[type]
+		icon.modulate = DataType.get_color(type)
 
 
 func get_value():
