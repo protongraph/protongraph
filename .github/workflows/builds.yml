@@ -90,7 +90,7 @@ jobs:
         uses: ./.github/actions/godot-deps
 
       - name: Set up .NET Sdk
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         if: ${{ matrix.build-mono }}
         with:
           dotnet-version: "6.0.x"
