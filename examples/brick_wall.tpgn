@@ -43,7 +43,7 @@ connections=[{
 "to_idx": "curve"
 }]
 external_data={
-"scroll_offset": Vector2i(932, 1194)
+"scroll_offset": Vector2i(851, 1088)
 }
 
 [curve_sample_points_even]
@@ -111,12 +111,10 @@ local_values={
 "local_pos_offset": true,
 "local_rotation": false,
 "local_scale": false,
-"min_amount": -1.0,
 "pos_offset": Vector3(0, 0.42, 0),
 "rotation": Vector3(0, 0, 0),
 "rotation_pivot": Vector3(0, 0, 0),
-"scale": Vector3(1, 1, 1),
-"seed": 0.0
+"scale": Vector3(1, 1, 1)
 }
 custom_data={}
 external_data={
@@ -136,12 +134,10 @@ local_values={
 "local_pos_offset": true,
 "local_rotation": false,
 "local_scale": false,
-"min_amount": -1.0,
 "pos_offset": Vector3(0, 0.21, 0.2),
 "rotation": Vector3(0, 0, 0),
 "rotation_pivot": Vector3(0, 0, 0),
-"scale": Vector3(1, 1, 1),
-"seed": 0.0
+"scale": Vector3(1, 1, 1)
 }
 custom_data={}
 external_data={

@@ -45,6 +45,9 @@ func _input(event: InputEvent) -> void:
 		_just_wrapped = false
 		return
 
+	if not is_visible_in_tree():
+		return
+
 	var current_mouse_pos := get_viewport().get_mouse_position()
 	var rect = Rect2i(global_position, size)
 

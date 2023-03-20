@@ -2,8 +2,9 @@ class_name ProtonNode
 extends Resource
 
 
-signal local_value_changed(idx, value)
 signal layout_changed
+signal local_value_changed(idx: String, value: Variant)
+signal extra_changed(idx: String, value: Variant)
 
 
 var external_data: Dictionary
@@ -185,6 +186,18 @@ func set_output(idx: String, value: Variant) -> void:
 
 	outputs[idx].computed_value = value
 	outputs[idx].computed_value_ready = true
+
+
+func set_extra(idx: String, value: Variant) -> void:
+	if not idx in extras:
+		push_error("Invalid index: ", idx, " was not found in extras")
+		return
+
+	if not value is Array:
+		value = [value]
+
+	extras[idx].computed_value = value
+	extra_changed.emit(idx, value)
 
 
 func clear_values() -> void:

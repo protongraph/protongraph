@@ -46,6 +46,8 @@ static func create_component(name: String, type: int, opts: SlotOptions) -> Grap
 		DataType.MISC:
 			if opts.has_dropdown():
 				component = DropdownComponent.new()
+		DataType.MISC_PREVIEW_2D:
+			component = TexturePreviewComponent.new()
 
 	if not component:
 		component = GenericInputComponent.new()

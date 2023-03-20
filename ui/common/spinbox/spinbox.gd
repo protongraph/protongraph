@@ -3,6 +3,7 @@ extends ProgressBar
 
 
 @export var spinbox_name: String
+@export var spinbox_step := 0.1
 @export_enum("Top", "Middle", "Bottom", "Single") var style = 3:
 	set(val):
 		style = val
@@ -20,7 +21,6 @@ var _pressed := false
 var _acc := 0.0
 var _previous_value := 0.0
 var _is_edited := false
-var _step := 0.1
 var _is_mouse_above_button_container := false
 var _is_mouse_above_spinbox := false
 
@@ -69,7 +69,7 @@ func get_line_edit() -> LineEdit:
 
 
 func set_custom_step(s: float) -> void:
-	_step = s
+	spinbox_step = s
 
 
 func set_label_text(text) -> void:
@@ -142,9 +142,9 @@ func _toggle_buttons(enabled: bool) -> void:
 
 func _on_button_pressed(increase: bool) -> void:
 	if increase:
-		_create_undo_redo_action(value + _step, value)
+		_create_undo_redo_action(value + spinbox_step, value)
 	else:
-		_create_undo_redo_action(value - _step, value)
+		_create_undo_redo_action(value - spinbox_step, value)
 	_update_line_edit_value(value)
 
 
@@ -192,7 +192,7 @@ func _on_value_gui_input(event) -> void:
 
 		_acc += event.relative.x
 		if abs(_acc) >= 5 * EditorUtil.get_editor_scale():
-			value += sign(_acc) * _step
+			value += sign(_acc) * spinbox_step
 			_acc = 0.0
 		_line_edit.text = str(value)
 

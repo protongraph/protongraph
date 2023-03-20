@@ -14,8 +14,8 @@ var icon: TextureRect
 var icon_container: CenterContainer
 var ignored_overlay: TextureRect
 var index # As defined in the ProtonNode
-var slot: int # The GraphEdit slot (actual control row)
-var port: int # The GraphEdit port (consecutive enabled slots)
+var slot: int = -1 # The GraphEdit slot (actual control row)
+var port: int = -1 # The GraphEdit port (consecutive enabled slots)
 
 
 func initialize(label_name: String, type: int, opts := SlotOptions.new()):

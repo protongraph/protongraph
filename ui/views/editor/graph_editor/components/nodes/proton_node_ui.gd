@@ -13,16 +13,19 @@ var proton_node: ProtonNode:
 	set(val):
 		if is_instance_valid(proton_node):
 			proton_node.layout_changed.disconnect(rebuild_ui)
+			proton_node.extra_changed.disconnect(_on_extra_changed)
 
 		proton_node = val
 		proton_node.layout_changed.connect(rebuild_ui)
+		proton_node.extra_changed.connect(_on_extra_changed)
 		_update_frame_stylebox()
 
 var _input_connections := {}
 var _output_connections := {}
 var _input_component_map := {}
 var _output_component_map := {}
-var _extras_ui := []
+var _extras_component_map := {}
+var _extras_custom_ui := []
 
 
 func _ready() -> void:
@@ -41,8 +44,6 @@ func clear() -> void:
 	NodeUtil.remove_children(self)
 	_input_component_map.clear()
 	_output_component_map.clear()
-	#_input_connections.clear()
-	#_output_connections.clear()
 	size = Vector2i.ZERO
 
 
@@ -187,10 +188,16 @@ func _populate_rows():
 	for idx in proton_node.inputs:
 		if is_slot_visible("input", idx):
 			var input: ProtonNodeSlot = proton_node.inputs[idx]
+			var opts: SlotOptions = input.options
 			var ui = _create_component_for(input)
 			ui.index = idx
 			ui.slot = current_row
-			ui.port = current_port
+			current_row += 1
+
+			if opts.can_accept_connections():
+				ui.port = current_port
+				current_port += 1
+
 			_input_component_map[idx] = ui
 			_get_or_create_row(current_row).add_child(ui)
 			ui.value_changed.connect(_on_local_value_changed.bind(idx))
@@ -198,27 +205,27 @@ func _populate_rows():
 			if idx in _input_connections:
 				ui.notify_connection_changed(_input_connections[idx])
 
-			current_row += 1
-			current_port += 1
-
 	# Reset current port for the output slots
 	current_port = 0
 
 	for idx in proton_node.outputs:
 		if is_slot_visible("output", idx):
 			var output: ProtonNodeSlot = proton_node.outputs[idx]
+			var opts: SlotOptions = output.options
 			var ui = _create_component_for(output, true)
 			ui.index = idx
 			ui.slot = current_row
-			ui.port = current_port
+			current_row += 1
+
+			if opts.can_accept_connections():
+				ui.port = current_port
+				current_port += 1
+
 			_output_component_map[idx] = ui
 			_get_or_create_row(current_row).add_child(ui)
 
 			if idx in _output_connections:
 				ui.notify_connection_changed(_output_connections[idx])
-
-			current_row += 1
-			current_port += 1
 
 	for idx in proton_node.extras:
 		if is_slot_visible("extra", idx):
@@ -226,10 +233,11 @@ func _populate_rows():
 			var ui
 			if extra.type == DataType.MISC_CUSTOM_UI:
 				ui = extra.options.custom_ui
-				_extras_ui.push_back(ui)
+				_extras_custom_ui.push_back(ui)
 			else:
 				ui = _create_component_for(extra)
 
+			_extras_component_map[idx] = ui
 			var row: Control = _create_new_row()
 			row.size_flags_vertical = SIZE_EXPAND_FILL
 			row.add_child(ui)
@@ -237,7 +245,7 @@ func _populate_rows():
 
 func _create_new_row() -> Node:
 	var hbox := HBoxContainer.new()
-	hbox.custom_minimum_size.y = 24
+	hbox.custom_minimum_size.y = 24 * EditorUtil.get_editor_scale()
 	add_child(hbox)
 	return hbox
 
@@ -344,11 +352,11 @@ func _update_frame_stylebox():
 # Custom UI provided by the create_extras() must not be freed, so they are
 # removed from the tree before their parents are deleted.
 func _remove_extra_ui() -> void:
-	for ui in _extras_ui:
+	for ui in _extras_custom_ui:
 		var parent = ui.get_parent()
 		parent.remove_child(ui)
 
-	_extras_ui.clear()
+	_extras_custom_ui.clear()
 
 
 func _on_position_offset_changed() -> void:
@@ -407,3 +415,12 @@ func _on_connection_changed() -> void:
 		var right_connected: Array[ProtonNodeUi] = graph_editor.get_right_connected_flat(self)
 		for node in right_connected:
 			node.connection_changed.emit()
+
+
+# Called when an extra value changes from the ProtonNode (not from the UI)
+func _on_extra_changed(idx: String, value: Variant) -> void:
+	if not idx in _extras_component_map:
+		return
+
+	var extra_component: GraphNodeUiComponent = _extras_component_map[idx]
+	extra_component.set_value(value)

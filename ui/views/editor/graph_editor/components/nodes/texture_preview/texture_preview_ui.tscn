@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://xto1j30r0fw2"]
+
+[ext_resource type="Script" path="res://ui/views/editor/graph_editor/components/nodes/texture_preview/texture_preview_ui.gd" id="1_cv57g"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="2_y7y2e"]
+[ext_resource type="PackedScene" uid="uid://ddl1a7jcx4sgv" path="res://ui/common/spinbox/spinbox.tscn" id="3_i073n"]
+
+[node name="TexturePreviewUi" type="VBoxContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_cv57g")
+
+[node name="TogglePreviewButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Show preview"
+
+[node name="PreviewContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PreviewContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 170)
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 6
+
+[node name="AutoScale" type="Node" parent="PreviewContainer/TextureRect"]
+script = ExtResource("2_y7y2e")
+
+[node name="Spinbox" parent="PreviewContainer" instance=ExtResource("3_i073n")]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 2.0
+max_value = 512.0
+step = 2.0
+value = 128.0
+allow_greater = true
+spinbox_name = "Size"
+spinbox_step = 2.0
