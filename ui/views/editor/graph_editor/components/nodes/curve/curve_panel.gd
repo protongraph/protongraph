@@ -14,20 +14,13 @@ signal curve_updated
 @export var point_color := Color.WHITE
 @export var selected_point_color := Color.ORANGE
 @export var point_radius := 4.0
-@export var text_color := Color(0.9, 0.9, 0.9)
+@export var text_color := Color(Color.WHITE, 0.65)
 @export var columns := 4
 @export var rows := 2
 @export var dynamic_row_count := true
 
 var _curve: Curve
 var _font: Font
-
-
-var _hover_point := -1:
-	set(val):
-		if val != _hover_point:
-			_hover_point = val
-			queue_redraw()
 
 var _selected_point := -1:
 	set(val):
@@ -41,10 +34,23 @@ var _selected_tangent := -1:
 			_selected_tangent = val
 			queue_redraw()
 
+var _hover_point := -1:
+	set(val):
+		if val != _hover_point:
+			_hover_point = val
+			queue_redraw()
+
+var _hover_tangent := -1:
+	set(val):
+		if val != _hover_tangent:
+			_hover_tangent = val
+			queue_redraw()
+
 var _dragging := false
-var _hover_radius := 50.0 # Squared
+var _hover_radius := 196.0 # Squared
 var _tangents_length := 30.0
-var _undo_data := {}
+var _snap_enabled := false
+var _snap_value := 10
 
 
 func _ready() -> void:
@@ -54,58 +60,41 @@ func _ready() -> void:
 	resized.connect(_on_resized)
 
 
-func get_curve() -> Curve:
-	return _curve
-
-
-func set_curve(c: Curve) -> void:
-	_curve = c
-	queue_redraw()
-
-
-func get_curve_data() -> Dictionary:
-	var res = {}
-	res.points = []
-	for i in _curve.get_point_count():
-		var p := {}
-		p["lm"] = _curve.get_point_left_mode(i)
-		p["lt"] = _curve.get_point_left_tangent(i)
-		var pos = _curve.get_point_position(i)
-		p["pos_x"] = pos.x
-		p["pos_y"] = pos.y
-		p["rm"] = _curve.get_point_right_mode(i)
-		p["rt"] = _curve.get_point_right_tangent(i)
-		res.points.push_back(p)
-
-	res.parameters = {
-		"min": _curve.get_min_value(),
-		"max": _curve.get_max_value(),
-		"res": _curve.get_bake_resolution(),
-	}
-	return res
-
-
 func _gui_input(event) -> void:
+
+	# User pressed the Delete key, remove the selected point if any
 	if event is InputEventKey:
 		if _selected_point != -1 and event.scancode == KEY_DELETE:
 			remove_point(_selected_point)
+			accept_event()
 
 	elif event is InputEventMouseButton:
-		if event.double_click:
-			add_point(_to_curve_space(event.position))
+		if event.pressed and event.button_index in [MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+			var point_index = get_point_at(event.position)
+			var tangent_id = get_tangent_at(event.position)
 
-		elif event.pressed and event.button_index == MOUSE_BUTTON_MIDDLE:
-			var i = get_point_at(event.position)
-			if i != -1:
-				remove_point(i)
+			if point_index != -1:
+				remove_point(point_index)
+			elif tangent_id == 0:
+				_curve.set_point_left_mode(_selected_point, Curve.TANGENT_LINEAR)
+			elif tangent_id == 1:
+				_curve.set_point_right_mode(_selected_point, Curve.TANGENT_LINEAR)
+
+			queue_redraw()
 
 		elif event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			# Check if the user clicked a tangent
 			_selected_tangent = get_tangent_at(event.position)
 
+			# If not, check if a point has been clicked
 			if _selected_tangent == -1:
 				_selected_point = get_point_at(event.position)
-			if _selected_point != -1:
-				_dragging = true
+
+			# User clicked an empty space, create a point
+			if _selected_point == -1:
+				_selected_point = add_point(_to_curve_space(event.position))
+
+			_dragging = true
 
 		elif _dragging and not event.pressed:
 			_dragging = false
@@ -113,18 +102,11 @@ func _gui_input(event) -> void:
 
 	elif event is InputEventMouseMotion:
 		if _dragging:
-			if _undo_data.is_empty():
-				_undo_data = get_curve_data()
-
 			var curve_amplitude: float = _curve.get_max_value() - _curve.get_min_value()
 
-			# Snap to "round" coordinates when holding Ctrl.
-			# Be more precise when holding Shift as well.
-			var snap_threshold: float
-			if event.ctrl_pressed:
-				snap_threshold = 0.025 if event.shift_pressed else 0.1
-			else:
-				snap_threshold = 0.0
+			var snap_threshold := (1.0 / _snap_value) if _snap_enabled else 0.0
+			if event.ctrl_pressed: # Hold the ctrl key to toggle between snap and free
+				snap_threshold = 0.0 if _snap_enabled else (1.0 / _snap_value)
 
 			if _selected_tangent == -1: # Drag point
 				var point_pos: Vector2 = _to_curve_space(event.position).snapped(Vector2(snap_threshold, snap_threshold * curve_amplitude))
@@ -172,11 +154,31 @@ func _gui_input(event) -> void:
 
 		else:
 			_hover_point = get_point_at(event.position)
+			_hover_tangent = get_tangent_at(event.position)
 
 
-func add_point(pos: Vector2) -> void:
+func get_curve() -> Curve:
+	return _curve
+
+
+func set_curve(c: Curve) -> void:
+	_curve = c
+	_selected_point = -1
+	_selected_tangent = -1
+	_hover_point = -1
+	_hover_tangent = -1
+	_dragging = false
+	queue_redraw()
+
+
+func toggle_snap(enabled: bool, value: int) -> void:
+	_snap_enabled = enabled
+	_snap_value = value
+
+
+func add_point(pos: Vector2) -> int:
 	if not _curve:
-		return
+		return -1
 
 	var point_pos = pos
 	point_pos.y = clamp(point_pos.y, 0.0, 1.0)
@@ -185,14 +187,15 @@ func add_point(pos: Vector2) -> void:
 	var i: int = _curve.add_point(point_pos)
 	_curve.remove_point(i)
 
-	var ur = GlobalUndoRedo.get_undo_redo()
+	var ur := GlobalUndoRedo.get_undo_redo()
 	ur.create_action("Add Curve Point")
-	ur.add_do_method(add_point.bind(point_pos))
+	ur.add_do_method(_curve.add_point.bind(point_pos))
 	ur.add_undo_method(_curve.remove_point.bind(i))
 	ur.commit_action()
 	queue_redraw()
 
 	curve_updated.emit()
+	return i
 
 
 func remove_point(idx: int) -> void:
@@ -205,7 +208,7 @@ func remove_point(idx: int) -> void:
 	var lm = _curve.get_point_left_mode(idx)
 	var rm = _curve.get_point_right_mode(idx)
 
-	var ur = GlobalUndoRedo.get_undo_redo()
+	var ur := GlobalUndoRedo.get_undo_redo()
 	ur.create_action("Remove Curve Point")
 	ur.add_do_method(_curve.remove_point.bind(idx))
 	ur.add_undo_method(_curve.add_point.bind(pos, lt, rt, lm, rm))
@@ -284,7 +287,7 @@ func _draw() -> void:
 
 		var pos := Vector2(x + margin, min_outer.y - margin)
 		var text := var_to_str(snapped(i * x_offset, 0.01))
-		draw_string(_font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, text_color)
+		draw_string(_font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14, text_color)
 
 	## Horizontal lines
 	var y_offset = 1.0 / rows
@@ -295,7 +298,7 @@ func _draw() -> void:
 		var y_value = i * ((curve_max - curve_min) / rows) + curve_min
 		var pos := Vector2(min_inner.x + margin, y - margin)
 		var text := var_to_str(snapped(y_value, 0.01))
-		draw_string(_font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, text_color)
+		draw_string(_font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14, text_color)
 
 	# Plot _curve
 	var steps = 100
@@ -325,7 +328,7 @@ func _draw() -> void:
 			draw_circle(pos, point_radius, point_color);
 
 		if _hover_point == i:
-			draw_arc(pos, point_radius + 4.0, 0.0, 2 * PI, 12, point_color, 1.0, true)
+			draw_arc(pos, point_radius + 4.0, 0.0, 2 * PI, 24, point_color, 2.0, false)
 
 	# Draw tangents
 	if _selected_point >= 0:
@@ -336,11 +339,15 @@ func _draw() -> void:
 			var control_pos: Vector2 = _get_tangent_view_pos(i, 0)
 			draw_line(pos, control_pos, point_color)
 			draw_rect(Rect2(control_pos, Vector2(1, 1)).grow(2), point_color)
+			if _hover_tangent == 0:
+				draw_rect(Rect2(control_pos, Vector2(1, 1)).grow(5), point_color, false, 2.0)
 
 		if i != _curve.get_point_count() - 1:
 			var control_pos: Vector2 = _get_tangent_view_pos(i, 1)
 			draw_line(pos, control_pos, point_color)
 			draw_rect(Rect2(control_pos, Vector2(1, 1)).grow(2), point_color)
+			if _hover_tangent == 1:
+				draw_rect(Rect2(control_pos, Vector2(1, 1)).grow(5), point_color, false, 2.0)
 
 
 func _to_view_space(pos: Vector2) -> Vector2:

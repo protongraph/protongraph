@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://ca2uchs8jsehn"]
+[gd_scene load_steps=5 format=3 uid="uid://ca2uchs8jsehn"]
 
 [ext_resource type="PackedScene" uid="uid://ddl1a7jcx4sgv" path="res://ui/common/spinbox/spinbox.tscn" id="1_e8dce"]
 [ext_resource type="Script" path="res://ui/views/editor/graph_editor/components/nodes/curve/curve_editor.gd" id="1_y8f2y"]
+[ext_resource type="Texture2D" uid="uid://dg3mx5cjajrxa" path="res://ui/icons/icon_snap_grid.svg" id="2_0vrqc"]
 [ext_resource type="Script" path="res://ui/views/editor/graph_editor/components/nodes/curve/curve_panel.gd" id="2_xfeeo"]
 
 [node name="CurveEditor" type="MarginContainer"]
@@ -12,6 +13,37 @@ script = ExtResource("1_y8f2y")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SnapToggleButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("2_0vrqc")
+icon_alignment = 1
+expand_icon = true
+
+[node name="SnapSpinbox" parent="VBoxContainer/HBoxContainer" instance=ExtResource("1_e8dce")]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 40.0
+step = 1.0
+value = 10.0
+allow_greater = true
+spinbox_step = 1.0
+
+[node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PresetsMenu" type="MenuButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Presets"
+flat = false
 
 [node name="CurvePanel" type="Panel" parent="VBoxContainer"]
 unique_name_in_owner = true
