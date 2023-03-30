@@ -26,7 +26,7 @@ func show_preview_for(source: Variant) -> void:
 
 
 func _update_preview() -> void:
-	if not _preview_outdated:
+	if not _source or not _preview_outdated:
 		return
 
 	if _source is ProtonNoise:
@@ -34,8 +34,7 @@ func _update_preview() -> void:
 	elif _source is Image:
 		_create_from_image()
 	else:
-		print_debug("Unsupported type for 2D preview: ", typeof(_source))
-		print_debug("source: ", _source)
+		print_debug("Unsupported type for 2D preview: ", _source)
 
 	_preview_outdated = false
 

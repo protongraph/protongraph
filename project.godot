@@ -31,6 +31,7 @@ FileHistory="*res://common/autoloads/file_history.gd"
 SaveLoadManager="*res://common/autoloads/save_load_manager/save_load_manager.gd"
 ThemeManager="*res://common/autoloads/theme_manager.gd"
 WindowManager="*res://common/autoloads/window_manager.gd"
+SceneTreeUtil="*res://common/autoloads/scene_tree_util.gd"
 
 [display]
 

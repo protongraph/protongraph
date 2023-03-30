@@ -23,7 +23,8 @@ signal curve_changed
 @onready var _snap_toggle_button: Button = %SnapToggleButton
 @onready var _snap_spinbox: CustomSpinBox = %SnapSpinbox
 @onready var _presets_menu_button: MenuButton = %PresetsMenu
-
+@onready var _settings_button: Button = %SettingsButton
+@onready var _settings_popup: PopupPanel = %CurveSettingsPopup
 
 var _curve: Curve
 var _presets_popup: PopupMenu
@@ -36,6 +37,8 @@ func _ready() -> void:
 	_panel.curve_updated.connect(_on_curve_changed)
 	_snap_toggle_button.toggled.connect(_on_snap_changed)
 	_snap_spinbox.value_changed.connect(_on_snap_changed)
+	_settings_button.toggled.connect(_on_settings_button_toggled)
+	_settings_popup.popup_hide.connect(_on_settings_popup_closed)
 
 	_presets_popup = _presets_menu_button.get_popup()
 	_presets_popup.add_item("Flat 0", PRESET_FLAT_0)
@@ -113,6 +116,19 @@ func _on_preset_selected(id: int) -> void:
 			curve_preset.add_point(Vector2.ONE)
 
 	set_curve(curve_preset)
+
+
+func _on_settings_button_toggled(enabled: bool) -> void:
+	if enabled:
+		var button_pos := _settings_button.get_global_transform().origin
+		var popup_pos := get_tree().get_root().position + Vector2i(button_pos)
+		popup_pos.y += _settings_button.size.y
+		_settings_popup.position = popup_pos
+		_settings_popup.popup()
+
+
+func _on_settings_popup_closed() -> void:
+	_settings_button.button_pressed = false
 
 
 func _on_curve_changed() -> void:

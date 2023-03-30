@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://ca2uchs8jsehn"]
+[gd_scene load_steps=9 format=3 uid="uid://ca2uchs8jsehn"]
 
 [ext_resource type="PackedScene" uid="uid://ddl1a7jcx4sgv" path="res://ui/common/spinbox/spinbox.tscn" id="1_e8dce"]
 [ext_resource type="Script" path="res://ui/views/editor/graph_editor/components/nodes/curve/curve_editor.gd" id="1_y8f2y"]
 [ext_resource type="Texture2D" uid="uid://dg3mx5cjajrxa" path="res://ui/icons/icon_snap_grid.svg" id="2_0vrqc"]
 [ext_resource type="Script" path="res://ui/views/editor/graph_editor/components/nodes/curve/curve_panel.gd" id="2_xfeeo"]
+[ext_resource type="Texture2D" uid="uid://bdcbahvi4o2px" path="res://ui/icons/icon_cog.svg" id="4_ecl7m"]
+[ext_resource type="Texture2D" uid="uid://cbbh53a0sbqka" path="res://ui/icons/icon_menu.svg" id="4_gf8pb"]
+[ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="7_h3g58"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yynxo"]
 
 [node name="CurveEditor" type="MarginContainer"]
 offset_right = 40.0
@@ -28,22 +33,38 @@ expand_icon = true
 
 [node name="SnapSpinbox" parent="VBoxContainer/HBoxContainer" instance=ExtResource("1_e8dce")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 24)
 layout_mode = 2
-max_value = 40.0
+theme_override_styles/fill = SubResource("StyleBoxEmpty_yynxo")
+max_value = 15.0
 step = 1.0
 value = 10.0
 allow_greater = true
+spinbox_name = "Snap"
 spinbox_step = 1.0
 
 [node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
 
 [node name="PresetsMenu" type="MenuButton" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-text = "Presets"
+icon = ExtResource("4_gf8pb")
 flat = false
+icon_alignment = 1
+expand_icon = true
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("4_ecl7m")
+icon_alignment = 1
+expand_icon = true
 
 [node name="CurvePanel" type="Panel" parent="VBoxContainer"]
 unique_name_in_owner = true
@@ -53,26 +74,47 @@ layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_xfeeo")
 
-[node name="Min" parent="VBoxContainer" instance=ExtResource("1_e8dce")]
+[node name="CurveSettingsPopup" type="PopupPanel" parent="."]
+unique_name_in_owner = true
+size = Vector2i(150, 88)
+min_size = Vector2i(150, 0)
+
+[node name="MarginContainer" type="MarginContainer" parent="CurveSettingsPopup"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 146.0
+offset_bottom = 114.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CurveSettingsPopup/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CurveSettingsPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Curve settings"
+
+[node name="Min" parent="CurveSettingsPopup/MarginContainer/VBoxContainer" instance=ExtResource("1_e8dce")]
 unique_name_in_owner = true
 layout_mode = 2
 value = 0.0
 allow_greater = true
 allow_lesser = true
-spinbox_name = "Min"
+spinbox_name = "Min value"
 
-[node name="Max" parent="VBoxContainer" instance=ExtResource("1_e8dce")]
+[node name="Max" parent="CurveSettingsPopup/MarginContainer/VBoxContainer" instance=ExtResource("1_e8dce")]
 unique_name_in_owner = true
 layout_mode = 2
 value = 1.0
 allow_greater = true
 allow_lesser = true
-spinbox_name = "Max"
+spinbox_name = "Max value"
 
-[node name="Resolution" parent="VBoxContainer" instance=ExtResource("1_e8dce")]
+[node name="Resolution" parent="CurveSettingsPopup/MarginContainer/VBoxContainer" instance=ExtResource("1_e8dce")]
 unique_name_in_owner = true
 layout_mode = 2
 value = 100.0
 allow_greater = true
 allow_lesser = true
 spinbox_name = "Resolution"
+
+[node name="AutoScale" type="Node" parent="CurveSettingsPopup"]
+script = ExtResource("7_h3g58")

@@ -6,6 +6,7 @@ func _init() -> void:
 	title = "Export Godot Scene"
 	category = "Output"
 	description = "Save as a Godot scene file"
+	leaf_node = true
 
 	var opts := SlotOptions.new()
 	opts.allow_multiple_connections = true
@@ -20,7 +21,7 @@ func _init() -> void:
 func _generate_outputs() -> void:
 	var data: Array[Node3D] = []
 	data.assign(get_input("data", []))
-	var path: String = get_input_single("file_path")
+	var path: String = get_input_single("file_path", "")
 
 	if data.is_empty() or path.is_empty():
 		return
@@ -41,10 +42,8 @@ func _generate_outputs() -> void:
 
 	var packed_scene := PackedScene.new()
 	if packed_scene.pack(root) != OK:
-		print("Failed to pack resource")
-		return
-	else:
 		print_debug("Could not pack ", root)
+		return
 
 	ResourceSaver.save(packed_scene, path)
 

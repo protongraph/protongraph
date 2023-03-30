@@ -10,6 +10,7 @@ extends ArrayMesh
 # TODO: Figure out how vertex attributes works in other software and replicate
 # that here.
 
+
 static func create_from_primitive(source: PrimitiveMesh) -> ProtonMesh:
 	var arrays := source.get_mesh_arrays()
 	var proton_mesh := ProtonMesh.new()
