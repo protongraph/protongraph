@@ -40,7 +40,7 @@ Automated CI actions will be added back soon, in the meantime you can manually b
 Check [the release tab](https://github.com/protongraph/protongraph/releases) to get access to
 officials builds and see the changelogs.
 
-You can also downlaod the latest nightly builds [from this page](https://nightly.link/protongraph/protongraph/workflows/builds/main).
+You can also download the latest nightly builds [from this page](https://nightly.link/protongraph/protongraph/workflows/builds/main).
 
 
 ## Social medias
