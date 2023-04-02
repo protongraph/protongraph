@@ -21,6 +21,7 @@ var port: int = -1 # The GraphEdit port (consecutive enabled slots)
 func initialize(label_name: String, type: int, opts := SlotOptions.new()):
 	if not label:
 		label = Label.new()
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 
 	if not opts:
 		opts = SlotOptions.new()
@@ -48,7 +49,7 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()):
 	if type != -1:
 		label.tooltip_text = DataType.get_type_name(type)
 		icon.texture = TextureUtil.get_slot_icon(type)
-		icon.modulate = DataType.get_color(type)
+		icon.modulate = DataType.get_icon_color(type)
 
 
 func get_value():

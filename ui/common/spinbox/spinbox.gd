@@ -129,7 +129,7 @@ func _create_undo_redo_action(new, old) -> void:
 
 
 func _show_extra_controls() -> void:
-	var pos := get_tree().get_root().position + Vector2i(get_global_transform().origin)
+	var pos := EditorUtil.get_absolute_position(self)
 	pos.y -= int(_edit_popup.size.y / 2.0) - int(size.y / 2.0)
 	pos.x -= _edit_popup.size.x
 	_edit_popup.position = pos

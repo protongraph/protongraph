@@ -40,7 +40,7 @@ func _generate_outputs() -> void:
 		csg_mesh.add_child(other_csg)
 		other_csg.global_transform = mesh_instance_b.transform
 		other_csg.mesh = mesh_instance_b.mesh
-		other_csg.operation = operation
+		other_csg.operation = operation as CSGShape3D.Operation
 
 		csg_mesh._update_shape()
 

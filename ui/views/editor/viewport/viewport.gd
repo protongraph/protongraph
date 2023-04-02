@@ -6,18 +6,28 @@ var _graph: NodeGraph
 var _just_wrapped := false
 var _display_queue: Array[Node3D] = []
 
-@onready var _output_root: Node3D = $%OutputRoot
-@onready var _camera: ViewportCamera = $%ViewportCamera
-@onready var _gizmos_manager: GizmosManager = $%GizmosManager
-@onready var _tree: Tree = $%Tree
-@onready var _rebuilding_panel: Control = $%RebuildingPanel
+@onready var _viewport: SubViewport = %SubViewport
+@onready var _output_root: Node3D = %OutputRoot
+@onready var _camera: ViewportCamera = %ViewportCamera
+@onready var _gizmos_manager: GizmosManager = %GizmosManager
+@onready var _tree: Tree = %Tree
+@onready var _rebuilding_panel: Control = %RebuildingPanel
+@onready var _shading_button: Button = %ShadingButton
+@onready var _shading_panel: ViewportShadingPanel = %ShadingPanel
+@onready var _camera_light: DirectionalLight3D = %CameraLight
+@onready var _static_light: DirectionalLight3D = %StaticLight
 
 
 func _ready() -> void:
 	GlobalEventBus.show_on_viewport.connect(_on_show_on_viewport)
-	$%HelpButton.toggled.connect(_on_help_button_toggled)
-	$%ResetCameraButton.pressed.connect(_camera.reset_camera)
-	$%HelpPanel.visible = false
+	%HelpButton.toggled.connect(_on_help_button_toggled)
+	%ResetCameraButton.pressed.connect(_camera.reset_camera)
+	_shading_button.toggled.connect(_on_shading_button_toggled)
+	_shading_panel.debug_draw_selected.connect(_on_debug_draw_selected)
+	_shading_panel.light_mode_selected.connect(_on_light_mode_selected)
+	%HelpPanel.visible = false
+	_shading_panel.visible = false
+	_camera_light.visible = false
 
 
 func clear() -> void:
@@ -76,7 +86,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_help_button_toggled(pressed: bool) -> void:
-	$%HelpPanel.visible = pressed
+	%HelpPanel.visible = pressed
 
 
 # Called from the GlobalEventBus, if the request matches the currently edited graph,
@@ -106,3 +116,16 @@ func _on_rebuild_completed() -> void:
 	_tree.update()
 	_display_queue.clear()
 	_rebuilding_panel.visible = false
+
+
+func _on_shading_button_toggled(enabled: bool) -> void:
+	_shading_panel.visible = enabled
+
+
+func _on_debug_draw_selected(draw_mode) -> void:
+	_viewport.debug_draw = draw_mode
+
+
+func _on_light_mode_selected(follow: bool) -> void:
+	_camera_light.visible = follow
+	_static_light.visible = not follow

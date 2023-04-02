@@ -91,7 +91,7 @@ func _on_max_value_changed(value: float) -> void:
 
 
 func _on_snap_changed(_val) -> void:
-	_panel.toggle_snap(_snap_toggle_button.button_pressed, _snap_spinbox.value)
+	_panel.toggle_snap(_snap_toggle_button.button_pressed, int(_snap_spinbox.value))
 
 
 func _on_preset_selected(id: int) -> void:
@@ -120,10 +120,8 @@ func _on_preset_selected(id: int) -> void:
 
 func _on_settings_button_toggled(enabled: bool) -> void:
 	if enabled:
-		var button_pos := _settings_button.get_global_transform().origin
-		var popup_pos := get_tree().get_root().position + Vector2i(button_pos)
-		popup_pos.y += _settings_button.size.y
-		_settings_popup.position = popup_pos
+		_settings_popup.position = EditorUtil.get_absolute_position(_settings_button)
+		_settings_popup.position.y += int(_settings_button.size.y)
 		_settings_popup.popup()
 
 

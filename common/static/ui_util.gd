@@ -32,6 +32,8 @@ static func create_component(name: String, type: int, opts: SlotOptions) -> Grap
 	match type:
 		DataType.BOOLEAN:
 			component = BooleanComponent.new()
+		DataType.COLOR:
+			component = ColorComponent.new()
 		DataType.NUMBER:
 			if opts.has_dropdown():
 				component = DropdownComponent.new()

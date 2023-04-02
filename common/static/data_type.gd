@@ -9,6 +9,7 @@ const STRING := 12
 const VECTOR2 := 13
 const VECTOR3 := 14
 const VECTOR4 := 15
+const COLOR := 16
 
 const NODE_2D := 20
 const TEXTURE_2D := 21
@@ -41,6 +42,7 @@ const COLORS = {
 	VECTOR2: Color("7D2BFF"),
 	VECTOR3: Color("BA24FF"),
 	VECTOR4: Color("9615d1"),
+	COLOR: Color("9615d1"),
 
 	NODE_2D: Color("B6FF63"),
 	TEXTURE_2D: Color("69EB63"),
@@ -66,6 +68,7 @@ const NAMES = {
 	VECTOR2: "Vector2",
 	VECTOR3: "Vector3",
 	VECTOR4: "Vector4",
+	COLOR: "Color",
 
 	NODE_2D: "Node2D",
 	TEXTURE_2D: "Texture",
@@ -90,6 +93,13 @@ static func get_color(type: int) -> Color:
 	return Color.BLACK
 
 
+static func get_icon_color(type: int) -> Color:
+	if type == COLOR:
+		return Color.WHITE
+
+	return get_color(type)
+
+
 # Convert graph node category name to color
 static func get_category_color(category: String) -> Color:
 	var tokens := category.split("/")
@@ -111,6 +121,8 @@ static func get_category_color(category: String) -> Color:
 			return Color.STEEL_BLUE
 		"Masks":
 			return COLORS[MASK_3D]
+		"Materials":
+			return COLORS[MATERIAL].darkened(0.5)
 		"Maths":
 			return COLORS[NUMBER].darkened(0.25)
 		"Meshes":
@@ -149,5 +161,7 @@ static func get_valid_connections() -> Dictionary:
 	var connections := {}
 	connections[NODE_3D] = [MASK_3D, MESH_3D, CURVE_3D, POLYLINE_3D]
 	connections[NODE_2D] = [NOISE, HEIGHTMAP, TEXTURE_2D]
+	connections[VECTOR4] = [COLOR]
+	connections[COLOR] = [VECTOR4]
 	connections[ANY] = NAMES.keys()
 	return connections

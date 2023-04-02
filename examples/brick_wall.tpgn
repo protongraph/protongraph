@@ -43,7 +43,7 @@ connections=[{
 "to_idx": "curve"
 }]
 external_data={
-"scroll_offset": Vector2i(851, 1088)
+"scroll_offset": Vector2i(1092, 1410)
 }
 
 [curve_sample_points_even]
@@ -52,8 +52,8 @@ type_id="curve_sample_points_even"
 local_values={
 "align_rotation": true,
 "curve": null,
-"end": 0.5,
-"spacing": 0.47,
+"end": 0.979,
+"spacing": 0.46,
 "start": 0.0
 }
 custom_data={}
@@ -111,7 +111,7 @@ local_values={
 "local_pos_offset": true,
 "local_rotation": false,
 "local_scale": false,
-"pos_offset": Vector3(0, 0.42, 0),
+"pos_offset": Vector3(0, 0.4, 0),
 "rotation": Vector3(0, 0, 0),
 "rotation_pivot": Vector3(0, 0, 0),
 "scale": Vector3(1, 1, 1)
@@ -130,12 +130,12 @@ type_id="modifier_array_object"
 local_values={
 "amount": 1.0,
 "in": null,
-"individual_rotation_pivot": false,
+"individual_rotation_pivot": true,
 "local_pos_offset": true,
-"local_rotation": false,
+"local_rotation": true,
 "local_scale": false,
-"pos_offset": Vector3(0, 0.21, 0.2),
-"rotation": Vector3(0, 0, 0),
+"pos_offset": Vector3(0, 0.2, 0.21),
+"rotation": Vector3(0, -6, 0),
 "rotation_pivot": Vector3(0, 0, 0),
 "scale": Vector3(1, 1, 1)
 }

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://8qmhlka1km76"]
+[gd_scene load_steps=5 format=3 uid="uid://bd3iulla58u3y"]
 
 [ext_resource type="Script" path="res://ui/views/editor/graph_editor/components/popup/add_node_popup.gd" id="1_pu2oj"]
 [ext_resource type="Texture2D" uid="uid://bfn8ywnmrfrba" path="res://ui/icons/icon_reload.svg" id="2_3yg18"]
 [ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="3_qi6iu"]
+[ext_resource type="Script" path="res://ui/views/editor/graph_editor/components/popup/search_bar.gd" id="4_giyrn"]
 
 [node name="AddNodePopup" type="Window"]
 disable_3d = true
@@ -51,7 +52,7 @@ expand_icon = true
 [node name="AutoScale" type="Node" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ReloadButton"]
 script = ExtResource("3_qi6iu")
 
-[node name="Search" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Search" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("tree")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -59,6 +60,8 @@ placeholder_text = "Search node"
 clear_button_enabled = true
 caret_blink = true
 caret_blink_interval = 0.5
+script = ExtResource("4_giyrn")
+tree = NodePath("../../NodeTree")
 
 [node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2

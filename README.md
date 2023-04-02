@@ -15,7 +15,6 @@ game and generate content on the fly while playing.
 Being open source and MIT licenced, ProtonGraph should allow that without legal headaches. We're not
 there yet though, and the goal is NOT to replace Houdini or Blender Geometry Nodes.
 
-
 ## Current status
 
 ProtonGraph is a "Godot game" as in, it's made using the Godot engine: you can clone the project and open it with
@@ -28,12 +27,20 @@ and content.
 To track the work in progress and planned features, [head over the project board](https://github.com/orgs/protongraph/projects)
 
 ## Build from source
+
 Automated CI actions will be added back soon, in the meantime you can manually build the project like this:
 
 + Compile or download the latest Godot 4 build.
 + Clone this repository.
 + Open it in Godot 4.
 + From there, you can export the project to your target platform like any Godot project.
+
+## Downloads
+
+Check [the release tab](https://github.com/protongraph/protongraph/releases) to get access to
+officials builds and see the changelogs.
+
+You can also downlaod the latest nightly builds [from this page](https://nightly.link/protongraph/protongraph/workflows/builds/main).
 
 
 ## Social medias

@@ -10,7 +10,8 @@ func _init() -> void:
 	create_input("curve", "Curve", DataType.CURVE_3D)
 
 	var opts := SlotOptions.new()
-	opts.min_value = 0.001
+	opts.min_value = 0.01
+	opts.step = 0.1
 	opts.value = 1.0
 	opts.allow_lesser = false
 	create_input("spacing", "Spacing", DataType.NUMBER, opts)
@@ -55,30 +56,38 @@ func _generate_outputs() -> void:
 		var offset_start = start * length
 		var offset_end = end * length
 		var effective_length = offset_end - offset_start
-		var steps = floor(effective_length / spacing)
+		var steps: int = floor(effective_length / spacing)
 		var up = Vector3.UP
 
+
 		for i in steps:
-			var offset = offset_start + (i / (steps - 1)) * effective_length
+			var offset = offset_start + (i / float(steps - 1)) * effective_length
 			var pos = curve.sample_baked(offset)
 			pos = p.transform * pos
 
 			var node = Node3D.new()
-			node.translate(pos)
 
 			if align:
-				var pos2
-				if offset + 0.05 < length:
-					pos2 = curve.sample_baked(offset + 0.05)
-					pos2 = p.transform * pos2
-				else:
-					pos2 = curve.sample_baked(offset - 0.05)
-					pos2 = p.transform * pos2
-					pos2 += 2.0 * (pos - pos2)
+				var point_before: Vector3
+				var point_after: Vector3
+				var margin := curve.bake_interval
 
-				node.look_at_from_position(pos, pos2, up)
+				if offset + margin > length:
+					point_after = pos
+				else:
+					point_after = curve.sample_baked(offset + margin)
+					point_after = p.transform * point_after
+
+				if offset - margin < 0:
+					point_before = pos
+				else:
+					point_before = curve.sample_baked(offset - margin)
+					point_before = p.transform * point_before
+
+				node.look_at_from_position(point_before, point_after, up)
 				up = node.transform.basis.y
 
+			node.position = pos
 			points.push_back(node)
 
 	set_output("out", points)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dru6wp1xq8ngq"]
+[gd_scene load_steps=18 format=3 uid="uid://dru6wp1xq8ngq"]
 
 [ext_resource type="Script" path="res://ui/views/editor/viewport/viewport.gd" id="1_mdwbn"]
 [ext_resource type="Script" path="res://ui/views/editor/viewport/components/camera.gd" id="2_it4fl"]
@@ -11,6 +11,11 @@
 [ext_resource type="Texture2D" uid="uid://bjirb8q6awvj3" path="res://ui/icons/icon_window.svg" id="6_ddiw8"]
 [ext_resource type="Script" path="res://ui/common/float_button.gd" id="7_vwp7d"]
 [ext_resource type="Script" path="res://ui/common/auto_scale.gd" id="10_erxuh"]
+[ext_resource type="Texture2D" uid="uid://buqj5g4horaq7" path="res://ui/icons/icon_shading.svg" id="11_j5o1g"]
+[ext_resource type="PackedScene" uid="uid://m3ywyra7arof" path="res://ui/views/editor/viewport/components/shading_panel/shading_panel.tscn" id="13_le6vp"]
+
+[sub_resource type="World3D" id="World3D_wutdu"]
+resource_local_to_scene = true
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ymbai"]
 panorama = ExtResource("2_p0kfs")
@@ -22,10 +27,6 @@ process_mode = 3
 [sub_resource type="Environment" id="Environment_s5dt0"]
 background_mode = 2
 sky = SubResource("Sky_rbhip")
-
-[sub_resource type="World3D" id="World3D_wutdu"]
-resource_local_to_scene = true
-environment = SubResource("Environment_s5dt0")
 
 [node name="Viewport" type="MarginContainer"]
 clip_children = 1
@@ -43,6 +44,7 @@ layout_mode = 2
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+unique_name_in_owner = true
 world_3d = SubResource("World3D_wutdu")
 handle_input_locally = false
 msaa_3d = 2
@@ -53,13 +55,19 @@ render_target_update_mode = 4
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport"]
 environment = SubResource("Environment_s5dt0")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport"]
+[node name="StaticLight" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
 transform = Transform3D(0.807497, -0.27144, 0.523707, 0, 0.887832, 0.460167, -0.589871, -0.371584, 0.716922, 2.09483, 1.84067, 2.86769)
 shadow_enabled = true
 
 [node name="ViewportCamera" type="Node3D" parent="SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
 script = ExtResource("2_it4fl")
+
+[node name="CameraLight" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/ViewportCamera"]
+unique_name_in_owner = true
+visible = false
+shadow_enabled = true
 
 [node name="GizmosManager" type="Node3D" parent="SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
@@ -87,22 +95,25 @@ script = ExtResource("5_04xjp")
 input = NodePath("../../../SubViewportContainer/SubViewport/InputRoot")
 output = NodePath("../../../SubViewportContainer/SubViewport/OutputRoot")
 
-[node name="MarginContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2
 mouse_filter = 2
 alignment = 2
 
-[node name="HelpPanel" type="PanelContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HelpPanel" type="PanelContainer" parent="MarginContainer/HSplitContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme_type_variation = &"PanelContainerTransparent"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/MarginContainer/HelpPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/HBoxContainer/VBoxContainer/HelpPanel"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/HelpPanel/MarginContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HSplitContainer/HBoxContainer/VBoxContainer/HelpPanel/MarginContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 bbcode_enabled = true
@@ -112,23 +123,27 @@ text = "[b]Orbit[/b]:[color=gray] Middle Click[/color]
 fit_content = true
 autowrap_mode = 0
 
-[node name="AutoScale" type="Node" parent="MarginContainer/HSplitContainer/MarginContainer/HelpPanel/MarginContainer/RichTextLabel"]
+[node name="AutoScale" type="Node" parent="MarginContainer/HSplitContainer/HBoxContainer/VBoxContainer/HelpPanel/MarginContainer/RichTextLabel"]
 script = ExtResource("10_erxuh")
 
-[node name="Toolbox" type="PanelContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]
+[node name="ShadingPanel" parent="MarginContainer/HSplitContainer/HBoxContainer/VBoxContainer" instance=ExtResource("13_le6vp")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Toolbox" type="PanelContainer" parent="MarginContainer/HSplitContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme_type_variation = &"PanelContainerTransparent"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/HBoxContainer/Toolbox"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer"]
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/HBoxContainer/Toolbox/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="ToggleFloatButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer/HBoxContainer"]
+[node name="ToggleFloatButton" type="Button" parent="MarginContainer/HSplitContainer/HBoxContainer/Toolbox/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
@@ -139,7 +154,7 @@ expand_icon = true
 script = ExtResource("7_vwp7d")
 subwindow_id = "viewport"
 
-[node name="HelpButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer/HBoxContainer"]
+[node name="HelpButton" type="Button" parent="MarginContainer/HSplitContainer/HBoxContainer/Toolbox/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
@@ -148,7 +163,18 @@ toggle_mode = true
 icon = ExtResource("5_xtp6v")
 expand_icon = true
 
-[node name="ResetCameraButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer/HBoxContainer"]
+[node name="ShadingButton" type="Button" parent="MarginContainer/HSplitContainer/HBoxContainer/Toolbox/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+tooltip_text = "Reset camera view"
+toggle_mode = true
+text = "
+"
+icon = ExtResource("11_j5o1g")
+expand_icon = true
+
+[node name="ResetCameraButton" type="Button" parent="MarginContainer/HSplitContainer/HBoxContainer/Toolbox/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
@@ -158,7 +184,7 @@ text = "
 icon = ExtResource("6_6dlau")
 expand_icon = true
 
-[node name="AutoScale" type="Node" parent="MarginContainer/HSplitContainer/MarginContainer/Toolbox/MarginContainer/HBoxContainer"]
+[node name="AutoScale" type="Node" parent="MarginContainer/HSplitContainer/HBoxContainer/Toolbox/MarginContainer/HBoxContainer"]
 script = ExtResource("10_erxuh")
 targets = 1
 
