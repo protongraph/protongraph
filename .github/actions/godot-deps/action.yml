@@ -31,4 +31,4 @@ runs:
       with:
         repository: godotengine/godot
         path: godot
-        ref: 4.0-stable
+        ref: 4.0.2-stable
