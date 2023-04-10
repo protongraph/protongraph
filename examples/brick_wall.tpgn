@@ -32,18 +32,33 @@ connections=[{
 "to": "rename_node",
 "to_idx": "node"
 }, {
-"from": "rename_node",
-"from_idx": "out",
-"to": "viewer_3d",
-"to_idx": "data"
-}, {
 "from": "curve_generator_polygon",
 "from_idx": "polygon",
 "to": "curve_sample_points_even",
 "to_idx": "curve"
+}, {
+"from": "create_random_number",
+"from_idx": "output",
+"to": "modifier_array_object",
+"to_idx": "amount"
+}, {
+"from": "rename_node",
+"from_idx": "out",
+"to": "set_mesh_material",
+"to_idx": "nodes"
+}, {
+"from": "set_mesh_material",
+"from_idx": "out",
+"to": "viewer_3d",
+"to_idx": "data"
+}, {
+"from": "create_pbr_material",
+"from_idx": "out",
+"to": "set_mesh_material",
+"to_idx": "material"
 }]
 external_data={
-"scroll_offset": Vector2i(1092, 1410)
+"scroll_offset": Vector2i(1089, 638)
 }
 
 [curve_sample_points_even]
@@ -58,7 +73,7 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(1500, 1500)
+"position": Vector2(1320, 840)
 }
 
 [create_primitive_cube]
@@ -75,7 +90,7 @@ external_data={
 "input": [],
 "output": []
 },
-"position": Vector2(2240, 1160)
+"position": Vector2(2460, 820)
 }
 
 [duplicate_on_points]
@@ -87,7 +102,7 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(2640, 1500)
+"position": Vector2(2800, 980)
 }
 
 [viewer_3d]
@@ -98,14 +113,14 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(3420, 1500)
+"position": Vector2(3900, 1680)
 }
 
 [modifier_array_object]
 
 type_id="modifier_array_object"
 local_values={
-"amount": 2.0,
+"amount": 0.0,
 "in": null,
 "individual_rotation_pivot": false,
 "local_pos_offset": true,
@@ -121,7 +136,7 @@ external_data={
 "pinned": {
 "amount": "Wall height"
 },
-"position": Vector2(1860, 1500)
+"position": Vector2(1760, 1400)
 }
 
 [modifier_array_object1]
@@ -141,7 +156,7 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(2240, 1500)
+"position": Vector2(2120, 1400)
 }
 
 [merge_meshes_simple]
@@ -152,7 +167,7 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(2940, 1500)
+"position": Vector2(3080, 1020)
 }
 
 [rename_node]
@@ -164,7 +179,7 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(3180, 1500)
+"position": Vector2(3360, 1240)
 }
 
 [curve_generator_polygon]
@@ -181,5 +196,97 @@ external_data={
 "pinned": {
 "radius": "Wall length"
 },
-"position": Vector2(1140, 1500)
+"position": Vector2(1000, 840)
+}
+
+[create_random_number]
+
+type_id="create_random_number"
+local_values={
+"distribution": 0,
+"max": 3.0,
+"min": 0.0,
+"seed": 7.0
+}
+custom_data={}
+external_data={
+"position": Vector2(1440, 1400)
+}
+
+[create_pbr_material]
+
+type_id="create_pbr_material"
+local_values={
+"albedo_color": Color(0.988235, 0.733333, 0.494118, 1),
+"albedo_texture": null,
+"metallic": 0.0,
+"metallic_texture": null,
+"normal_texture": null,
+"roughness": 0.85,
+"roughness_texture": null
+}
+custom_data={}
+external_data={
+"position": Vector2(3340, 1580)
+}
+
+[set_mesh_material]
+
+type_id="set_mesh_material"
+local_values={
+"material": null,
+"nodes": null,
+"surface_idx": 0.0
+}
+custom_data={}
+external_data={
+"position": Vector2(3680, 1580)
+}
+
+[comment]
+
+type_id="comment"
+local_values={
+"comment": "Create a circle and pick points along at even interval. This is the path followed by the wall."
+}
+custom_data={}
+external_data={
+"position": Vector2(920, 720),
+"size": Vector2(714.761, 471.577)
+}
+
+[comment1]
+
+type_id="comment"
+local_values={
+"comment": "Give the final mesh a light clay color and display it in the viewport"
+}
+custom_data={}
+external_data={
+"position": Vector2(3260, 1480),
+"size": Vector2(814.093, 482.075)
+}
+
+[comment2]
+
+type_id="comment"
+local_values={
+"comment": "Stacks the points on top of each other. The first Array creates points directly above, skipping one row. Second array duplicates everything up ONCE, but shift the position slightly."
+}
+custom_data={}
+external_data={
+"position": Vector2(1360, 1260),
+"size": Vector2(1073.34, 803.059)
+}
+
+[comment3]
+
+type_id="comment"
+local_values={
+"comment": "Use a Cube as the brick, place a copy on each points and combine all in a single mesh"
+}
+custom_data={}
+external_data={
+"position": Vector2(2380, 700),
+"size": Vector2(923.74, 503.79)
 }

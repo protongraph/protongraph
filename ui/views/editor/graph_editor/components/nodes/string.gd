@@ -15,6 +15,7 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()) -> voi
 	add_child(col)
 
 	var header_row := HBoxContainer.new()
+	header_row.visible = opts.show_header if opts else true
 	header_row.add_child(icon_container)
 	header_row.add_child(label)
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL

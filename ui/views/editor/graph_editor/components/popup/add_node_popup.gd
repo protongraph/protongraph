@@ -166,9 +166,10 @@ func _on_item_activated() -> void:
 	if not selected:
 		return
 
-	var type_id: String = selected.get_metadata(0)
-	create_node_request.emit(type_id)
-	hide()
+	var type_id = selected.get_metadata(0)
+	if type_id:
+		create_node_request.emit(type_id)
+		hide()
 
 
 func _on_search_text_changed(new_text):

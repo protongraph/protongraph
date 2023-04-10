@@ -51,6 +51,7 @@ func rebuild_ui() -> void:
 	clear()
 	title = proton_node.title
 	show_close = true
+	comment = proton_node.comment
 
 	var data: Dictionary = proton_node.external_data
 

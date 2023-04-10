@@ -42,7 +42,7 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()):
 		add_child(ignored_overlay)
 
 	label.text = label_name
-	icon.visible = opts.show_type_icon
+	icon_container.visible = opts.show_type_icon
 
 	size_flags_horizontal = SIZE_EXPAND_FILL
 

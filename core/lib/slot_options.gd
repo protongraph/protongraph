@@ -16,6 +16,7 @@ func _init(val = null):
 # Generic options
 var value: Variant
 var show_type_icon := true
+var show_header := true # The HBox containing the icon and label
 var label_override := ""
 var ignored := false
 var supports_field := false

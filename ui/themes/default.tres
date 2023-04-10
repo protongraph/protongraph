@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=77 format=3 uid="uid://ckiydn4300lug"]
+[gd_resource type="Theme" load_steps=78 format=3 uid="uid://ckiydn4300lug"]
 
 [ext_resource type="Texture2D" uid="uid://bnqkbq06s5s83" path="res://ui/icons/gui_checked.svg" id="1_3t2tt"]
 [ext_resource type="Texture2D" uid="uid://dg310p0kpsf0a" path="res://ui/icons/gui_unchecked.svg" id="2_688vm"]
@@ -140,16 +140,33 @@ corner_radius_bottom_left = 1
 content_margin_left = 8.0
 content_margin_top = 38.0
 content_margin_right = 8.0
-bg_color = Color(0.137255, 0.156863, 0.180392, 0.705882)
+bg_color = Color(0.35, 0.555833, 1, 0.196078)
 border_width_left = 2
 border_width_top = 32
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.462745, 0.462745, 0.462745, 0.705882)
+border_color = Color(0.35, 0.555833, 1, 0.196078)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s5acj"]
+content_margin_left = 8.0
+content_margin_top = 38.0
+content_margin_right = 8.0
+bg_color = Color(0.35, 0.555833, 1, 0.196078)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.555833, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0.35, 0.555833, 1, 0.156863)
+shadow_size = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ltc8"]
 content_margin_left = 8.0
@@ -613,6 +630,7 @@ GraphNode/constants/separation = 6
 GraphNode/constants/title_offset = 26
 GraphNode/font_sizes/title_font_size = 16
 GraphNode/styles/comment = SubResource("StyleBoxFlat_nljh6")
+GraphNode/styles/comment_focus = SubResource("StyleBoxFlat_s5acj")
 GraphNode/styles/frame = SubResource("StyleBoxFlat_2ltc8")
 GraphNode/styles/selected_frame = SubResource("StyleBoxFlat_r4gy3")
 HBoxContainer/constants/separation = 6

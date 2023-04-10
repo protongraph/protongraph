@@ -124,6 +124,7 @@ jobs:
           cp -rf ${{ matrix.deploy-bin }} $TARGET/protongraph_${{ matrix.deploy-platform }}.exe
           cp -rf protongraph_${{ matrix.deploy-platform }}.pck $TARGET/protongraph_${{ matrix.deploy-platform }}.pck
           cp -rf nodes $TARGET/nodes
+          cp -rf examples $TARGET/examples
           7z a -r $TARGET.zip $TARGET
         shell: bash
 
@@ -135,7 +136,8 @@ jobs:
           mkdir -p $TARGET
           cp -rf ${{ matrix.deploy-bin }} $TARGET/protongraph_${{ matrix.deploy-platform }}
           cp -rf protongraph_${{ matrix.deploy-platform }}.pck $TARGET/protongraph_${{ matrix.deploy-platform }}.pck          
-          cp -rf nodes $TARGET/nodes          
+          cp -rf nodes $TARGET/nodes
+          cp -rf examples $TARGET/examples
           7z a -r $TARGET.zip $TARGET
         shell: bash
 

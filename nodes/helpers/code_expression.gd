@@ -11,6 +11,7 @@ func _init() -> void:
 	title = "Expression"
 	category = "Helpers"
 	description = "Write and execute custom code."
+	ignore = true # TMP while we write the implementation
 
 	var opts = SlotOptions.new()
 	opts.custom_ui = _ui

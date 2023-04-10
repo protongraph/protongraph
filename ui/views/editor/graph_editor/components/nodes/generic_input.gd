@@ -14,6 +14,8 @@ func initialize(label_name: String, type: int, opts := SlotOptions.new()):
 	_row.add_child(label)
 	add_child(_row)
 
+	_row.visible = opts.show_header if opts else true
+
 
 func add_ui(ui) -> void:
 	_row.add_child(ui)

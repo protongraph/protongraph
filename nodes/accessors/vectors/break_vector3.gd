@@ -4,7 +4,7 @@ extends ProtonNode
 func _init() -> void:
 	type_id = "break_vector3"
 	title = "Break Vector3"
-	category =  "Generators/Numbers"
+	category =  "Accessors/Vectors"
 	description = "Exposes a Vector (x,y,z) components"
 
 	create_input("vector", "Vector", DataType.VECTOR3)

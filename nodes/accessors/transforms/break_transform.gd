@@ -4,7 +4,7 @@ extends ProtonNode
 func _init() -> void:
 	type_id = "break_transform"
 	title = "Break Transform"
-	category = "Generators/Vectors"
+	category = "Accessors/Transforms"
 	description = "Expose position, rotation and scale from a 3D object"
 
 	var opts := SlotOptions.new()

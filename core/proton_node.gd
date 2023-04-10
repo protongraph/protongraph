@@ -16,6 +16,7 @@ var category: String
 var documentation := DocumentationData.new()
 var ignore := false
 var leaf_node := false
+var comment := false
 var graph: NodeGraph
 
 # Dictionary format: { idx : ProtonNodeSlot }
@@ -114,7 +115,7 @@ func get_local_value(idx: String) -> Variant:
 func get_input(idx: String, default = []):
 	if not idx in inputs:
 		push_error("Error in ", type_id, ", Input ", idx, " was not defined")
-		return []
+		return default
 
 	# Check if connected nodes on this input provided something.
 	if inputs[idx].computed_value_ready:
@@ -132,6 +133,10 @@ func get_input(idx: String, default = []):
 # This method does the generic checks to return the first value only.
 # Automatically converts it to a Field object if the node expects it.
 func get_input_single(idx: String, default = null):
+	if not idx in inputs:
+		push_error("Error in ", type_id, ", Input ", idx, " was not defined")
+		return default
+
 	var return_value
 	var input: Array = get_input(idx)
 
