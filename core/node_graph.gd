@@ -14,6 +14,18 @@ var save_file_path: String
 var external_data: Dictionary
 var pending_changes := false
 
+var input_tree: Node3D:
+	set(val):
+		MemoryUtil.safe_free(input_tree)
+		input_tree = val
+		input_tree.name = "InputTree"
+
+var output_tree: Node3D:
+	set(val):
+		MemoryUtil.safe_free(output_tree)
+		output_tree = val
+		output_tree.name = "OutputTree"
+
 var _leaf_nodes: Array[ProtonNode]
 var _thread := Thread.new()
 var _rebuild_queued := false
@@ -30,6 +42,8 @@ func clear() -> void:
 	connections = []
 	external_data = {}
 	_leaf_nodes.clear()
+	input_tree = Node3D.new()
+	output_tree = Node3D.new()
 
 
 # Ensure every nodes and their connections slots exists. Otherwise, remove them
@@ -113,6 +127,25 @@ func disconnect_node(from: String, from_idx: String, to: String, to_idx: String)
 	graph_changed.emit()
 
 
+# Update the local value of inputs pinned to the graph inspector.
+# Pinned variable names as keys, variables values as dictionary values.
+func override_pinned_variables_values(parameters: Dictionary) -> void:
+	if parameters.is_empty():
+		return
+
+	for node_name in nodes.keys():
+		var node: ProtonNode = nodes[node_name]
+		if not "pinned" in node.external_data:
+			continue
+
+		var ext_data: Dictionary = node.external_data["pinned"]
+
+		for idx in ext_data.keys():
+			var pinned_name = ext_data[idx]
+			if pinned_name in parameters:
+				node.inputs[idx].local_value = parameters[pinned_name]
+
+
 func rebuild(clean_rebuild := false) -> void:
 	if Settings.get_value(Settings.DISABLE_MULTITHREADING, false):
 		_rebuild(clean_rebuild)
@@ -138,8 +171,13 @@ func _rebuild(clean_rebuild := false) -> void:
 		for node in nodes.values():
 			node.clear_values()
 
-	# TODO: split the loop in half, merge all paths, remove duplicates from the
-	# end, traverse the path once instead of how many leaves there are.
+	# Cleanup both trees
+	NodeUtil.remove_children(input_tree)
+	NodeUtil.remove_children(output_tree)
+
+	# TODO - Optimization: split the loop in half, merge all paths, remove
+	# duplicates from the end, traverse the path once instead of how many
+	# leaves there are.
 	for leaf in _leaf_nodes:
 		# Compute the leaf node dependency graph traversal path.
 		var path: Array[ProtonNode] = [leaf]

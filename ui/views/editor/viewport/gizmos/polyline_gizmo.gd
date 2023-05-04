@@ -17,6 +17,9 @@ func enable_for(polyline: Polyline3D) -> void:
 
 func disable() -> void:
 	_target = null
+	MemoryUtil.safe_free(_line_mesh)
+	_line_mesh = null
+	clear_points()
 
 
 func _update_mesh() -> void:

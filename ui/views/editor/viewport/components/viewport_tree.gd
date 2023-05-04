@@ -1,11 +1,18 @@
 extends Tree
 
 
+# Display the Input and Output scenetree structure.
+
+
 signal node_selected
 
 
 @export var input: Node3D
 @export var output: Node3D
+@export var preview: Node3D
+
+
+@onready var _info_panel: Control = %DefaultTreeInfo
 
 
 func _ready() -> void:
@@ -19,15 +26,18 @@ func update() -> void:
 	var root = create_item()
 	set_hide_root(true)
 
-	var input_root = create_item(root)
-	var output_root = create_item(root)
+	var show_in_tree = func(node: Node3D, item_name: String):
+		if node.visible and node.get_child_count() != 0:
+			var tree_item = create_item(root)
+			tree_item.set_text(0, item_name)
+			_add_children_to_root(node, tree_item)
 
-	# TODO: Add icons
-	input_root.set_text(0, "Input")
-	output_root.set_text(0, "Output")
+	show_in_tree.call(input, "Input")
+	show_in_tree.call(output, "Output")
+	show_in_tree.call(preview, "Preview")
 
-	_add_children_to_root(input, input_root)
-	_add_children_to_root(output, output_root)
+	# Show the info panel if there's nothing to show.
+	_info_panel.visible = root.get_child_count() == 0
 
 
 func _add_children_to_root(parent: Node, root: TreeItem) -> void:

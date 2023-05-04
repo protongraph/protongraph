@@ -81,8 +81,8 @@ func has_pending_changes() -> bool:
 	return _graph.pending_changes
 
 
-func _toggle_panel(panel: Control) -> void:
-	panel.visible = not panel.visible
+func _toggle_panel(enabled: bool, panel: Control) -> void:
+	panel.visible = enabled
 
 
 func _on_node_selected(node: ProtonNodeUi) -> void:

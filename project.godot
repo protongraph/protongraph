@@ -31,7 +31,8 @@ FileHistory="*res://common/autoloads/file_history.gd"
 SaveLoadManager="*res://common/autoloads/save_load_manager/save_load_manager.gd"
 ThemeManager="*res://common/autoloads/theme_manager.gd"
 WindowManager="*res://common/autoloads/window_manager.gd"
-SceneTreeUtil="*res://common/autoloads/scene_tree_util.gd"
+SceneTreeManager="*res://common/autoloads/scene_tree_manager.gd"
+PluginManager="*res://common/autoloads/plugin_manager/plugin_manager.gd"
 
 [display]
 
@@ -86,6 +87,11 @@ toggle_inspector={
 toggle_graph_editor={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":71,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
+}
+debug_action_0={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194438,"key_label":0,"unicode":48,"echo":false,"script":null)
 ]
 }
 

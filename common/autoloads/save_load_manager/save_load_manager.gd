@@ -37,13 +37,7 @@ func _ready():
 	GlobalEventBus.save_graph_as.connect(_on_save_graph_as_requested)
 
 
-func _toggle_overlay(val: bool) -> void:
-	_black_overlay.visible = val
-
-
-# TODO: move to dedicated loader / saver file?
-
-func _save_graph(graph: NodeGraph) -> void:
+func save_graph(graph: NodeGraph) -> void:
 	if graph.save_file_path.is_empty():
 		return
 
@@ -68,15 +62,13 @@ func _save_graph(graph: NodeGraph) -> void:
 	file.save(graph.save_file_path)
 	graph.pending_changes = false
 
-	GlobalEventBus.graph_saved.emit(graph)
 
-
-func _load_graph(path: String) -> void:
+func load_graph(path: String) -> NodeGraph:
 	var file := ConfigFile.new()
 	var err = file.load(path)
 
 	if err != OK:
-		return
+		return null
 
 	var graph = NodeGraph.new()
 	graph.save_file_path = path
@@ -102,6 +94,8 @@ func _load_graph(path: String) -> void:
 
 	graph.validate_connections()
 
+	return graph
+
 	# TODO:
 	# When loading partially failed (missing nodes), display a confirm dialog
 	# asking the user to either cancel, or load the graph without the missing
@@ -109,7 +103,9 @@ func _load_graph(path: String) -> void:
 	# If the user loads the partial graph, the connections array must first
 	# be cleaned up
 
-	GlobalEventBus.graph_loaded.emit(graph)
+
+func _toggle_overlay(val: bool) -> void:
+	_black_overlay.visible = val
 
 
 func _on_load_graph_requested(path: String = "") -> void:
@@ -118,7 +114,8 @@ func _on_load_graph_requested(path: String = "") -> void:
 		_file_dialog.show_load_dialog()
 		path = await _file_dialog.path_selected
 
-	_load_graph(path)
+	var graph := load_graph(path)
+	GlobalEventBus.graph_loaded.emit(graph)
 
 
 func _on_save_graph_requested(graph: NodeGraph, show_confirm_dialog := false) -> void:
@@ -134,7 +131,8 @@ func _on_save_graph_requested(graph: NodeGraph, show_confirm_dialog := false) ->
 		_file_dialog.show_save_dialog()
 		graph.save_file_path = await _file_dialog.path_selected
 
-	_save_graph(graph)
+	save_graph(graph)
+	GlobalEventBus.graph_saved.emit(graph)
 
 
 func _on_save_graph_as_requested(graph: NodeGraph) -> void:
@@ -145,7 +143,8 @@ func _on_save_graph_as_requested(graph: NodeGraph) -> void:
 	_file_dialog.show_save_dialog()
 	graph.save_file_path  = await _file_dialog.path_selected
 
-	_save_graph(graph)
+	save_graph(graph)
+	GlobalEventBus.graph_saved.emit(graph)
 
 
 func _on_saving_confirmed(graph: NodeGraph) -> void:

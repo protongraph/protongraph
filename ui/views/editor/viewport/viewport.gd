@@ -4,10 +4,12 @@ extends Control
 
 var _graph: NodeGraph
 var _just_wrapped := false
-var _display_queue: Array[Node3D] = []
+var _node_to_preview: ProtonNode
 
 @onready var _viewport: SubViewport = %SubViewport
+@onready var _input_root: Node3D = %InputRoot
 @onready var _output_root: Node3D = %OutputRoot
+@onready var _preview_root: Node3D = %PreviewRoot
 @onready var _camera: ViewportCamera = %ViewportCamera
 @onready var _gizmos_manager: GizmosManager = %GizmosManager
 @onready var _tree: Tree = %Tree
@@ -19,7 +21,6 @@ var _display_queue: Array[Node3D] = []
 
 
 func _ready() -> void:
-	GlobalEventBus.show_on_viewport.connect(_on_show_on_viewport)
 	%HelpButton.toggled.connect(_on_help_button_toggled)
 	%ResetCameraButton.pressed.connect(_camera.reset_camera)
 	_shading_button.toggled.connect(_on_shading_button_toggled)
@@ -29,11 +30,60 @@ func _ready() -> void:
 	_shading_panel.visible = false
 	_camera_light.visible = false
 
+	GlobalEventBus.preview_on_viewport.connect(_on_preview_requested)
 
-func clear() -> void:
-	_display_queue.clear()
+
+func clear_all() -> void:
+	NodeUtil.remove_children(_input_root)
 	NodeUtil.remove_children(_output_root)
 	_gizmos_manager.clear()
+	_tree.update()
+
+
+func clear_preview() -> void:
+	NodeUtil.remove_children(_preview_root)
+	_gizmos_manager.clear()
+	_node_to_preview = null
+	show_scene_trees()
+	_tree.update()
+
+
+func show_scene_trees() -> void:
+	clear_all()
+	for node in _graph.output_tree.get_children():
+		NodeUtil.set_parent(node.duplicate(), _output_root, true)
+		_gizmos_manager.add_gizmo_for(node)
+
+	_input_root.visible = true
+	_output_root.visible = true
+	_preview_root.visible = false
+	_tree.update()
+
+
+func show_preview(pnode: ProtonNode) -> void:
+	# Get the provided 3D data
+	var data_to_preview: Array[Node3D] = pnode._get_preview_3d()
+
+	# If the node doesn't explicitely provide preview data, scan all the outputs for 3D nodes.
+	if data_to_preview.is_empty():
+		for idx in pnode.outputs.keys():
+			for item in pnode.outputs[idx].get_computed_value_copy():
+				if item is Node3D:
+					data_to_preview.push_back(item)
+
+	# No 3D nodes found, cancel preview
+	if data_to_preview.is_empty():
+		clear_preview()
+		return
+
+	_gizmos_manager.clear()
+	for node in data_to_preview:
+		NodeUtil.set_parent(node.duplicate(), _preview_root, true)
+		_gizmos_manager.add_gizmo_for(node)
+
+	_input_root.visible = false
+	_output_root.visible = false
+	_preview_root.visible = true
 	_tree.update()
 
 
@@ -89,33 +139,19 @@ func _on_help_button_toggled(pressed: bool) -> void:
 	%HelpPanel.visible = pressed
 
 
-# Called from the GlobalEventBus, if the request matches the currently edited graph,
-# store the requested nodes in a queue and display them once the rebuild is complete.
-func _on_show_on_viewport(graph: NodeGraph, list: Array) -> void:
-	if graph != _graph:
-		return
-
-	_display_queue.append_array(list)
-
-
 func _on_rebuild_started() -> void:
-	_display_queue.clear()
 	_rebuilding_panel.visible = true
 
 
 # Node graph is done rebuilding the scene, display the queued results.
 func _on_rebuild_completed() -> void:
-	NodeUtil.remove_children(_output_root)
-	_gizmos_manager.clear()
-
-	for node in _display_queue:
-		if is_instance_valid(node) and node is Node3D:
-			NodeUtil.set_parent(node, _output_root, true)
-			_gizmos_manager.add_gizmo_for(node)
-
-	_tree.update()
-	_display_queue.clear()
+	clear_all()
 	_rebuilding_panel.visible = false
+
+	if _node_to_preview:
+		show_preview(_node_to_preview)
+	else:
+		show_scene_trees()
 
 
 func _on_shading_button_toggled(enabled: bool) -> void:
@@ -129,3 +165,15 @@ func _on_debug_draw_selected(draw_mode) -> void:
 func _on_light_mode_selected(follow: bool) -> void:
 	_camera_light.visible = follow
 	_static_light.visible = not follow
+
+
+func _on_preview_requested(graph: NodeGraph, pnode: ProtonNode) -> void:
+	if _graph != graph:
+		return
+
+	if not pnode: # Cancel preview
+		clear_preview()
+		return
+
+	_node_to_preview = pnode
+	show_preview(pnode)

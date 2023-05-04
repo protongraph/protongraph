@@ -22,6 +22,8 @@ func disable() -> void:
 	if is_instance_valid(_target):
 		_target.curve_changed.disconnect(_update_mesh)
 	_target = null
+	MemoryUtil.safe_free(_curve_mesh)
+	clear_points()
 
 
 func _update_mesh() -> void:

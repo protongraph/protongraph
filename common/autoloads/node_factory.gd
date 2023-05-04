@@ -29,6 +29,8 @@ func get_index_list() -> Dictionary:
 
 
 func clear() -> void:
+	for type_id in _nodes:
+		MemoryUtil.safe_free(_nodes[type_id])
 	_nodes.clear()
 
 

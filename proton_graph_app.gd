@@ -10,6 +10,8 @@ func _ready():
 
 	_view_container.quit_completed.connect(_on_quit_completed)
 
+	await get_tree().process_frame
+
 
 func _notification(event):
 	if event == NOTIFICATION_WM_CLOSE_REQUEST:

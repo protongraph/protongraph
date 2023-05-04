@@ -19,6 +19,8 @@ func enable_for(node: Node3D) -> void:
 
 func disable() -> void:
 	_target = null
+	MemoryUtil.safe_free(_axis_mesh)
+	_axis_mesh = null
 
 
 func _update_mesh() -> void:

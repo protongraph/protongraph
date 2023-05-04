@@ -2,10 +2,10 @@ extends ProtonNode
 
 
 func _init() -> void:
-	type_id = "viewer_3d"
-	title = "Viewer 3D"
+	type_id = "add_to_scene_tree"
+	title = "Add to scene tree"
 	category = "Output"
-	description = "Display the 3d output in the viewport"
+	description = "Add objects to the current scene tree."
 	leaf_node = true
 
 	var opts := SlotOptions.new()
@@ -17,11 +17,12 @@ func _init() -> void:
 	var p = documentation.add_parameter("3D Objects")
 	p.set_type("node_3d")
 	p.set_description(
-		"The objects to display. This input accepts multiple connections from
-		different nodes, but you can also create multiple viewer 3D nodes.
-		Both approaches behaves the same way.")
+		"The objects to add to the scene tree. In case of physics nodes, like
+		colliders, it is necessary to add them to the tree, otherwise they will
+		be ignored by the physics operations.")
 	p.set_cost(0)
 
 
 func _generate_outputs() -> void:
-	GlobalEventBus.show_on_viewport.emit(graph, get_input("data"))
+	for node in get_input("data"):
+		SceneTreeManager.add_to_tree(graph, node)

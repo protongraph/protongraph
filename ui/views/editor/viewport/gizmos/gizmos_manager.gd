@@ -30,6 +30,8 @@ func _add_gizmo(node, gizmo: AbstractGizmo) -> void:
 	add_child(gizmo)
 	gizmo.enable_for(node)
 
+	Signals.safe_connect(node.tree_exiting, _on_node_removed.bind(node))
+
 	if _instanced_gizmos.has(node):
 		_instanced_gizmos[node].push_back(gizmo)
 	else:
@@ -37,8 +39,11 @@ func _add_gizmo(node, gizmo: AbstractGizmo) -> void:
 
 
 func _on_node_removed(node: Node):
+	print("Node removed ", node)
 	if _instanced_gizmos.has(node):
+		print("1")
 		for gizmo in _instanced_gizmos[node]:
+			print("gizmo ", gizmo)
 			remove_child(gizmo)
 			gizmo.disable()
 			gizmo.queue_free()

@@ -142,9 +142,7 @@ func _filter_node(node) -> bool:
 
 
 func _sort_nodes_by_title(a, b):
-	if a.title < b.title:
-		return true
-	return false
+	return a.title < b.title
 
 
 func _on_item_selected() -> void:

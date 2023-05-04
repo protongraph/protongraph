@@ -37,6 +37,10 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 script = ExtResource("1_mdwbn")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
@@ -57,7 +61,7 @@ environment = SubResource("Environment_s5dt0")
 
 [node name="StaticLight" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
-transform = Transform3D(0.807497, -0.27144, 0.523707, 0, 0.887832, 0.460167, -0.589871, -0.371584, 0.716922, 2.09483, 1.84067, 2.86769)
+transform = Transform3D(1, 0, 0, 0, 0.887815, 0.4602, 0, -0.4602, 0.887815, 2.09483, 1.84067, 2.86769)
 shadow_enabled = true
 
 [node name="ViewportCamera" type="Node3D" parent="SubViewportContainer/SubViewport"]
@@ -79,6 +83,9 @@ unique_name_in_owner = true
 [node name="OutputRoot" type="Marker3D" parent="SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
 
+[node name="PreviewRoot" type="Marker3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
@@ -87,13 +94,41 @@ mouse_filter = 2
 layout_mode = 2
 split_offset = 175
 
-[node name="Tree" type="Tree" parent="MarginContainer/HSplitContainer" node_paths=PackedStringArray("input", "output")]
+[node name="Tree" type="Tree" parent="MarginContainer/HSplitContainer" node_paths=PackedStringArray("input", "output", "preview")]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"TreeDark"
 script = ExtResource("5_04xjp")
 input = NodePath("../../../SubViewportContainer/SubViewport/InputRoot")
 output = NodePath("../../../SubViewportContainer/SubViewport/OutputRoot")
+preview = NodePath("../../../SubViewportContainer/SubViewport/PreviewRoot")
+
+[node name="DefaultTreeInfo" type="MarginContainer" parent="MarginContainer/HSplitContainer/Tree"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/Tree/DefaultTreeInfo"]
+layout_mode = 2
+alignment = 1
+
+[node name="LabelTitle" type="Label" parent="MarginContainer/HSplitContainer/Tree/DefaultTreeInfo/VBoxContainer"]
+layout_mode = 2
+text = "Scene tree"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelInfo" type="Label" parent="MarginContainer/HSplitContainer/Tree/DefaultTreeInfo/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelMinor"
+text = "Add objects to the scene tree to display them here and in the 3D viewport."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2

@@ -19,6 +19,8 @@ func _ready() -> void:
 	disconnection_request.connect(_on_disconnection_request)
 	delete_nodes_request.connect(_on_delete_nodes_request)
 	scroll_offset_changed.connect(_on_scroll_offset_changed)
+	node_selected.connect(_on_node_selected)
+	node_deselected.connect(_on_node_deselected)
 
 	# Setup connections types
 	var c = DataType.get_valid_connections()
@@ -252,3 +254,11 @@ func _on_close_request(node: GraphNode) -> void:
 func _on_scroll_offset_changed(new_offset: Vector2i) -> void:
 	if _graph and _rebuild_ui_complete:
 		_graph.external_data["scroll_offset"] = new_offset
+
+
+func _on_node_selected(node: ProtonNodeUi) -> void:
+	GlobalEventBus.preview_on_viewport.emit(_graph, node.proton_node)
+
+
+func _on_node_deselected(node: ProtonNodeUi) -> void:
+	GlobalEventBus.preview_on_viewport.emit(_graph, null)

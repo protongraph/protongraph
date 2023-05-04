@@ -246,16 +246,23 @@ func _slot_creation_check(idx: String, map: Dictionary) -> bool:
 	return true
 
 
-# Overide this function in the derived classes to return something usable.
+# Override this function in the derived classes to return something usable.
 # Generates all the outputs for every declared outputs.
 func _generate_outputs() -> void:
 	pass
 
 
-# Overide this function if you have memory to free or anything else in between
+# Override this function if you have memory to free or anything else in between
 # calls to _generate_outputs.
 func _clear_cache():
 	pass
+
+
+# Override this function if this node can display something in the 3D viewport.
+# By default, the viewport will scan all the available outputs and preview all
+# the 3D nodes it can find, unless this function returns something.
+func _get_preview_3d() -> Array[Node3D]:
+	return []
 
 
 func _to_string() -> String:

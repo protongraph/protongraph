@@ -33,7 +33,7 @@ func _generate_outputs() -> void:
 	var csg_mesh := CSGMesh3D.new()
 	csg_mesh.transform = mesh_instance_a.transform
 	csg_mesh.mesh = mesh_instance_a.mesh
-	SceneTreeUtil.add_child(csg_mesh)
+	SceneTreeManager.add_child(csg_mesh)
 
 	for mesh_instance_b in other_mesh_intances:
 		var other_csg := CSGMesh3D.new()

@@ -186,6 +186,32 @@ func _populate_rows():
 	var current_row = 0 # Needed because the dictionary keys aren't continuous.
 	var current_port = 0
 
+	# Display the outputs first. Nodes tends to have a lot of inputs for
+	# only one or two outputs in 95% of cases. Showing the outputs on top makes
+	# it easier to work with the graph.
+	# TODO: This could be a user option since it's purely visual.
+	for idx in proton_node.outputs:
+		if is_slot_visible("output", idx):
+			var output: ProtonNodeSlot = proton_node.outputs[idx]
+			var opts: SlotOptions = output.options
+			var ui = _create_component_for(output, true)
+			ui.index = idx
+			ui.slot = current_row
+			current_row += 1
+
+			if opts.can_accept_connections():
+				ui.port = current_port
+				current_port += 1
+
+			_output_component_map[idx] = ui
+			_get_or_create_row(current_row).add_child(ui)
+
+			if idx in _output_connections:
+				ui.notify_connection_changed(_output_connections[idx])
+
+	# Reset current port for the input slots
+	current_port = 0
+
 	for idx in proton_node.inputs:
 		if is_slot_visible("input", idx):
 			var input: ProtonNodeSlot = proton_node.inputs[idx]
@@ -206,28 +232,7 @@ func _populate_rows():
 			if idx in _input_connections:
 				ui.notify_connection_changed(_input_connections[idx])
 
-	# Reset current port for the output slots
-	current_port = 0
-
-	for idx in proton_node.outputs:
-		if is_slot_visible("output", idx):
-			var output: ProtonNodeSlot = proton_node.outputs[idx]
-			var opts: SlotOptions = output.options
-			var ui = _create_component_for(output, true)
-			ui.index = idx
-			ui.slot = current_row
-			current_row += 1
-
-			if opts.can_accept_connections():
-				ui.port = current_port
-				current_port += 1
-
-			_output_component_map[idx] = ui
-			_get_or_create_row(current_row).add_child(ui)
-
-			if idx in _output_connections:
-				ui.notify_connection_changed(_output_connections[idx])
-
+	# Show the extra UI
 	for idx in proton_node.extras:
 		if is_slot_visible("extra", idx):
 			var extra: ProtonNodeSlot = proton_node.extras[idx]

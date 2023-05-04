@@ -59,8 +59,8 @@ func rebuild_ui() -> void:
 		component.notify_connection_changed(false)
 		_root.add_child(component)
 
-		component.value_changed.connect(_on_inspector_value_changed.bind(idx, node_ui))
-		node_component.value_changed.connect(_on_node_value_changed.bind(component))
+		Signals.safe_connect(component.value_changed, _on_inspector_value_changed.bind(idx, node_ui))
+		Signals.safe_connect(node_component.value_changed, _on_node_value_changed.bind(component))
 
 	_default.visible = _root.get_child_count() == 0
 

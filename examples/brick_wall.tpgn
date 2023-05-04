@@ -47,18 +47,18 @@ connections=[{
 "to": "set_mesh_material",
 "to_idx": "nodes"
 }, {
-"from": "set_mesh_material",
-"from_idx": "out",
-"to": "viewer_3d",
-"to_idx": "data"
-}, {
 "from": "create_pbr_material",
 "from_idx": "out",
 "to": "set_mesh_material",
 "to_idx": "material"
+}, {
+"from": "set_mesh_material",
+"from_idx": "out",
+"to": "add_to_scene_tree",
+"to_idx": "data"
 }]
 external_data={
-"scroll_offset": Vector2i(1089, 638)
+"scroll_offset": Vector2i(710, 600)
 }
 
 [curve_sample_points_even]
@@ -103,17 +103,6 @@ local_values={
 custom_data={}
 external_data={
 "position": Vector2(2800, 980)
-}
-
-[viewer_3d]
-
-type_id="viewer_3d"
-local_values={
-"data": null
-}
-custom_data={}
-external_data={
-"position": Vector2(3900, 1680)
 }
 
 [modifier_array_object]
@@ -179,7 +168,7 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(3360, 1240)
+"position": Vector2(3380, 1000)
 }
 
 [curve_generator_polygon]
@@ -227,7 +216,7 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(3340, 1580)
+"position": Vector2(3340, 1380)
 }
 
 [set_mesh_material]
@@ -240,7 +229,7 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(3680, 1580)
+"position": Vector2(3680, 1380)
 }
 
 [comment]
@@ -263,8 +252,8 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(3260, 1480),
-"size": Vector2(814.093, 482.075)
+"position": Vector2(3260, 1280),
+"size": Vector2(855.225, 480.361)
 }
 
 [comment2]
@@ -289,4 +278,15 @@ custom_data={}
 external_data={
 "position": Vector2(2380, 700),
 "size": Vector2(923.74, 503.79)
+}
+
+[add_to_scene_tree]
+
+type_id="add_to_scene_tree"
+local_values={
+"data": null
+}
+custom_data={}
+external_data={
+"position": Vector2(3880, 1480)
 }
