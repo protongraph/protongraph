@@ -175,6 +175,9 @@ func _create_proton_node_ui(proton_node: ProtonNode) -> void:
 	graph_node.close_request.connect(_on_close_request.bind(graph_node))
 	graph_node.rebuild_ui()
 
+	if graph_node.comment:
+		graph_node.raise_request.emit()
+
 
 func _show_add_node_popup(click_position: Vector2i) -> void:
 	if not is_instance_valid(_add_node_popup):

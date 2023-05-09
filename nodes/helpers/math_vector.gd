@@ -18,6 +18,7 @@ const PROJECT = 13
 const REFLECT = 14
 const ROUND = 15
 const SIGN = 16
+const MULTIPLY = 17
 
 
 func _init() -> void:
@@ -36,6 +37,7 @@ func _init() -> void:
 	opts = SlotOptions.new()
 	opts.add_dropdown_item(ADD, "Add")
 	opts.add_dropdown_item(SUBSTRACT, "Substract")
+	opts.add_dropdown_item(MULTIPLY, "Multiply")
 	opts.add_dropdown_item(CROSS, "Cross Product")
 	opts.add_dropdown_item(DOT, "Dot Product")
 	opts.add_dropdown_item(BOUNCE, "Bounce")
@@ -84,6 +86,8 @@ func _compute(operation: int, field_a: Field, field_b: Field) -> Variant:
 			result = a + b
 		SUBSTRACT:
 			result = a - b
+		MULTIPLY:
+			result = a * b
 		CROSS:
 			result = a.cross(b)
 		DOT:
@@ -134,7 +138,7 @@ func _on_local_value_changed(idx: String, _value) -> void:
 	output_slot.type = vec_type
 
 	# Some operations require a float instead of a vector for the second input
-	if operation in [LIMIT_LENGTH]:
+	if operation in [LIMIT_LENGTH, MULTIPLY]:
 		b_slot.type = DataType.NUMBER
 
 	# Some operations returns a float instead of a vector

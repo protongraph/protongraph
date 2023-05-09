@@ -12,16 +12,6 @@ connections=[{
 "to": "modifier_array_object",
 "to_idx": "in"
 }, {
-"from": "modifier_array_object",
-"from_idx": "out",
-"to": "modifier_array_object1",
-"to_idx": "in"
-}, {
-"from": "modifier_array_object1",
-"from_idx": "out",
-"to": "duplicate_on_points",
-"to_idx": "points"
-}, {
 "from": "duplicate_on_points",
 "from_idx": "duplicates",
 "to": "merge_meshes_simple",
@@ -31,16 +21,6 @@ connections=[{
 "from_idx": "out",
 "to": "rename_node",
 "to_idx": "node"
-}, {
-"from": "curve_generator_polygon",
-"from_idx": "polygon",
-"to": "curve_sample_points_even",
-"to_idx": "curve"
-}, {
-"from": "create_random_number",
-"from_idx": "output",
-"to": "modifier_array_object",
-"to_idx": "amount"
 }, {
 "from": "rename_node",
 "from_idx": "out",
@@ -56,9 +36,109 @@ connections=[{
 "from_idx": "out",
 "to": "add_to_scene_tree",
 "to_idx": "data"
+}, {
+"from": "create_vector3",
+"from_idx": "out",
+"to": "create_primitive_cube",
+"to_idx": "size"
+}, {
+"from": "create_vector3",
+"from_idx": "out",
+"to": "break_vector3",
+"to_idx": "vector"
+}, {
+"from": "break_vector3",
+"from_idx": "z",
+"to": "math_scalar_2",
+"to_idx": "a"
+}, {
+"from": "math_scalar_2",
+"from_idx": "result",
+"to": "curve_sample_points_even",
+"to_idx": "spacing"
+}, {
+"from": "math_scalar_2",
+"from_idx": "result",
+"to": "curve_sample_points_even1",
+"to_idx": "spacing"
+}, {
+"from": "math_scalar_2",
+"from_idx": "result",
+"to": "math_scalar_21",
+"to_idx": "a"
+}, {
+"from": "math_scalar_21",
+"from_idx": "result",
+"to": "curve_sample_points_even1",
+"to_idx": "offset"
+}, {
+"from": "curve_sample_points_even1",
+"from_idx": "out",
+"to": "offset_transform",
+"to_idx": "in"
+}, {
+"from": "create_vector3_split",
+"from_idx": "out",
+"to": "offset_transform",
+"to_idx": "position"
+}, {
+"from": "offset_transform",
+"from_idx": "out",
+"to": "modifier_array_object",
+"to_idx": "in"
+}, {
+"from": "create_vector3_split1",
+"from_idx": "out",
+"to": "modifier_array_object",
+"to_idx": "pos_offset"
+}, {
+"from": "modifier_array_object",
+"from_idx": "out",
+"to": "duplicate_on_points",
+"to_idx": "points"
+}, {
+"from": "curve_generator_polygon",
+"from_idx": "polygon",
+"to": "curve_sample_points_even",
+"to_idx": "curve"
+}, {
+"from": "curve_generator_polygon",
+"from_idx": "polygon",
+"to": "curve_sample_points_even1",
+"to_idx": "curve"
+}, {
+"from": "math_scalar_22",
+"from_idx": "result",
+"to": "create_vector3_split1",
+"to_idx": "y"
+}, {
+"from": "break_vector3",
+"from_idx": "y",
+"to": "math_scalar_23",
+"to_idx": "a"
+}, {
+"from": "math_scalar_23",
+"from_idx": "result",
+"to": "create_vector3_split",
+"to_idx": "y"
+}, {
+"from": "math_scalar_23",
+"from_idx": "result",
+"to": "math_scalar_22",
+"to_idx": "a"
+}, {
+"from": "create_primitive_cylinder",
+"from_idx": "cylinder",
+"to": "edit_transform",
+"to_idx": "in"
+}, {
+"from": "edit_transform",
+"from_idx": "out",
+"to": "add_to_scene_tree1",
+"to_idx": "data"
 }]
 external_data={
-"scroll_offset": Vector2i(710, 600)
+"scroll_offset": Vector2i(2485, 994)
 }
 
 [curve_sample_points_even]
@@ -67,13 +147,14 @@ type_id="curve_sample_points_even"
 local_values={
 "align_rotation": true,
 "curve": null,
-"end": 0.979,
+"end": 1.0,
+"offset": 0.0,
 "spacing": 0.46,
 "start": 0.0
 }
 custom_data={}
 external_data={
-"position": Vector2(1320, 840)
+"position": Vector2(1060, 620)
 }
 
 [create_primitive_cube]
@@ -90,7 +171,7 @@ external_data={
 "input": [],
 "output": []
 },
-"position": Vector2(2460, 820)
+"position": Vector2(680, 320)
 }
 
 [duplicate_on_points]
@@ -102,14 +183,14 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(2800, 980)
+"position": Vector2(2240, 400)
 }
 
 [modifier_array_object]
 
 type_id="modifier_array_object"
 local_values={
-"amount": 0.0,
+"amount": 1.0,
 "in": null,
 "individual_rotation_pivot": false,
 "local_pos_offset": true,
@@ -125,27 +206,7 @@ external_data={
 "pinned": {
 "amount": "Wall height"
 },
-"position": Vector2(1760, 1400)
-}
-
-[modifier_array_object1]
-
-type_id="modifier_array_object"
-local_values={
-"amount": 1.0,
-"in": null,
-"individual_rotation_pivot": true,
-"local_pos_offset": true,
-"local_rotation": true,
-"local_scale": false,
-"pos_offset": Vector3(0, 0.2, 0.21),
-"rotation": Vector3(0, -6, 0),
-"rotation_pivot": Vector3(0, 0, 0),
-"scale": Vector3(1, 1, 1)
-}
-custom_data={}
-external_data={
-"position": Vector2(2120, 1400)
+"position": Vector2(1860, 1080)
 }
 
 [merge_meshes_simple]
@@ -156,7 +217,7 @@ local_values={
 }
 custom_data={}
 external_data={
-"position": Vector2(3080, 1020)
+"position": Vector2(2520, 440)
 }
 
 [rename_node]
@@ -178,35 +239,21 @@ local_values={
 "origin": Vector3(0, 0, 0),
 "radius": 2.0,
 "up_axis": Vector3(0, 1, 0),
-"v_count": 32.0
+"v_count": 64.0
 }
 custom_data={}
 external_data={
 "pinned": {
 "radius": "Wall length"
 },
-"position": Vector2(1000, 840)
-}
-
-[create_random_number]
-
-type_id="create_random_number"
-local_values={
-"distribution": 0,
-"max": 3.0,
-"min": 0.0,
-"seed": 7.0
-}
-custom_data={}
-external_data={
-"position": Vector2(1440, 1400)
+"position": Vector2(660, 600)
 }
 
 [create_pbr_material]
 
 type_id="create_pbr_material"
 local_values={
-"albedo_color": Color(0.988235, 0.733333, 0.494118, 1),
+"albedo_color": Color(0.666667, 0.188235, 0.0980392, 1),
 "albedo_texture": null,
 "metallic": 0.0,
 "metallic_texture": null,
@@ -232,18 +279,6 @@ external_data={
 "position": Vector2(3680, 1380)
 }
 
-[comment]
-
-type_id="comment"
-local_values={
-"comment": "Create a circle and pick points along at even interval. This is the path followed by the wall."
-}
-custom_data={}
-external_data={
-"position": Vector2(920, 720),
-"size": Vector2(714.761, 471.577)
-}
-
 [comment1]
 
 type_id="comment"
@@ -256,30 +291,6 @@ external_data={
 "size": Vector2(855.225, 480.361)
 }
 
-[comment2]
-
-type_id="comment"
-local_values={
-"comment": "Stacks the points on top of each other. The first Array creates points directly above, skipping one row. Second array duplicates everything up ONCE, but shift the position slightly."
-}
-custom_data={}
-external_data={
-"position": Vector2(1360, 1260),
-"size": Vector2(1073.34, 803.059)
-}
-
-[comment3]
-
-type_id="comment"
-local_values={
-"comment": "Use a Cube as the brick, place a copy on each points and combine all in a single mesh"
-}
-custom_data={}
-external_data={
-"position": Vector2(2380, 700),
-"size": Vector2(923.74, 503.79)
-}
-
 [add_to_scene_tree]
 
 type_id="add_to_scene_tree"
@@ -289,4 +300,185 @@ local_values={
 custom_data={}
 external_data={
 "position": Vector2(3880, 1480)
+}
+
+[curve_sample_points_even1]
+
+type_id="curve_sample_points_even"
+local_values={
+"align_rotation": true,
+"curve": null,
+"end": 1.0,
+"offset": 0.0,
+"spacing": 0.46,
+"start": 0.0
+}
+custom_data={}
+external_data={
+"position": Vector2(1060, 940)
+}
+
+[break_vector3]
+
+type_id="break_vector3"
+local_values={
+"vector": Vector3(0, 0, 0)
+}
+custom_data={}
+external_data={
+"position": Vector2(160, 1240),
+"size": Vector2(147, 139)
+}
+
+[create_vector3]
+
+type_id="create_vector3"
+local_values={
+"in": Vector3(0.2, 0.2, 0.4)
+}
+custom_data={}
+external_data={
+"pinned": {
+"in": "brick_size"
+},
+"position": Vector2(-360, 700)
+}
+
+[math_scalar_2]
+
+type_id="math_scalar_2"
+local_values={
+"a": 0.0,
+"b": 0.05,
+"op": 0
+}
+custom_data={}
+external_data={
+"position": Vector2(520, 940)
+}
+
+[math_scalar_21]
+
+type_id="math_scalar_2"
+local_values={
+"a": 0.0,
+"b": 2.0,
+"op": 3
+}
+custom_data={}
+external_data={
+"position": Vector2(780, 1080)
+}
+
+[offset_transform]
+
+type_id="offset_transform"
+local_values={
+"in": null,
+"position": Vector3(0, 0, 0),
+"rotation": Vector3(0, 0, 0),
+"scale": Vector3(0, 0, 0)
+}
+custom_data={}
+external_data={
+"hidden_slots": {
+"extra": [],
+"input": ["rotation", "scale"],
+"output": []
+},
+"position": Vector2(1420, 1120)
+}
+
+[create_vector3_split]
+
+type_id="create_vector3_split"
+local_values={
+"x": 0.0,
+"y": 0.0,
+"z": 0.0
+}
+custom_data={}
+external_data={
+"position": Vector2(1020, 1340)
+}
+
+[math_scalar_22]
+
+type_id="math_scalar_2"
+local_values={
+"a": 0.0,
+"b": 2.0,
+"op": 2
+}
+custom_data={}
+external_data={
+"position": Vector2(1020, 1580)
+}
+
+[create_vector3_split1]
+
+type_id="create_vector3_split"
+local_values={
+"x": 0.0,
+"y": 0.0,
+"z": 0.0
+}
+custom_data={}
+external_data={
+"position": Vector2(1400, 1580)
+}
+
+[math_scalar_23]
+
+type_id="math_scalar_2"
+local_values={
+"a": 0.0,
+"b": 0.03,
+"op": 0
+}
+custom_data={}
+external_data={
+"position": Vector2(680, 1500)
+}
+
+[create_primitive_cylinder]
+
+type_id="create_primitive_cylinder"
+local_values={
+"cap_bottom": false,
+"cap_top": false,
+"height": 0.85,
+"radial_segments": 64.0,
+"radius_bottom": 2.05,
+"radius_top": 2.05,
+"rings": 12.0
+}
+custom_data={}
+external_data={
+"position": Vector2(3640, 580)
+}
+
+[add_to_scene_tree1]
+
+type_id="add_to_scene_tree"
+local_values={
+"data": null
+}
+custom_data={}
+external_data={
+"position": Vector2(4260, 600)
+}
+
+[edit_transform]
+
+type_id="edit_transform"
+local_values={
+"in": null,
+"position": Vector3(0, 0.35, 0),
+"rotation": Vector3(0, 0, 0),
+"scale": Vector3(1, 1, 1)
+}
+custom_data={}
+external_data={
+"position": Vector2(4000, 600)
 }

@@ -30,22 +30,7 @@ func _generate_outputs() -> void:
 	if mesh_instances.is_empty():
 		return
 
-	set_output("out", _merge_mesh_surfaces(mesh_instances))
-
-
-func _merge_mesh_surfaces(mesh_instances: Array) -> MeshInstance3D:
-	var surface_tool := SurfaceTool.new()
-	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-
-	for mi in mesh_instances:
-		var mesh : Mesh = mi.mesh
-		for surface_i in mesh.get_surface_count():
-			#mesh.surface_set_material(surface_i, override_material)
-			surface_tool.append_from(mesh, surface_i, mi.transform)
-
-	var instance = MeshInstance3D.new()
-	instance.mesh = ProtonMesh.create_from_arrays(surface_tool.commit_to_arrays())
-	return instance
+	set_output("out", MeshUtil.merge_mesh_surfaces(mesh_instances))
 
 
 func _get_mesh_instances_from_node(node: Node3D, parent: Node3D = null, array: Array[MeshInstance3D] = []) -> Array[MeshInstance3D]:

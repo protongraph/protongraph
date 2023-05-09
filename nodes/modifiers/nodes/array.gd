@@ -7,9 +7,11 @@ func _init() -> void:
 	category = "Modifiers/Nodes"
 	description = "Creates copies of existing objects"
 
-	create_input("in", "Nodes", DataType.NODE_3D)
-
 	var opts := SlotOptions.new()
+	opts.allow_multiple_connections = true
+	create_input("in", "Nodes", DataType.NODE_3D, opts)
+
+	opts = SlotOptions.new()
 	opts.step = 1
 	opts.value = 1
 	opts.min_value = 0

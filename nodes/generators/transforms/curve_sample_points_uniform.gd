@@ -16,6 +16,8 @@ func _init() -> void:
 	opts.allow_lesser = false
 	create_input("spacing", "Spacing", DataType.NUMBER, opts)
 
+	create_input("offset", "Offset", DataType.NUMBER, SlotOptions.new(0.0))
+
 	opts = SlotOptions.new()
 	opts.value = 0
 	opts.min_value = 0
@@ -30,7 +32,7 @@ func _init() -> void:
 	create_input("end", "Range end", DataType.NUMBER, opts)
 	create_input("align_rotation", "Align rotation", DataType.BOOLEAN)
 
-	create_output("out", "", DataType.NODE_3D)
+	create_output("out", "Points", DataType.NODE_3D)
 
 
 func _generate_outputs() -> void:
@@ -38,7 +40,8 @@ func _generate_outputs() -> void:
 	if paths.is_empty():
 		return
 
-	var spacing: float = get_input_single("spacing", 1.0) * 0.85 # Magic number to get pixel units from 3D units
+	var spacing: float = get_input_single("spacing", 1.0) * 0.85 # TMP: Magic number to get pixel units from 3D units
+	var offset_shift: float = get_input_single("offset", 0.0)
 	var start: float = get_input_single("start", 0.0)
 	var end: float = get_input_single("end", 1.0)
 	var align: bool = get_input_single("align_rotation", false)
@@ -53,15 +56,17 @@ func _generate_outputs() -> void:
 	for p in paths:
 		var curve: Curve3D = p.curve
 		var length = curve.get_baked_length()
-		var offset_start = start * length
-		var offset_end = end * length
-		var effective_length = offset_end - offset_start
-		var steps: int = floor(effective_length / spacing)
+		var offset_min = start * length
+		var offset_max = end * length
+		var effective_length = offset_max - offset_min
+		var steps: int = floor(effective_length / spacing) - 1
 		var up = Vector3.UP
 
-
 		for i in steps:
-			var offset = offset_start + (i / float(steps - 1)) * effective_length
+			var offset = offset_min + offset_shift + (i / float(steps - 1)) * effective_length
+			while offset > offset_max: # Loop back if the offset shift is too large
+				offset -= offset_max
+
 			var pos = curve.sample_baked(offset)
 			pos = p.transform * pos
 

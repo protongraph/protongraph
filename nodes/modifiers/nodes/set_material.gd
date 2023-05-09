@@ -53,6 +53,9 @@ func _generate_outputs() -> void:
 
 
 func _get_mesh_instances_from_node(node: Node3D, parent: Node3D = null, array: Array[MeshInstance3D] = []) -> Array[MeshInstance3D]:
+	if not is_instance_valid(node):
+		return array
+
 	if node is MeshInstance3D:
 		if parent:
 			node.transform = parent.transform

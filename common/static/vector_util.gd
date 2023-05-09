@@ -51,6 +51,11 @@ static func clamp_v(vec, min_val, max_val):
 	return vec
 
 
+static func are_equal_approx(v1, v2) -> bool:
+	var diff = v1 - v2
+	return abs(diff.length_squared()) < 0.001
+
+
 static func _get_count(vec) -> int:
 	match typeof(vec):
 		TYPE_VECTOR2, TYPE_VECTOR2I:

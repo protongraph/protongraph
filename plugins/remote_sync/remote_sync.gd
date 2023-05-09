@@ -16,13 +16,24 @@ func _ready():
 
 
 func enable() -> void:
-	_ipc_server.start("127.0.0.1", 9123) # TMP - TODO : retrieve from config file or command line args
+	var address := "127.0.0.1"
+	var port := 9123
+
+	# Load address and port from config.cfg
+	var config_file := ConfigFile.new()
+	var err = config_file.load("res://plugins/remote_sync/config.cfg")
+	if err == OK:
+		address = config_file.get_value("host", "address", address)
+		port = config_file.get_value("host", "port", port)
+
+	_ipc_server.start(address, port)
 
 
 func disable() -> void:
 	_ipc_server.stop()
 
 
+# TODO: notify errors to peer
 func _on_data_received(peer_id: int, data: Variant) -> void:
 	if not "type" in data:
 		printerr("Missing type field from incomming message ", data)
@@ -39,7 +50,7 @@ func _on_data_received(peer_id: int, data: Variant) -> void:
 	var graph := SaveLoadManager.load_graph(file_path)
 	if not graph:
 		printerr("Failed to load graph: ", file_path)
-		return # TODO: notify error to peer
+		return
 
 	# Update pinned variables with the remote values
 	var parameters: Dictionary = str_to_var(data["parameters"])

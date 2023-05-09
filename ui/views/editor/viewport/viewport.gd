@@ -61,6 +61,11 @@ func show_scene_trees() -> void:
 
 
 func show_preview(pnode: ProtonNode) -> void:
+	if not is_instance_valid(pnode):
+		_node_to_preview = null
+		show_scene_trees()
+		return
+
 	# Get the provided 3D data
 	var data_to_preview: Array[Node3D] = pnode._get_preview_3d()
 
@@ -114,7 +119,7 @@ func _input(event: InputEvent) -> void:
 	if rect.has_point(current_mouse_pos):
 		_camera.process_input(event)
 
-	elif _camera.is_input_captured():
+	elif _camera.is_input_captured() and event is InputEventMouseMotion:
 		var margin := 2.0
 		var local_pos: Vector2 = event.position - global_position
 

@@ -62,46 +62,7 @@ func refresh_list() -> void:
 # Recursively search all the scripts that inherits from ProtonNode and store
 # them in the dictionnary
 func _find_all_nodes(path) -> void:
-	var dir := DirAccess.open(path)
-	if not dir:
-		printerr("Could not open ", path)
-		return
-
-	dir.include_hidden = false
-	dir.include_navigational = false
-	dir.list_dir_begin()
-	var path_root = dir.get_current_dir() + "/"
-
-	while true:
-		var file = dir.get_next()
-		if file == "":
-			break
-
-		if dir.current_is_dir():
-			_find_all_nodes(path_root + file)
-			continue
-
-		if not file.ends_with(".gd") and not file.ends_with(".gdc"):
-			continue
-
-		var full_path = path_root + file
-		var script = load(full_path)
-		if script == null:
-			print("Error: Failed to load script ", file)
-			continue
-
-		var node = script.new()
-		if not _is_node_valid(node):
-			MemoryUtil.safe_free(node)
-			continue
-
-		_nodes[node.type_id] = node
-		_node_search_index[node.title] = node.type_id
-
-	dir.list_dir_end()
-
-
-func _is_node_valid(node) -> bool:
+	var is_script_valid := func (node) -> bool:
 		if not node is ProtonNode:
 			return false
 
@@ -112,8 +73,18 @@ func _is_node_valid(node) -> bool:
 		if node.title == "ProtonNode":
 			return false
 
-		if _nodes.has(node.type_id):
+		if node.type_id in _nodes:
 			printerr("Node ", node.title, " has duplicate id ", node.get_script().resource_path)
 			return false
 
 		return true
+
+	var scripts := DirectoryUtil.get_all_valid_scripts_in(path, true)
+	for script in scripts:
+		var node = script.new()
+		if not is_script_valid.call(node):
+			MemoryUtil.safe_free(node)
+			continue
+
+		_nodes[node.type_id] = node
+		_node_search_index[node.title] = node.type_id

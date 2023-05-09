@@ -4,7 +4,7 @@ extends RefCounted
 
 var _default_value: Variant
 var _generator: Callable
-var _list: Array
+var _list := []
 var _current_index: int
 
 
@@ -22,24 +22,30 @@ func set_generator(generator: Callable) -> void:
 
 
 func get_value() -> Variant:
-	if _generator:
-		return _execute()
+	# No generator and no list of pre-computed values, return the default.
+	if not _generator.is_valid() and _list.is_empty():
+		return _default_value
 
-	return _default_value
-
-
-func _execute() -> Variant:
-	if _list.is_empty():
+	# Only the generator, call it and return
+	if _generator.is_valid() and _list.is_empty():
 		return _generator.call()
 
+	# List contains data. Pick the current one and update the index tracker.
 	if _current_index >= _list.size():
 		_current_index = 0
 
 	var item = _list[_current_index]
 	_current_index += 1
 
+
+
+	# Only the list and no generator:
+	if not _generator.is_valid():
+		return item
+
+	# Both generator and the list are present
 	return _generator.call(item)
 
 
 func _to_string() -> String:
-	return "[Field: " + str(get_value()) + "]"
+	return "[Field: " + str(get_script()) + "]"

@@ -5,14 +5,14 @@ func _init() -> void:
 	type_id = "add_to_scene_tree"
 	title = "Add to scene tree"
 	category = "Output"
-	description = "Add objects to the current scene tree."
+	description = "Add objects to the graph scene tree."
 	leaf_node = true
 
 	var opts := SlotOptions.new()
 	opts.allow_multiple_connections = true
 	create_input("data", "3D Objects", DataType.NODE_3D, opts)
 
-	documentation.add_paragraph("Displays objects in the 3D viewport below.")
+	documentation.add_paragraph("Adds objects to the graph scene tree.")
 
 	var p = documentation.add_parameter("3D Objects")
 	p.set_type("node_3d")
@@ -24,5 +24,6 @@ func _init() -> void:
 
 
 func _generate_outputs() -> void:
-	for node in get_input("data"):
-		SceneTreeManager.add_to_tree(graph, node)
+	for node in get_input("data", []):
+		if is_instance_valid(node):
+			SceneTreeManager.add_to_tree(graph, node.duplicate(7))
