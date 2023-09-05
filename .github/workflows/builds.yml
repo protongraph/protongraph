@@ -54,7 +54,7 @@ jobs:
             deploy-platform-target: template_release
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Need newer mesa for lavapipe to work properly.
       - name: Linux dependencies for tests
@@ -218,7 +218,7 @@ jobs:
       # Checkout godot-cpp
       - name: Checkout godot-cpp
         if: ${{ matrix.godot-cpp-test }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: godotengine/godot-cpp
           submodules: "recursive"

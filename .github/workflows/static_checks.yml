@@ -10,7 +10,7 @@ jobs:
     name: Static Checks (clang-format, black format, file format, documentation checks)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: godotengine/godot
           ref: 4.0-stable
